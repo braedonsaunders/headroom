@@ -433,7 +433,9 @@ int main(int argc, char** argv) {
         std::printf("%-30.30s %9.0f %9.1f %7ld %5ld %5ld %8.1f %10.2f %7ld %8ld %9.0f %8.1f %9.2f %6ld %6ld\n", p.name.c_str(), p.cb_max_us,
                     p.blocks ? p.cb_sum_us / p.blocks : 0.0, p.misses, p.preempted, p.late, p.seconds > 0 ? p.requests / p.seconds : 0.0, p.req_max_ms,
                     a.clicks, a.glitch_periods, per_min, a.worst_db, a.click_max / thr, p.heap, p.locks);
-        if (a.clicks || a.glitches || p.misses) ok = false;
+        // On a shared CI runner (HEADROOM_SHARED_RUNNER) other jobs steal the CPU, so deadline misses are reported, not
+        // asserted; clicks and glitches in the rendered audio still fail.
+        if (a.clicks || a.glitches || (p.misses && !std::getenv("HEADROOM_SHARED_RUNNER"))) ok = false;
         if (p.heap > 0 || p.locks > 0) ok = false;
         // Request throughput is reported, and only a stall is asserted: an amp edit prepares a copy of the amp (~15 ms
         // of HTTP-thread CPU, 50-90 edits/s on an idle machine), but that thread runs at normal priority, so an

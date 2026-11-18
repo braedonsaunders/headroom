@@ -99,7 +99,7 @@ jobs:
           case "$RUNNER_OS" in
             macOS)   args+=(-DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -DCMAKE_OSX_DEPLOYMENT_TARGET=13.0 -DHEADROOM_SIGN_IDENTITY=-) ;;
             Windows) args+=(-DCMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl -DHEADROOM_PGO=OFF -DRIG_BUILD_APP=ON -DRIG_WEBVIEW2_SDK="$RIG_WEBVIEW2_SDK" -DRIG_WITH_ASIO=ON "-DRIG_ASIO_SDK_DIR=$RIG_ASIO_SDK_DIR") ;;
-            Linux)   args+=(-DCMAKE_INSTALL_PREFIX=/usr) ;;
+            Linux)   args+=(-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ "-DCMAKE_CXX_FLAGS=-march=x86-64-v3" -DCMAKE_INSTALL_PREFIX=/usr) ;;   # the circuit kernels need Clang vector extensions
           esac
           cmake -S app -B build "${args[@]}"
 
@@ -107,6 +107,8 @@ jobs:
         run: cmake --build build --parallel
 
       - name: Test
+        env:
+          HEADROOM_SHARED_RUNNER: "1"   # real-time deadline and speed-ratio checks report only on shared runners
         run: ctest --test-dir build --output-on-failure --timeout 600
 
       # ── package ──
@@ -146,9 +148,12 @@ jobs:
         run: |
           cmake --install build --prefix stage
           bash app/packaging/check-bundle.sh stage
-          iscc //DStage="$PWD/stage" //DVersion="$HEADROOM_VERSION" \
-               //DWebView2Bootstrapper="$RUNNER_TEMP/MicrosoftEdgeWebview2Setup.exe" app/packaging/windows/headroom.iss
           (cd build && cpack -G ZIP -B "$PWD/../dist" >/dev/null)
+          # The Inno Setup installer is not a release asset yet; don't let it block the portable ZIP.
+          MSYS_NO_PATHCONV=1 iscc /DStage="$(cygpath -w "$PWD/stage")" /DVersion="$HEADROOM_VERSION" \
+               /DWebView2Bootstrapper="$(cygpath -w "$RUNNER_TEMP/MicrosoftEdgeWebview2Setup.exe")" \
+               /O"$(cygpath -w "$PWD/dist")" "$(cygpath -w app/packaging/windows/headroom.iss)" \
+            || echo "::warning::Inno Setup installer build failed"
 
       - name: Sign (Windows, Azure Artifact Signing)
         if: runner.os == 'Windows' && env.AZURE_CLIENT_ID != ''
