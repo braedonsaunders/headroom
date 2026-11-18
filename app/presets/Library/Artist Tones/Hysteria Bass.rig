@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Hysteria Bass</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Hysteria Bass" preset-author="Headroom" preset-comment="Driving fuzz bass for a busy sixteenth-note line: a clean tube bass amp keeps the low end solid while a parallel fuzz-into-cranked-amp lane adds the snarl on top. Blend the two with the Fuzz macro." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="48000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="V" value="0.6"/>
+        <parameter id="S" value="0.3"/>
+        <parameter id="A" value="0.5"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="T" value="0.5"/>
+        <parameter id="C" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="7000">
+    <component-audio version="1">
+      <parameters num-parameters="1">
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="177000">
+    <component-audio version="1">
+      <parameters num-parameters="11">
+        <parameter id="CASSt" value="0"/>
+        <parameter id="gain" value="0.38"/>
+        <parameter id="ultra low" value="0.5"/>
+        <parameter id="ultra high" value="0.5"/>
+        <parameter id="bass" value="0.62"/>
+        <parameter id="midrange" value="0.45"/>
+        <parameter id="frequency" value="1"/>
+        <parameter id="treble" value="0.5"/>
+        <parameter id="volume" value="0.6"/>
+        <parameter id="output selector" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="1"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="8000">
+    <component-audio version="1">
+      <parameters num-parameters="1">
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="43000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V" value="0.6"/>
+        <parameter id="S" value="0.78"/>
+        <parameter id="T" value="0.6"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="B" value="0.5"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="54000">
+    <component-audio version="1">
+      <parameters num-parameters="24">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V" value="0.2"/>
+        <parameter id="G" value="0.6"/>
+        <parameter id="D" value="0.5"/>
+        <parameter id="B" value="0.35"/>
+        <parameter id="M" value="0.6"/>
+        <parameter id="mF" value="0.5"/>
+        <parameter id="T" value="0.6"/>
+        <parameter id="uL" value="0.5"/>
+        <parameter id="br" value="0.5"/>
+        <parameter id="uH" value="0.5"/>
+        <parameter id="gE" value="0.5"/>
+        <parameter id="40" value="0.5"/>
+        <parameter id="90" value="0.5"/>
+        <parameter id="180" value="0.5"/>
+        <parameter id="300" value="0.5"/>
+        <parameter id="500" value="0.5"/>
+        <parameter id="1" value="0.5"/>
+        <parameter id="2" value="0.5"/>
+        <parameter id="4" value="0.5"/>
+        <parameter id="10" value="0.5"/>
+        <parameter id="eQv" value="0.5"/>
+        <parameter id="G4M" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="19"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="9000">
+    <component-audio version="1">
+      <parameters num-parameters="6">
+        <parameter id="PanA" value="0.5"/>
+        <parameter id="PanB" value="0.5"/>
+        <parameter id="XFade" value="0.32"/>
+        <parameter id="DM" value="0.5"/>
+        <parameter id="iP" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="26000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Vol" value="0.4788"/>
+        <parameter id="F1" value="0.5"/>
+        <parameter id="G1" value="0.5"/>
+        <parameter id="Q1" value="0.5"/>
+        <parameter id="F2" value="0.5"/>
+        <parameter id="G2" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="Q2" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="9000" target-number="1" target-name="XFade" min-value="0.1" max-value="0.6" controller-name="Fuzz"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="43000" target-number="1" target-name="S" min-value="0.4" max-value="1" controller-name="Fuzz Sustain"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="43000" target-number="1" target-name="T" min-value="0.3" max-value="0.9" controller-name="Fuzz Tone"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="177000" target-number="1" target-name="bass" min-value="0.3" max-value="0.85" controller-name="Low End"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-tempo bpm="94.000"/>
+<headroom-library version="1" id="hysteria-bass" category="Artist Tones" order="60" instrument="bass" style="Alternative Rock">
+  <description>Driving fuzz bass for a busy sixteenth-note line: a clean tube bass amp keeps the low end solid while a parallel fuzz-into-cranked-amp lane adds the snarl on top. Blend the two with the Fuzz macro.</description>
+  <tags><tag>Artist Tones</tag><tag>Bass</tag><tag>Alternative</tag><tag>Fuzz Bass</tag><tag>Parallel</tag><tag>Multi-amp</tag></tags>
+  <inspired-by artist="Chris Wolstenholme (Muse)" song="Hysteria" album="Absolution" part="Main bass riff" year="2003"/>
+  <sources>
+    <source url="https://www.musewiki.org/Rich_Costey:_Recording_Muse's_Absolution_(200312_Sound_on_Sound_article)" title="Sound On Sound (Dec 2003): Rich Costey, recording Muse's Absolution (MuseWiki mirror)"/>
+    <source url="https://en.wikipedia.org/wiki/Hysteria_(Muse_song)" title="Hysteria (Muse song), Wikipedia"/>
+    <source url="https://musewiki.org/Hysteria_(song)" title="MuseWiki: Hysteria (song)"/>
+    <source url="https://www.guitarworld.com/features/too-much-is-never-enough-muses-chris-wolstenholme-reinvents-art-rock-bass-for-the-21st-century" title="Guitar World: Muse's Chris Wolstenholme reinvents art-rock bass"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

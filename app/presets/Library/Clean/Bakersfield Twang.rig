@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Bakersfield Twang</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Bakersfield Twang" preset-author="Headroom" preset-comment="Hard, bright West Coast country twang: a loud high-powered blackface twin with the bright switch on and treble and mids up, no compressor, a short slap and a little of the amp's own spring. Bridge pickup, played near the bridge with a thin pick; turn the guitar down to tame it rather than the amp." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="30000">
+    <component-audio version="1">
+      <parameters num-parameters="19">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.5"/>
+        <parameter id="Br" value="1"/>
+        <parameter id="Bs" value="0.5"/>
+        <parameter id="Md" value="0.6"/>
+        <parameter id="Tr" value="0.66"/>
+        <parameter id="Vr" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bia" value="0.5"/>
+        <parameter id="Hz" value="0.5"/>
+        <parameter id="RvL" value="0.14"/>
+        <parameter id="RvOn" value="1"/>
+        <parameter id="RvTm" value="0.4"/>
+        <parameter id="RvSz" value="0.5"/>
+        <parameter id="ViInt" value="0.5"/>
+        <parameter id="ViSpd" value="0.5"/>
+        <parameter id="ViOn" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.5904"/>
+        <parameter id="c" value="0.55"/>
+        <parameter id="Cab" value="13"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="158000">
+    <component-audio version="1">
+      <parameters num-parameters="38">
+        <parameter id="mix" value="0.18"/>
+        <parameter id="input" value="0.7224"/>
+        <parameter id="output" value="0.7224"/>
+        <parameter id="pandry" value="0.5"/>
+        <parameter id="panwet" value="0.5"/>
+        <parameter id="stereowidth" value="0.5"/>
+        <parameter id="stereomode" value="0.5"/>
+        <parameter id="timemode" value="0"/>
+        <parameter id="time" value="0.02"/>
+        <parameter id="feedback" value="0"/>
+        <parameter id="style" value="0"/>
+        <parameter id="ana_bbdtype" value="0"/>
+        <parameter id="modern_sat" value="0.5"/>
+        <parameter id="modern_depth" value="0"/>
+        <parameter id="modern_rate" value="0.5"/>
+        <parameter id="modern_stereo" value="0.5"/>
+        <parameter id="diff_amount" value="0.5"/>
+        <parameter id="diff_size" value="0.5"/>
+        <parameter id="diff_movement" value="0.5"/>
+        <parameter id="diff_dense" value="0.5"/>
+        <parameter id="ana_depth" value="0.5"/>
+        <parameter id="ana_rate" value="0.5"/>
+        <parameter id="ana_stereo" value="0.5"/>
+        <parameter id="tape_sat" value="0.5"/>
+        <parameter id="tape_age" value="0.5"/>
+        <parameter id="tape_wowflut" value="0.5"/>
+        <parameter id="tape_noise" value="0.5"/>
+        <parameter id="vd_quality" value="0"/>
+        <parameter id="vd_depth" value="0.5"/>
+        <parameter id="vd_rate" value="0.5"/>
+        <parameter id="vd_stereo" value="0.5"/>
+        <parameter id="locut" value="0.5"/>
+        <parameter id="hicut" value="0.6"/>
+        <parameter id="duckingamount" value="0"/>
+        <parameter id="duckingsensitivity" value="0.5"/>
+        <parameter id="duckingrelease" value="0.5"/>
+        <parameter id="duckingmeter" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="30000" target-number="1" target-name="Vol" min-value="0.35" max-value="0.62" controller-name="Amp Volume"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="30000" target-number="1" target-name="Tr" min-value="0.45" max-value="0.85" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="30000" target-number="1" target-name="Md" min-value="0.35" max-value="0.8" controller-name="Mid"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="158000" target-number="1" target-name="mix" min-value="0" max-value="0.35" controller-name="Slap"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="30000" target-number="1" target-name="RvL" min-value="0" max-value="0.4" controller-name="Spring"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="clean-bakersfield-twang" category="Clean" order="50" instrument="guitar" style="Country">
+  <description>Hard, bright West Coast country twang: a loud high-powered blackface twin with the bright switch on and treble and mids up, no compressor, a short slap and a little of the amp's own spring. Bridge pickup, played near the bridge with a thin pick; turn the guitar down to tame it rather than the amp.</description>
+  <tags><tag>Clean</tag><tag>Country</tag><tag>Twang</tag><tag>Slapback</tag><tag>Spring Reverb</tag></tags>
+  <sources>
+    <source url="https://en.wikipedia.org/wiki/Don_Rich" title="Don Rich (Wikipedia)"/>
+    <source url="https://en.wikipedia.org/wiki/Bakersfield_sound" title="Bakersfield sound (Wikipedia)"/>
+    <source url="https://www.fender.com/articles/instruments/buck-owens-and-the-silver-sparkle" title="Fender: Buck Owens and the silver sparkle"/>
+    <source url="https://www.tdpri.com/threads/don-rich-buckaroos-tone.582787/" title="TDPRI: Don Rich / Buckaroos tone (incl. Jerry Brightman's account)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

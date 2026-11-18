@@ -1,0 +1,44 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "test-vca-2151",
+  "version": 1,
+  "name": "dbx 2151 VCA, datasheet application with AN103 offset nulling and a resistive control network (validation circuit)",
+  "description": "THAT 2150-series Fig. 3 for the 2151: 10 uF + 20k into IN, pin 5 through 2.7k to -15 V (AN103 Fig. 3 value with its 10k 'DC offset nulling' resistor from the control port to pin 5), SYM pin 4 through 51 ohms to GND, Ec+ pin 2 at GND, OUT into an op-amp with 20k || 47p. Ec- is driven by a 2 Hz, 0.1 V control swing through 100 ohms with 10k to GND (about -12 to +21 dB with the 10k to pin 5 pulling the node down 28 mV), so the control node is a divider loaded by the 10k to pin 5 and by the core's base currents (a second instance with core beta 100). Both outputs are compared.",
+  "sources": [
+    { "title": "THAT Corporation, 2150 Series IC Voltage-Controlled Amplifiers data sheet rev. 10/25/96 (Figs. 3, 6)", "url": "https://thatcorp.com/datashts/THAT_2150-Series_Datasheet.pdf" },
+    { "title": "dbx Application Note 103, The dbx 2150 Voltage Controlled Amplifier (sections I.D, I.E, II.E, Fig. 3)", "url": "https://gyraf.dk/schematics/dbx2150vca_AN.pdf" }
+  ],
+  "io": { "input": "in", "output": "out" },
+  "oversampling": 2,
+  "models": {
+    "D2151B": { "kind": "vca", "mvdb": 6.1, "iq": 20e-6, "vsym": 1.19e-5, "rs": 0.515, "rsym": 0, "v5": 2.76, "r5": 20, "bf": 100, "vczero": 0.0006 }
+  },
+  "parts": [
+    { "ref": "VCC", "type": "V", "nodes": ["vcc", "0"], "value": "15" },
+    { "ref": "VEE", "type": "V", "nodes": ["vee", "0"], "value": "-15" },
+    { "ref": "VC", "type": "V", "nodes": ["vc", "0"], "value": "0", "ac": { "amplitude": "0.1", "freq": 2, "phase": 0 } },
+    { "ref": "C1", "type": "C", "nodes": ["in", "n1"], "value": "10u" },
+    { "ref": "R1", "type": "R", "nodes": ["n1", "vin"], "value": "20k" },
+    { "ref": "RC1", "type": "R", "nodes": ["vc", "ec"], "value": "100" },
+    { "ref": "RC2", "type": "R", "nodes": ["ec", "0"], "value": "10k" },
+    { "ref": "U1", "type": "vca", "nodes": ["vin", "0", "ec", "sym", "p5", "0", "vcc", "vout"], "model": "DBX2151" },
+    { "ref": "R9", "type": "R", "nodes": ["sym", "0"], "value": "51" },
+    { "ref": "R5", "type": "R", "nodes": ["p5", "vee"], "value": "2.7k" },
+    { "ref": "RN", "type": "R", "nodes": ["ec", "p5"], "value": "10k" },
+    { "ref": "IC1", "type": "opamp", "nodes": ["0", "vout", "out", "vcc", "vee"], "model": "NE5532" },
+    { "ref": "RF", "type": "R", "nodes": ["vout", "out"], "value": "20k" },
+    { "ref": "CF", "type": "C", "nodes": ["vout", "out"], "value": "47p" },
+    { "ref": "C2", "type": "C", "nodes": ["in", "n2"], "value": "10u" },
+    { "ref": "R2", "type": "R", "nodes": ["n2", "vin2"], "value": "20k" },
+    { "ref": "RC3", "type": "R", "nodes": ["vc", "ec2"], "value": "100" },
+    { "ref": "RC4", "type": "R", "nodes": ["ec2", "0"], "value": "10k" },
+    { "ref": "U2", "type": "vca", "nodes": ["vin2", "0", "ec2", "sym2", "p52", "0", "vcc", "vout2"], "model": "D2151B" },
+    { "ref": "R92", "type": "R", "nodes": ["sym2", "0"], "value": "51" },
+    { "ref": "R52", "type": "R", "nodes": ["p52", "vee"], "value": "2.7k" },
+    { "ref": "RN2", "type": "R", "nodes": ["ec2", "p52"], "value": "10k" },
+    { "ref": "IC2", "type": "opamp", "nodes": ["0", "vout2", "out2", "vcc", "vee"], "model": "NE5532" },
+    { "ref": "RF2", "type": "R", "nodes": ["vout2", "out2"], "value": "20k" },
+    { "ref": "CF2", "type": "C", "nodes": ["vout2", "out2"], "value": "47p" }
+  ],
+  "probes": ["out", "out2", "ec", "ec2", "p5"]
+}

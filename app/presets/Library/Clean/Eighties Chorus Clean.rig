@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Eighties Chorus Clean</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Eighties Chorus Clean" preset-author="Headroom" preset-comment="The lush early-80s chorus clean: a stomp compressor into a solid-state 2x12 with its built-in stereo chorus on (dry on one side, chorused on the other) and a single digital echo around 330 ms. Bright, wide and hard-edged; arpeggiate add9 and sus chords and let them shimmer." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="48000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="V" value="1"/>
+        <parameter id="S" value="0.6"/>
+        <parameter id="A" value="0.4"/>
+        <parameter id="R" value="0.4"/>
+        <parameter id="T" value="0.62"/>
+        <parameter id="C" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="49000">
+    <component-audio version="1">
+      <parameters num-parameters="10">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="a" value="0.2"/>
+        <parameter id="M" value="0.5"/>
+        <parameter id="T" value="0.58"/>
+        <parameter id="B" value="1"/>
+        <parameter id="R" value="0.35"/>
+        <parameter id="d" value="0.6"/>
+        <parameter id="em" value="1"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.2494"/>
+        <parameter id="c" value="0.4"/>
+        <parameter id="Cab" value="8"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="158000">
+    <component-audio version="1">
+      <parameters num-parameters="38">
+        <parameter id="mix" value="0.25"/>
+        <parameter id="input" value="0.7224"/>
+        <parameter id="output" value="0.7224"/>
+        <parameter id="pandry" value="0.5"/>
+        <parameter id="panwet" value="0.5"/>
+        <parameter id="stereowidth" value="0.5"/>
+        <parameter id="stereomode" value="0.5"/>
+        <parameter id="timemode" value="0"/>
+        <parameter id="time" value="0.403"/>
+        <parameter id="feedback" value="0.2"/>
+        <parameter id="style" value="0"/>
+        <parameter id="ana_bbdtype" value="0"/>
+        <parameter id="modern_sat" value="0.5"/>
+        <parameter id="modern_depth" value="0"/>
+        <parameter id="modern_rate" value="0.5"/>
+        <parameter id="modern_stereo" value="0.5"/>
+        <parameter id="diff_amount" value="0.5"/>
+        <parameter id="diff_size" value="0.5"/>
+        <parameter id="diff_movement" value="0.5"/>
+        <parameter id="diff_dense" value="0.5"/>
+        <parameter id="ana_depth" value="0.5"/>
+        <parameter id="ana_rate" value="0.5"/>
+        <parameter id="ana_stereo" value="0.5"/>
+        <parameter id="tape_sat" value="0.5"/>
+        <parameter id="tape_age" value="0.5"/>
+        <parameter id="tape_wowflut" value="0.5"/>
+        <parameter id="tape_noise" value="0.5"/>
+        <parameter id="vd_quality" value="0"/>
+        <parameter id="vd_depth" value="0.5"/>
+        <parameter id="vd_rate" value="0.5"/>
+        <parameter id="vd_stereo" value="0.5"/>
+        <parameter id="locut" value="0.5"/>
+        <parameter id="hicut" value="0.7"/>
+        <parameter id="duckingamount" value="0"/>
+        <parameter id="duckingsensitivity" value="0.5"/>
+        <parameter id="duckingrelease" value="0.5"/>
+        <parameter id="duckingmeter" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="49000" target-number="1" target-name="d" min-value="0.2" max-value="1" controller-name="Chorus Depth"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="49000" target-number="1" target-name="R" min-value="0.1" max-value="0.7" controller-name="Chorus Rate"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="158000" target-number="1" target-name="mix" min-value="0" max-value="0.45" controller-name="Echo"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="158000" target-number="1" target-name="feedback" min-value="0" max-value="0.6" controller-name="Repeats"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="49000" target-number="1" target-name="T" min-value="0.3" max-value="0.75" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="5" component-id="48000" target-number="1" target-name="S" min-value="0.3" max-value="0.95" controller-name="Squeeze"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="clean-eighties-chorus" category="Clean" order="150" instrument="guitar" style="80s Pop">
+  <description>The lush early-80s chorus clean: a stomp compressor into a solid-state 2x12 with its built-in stereo chorus on (dry on one side, chorused on the other) and a single digital echo around 330 ms. Bright, wide and hard-edged; arpeggiate add9 and sus chords and let them shimmer.</description>
+  <tags><tag>Clean</tag><tag>80s Pop</tag><tag>New Wave</tag><tag>Chorus</tag><tag>Stereo</tag><tag>Delay</tag></tags>
+  <sources>
+    <source url="https://www.guitarplayer.com/guitarists/andy-summers-on-message-in-a-bottle-and-the-police-s-biggest-guitar-riff" title="Guitar Player: Andy Summers on Message in a Bottle"/>
+    <source url="https://www.guitarworld.com/gear/tonal-recall-the-police-andy-summers" title="Guitar World: Tonal Recall, Andy Summers on Walking on the Moon"/>
+    <source url="https://rolandcorp.com.au/blog/the-clean-legacy-of-the-roland-jazz-chorus" title="Roland Australia: the clean legacy of the Jazz Chorus"/>
+    <source url="https://en.wikipedia.org/wiki/Roland_Jazz_Chorus" title="Roland Jazz Chorus (Wikipedia)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

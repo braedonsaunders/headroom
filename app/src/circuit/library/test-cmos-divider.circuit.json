@@ -1,0 +1,35 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "test-cmos-divider",
+  "version": 1,
+  "name": "CMOS octave divider (validation circuit)",
+  "description": "The usual CMOS-octaver front end and dividers on a 9 V supply: a self-biased CD4069UB stage (1M feedback) and a second CD4069UB, AC-coupled and biased to VDD/3 so its idle output sits high (not on the flip-flop's threshold), square the input; a CD4013B section wired as a toggle (D to Q-bar) divides by two and a second section clocked by the first's Q divides by four; a CD4011B gate combines the two (NAND). Each logic output drives a 10k + 10n low-pass (about 1.6 kHz), the nodes the SPICE gate compares.",
+  "sources": [
+    { "title": "TI CD4013B dual D flip-flop, SCHS023E (2016)", "url": "https://www.ti.com/lit/ds/symlink/cd4013b.pdf" },
+    { "title": "TI / Harris CD4011B quad NAND, SCHS021D (2003)", "url": "https://www.ti.com/lit/ds/symlink/cd4011b.pdf" },
+    { "title": "TI CD4069UB hex inverter, SCHS054E (2019)", "url": "https://www.ti.com/lit/ds/symlink/cd4069ub.pdf" }
+  ],
+  "io": { "input": "in", "output": "o2" },
+  "oversampling": 2,
+  "parts": [
+    { "ref": "VDD", "type": "V", "nodes": ["vdd", "0"], "value": "9" },
+    { "ref": "C1", "type": "C", "nodes": ["in", "a1"], "value": "100n" },
+    { "ref": "RIN", "type": "R", "nodes": ["a1", "g1"], "value": "10k" },
+    { "ref": "U1A", "type": "inv", "nodes": ["g1", "y1", "vdd", "0"], "model": "CD4069UB" },
+    { "ref": "RFB", "type": "R", "nodes": ["y1", "g1"], "value": "1M" },
+    { "ref": "C5", "type": "C", "nodes": ["y1", "g2"], "value": "100n" },
+    { "ref": "R6", "type": "R", "nodes": ["vdd", "g2"], "value": "2M" },
+    { "ref": "R7", "type": "R", "nodes": ["g2", "0"], "value": "1M" },
+    { "ref": "U1B", "type": "inv", "nodes": ["g2", "ck", "vdd", "0"], "model": "CD4069UB" },
+    { "ref": "U2A", "type": "dff", "nodes": ["qb1", "ck", "0", "0", "q1", "qb1", "vdd", "0"], "model": "CD4013B" },
+    { "ref": "U2B", "type": "dff", "nodes": ["qb2", "q1", "0", "0", "q2", "qb2", "vdd", "0"], "model": "CD4013B" },
+    { "ref": "U3A", "type": "nand", "nodes": ["q1", "q2", "y3", "vdd", "0"], "model": "CD4011B" },
+    { "ref": "R2", "type": "R", "nodes": ["q1", "o2"], "value": "10k" },
+    { "ref": "C2", "type": "C", "nodes": ["o2", "0"], "value": "10n" },
+    { "ref": "R4", "type": "R", "nodes": ["q2", "o4"], "value": "10k" },
+    { "ref": "C4", "type": "C", "nodes": ["o4", "0"], "value": "10n" },
+    { "ref": "R3", "type": "R", "nodes": ["y3", "on"], "value": "10k" },
+    { "ref": "C3", "type": "C", "nodes": ["on", "0"], "value": "10n" }
+  ],
+  "probes": ["y1", "ck", "q1", "q2", "o2", "o4", "on"]
+}

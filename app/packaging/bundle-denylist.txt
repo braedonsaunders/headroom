@@ -1,0 +1,13 @@
+# Anything that must never be in a Headroom release bundle. Read by packaging/check-bundle.sh.
+#   path: <glob, matched against the staged path; '*' also crosses '/'>
+#   ext:  <file extensions, space separated, without the dot>
+#   text: <extended regex, case-insensitive; checked in shipped .svg .json .rig .desktop .xml files>
+# Untracked local files, DI recordings and their renders (not redistributable), research scratch, tool litter.
+path: *extracted/*
+path: *samples/di/*
+path: *samples/processed/*
+path: */work/*
+path: work/*
+path: */.playwright-cli/*
+path: *.DS_Store
+path: *__pycache__*

@@ -1,0 +1,13 @@
+# ngspice .op reference: test-zener v1 (node voltage)
+in  0.000000e+00
+vs  2.400000e+01
+vz  1.489862e+01
+vn  -2.40000e+01
+vzn  -1.50492e+01
+clip  2.367569e-28
+m  -1.57840e-19
+vcc  1.500000e+01
+vee  -1.50000e+01
+fb  0.000000e+00
+out  0.000000e+00
+w  1.460065e+01

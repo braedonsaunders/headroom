@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Crossover Riot</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Crossover Riot" preset-author="Headroom" preset-comment="Crossover thrash rhythm: a gate, an overdrive at low drive and full level pushing a British 100-watt master-volume head with the mids up, into a 4x12, bone dry. Raw, punchy and fast; it stays tight on blast-speed downpicking and crunchy rather than fizzy." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="19000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="T" value="0.45"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="A" value="0.5"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="G" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="15000">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.9"/>
+        <parameter id="Tn" value="0.6"/>
+        <parameter id="Dr" value="0.15"/>
+        <parameter id="Lmp" value="0.5"/>
+        <parameter id="Bs" value="0.5"/>
+        <parameter id="Cl" value="0.5"/>
+        <parameter id="Br" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="56000">
+    <component-audio version="1">
+      <parameters num-parameters="15">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V1" value="0.72"/>
+        <parameter id="V2" value="0.42"/>
+        <parameter id="B" value="0.5"/>
+        <parameter id="M" value="0.68"/>
+        <parameter id="T" value="0.62"/>
+        <parameter id="Pr" value="0.6"/>
+        <parameter id="Pw" value="0.5"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bi" value="0.5"/>
+        <parameter id="Hg" value="0"/>
+        <parameter id="G4M" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.8561"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="10"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="56000" target-number="1" target-name="V1" min-value="0.45" max-value="0.95" controller-name="Gain"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="56000" target-number="1" target-name="M" min-value="0.3" max-value="0.9" controller-name="Mids"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="15000" target-number="1" target-name="Vol" min-value="0.5" max-value="1" controller-name="Boost"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="56000" target-number="1" target-name="Pr" min-value="0.3" max-value="0.85" controller-name="Presence"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="19000" target-number="1" target-name="T" min-value="0.2" max-value="0.75" controller-name="Gate"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="hg-crossover-riot" category="High Gain" order="60" instrument="guitar" style="Crossover">
+  <description>Crossover thrash rhythm: a gate, an overdrive at low drive and full level pushing a British 100-watt master-volume head with the mids up, into a 4x12, bone dry. Raw, punchy and fast; it stays tight on blast-speed downpicking and crunchy rather than fizzy.</description>
+  <tags><tag>High Gain</tag><tag>Crossover</tag><tag>Thrash</tag><tag>Hardcore</tag><tag>Rhythm</tag><tag>Boosted</tag><tag>Dry</tag></tags>
+  <sources>
+    <source url="https://www.premierguitar.com/artists/guitarists/municipal-waste" title="Premier Guitar: Municipal Waste"/>
+    <source url="https://mixdownmag.com.au/features/gear-rundown-power-trip/" title="Mixdown: Gear rundown, Power Trip"/>
+    <source url="https://www.guitarworld.com/news/studio-interview-municipal-waste-guitarist-ryan-waste" title="Guitar World: Studio interview, Municipal Waste's Ryan Waste"/>
+    <source url="https://sevenstring.org/threads/what-gear-equipment-did-scott-ian-use-on-spreading-the-disease-by-anthrax-and-speak-english-of-die-by-s-o-d.364143/" title="Sevenstring.org: S.O.D. and Anthrax gear (forum)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Pedal Steel Swells</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Pedal Steel Swells" preset-author="Headroom" preset-comment="A steel-guitar imitation: heavy compression for long sustain, a warm big blackface twin, a soft quarter-note echo and a long plate. Pick with the guitar volume off, then roll it up into the note; bend one string of a double-stop while the other holds. Sustain and Plate set how far each swell blooms." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="48000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="V" value="0.85"/>
+        <parameter id="S" value="0.8"/>
+        <parameter id="A" value="0.6"/>
+        <parameter id="R" value="0.6"/>
+        <parameter id="T" value="0.9"/>
+        <parameter id="C" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="30000">
+    <component-audio version="1">
+      <parameters num-parameters="19">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.36"/>
+        <parameter id="Br" value="0"/>
+        <parameter id="Bs" value="0.4"/>
+        <parameter id="Md" value="0.52"/>
+        <parameter id="Tr" value="0.8"/>
+        <parameter id="Vr" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bia" value="0.5"/>
+        <parameter id="Hz" value="0.5"/>
+        <parameter id="RvL" value="0.5"/>
+        <parameter id="RvOn" value="0"/>
+        <parameter id="RvTm" value="0.5"/>
+        <parameter id="RvSz" value="0.5"/>
+        <parameter id="ViInt" value="0.5"/>
+        <parameter id="ViSpd" value="0.5"/>
+        <parameter id="ViOn" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.8928"/>
+        <parameter id="c" value="0.3"/>
+        <parameter id="Cab" value="13"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="158000">
+    <component-audio version="1">
+      <parameters num-parameters="38">
+        <parameter id="mix" value="0.2"/>
+        <parameter id="input" value="0.7224"/>
+        <parameter id="output" value="0.7224"/>
+        <parameter id="pandry" value="0.5"/>
+        <parameter id="panwet" value="0.5"/>
+        <parameter id="stereowidth" value="0.5"/>
+        <parameter id="stereomode" value="0.5"/>
+        <parameter id="timemode" value="1"/>
+        <parameter id="time" value="0.5714"/>
+        <parameter id="feedback" value="0.32"/>
+        <parameter id="style" value="0"/>
+        <parameter id="ana_bbdtype" value="0"/>
+        <parameter id="modern_sat" value="0.5"/>
+        <parameter id="modern_depth" value="0"/>
+        <parameter id="modern_rate" value="0.5"/>
+        <parameter id="modern_stereo" value="0.5"/>
+        <parameter id="diff_amount" value="0.5"/>
+        <parameter id="diff_size" value="0.5"/>
+        <parameter id="diff_movement" value="0.5"/>
+        <parameter id="diff_dense" value="0.5"/>
+        <parameter id="ana_depth" value="0.5"/>
+        <parameter id="ana_rate" value="0.5"/>
+        <parameter id="ana_stereo" value="0.5"/>
+        <parameter id="tape_sat" value="0.5"/>
+        <parameter id="tape_age" value="0.5"/>
+        <parameter id="tape_wowflut" value="0.5"/>
+        <parameter id="tape_noise" value="0.5"/>
+        <parameter id="vd_quality" value="0"/>
+        <parameter id="vd_depth" value="0.5"/>
+        <parameter id="vd_rate" value="0.5"/>
+        <parameter id="vd_stereo" value="0.5"/>
+        <parameter id="locut" value="0.5"/>
+        <parameter id="hicut" value="0.4"/>
+        <parameter id="duckingamount" value="0"/>
+        <parameter id="duckingsensitivity" value="0.5"/>
+        <parameter id="duckingrelease" value="0.5"/>
+        <parameter id="duckingmeter" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="127000">
+    <component-audio version="1">
+      <parameters num-parameters="4">
+        <parameter id="S1" value="1"/>
+        <parameter id="M2" value="0.26"/>
+        <parameter id="M3" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="48000" target-number="1" target-name="S" min-value="0.5" max-value="0.955" controller-name="Sustain"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="127000" target-number="1" target-name="M2" min-value="0.05" max-value="0.5" controller-name="Plate"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="158000" target-number="1" target-name="mix" min-value="0" max-value="0.4" controller-name="Echo"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="30000" target-number="1" target-name="Tr" min-value="0.35" max-value="0.75" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="30000" target-number="1" target-name="Vol" min-value="0.25" max-value="0.5" controller-name="Amp Volume"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-tempo bpm="72.000"/>
+<headroom-library version="1" id="clean-steel-swells" category="Clean" order="40" instrument="guitar" style="Country">
+  <description>A steel-guitar imitation: heavy compression for long sustain, a warm big blackface twin, a soft quarter-note echo and a long plate. Pick with the guitar volume off, then roll it up into the note; bend one string of a double-stop while the other holds. Sustain and Plate set how far each swell blooms.</description>
+  <tags><tag>Clean</tag><tag>Country</tag><tag>Swells</tag><tag>Compressed</tag><tag>Plate Reverb</tag><tag>Delay</tag></tags>
+  <sources>
+    <source url="https://www.premierguitar.com/lessons/pedal-steel-effect" title="Premier Guitar: pedal-steel effect lesson"/>
+    <source url="https://en.wikipedia.org/wiki/Volume_swell" title="Volume swell (Wikipedia)"/>
+    <source url="https://www.tdpri.com/threads/volume-swells.374350/" title="TDPRI: volume swells (comp before volume, reverb after)"/>
+    <source url="https://riff-mag.com/how-to-mimic-the-sound-of-pedal-steel-on-electric-guitar/" title="Riff Magazine: how to mimic pedal steel on electric guitar"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

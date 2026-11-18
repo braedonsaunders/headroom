@@ -1,0 +1,1467 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "orange-or120-1972-80000",
+ "version": 1,
+ "name": "Orange OR120 Graphic MkII (1972, 120 W, 4 x EL34)",
+ "description": "The 1972 Orange OR120 Graphic MkII: two identical 68k inputs -> V1A (220k/2k2+50u) -> 68n -> passive bass/treble stack with a 330p bright cap across the gain pot -> GAIN -> V1B (220k/2k2+50u) -> 68n -> FAC (6-position stepped low cut: a 4n7/4n7/2n2/1n/330p series chain tapped by the rotor) -> 100k -> V2A driver (100k plate load bypassed by 1n, unbypassed 1k5 cathode carrying the BOOST choke trap and the 15k global feedback from the 16 ohm tap) -> 68n -> V2B cathodyne (100k plate, 1k5+100k cathode with the 1M grid leak to the 1k5/100k junction) -> 68n/68n -> 4 x EL34, 2k4 stoppers, 1k screens, 220k grid leaks to the N.B rail -> OT 16 ohm (the impedance selector is drawn on 16), feedback from the same tap. Supply: 8 x 1N4005 bridge (2 per leg), 2 x 100u/450V reservoir + 100k balances, choke to the screens (2 x 32u/450V), 33k + 33k to the PI and preamp rails (16u each). Bias: its own winding -> 1N4005 -> 2 x 22u/63V + 22k -> 1k -> N.B. Effects loop (SEND/RETURN through 100k each) modelled normalled. 1972-only features kept: 2 mH boost choke, the cathodyne bias pair, 2k4 grid stoppers, FAC order.",
+ "sources": [
+  {
+   "title": "Orange OR120 Graphic MkII, Early 1970's - preamp / output-amp / power-supply sheets, 'Schematics from 1972', drawn by B. Hickmott 2004 (200 dpi redraw of the 1972 factory drawing)",
+   "url": "http://www.orangefieldguide.com/OFG_SCHEM/OR120_72preamp.jpg"
+  },
+  {
+   "title": "Orange Graphic MkII 120 W, 1972 factory drawing (full sheet)",
+   "url": "http://www.orangefieldguide.com/OFG_SCHEM/OR120schem_72.gif"
+  },
+  {
+   "title": "Orange Graphic MkII 1973 factory drawing with parts list (SW2 2-pole 6-way FAC switch, VC4 1k Lin BOOST, R17 220k / R18 15k / R19 1k5 / R20 100k / C22 0.47u)",
+   "url": "https://www.schematicheaven.net/newamps/orange_mkii1973.pdf"
+  },
+  {
+   "title": "Orange 120 W Graphic MkII, Musonic Inc. 10 Jan 1974 drawing ('ADJUST BIAS 33.3-37.3 VDC')",
+   "url": "http://www.orangefieldguide.com/OFG_SCHEM/OR120schem_74.gif"
+  },
+  {
+   "title": "Geert Jacobs, The Unofficial Orange Graphic Page (the 1972 / post-74 differences 1-7)",
+   "url": "http://www.oocities.org/geertjacobs/graphic_page.htm"
+  },
+  {
+   "title": "N. Koren, improved vacuum tube models: 12AX7 and EL34 laws (library models)",
+   "url": "https://www.normankoren.com/Audio/Tubemodspice_article.html"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "spk",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 83.0,
+  "note": "outputVoltsPerFS = 1.5 x 55.5 V, the measured dimed fundamental peak speaker voltage at the -46.9 V bias (notes S8); was 86 at the earlier -37 V bias"
+ },
+ "oversampling": 2,
+ "minRate": 176400,
+ "solver": "auto",
+ "lte": {
+  "start": "bdf2",
+  "tol": 8
+ },
+ "cuts": [
+  "hra",
+  "hrb",
+  "raw",
+  "a"
+ ],
+ "controls": [
+  {
+   "id": "fac",
+   "label": "FAC (Lo Cut)",
+   "kind": "selector",
+   "default": 0.25,
+   "options": [
+    "Position 1",
+    "Position 2",
+    "Position 3",
+    "Position 4",
+    "Position 5",
+    "Position 6"
+   ],
+   "params": [
+    "f"
+   ],
+   "paramRange": [
+    0,
+    0.79611
+   ],
+   "group": "Tone",
+   "face": true,
+   "note": "Frequency Analyzing Control: 6-position rotary that taps a series chain of 4n7, 4n7, 2n2, 1n, 330p between the preamp output and the 100k into V2A's grid. Stud 1 = direct (no low cut); measured -3 dB corners for studs 2-6: 107, 207, 427, 937, 2543 Hz (the drawn chain against the real source impedance, not the 220k leak alone). Default 0.25 = stud 2 (the mildest cut; the selector value is normalised 0..1 over the six studs, measured). The legacy 0..0.79611 param range is mapped linearly over the six studs"
+  },
+  {
+   "id": "bass",
+   "label": "Bass",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "b"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "VC1 BASS 1M log"
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "t"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "VC2 TREBLE 1M log"
+  },
+  {
+   "id": "hfdrive",
+   "label": "H.F. Drive",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "p"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "VC4 '1k Lin BOOST' - the panel's H.F. DRIVE: a 1k lin pot across V2A's unbypassed 1k5 cathode, its wiper feeding a 2 mH + 0.47u series trap to ground (5.2 kHz)"
+  },
+  {
+   "id": "gain",
+   "label": "Gain",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "g"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "VC3 VOLUME 1M log, after the tone stack, into V1B's grid"
+  },
+  {
+   "id": "master",
+   "label": "Master",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "m"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "LEGACY no-op: the OR120 has no master volume (S1 and the 1973 parts list have four pots: VC1-VC4); the panel's GAIN is the only level control"
+  },
+  {
+   "id": "bright",
+   "label": "Bright",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "Br"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "LEGACY no-op: no bright channel or bright switch; both 68k inputs are identical into V1A (the 1972 drawing's own comment says the jacks are 'wrong, I guess')"
+  },
+  {
+   "id": "power_amp",
+   "label": "Power",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "Pw"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "LEGACY no-op: the legacy modeller's power-amp amount"
+  },
+  {
+   "id": "sag",
+   "label": "Sag",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Sg"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "LEGACY no-op: sag emerges from the rectifier, the 50 uF reservoir, the choke and the two 33k droppers"
+  },
+  {
+   "id": "response",
+   "label": "Response",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "Rsp"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "LEGACY no-op: legacy modeller control"
+  },
+  {
+   "id": "bias",
+   "label": "Bias",
+   "kind": "continuous",
+   "default": 1.0,
+   "params": [
+    "Bi"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "LEGACY no-op: the OR120's bias is a fixed network set with a screwdriver (the 1974 sheet prints 'ADJUST BIAS 33.3-37.3 VDC'); N.B sits at -37 V"
+  },
+  {
+   "id": "variac",
+   "label": "VAC",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Var"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "LEGACY no-op: no variac on the amp and no mains scale control on the circuit"
+  },
+  {
+   "id": "stereo",
+   "label": "Stereo",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "CASSt"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "LEGACY no-op: mono amp"
+  },
+  {
+   "id": "onoff",
+   "label": "On/Off",
+   "kind": "continuous",
+   "default": 1.0,
+   "params": [
+    "Pwr"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "LEGACY no-op: power switch (the 70s models have no standby)"
+  }
+ ],
+ "models": {
+  "1N4005": {
+   "kind": "diode",
+   "is": 1e-08,
+   "n": 1.8,
+   "rs": 0.02,
+   "note": "1 A / 600 V silicon rectifier, datasheet-class card (forward drop 0.8-1.0 V at these currents); the drawing prints the type only"
+  }
+ },
+ "parts": [
+  {
+   "ref": "VHA",
+   "type": "V",
+   "nodes": [
+    "ha",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "551",
+    "freq": 50,
+    "phase": 90
+   },
+   "label": "HT secondary, equivalent half (390 V RMS)",
+   "note": "power sheet OR120_72power.jpg: the winding voltage is not printed anywhere (220/240/200/115 V primary taps at (310,215) only). FITTED to 390 V RMS (551 V peak) so the HT with the output valves removed is 545 V, an owner's measurement on a late-1971/early-1972 fixed-bias OR120 (forum.orangeamps.com t=43647: 'Both sides of the OT are 545V', no output tubes); at idle the plates then sit at 518 V (time average), the forum's '~510 V loaded'; bridge with no centre tap modelled as two anti-phase ground-referenced half-windings, the library convention (marshall-1959rr-91000, hiwatt-dr103). 50 Hz: 240 V 50 Hz British mains tap."
+  },
+  {
+   "ref": "VHB",
+   "type": "V",
+   "nodes": [
+    "hb",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "551",
+    "freq": 50,
+    "phase": 270
+   },
+   "label": "HT secondary, equivalent half (anti-phase)",
+   "note": "see VHA"
+  },
+  {
+   "ref": "RPTA",
+   "type": "R",
+   "nodes": [
+    "ha",
+    "hra"
+   ],
+   "value": "20",
+   "label": "HT half-winding DCR + reflected primary",
+   "note": "power sheet OR120_72power.jpg: not printed; 20 ohm per leg (typical 120 W PT)"
+  },
+  {
+   "ref": "RPTB",
+   "type": "R",
+   "nodes": [
+    "hb",
+    "hrb"
+   ],
+   "value": "20",
+   "label": "HT half-winding DCR",
+   "note": "see RPTA"
+  },
+  {
+   "ref": "D1A",
+   "type": "D",
+   "nodes": [
+    "hra",
+    "raw2"
+   ],
+   "model": "1N4005",
+   "label": "Bridge leg A, first diode",
+   "note": "power sheet OR120_72power.jpg: '8 X 1N4005' drawn in a diamond at (740..980 x 330..600) - two in series per leg; this is the outer diode of leg A"
+  },
+  {
+   "ref": "D1B",
+   "type": "D",
+   "nodes": [
+    "raw2",
+    "raw"
+   ],
+   "model": "1N4005",
+   "label": "Bridge leg A, second diode",
+   "note": "inner diode of leg A (two in series as drawn)"
+  },
+  {
+   "ref": "D2A",
+   "type": "D",
+   "nodes": [
+    "hrb",
+    "raw2b"
+   ],
+   "model": "1N4005",
+   "label": "Bridge leg B, first diode",
+   "note": "outer diode of leg B"
+  },
+  {
+   "ref": "D2B",
+   "type": "D",
+   "nodes": [
+    "raw2b",
+    "raw"
+   ],
+   "model": "1N4005",
+   "label": "Bridge leg B, second diode",
+   "note": "inner diode of leg B"
+  },
+  {
+   "ref": "RFUSE",
+   "type": "R",
+   "nodes": [
+    "raw",
+    "a"
+   ],
+   "value": "0.1",
+   "label": "HT fuse 1 A",
+   "note": "power sheet OR120_72power.jpg: fuse '1.A.' box (1560..1830 x 245..280) between the bridge and the reservoir; 0.1 ohm (a fuse is a wire here)"
+  },
+  {
+   "ref": "CRESA",
+   "type": "C",
+   "nodes": [
+    "a",
+    "bm1"
+   ],
+   "value": "100u",
+   "label": "Reservoir 100u/450V (upper)",
+   "note": "power sheet OR120_72power.jpg: cap (1180..1260 x 340..380), '100 u 450 V' at (1240,300)"
+  },
+  {
+   "ref": "CRESB",
+   "type": "C",
+   "nodes": [
+    "bm1",
+    "0"
+   ],
+   "value": "100u",
+   "label": "Reservoir 100u/450V (lower)",
+   "note": "power sheet OR120_72power.jpg: cap (1180..1260 x 450..490), '100 u 450 V' at (1240,420)"
+  },
+  {
+   "ref": "RBA",
+   "type": "R",
+   "nodes": [
+    "a",
+    "bm1"
+   ],
+   "value": "100k",
+   "label": "Reservoir balance 100k 2W (upper)",
+   "note": "power sheet OR120_72power.jpg: '100 K 2W' (1350..1410 x 340..420)"
+  },
+  {
+   "ref": "RBB",
+   "type": "R",
+   "nodes": [
+    "bm1",
+    "0"
+   ],
+   "value": "100k",
+   "label": "Reservoir balance 100k 2W (lower)",
+   "note": "power sheet OR120_72power.jpg: '100 K 2W' (1350..1410 x 440..520)"
+  },
+  {
+   "ref": "LCH",
+   "type": "L",
+   "nodes": [
+    "a",
+    "chx"
+   ],
+   "value": "10",
+   "label": "HT choke L1",
+   "note": "power sheet OR120_72power.jpg: 'CHOKE' (1450..1560 x 120..160); value NOT printed - 10 H fitted so the screen rail sits ~35 V under the plate rail at idle"
+  },
+  {
+   "ref": "RCH",
+   "type": "R",
+   "nodes": [
+    "chx",
+    "ch"
+   ],
+   "value": "150",
+   "label": "HT choke DCR",
+   "note": "power sheet OR120_72power.jpg: not printed; 150 ohm (typical 10 H 120 W choke)"
+  },
+  {
+   "ref": "CSRA",
+   "type": "C",
+   "nodes": [
+    "ch",
+    "bm2"
+   ],
+   "value": "32u",
+   "label": "Screen node B, 32u/450V (upper)",
+   "note": "power sheet OR120_72power.jpg: '32 u 450 V' x2 at (1290..1360 x 180..290)"
+  },
+  {
+   "ref": "CSRB",
+   "type": "C",
+   "nodes": [
+    "bm2",
+    "0"
+   ],
+   "value": "32u",
+   "label": "Screen node B, 32u/450V (lower)",
+   "note": "see CSRA"
+  },
+  {
+   "ref": "RSBA",
+   "type": "R",
+   "nodes": [
+    "ch",
+    "bm2"
+   ],
+   "value": "100k",
+   "label": "Screen node balance 100k 2W (upper)",
+   "note": "power sheet OR120_72power.jpg: '100 K 2W' at the B node, one per series cap"
+  },
+  {
+   "ref": "RSBB",
+   "type": "R",
+   "nodes": [
+    "bm2",
+    "0"
+   ],
+   "value": "100k",
+   "label": "Screen node balance 100k 2W (lower)",
+   "note": "see RSBA"
+  },
+  {
+   "ref": "RBC",
+   "type": "R",
+   "nodes": [
+    "ch",
+    "c"
+   ],
+   "value": "33k",
+   "label": "B -> C dropper 33k 2W",
+   "note": "power sheet OR120_72power.jpg: '2W 33K' (1500..1580 x 140..180)"
+  },
+  {
+   "ref": "CCC",
+   "type": "C",
+   "nodes": [
+    "c",
+    "0"
+   ],
+   "value": "16u",
+   "label": "C rail 16u/450V",
+   "note": "power sheet OR120_72power.jpg: '16 u 450 V' at (1640..1700 x 190..250)"
+  },
+  {
+   "ref": "RCD",
+   "type": "R",
+   "nodes": [
+    "c",
+    "d"
+   ],
+   "value": "33k",
+   "label": "C -> D dropper 33k 2W",
+   "note": "power sheet OR120_72power.jpg: '2W 33K' (1700..1790 x 140..180)"
+  },
+  {
+   "ref": "CDD",
+   "type": "C",
+   "nodes": [
+    "d",
+    "0"
+   ],
+   "value": "16u",
+   "label": "D rail 16u/450V",
+   "note": "power sheet OR120_72power.jpg: '16 u 450 V' at (1840..1900 x 170..230)"
+  },
+  {
+   "ref": "VBIAS",
+   "type": "V",
+   "nodes": [
+    "nbr",
+    "0"
+   ],
+   "value": "-49",
+   "label": "Bias reservoir (ideal source, library convention)",
+   "note": "power sheet OR120_72power.jpg: the 1972 bias is its own centre-tapped winding (620..700 x 700..800, no voltage printed) -> two 1N4005 (full wave, CT to the return rail) -> first 22u/63V (stem x=972) -> 1k -> second 22u/63V + 22k bleeder -> N.B. Jacobs's page gives the winding as 72 V, i.e. 36-0-36 V for this two-diode CT rectifier: 36 V RMS = 51 V peak, about -50 V at the first reservoir less the diode drop and the 22k+1k load. Set to -49 V so N.B = -49 x 22k/23k = -46.9 V, the grid voltage an owner measured on a late-1971/early-1972 fixed-bias OR120 (forum.orangeamps.com t=43647: '-46.9v' after the 220k grid leaks, no bias pot); a later OR120 measured -46 V (t=7331). Modelled as an ideal source at the first reservoir (a negative-peak rectifier is uncharged at the crest operating point the SPICE gate uses). Idle with this bias: 39.9 mA, 20.6 W per EL34 (card). The 1974 Musonic sheet's 'ADJUST BIAS TO -37VDC' belongs to its adjustable 100k-pot network at A = 480 V / B = 470 V and is not this circuit. Hickmott's added ground on the bias return is used (his own comment on the sheet)"
+  },
+  {
+   "ref": "CB1",
+   "type": "C",
+   "nodes": [
+    "nbr",
+    "0"
+   ],
+   "value": "22u",
+   "label": "Bias reservoir 22u/63V (first, diode side of the 1k)",
+   "note": "power sheet OR120_72power.jpg: '22 u 63 V' plates (943..1001 x 940..994), stem x=972 from the return rail (y=845) to the negative rail (y=1110) on the diode side of the 1k"
+  },
+  {
+   "ref": "RB1",
+   "type": "R",
+   "nodes": [
+    "nbr",
+    "nbias"
+   ],
+   "value": "1k",
+   "label": "Bias series 1k",
+   "note": "power sheet OR120_72power.jpg: '1 k' box (1035..1130 x 1091..1127) in the negative rail y=1110, between the first 22u (x=972) and the second (x=1195): a C-R-C filter"
+  },
+  {
+   "ref": "CB2",
+   "type": "C",
+   "nodes": [
+    "nbias",
+    "0"
+   ],
+   "value": "22u",
+   "label": "Bias filter 22u/63V (second, N.B side of the 1k)",
+   "note": "power sheet OR120_72power.jpg: '22 u 63 V' plates (1166..1234 x 940..994), stem x=1195 on the N.B side of the 1k"
+  },
+  {
+   "ref": "RB2",
+   "type": "R",
+   "nodes": [
+    "nbias",
+    "0"
+   ],
+   "value": "22k",
+   "label": "Bias bleeder 22k (on N.B)",
+   "note": "power sheet OR120_72power.jpg: '22 K' box (1376..1411 x 920..1029), stem x=1394 from the return rail to the N.B side of the 1k; N.B circle at (1580..1650 x 1076..1143)"
+  },
+  {
+   "ref": "RIN1",
+   "type": "R",
+   "nodes": [
+    "in",
+    "g1a"
+   ],
+   "value": "68k",
+   "label": "Input 1 grid stopper",
+   "note": "preamp sheet OR120_72preamp.jpg: 68k box (440..538 x 607..643) in the wire y=625; jack 1 contacts (156..178 x 626..680)"
+  },
+  {
+   "ref": "RIN2",
+   "type": "R",
+   "nodes": [
+    "g1a",
+    "0"
+   ],
+   "value": "68k",
+   "label": "Input 2 grid stopper (its jack empty: tip grounded by its shunt)",
+   "note": "preamp sheet OR120_72preamp.jpg: second 68k box (440..540 x 770..820) in the wire y=795 to the same grid node; both jacks' shunt contacts are tied together (wire 201..352 x 681, then 349..352 x 681..779) and grounded, so an empty jack's tip sits on ground. Input 2 is identical to input 1: no bright channel"
+  },
+  {
+   "ref": "RG1A",
+   "type": "R",
+   "nodes": [
+    "g1a",
+    "0"
+   ],
+   "value": "1M",
+   "label": "V1A grid leak",
+   "note": "preamp sheet OR120_72preamp.jpg: 1M box (567..599 x 835..940)"
+  },
+  {
+   "ref": "V1A",
+   "type": "triode",
+   "nodes": [
+    "p1a",
+    "g1a",
+    "k1a"
+   ],
+   "model": "12AX7",
+   "label": "V1A first stage",
+   "note": "preamp sheet OR120_72preamp.jpg: first triode at (670,620), '1/2 ECC 83'"
+  },
+  {
+   "ref": "RL1A",
+   "type": "R",
+   "nodes": [
+    "d",
+    "p1a"
+   ],
+   "value": "220k",
+   "label": "V1A plate load",
+   "note": "preamp sheet OR120_72preamp.jpg: 220k box (655..689 x 259..357) to the D rail (wire y=228)"
+  },
+  {
+   "ref": "RK1A",
+   "type": "R",
+   "nodes": [
+    "k1a",
+    "0"
+   ],
+   "value": "2k2",
+   "label": "V1A cathode",
+   "note": "preamp sheet OR120_72preamp.jpg: 2k2 box (692..728 x 835..940)"
+  },
+  {
+   "ref": "CK1A",
+   "type": "C",
+   "nodes": [
+    "k1a",
+    "0"
+   ],
+   "value": "50u",
+   "label": "V1A cathode bypass",
+   "note": "preamp sheet OR120_72preamp.jpg: 50u at (740..800 x 858..905), '+' at (761,859)"
+  },
+  {
+   "ref": "CC1",
+   "type": "C",
+   "nodes": [
+    "p1a",
+    "sin"
+   ],
+   "value": "68n",
+   "label": "V1A -> tone stack coupler",
+   "note": "preamp sheet OR120_72preamp.jpg: 68n plates (730..752 x 383..437) in the wire y=410"
+  },
+  {
+   "ref": "RTS1",
+   "type": "R",
+   "nodes": [
+    "sin",
+    "b1"
+   ],
+   "value": "100k",
+   "label": "Stack input resistor",
+   "note": "preamp sheet OR120_72preamp.jpg: 100k box (857..891 x 472..571)"
+  },
+  {
+   "ref": "BASS",
+   "type": "pot",
+   "nodes": [
+    "b2",
+    "bw",
+    "b1"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "bass",
+   "label": "BASS (VC1 1M log)",
+   "note": "preamp sheet OR120_72preamp.jpg: box (857..891 x 654..752), wiper circle (905,735); ccw lug = the 22k end (b2), cw lug = the 100k end (b1). Direction measured in the notes."
+  },
+  {
+   "ref": "CBS1",
+   "type": "C",
+   "nodes": [
+    "b1",
+    "bx"
+   ],
+   "value": "2n2",
+   "label": "Bass top cap",
+   "note": "preamp sheet OR120_72preamp.jpg: 2n2 plates (933..955 x 587..641) in the wire y=611"
+  },
+  {
+   "ref": "CBS2",
+   "type": "C",
+   "nodes": [
+    "bx",
+    "b2"
+   ],
+   "value": "22n",
+   "label": "Bass bottom cap",
+   "note": "preamp sheet OR120_72preamp.jpg: 22n plates (933..955 x 767..822) in the wire y=795; the 2n2 and 22n are in series across the bass pot's track (their junction is the x=1018 vertical)"
+  },
+  {
+   "ref": "RBS",
+   "type": "R",
+   "nodes": [
+    "b2",
+    "0"
+   ],
+   "value": "22k",
+   "label": "Bass bottom resistor",
+   "note": "preamp sheet OR120_72preamp.jpg: 22k box (857..891 x 838..937) to ground (y=1000)"
+  },
+  {
+   "ref": "RBT",
+   "type": "R",
+   "nodes": [
+    "bw",
+    "tw"
+   ],
+   "value": "100k",
+   "label": "Bass wiper -> treble wiper",
+   "note": "preamp sheet OR120_72preamp.jpg: 100k box (1060..1158 x 722..758) in the wire y=740"
+  },
+  {
+   "ref": "CT1",
+   "type": "C",
+   "nodes": [
+    "sin",
+    "tt"
+   ],
+   "value": "1n5",
+   "label": "Treble top cap",
+   "note": "preamp sheet OR120_72preamp.jpg: 1n5 plates (1230..1284 x 505..528) in the wire x=1255 from the stack input"
+  },
+  {
+   "ref": "TREB",
+   "type": "pot",
+   "nodes": [
+    "tb",
+    "tw",
+    "tt"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "treble",
+   "label": "TREBLE (VC2 1M log)",
+   "note": "preamp sheet OR120_72preamp.jpg: box (1239..1273 x 654..752), wiper circle (1199,738); cw lug = the 1n5 end (tt), ccw lug = the 10n end (tb)"
+  },
+  {
+   "ref": "CT2",
+   "type": "C",
+   "nodes": [
+    "tb",
+    "0"
+   ],
+   "value": "10n",
+   "label": "Treble bottom cap",
+   "note": "preamp sheet OR120_72preamp.jpg: 10n plates (1230..1284 x 881..904) in the wire x=1255 to ground"
+  },
+  {
+   "ref": "CBR",
+   "type": "C",
+   "nodes": [
+    "tw",
+    "gw"
+   ],
+   "value": "330p",
+   "label": "Bright cap across the gain pot's top half",
+   "note": "preamp sheet OR120_72preamp.jpg: 330p plates (1399..1421 x 598..652) in the wire y=625, between the gain pot's top lead (x=1382) and its wiper (x=1437); the treble wiper node (`tw`) is that same wire up to x=1382, so the gain top lug is `tw`"
+  },
+  {
+   "ref": "GAIN",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "gw",
+    "tw"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "gain",
+   "label": "GAIN (VC3 'VOLUME', 1M log)",
+   "note": "preamp sheet OR120_72preamp.jpg: track box (1364..1398 x 837..936), wiper circle (1437,847) on the wire y=625 to V1B's grid; top lug (x=1382) is the treble wiper node tw (same wire); bottom to ground (x=1382, y 932..1003)"
+  },
+  {
+   "ref": "RL1B",
+   "type": "R",
+   "nodes": [
+    "d",
+    "p1b"
+   ],
+   "value": "220k",
+   "label": "V1B plate load",
+   "note": "preamp sheet OR120_72preamp.jpg: 220k box (1525..1559 x 259..357) to the D rail"
+  },
+  {
+   "ref": "V1B",
+   "type": "triode",
+   "nodes": [
+    "p1b",
+    "gw",
+    "k1b"
+   ],
+   "model": "12AX7",
+   "label": "V1B second stage",
+   "note": "preamp sheet OR120_72preamp.jpg: second triode at (1542,620); its grid is the GAIN wiper (wire y=625 from x=1411 to the grid)"
+  },
+  {
+   "ref": "RK1B",
+   "type": "R",
+   "nodes": [
+    "k1b",
+    "0"
+   ],
+   "value": "2k2",
+   "label": "V1B cathode",
+   "note": "preamp sheet OR120_72preamp.jpg: 2k2 box (1561..1596 x 838..936)"
+  },
+  {
+   "ref": "CK1B",
+   "type": "C",
+   "nodes": [
+    "k1b",
+    "0"
+   ],
+   "value": "50u",
+   "label": "V1B cathode bypass",
+   "note": "preamp sheet OR120_72preamp.jpg: 50u plates (1632..1676 x 880..905), '+' at (1611,860); the 1972 has NO 15k here (the 1973 adds R18 15k in parallel)"
+  },
+  {
+   "ref": "CC3",
+   "type": "C",
+   "nodes": [
+    "p1b",
+    "fac1"
+   ],
+   "value": "68n",
+   "label": "V1B -> FAC coupler",
+   "note": "preamp sheet OR120_72preamp.jpg: 68n plates (1603..1624 x 383..438) in the wire y=410; the wire runs right to the FAC's first stud at (1757,400)"
+  },
+  {
+   "ref": "CF1",
+   "type": "C",
+   "nodes": [
+    "fac1",
+    "fac2"
+   ],
+   "value": "4n7",
+   "label": "FAC stud 1-2 cap",
+   "note": "preamp sheet OR120_72preamp.jpg: first '4n7' plates (1818..1841 x 348..403), label at (1860,320)"
+  },
+  {
+   "ref": "CF2",
+   "type": "C",
+   "nodes": [
+    "fac2",
+    "fac3"
+   ],
+   "value": "4n7",
+   "label": "FAC stud 2-3 cap",
+   "note": "preamp sheet OR120_72preamp.jpg: second '4n7' plates (1863..1900 x 400..443), label at (1971,432)"
+  },
+  {
+   "ref": "CF3",
+   "type": "C",
+   "nodes": [
+    "fac3",
+    "fac4"
+   ],
+   "value": "2n2",
+   "label": "FAC stud 3-4 cap",
+   "note": "preamp sheet OR120_72preamp.jpg: '2n2' plates (1957..1999 x 532..551), label at (2005,545)"
+  },
+  {
+   "ref": "CF4",
+   "type": "C",
+   "nodes": [
+    "fac4",
+    "fac5"
+   ],
+   "value": "1n",
+   "label": "FAC stud 4-5 cap",
+   "note": "preamp sheet OR120_72preamp.jpg: '1n' plates (1957..1999 x 645..664), label at (2005,650)"
+  },
+  {
+   "ref": "CF5",
+   "type": "C",
+   "nodes": [
+    "fac5",
+    "fac6"
+   ],
+   "value": "330p",
+   "label": "FAC stud 5-6 cap",
+   "note": "preamp sheet OR120_72preamp.jpg: '330p' plates (1930..1975 x 745..780), label at (2005,760)"
+  },
+  {
+   "ref": "SWF1",
+   "type": "switch",
+   "nodes": [
+    "faco",
+    "fac1"
+   ],
+   "control": "fac",
+   "positions": [
+    0
+   ],
+   "label": "FAC rotor -> stud 1",
+   "note": "direct (no cap): f; S1 draws the rotor pivot at (1768,593) and the studs on the arc x 1757..1900; S3's parts list calls SW2 a '2 pole 6 way FAC switch'"
+  },
+  {
+   "ref": "SWF2",
+   "type": "switch",
+   "nodes": [
+    "faco",
+    "fac2"
+   ],
+   "control": "fac",
+   "positions": [
+    1
+   ],
+   "label": "FAC rotor -> stud 2",
+   "note": "1 cap(s) in series from Sin: f; S1 draws the rotor pivot at (1768,593) and the studs on the arc x 1757..1900; S3's parts list calls SW2 a '2 pole 6 way FAC switch'"
+  },
+  {
+   "ref": "SWF3",
+   "type": "switch",
+   "nodes": [
+    "faco",
+    "fac3"
+   ],
+   "control": "fac",
+   "positions": [
+    2
+   ],
+   "label": "FAC rotor -> stud 3",
+   "note": "2 cap(s) in series from Sin: f; S1 draws the rotor pivot at (1768,593) and the studs on the arc x 1757..1900; S3's parts list calls SW2 a '2 pole 6 way FAC switch'"
+  },
+  {
+   "ref": "SWF4",
+   "type": "switch",
+   "nodes": [
+    "faco",
+    "fac4"
+   ],
+   "control": "fac",
+   "positions": [
+    3
+   ],
+   "label": "FAC rotor -> stud 4",
+   "note": "3 cap(s) in series from Sin: f; S1 draws the rotor pivot at (1768,593) and the studs on the arc x 1757..1900; S3's parts list calls SW2 a '2 pole 6 way FAC switch'"
+  },
+  {
+   "ref": "SWF5",
+   "type": "switch",
+   "nodes": [
+    "faco",
+    "fac5"
+   ],
+   "control": "fac",
+   "positions": [
+    4
+   ],
+   "label": "FAC rotor -> stud 5",
+   "note": "4 cap(s) in series from Sin: f; S1 draws the rotor pivot at (1768,593) and the studs on the arc x 1757..1900; S3's parts list calls SW2 a '2 pole 6 way FAC switch'"
+  },
+  {
+   "ref": "SWF6",
+   "type": "switch",
+   "nodes": [
+    "faco",
+    "fac6"
+   ],
+   "control": "fac",
+   "positions": [
+    5
+   ],
+   "label": "FAC rotor -> stud 6",
+   "note": "5 cap(s) in series from Sin: f; S1 draws the rotor pivot at (1768,593) and the studs on the arc x 1757..1900; S3's parts list calls SW2 a '2 pole 6 way FAC switch'"
+  },
+  {
+   "ref": "RPA",
+   "type": "R",
+   "nodes": [
+    "faco",
+    "g2a"
+   ],
+   "value": "100k",
+   "label": "FAC out -> V2A grid (the sheet's 'PREAMP' 100k)",
+   "note": "output sheet OR120_72output.jpg: 100k box (462..560 x 751..786) in the wire y=768; the 'PREAMP' arrow at (220,760) is the FAC output arriving from the preamp sheet"
+  },
+  {
+   "ref": "RRET",
+   "type": "R",
+   "nodes": [
+    "loopj",
+    "g2a"
+   ],
+   "value": "100k",
+   "label": "RETURN jack -> V2A grid",
+   "note": "output sheet OR120_72output.jpg: 100k box (462..560 x 475..511) in the wire y=493; the 'RETURN' jack contacts are (235..257 x 494..549)"
+  },
+  {
+   "ref": "RSEND",
+   "type": "R",
+   "nodes": [
+    "faco",
+    "loopj"
+   ],
+   "value": "100k",
+   "label": "SEND tap (the FAC node through 100k to the SEND jack)",
+   "note": "output sheet OR120_72output.jpg: 100k box (413..448 x 639..737) from the SEND jack tip wire (y=617) down to the PREAMP wire (y=768). The two jacks' shunt contacts are tied (x=386, y 549..679) and NOT grounded: with nothing in the loop each tip rests on its shunt, so the loop is closed through the two 100k - the state modelled here"
+  },
+  {
+   "ref": "RG2A",
+   "type": "R",
+   "nodes": [
+    "g2a",
+    "0"
+   ],
+   "value": "220k",
+   "label": "V2A grid leak",
+   "note": "output sheet OR120_72output.jpg: 220k box (575..610 x 1163..1262) on the x=593 bus to the ground bus y=1325; the bus T's into the grid wire at (593,768) - see notes, this is a junction (V2A's grid has no other DC path)"
+  },
+  {
+   "ref": "RL2A",
+   "type": "R",
+   "nodes": [
+    "c",
+    "p2a"
+   ],
+   "value": "100k",
+   "label": "V2A plate load",
+   "note": "output sheet OR120_72output.jpg: 100k box (692..727 x 300..398) to the C rail wire y=240"
+  },
+  {
+   "ref": "C1N",
+   "type": "C",
+   "nodes": [
+    "c",
+    "p2a"
+   ],
+   "value": "1n",
+   "label": "1n across the V2A plate load",
+   "note": "output sheet OR120_72output.jpg: 1n plates (788..842 x 374..394); its top lead is the C rail's stem (x=815 from the rail y=240) and its bottom lead T's into the plate wire at (708,462)"
+  },
+  {
+   "ref": "V2A",
+   "type": "triode",
+   "nodes": [
+    "p2a",
+    "g2a",
+    "k2a"
+   ],
+   "model": "12AX7",
+   "label": "V2A driver (unbypassed cathode)",
+   "note": "output sheet OR120_72output.jpg: triode at (700,760)"
+  },
+  {
+   "ref": "RK2A",
+   "type": "R",
+   "nodes": [
+    "k2a",
+    "0"
+   ],
+   "value": "1k5",
+   "label": "V2A cathode",
+   "note": "output sheet OR120_72output.jpg: 1k5 box (656..690 x 1163..1262) to the ground bus y=1325"
+  },
+  {
+   "ref": "RNFB",
+   "type": "R",
+   "nodes": [
+    "spk",
+    "k2a"
+   ],
+   "value": "15k",
+   "label": "Global feedback 15k from the 16 ohm tap",
+   "note": "output sheet OR120_72output.jpg: 15k box (460..750 x 1004..1032) in the wire y=1018 from the 'F.B' circle (300,1020) to V2A's cathode line (x=675); 'F.B' is the circle (1978,292) on the 16 ohm secondary wire y=345"
+  },
+  {
+   "ref": "BOOST",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "bow",
+    "k2a"
+   ],
+   "value": "1k",
+   "taper": "B",
+   "control": "hfdrive",
+   "label": "H.F. DRIVE (VC4 '1k Lin BOOST')",
+   "note": "output sheet OR120_72output.jpg: track box (722..756 x 1007..1105), wiper circle (790,1095); top lug = the cathode (wire y=972, x 672..741), bottom lug = ground (x=739, y 1101..1327); the drawing does not number the lugs, so they are wired for the panel's clockwise = more H.F. (measured range in the notes). The 1973 parts list names VC4 '1k ohm Lin BOOST'; it is the only pot left on the drawing, i.e. the panel's H.F. DRIVE"
+  },
+  {
+   "ref": "LBOOST",
+   "type": "L",
+   "nodes": [
+    "bow",
+    "lb2"
+   ],
+   "value": "2m",
+   "label": "Boost choke 2 mH",
+   "note": "output sheet OR120_72output.jpg: coil (786..814 x 1114..1204), '2 mH CHOKE'; 1972-only (Jacobs #5, absent from the 1973 drawing)"
+  },
+  {
+   "ref": "CBOOST",
+   "type": "C",
+   "nodes": [
+    "lb2",
+    "0"
+   ],
+   "value": "470n",
+   "label": "Boost cap 0.47u",
+   "note": "output sheet OR120_72output.jpg: plates (774..827 x 1239..1257), '.47u' at (860,1290); series resonance with the 2 mH choke = 5.2 kHz"
+  },
+  {
+   "ref": "CC4",
+   "type": "C",
+   "nodes": [
+    "p2a",
+    "g2b"
+   ],
+   "value": "68n",
+   "label": "V2A plate -> V2B grid",
+   "note": "output sheet OR120_72output.jpg: 68n plates (752..774 x 572..627) in the wire y=597"
+  },
+  {
+   "ref": "RL2B",
+   "type": "R",
+   "nodes": [
+    "c",
+    "p2b"
+   ],
+   "value": "100k",
+   "label": "V2B plate load",
+   "note": "output sheet OR120_72output.jpg: 100k box (898..933 x 300..398) to the C rail"
+  },
+  {
+   "ref": "V2B",
+   "type": "triode",
+   "nodes": [
+    "p2b",
+    "g2b",
+    "k2b"
+   ],
+   "model": "12AX7",
+   "label": "V2B cathodyne",
+   "note": "output sheet OR120_72output.jpg: triode at (915,600)"
+  },
+  {
+   "ref": "RG2B",
+   "type": "R",
+   "nodes": [
+    "g2b",
+    "kk"
+   ],
+   "value": "1M",
+   "label": "V2B grid leak to node K",
+   "note": "output sheet OR120_72output.jpg: 1M box (799..830 x 805..894): top on the grid wire (x=815, y 597..809), bottom T's into node K at (884,972) - NOT to ground and not to the cathode directly. This is the 1972 cathodyne bias (Jacobs #4)"
+  },
+  {
+   "ref": "RK2B",
+   "type": "R",
+   "nodes": [
+    "k2b",
+    "kk"
+   ],
+   "value": "1k5",
+   "label": "V2B cathode -> node K",
+   "note": "output sheet OR120_72output.jpg: 1k5 box (864..896 x 805..894) between the cathode (x=879, y 631..809) and K"
+  },
+  {
+   "ref": "RK2C",
+   "type": "R",
+   "nodes": [
+    "kk",
+    "0"
+   ],
+   "value": "100k",
+   "label": "Cathodyne cathode load 100k",
+   "note": "output sheet OR120_72output.jpg: 100k box (865..899 x 1163..1262) from K to the ground bus; with RK2B the cathode AC load is 1k5+100k||1M, balancing the 100k plate load"
+  },
+  {
+   "ref": "CCP",
+   "type": "C",
+   "nodes": [
+    "p2b",
+    "na"
+   ],
+   "value": "68n",
+   "label": "Cathodyne plate output coupler",
+   "note": "output sheet OR120_72output.jpg: 68n plates (966..988 x 437..491) in the wire y=462; node A is the x=1041 vertical (y 373..643)"
+  },
+  {
+   "ref": "CCK",
+   "type": "C",
+   "nodes": [
+    "kk",
+    "nc"
+   ],
+   "value": "68n",
+   "label": "Cathodyne cathode output coupler",
+   "note": "output sheet OR120_72output.jpg: 68n plates (948..970 x 995..1049) in the wire y=1023; node C is the x=1044 vertical (y 933..1049)"
+  },
+  {
+   "ref": "RGL3",
+   "type": "R",
+   "nodes": [
+    "na",
+    "nbias"
+   ],
+   "value": "220k",
+   "label": "Output pair A grid leak to N.B",
+   "note": "output sheet OR120_72output.jpg: 220k box (1026..1057 x 639..728): node A -> N.B (circle 1088..1141 x 740..793)"
+  },
+  {
+   "ref": "RGL4",
+   "type": "R",
+   "nodes": [
+    "nc",
+    "nbias"
+   ],
+   "value": "220k",
+   "label": "Output pair C grid leak to N.B",
+   "note": "output sheet OR120_72output.jpg: 220k box (1026..1057 x 805..894): N.B -> node C"
+  },
+  {
+   "ref": "RS34",
+   "type": "R",
+   "nodes": [
+    "na",
+    "ga34"
+   ],
+   "value": "1k2",
+   "label": "Grid stoppers for the two phase-A EL34 (2 x 2k4 in parallel, folded)",
+   "note": "output sheet OR120_72output.jpg: two 2k4 boxes (1106..1203 x 357..392) and (1106..1203 x 581..616), each from node A to its own tube's pin 5; folded with the tubes, so 2k4||2k4"
+  },
+  {
+   "ref": "RS56",
+   "type": "R",
+   "nodes": [
+    "nc",
+    "ga56"
+   ],
+   "value": "1k2",
+   "label": "Grid stoppers for the two phase-B EL34 (2 x 2k4 in parallel, folded)",
+   "note": "output sheet OR120_72output.jpg: two 2k4 boxes (1106..1203 x 917..952) and (1106..1203 x 1141..1176) from node C"
+  },
+  {
+   "ref": "V34",
+   "type": "pentode",
+   "nodes": [
+    "pa",
+    "sa",
+    "ga34",
+    "0"
+   ],
+   "model": "EL34",
+   "parallel": 2,
+   "label": "V3 + V4 EL34, phase A (folded)",
+   "note": "output sheet OR120_72output.jpg: tubes 1 and 2 (y 180..311, 405..536); their plates join at x=1665 and go to the OT's top lead (y=345); cathodes (pin 8, tied to pin 1) on the grounded x=1248 bus. Folded: identical tubes, stoppers halved (see RS34) and screen resistors halved"
+  },
+  {
+   "ref": "V56",
+   "type": "pentode",
+   "nodes": [
+    "pb",
+    "sb",
+    "ga56",
+    "0"
+   ],
+   "model": "EL34",
+   "parallel": 2,
+   "label": "V5 + V6 EL34, phase B (folded)",
+   "note": "output sheet OR120_72output.jpg: tubes 3 and 4 (y 740..871, 965..1096); plates join at x=1660 to the OT's bottom lead (y=994)"
+  },
+  {
+   "ref": "RSCA",
+   "type": "R",
+   "nodes": [
+    "sa",
+    "ch"
+   ],
+   "value": "500",
+   "label": "Screen stoppers phase A (2 x 1k in parallel, folded)",
+   "note": "output sheet OR120_72output.jpg: 1k boxes (1430..1560 x 373..377) and (x 593..603) from each pin 4 to the B+ screen bus x=1625"
+  },
+  {
+   "ref": "RSCB",
+   "type": "R",
+   "nodes": [
+    "sb",
+    "ch"
+   ],
+   "value": "500",
+   "label": "Screen stoppers phase B (2 x 1k in parallel, folded)",
+   "note": "output sheet OR120_72output.jpg: 1k boxes (x 930..940) and (x 1155..1165)"
+  },
+  {
+   "ref": "OT",
+   "type": "transformer",
+   "nodes": [
+    "pa",
+    "a",
+    "a",
+    "pb",
+    "0",
+    "t4",
+    "t4",
+    "t8",
+    "t8",
+    "spk"
+   ],
+   "turns": [
+    1,
+    1,
+    0.1715,
+    0.071,
+    0.1005
+   ],
+   "r": [
+    18,
+    18,
+    0.2,
+    0.1,
+    0.2
+   ],
+   "leak": [
+    "2.5m",
+    "2.5m",
+    0,
+    0,
+    0
+   ],
+   "lm": 100,
+   "lsat": 6,
+   "label": "Output transformer, 16/8/4 ohm",
+   "note": "output sheet OR120_72output.jpg: A+ centre tap (1713,668) on the reservoir node a; primary halves to the plates; secondary wound 0 -> 4 ohm (t4, y=649) -> 8 ohm (t8, y=495) -> 16 ohm (spk, y=345), phased so the 15k feedback is negative (the sheet prints no dot convention; with the primaries as drawn the opposite secondary phase closes a REGENERATIVE loop, measured: |loop gain| 1.7 at 1 kHz and a 37 Hz limit cycle); the impedance selector's blade is drawn on the 16 ohm stud (2047,610) so only 16 is loaded. Secondary as three series windings, 0.343 total (16 ohm tap), 4 and 8 ohm at sqrt(Z/16) of it; with the driven-test ratio that is Raa 1.75 k ohm, the same-era 4xEL34 figure as hiwatt-dr103. Fitted: no OT data is printed. unverified: the sheet prints no OT data - Raa 1.75k, DCR, leak, lm, lsat taken from the same-era 4xEL34 library figure (hiwatt-dr103)"
+  },
+  {
+   "ref": "CWA",
+   "type": "C",
+   "nodes": [
+    "pa",
+    "cwa"
+   ],
+   "value": "470p",
+   "label": "OT winding capacitance, plate end A",
+   "note": "output sheet OR120_72output.jpg: not drawn (the sheet gives no OT data); the library convention for a push-pull OT, 470 pF from each plate end to the centre tap through 2k2 (same card as hiwatt-dr103 / marshall-1959rr)"
+  },
+  {
+   "ref": "RCWA",
+   "type": "R",
+   "nodes": [
+    "cwa",
+    "a"
+   ],
+   "value": "2k2",
+   "label": "winding-capacitance series R (A)",
+   "note": "see CWA"
+  },
+  {
+   "ref": "CWB",
+   "type": "C",
+   "nodes": [
+    "pb",
+    "cwb"
+   ],
+   "value": "470p",
+   "label": "OT winding capacitance, plate end B",
+   "note": "see CWA"
+  },
+  {
+   "ref": "RCWB",
+   "type": "R",
+   "nodes": [
+    "cwb",
+    "a"
+   ],
+   "value": "2k2",
+   "label": "winding-capacitance series R (B)",
+   "note": "see CWA"
+  },
+  {
+   "ref": "SPK",
+   "type": "sub",
+   "of": "lib:spk-12in-16ohm-british",
+   "nodes": [
+    "spk",
+    "0"
+   ],
+   "label": "16 ohm 4x12 equivalent on the 16 ohm tap",
+   "note": "the head has no speaker; the library's 16 ohm 4x12 Thiele-Small equivalent, as in the other amp netlists"
+  }
+ ],
+ "probes": [
+  "g1a",
+  "p1a",
+  "g2a",
+  "p2a",
+  "p2b",
+  "k2b",
+  "na",
+  "nc",
+  "pa",
+  "spk",
+  "a",
+  "ch",
+  "c",
+  "d",
+  "nbias"
+ ],
+ "layout": {
+  "rows": {
+   "a": 1,
+   "ch": 2,
+   "c": 3,
+   "d": 4,
+   "nbias": 5
+  }
+ }
+}

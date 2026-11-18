@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Low-Voltage Brown</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Low-Voltage Brown" preset-author="Headroom" preset-comment="Brown-sound rhythm crunch: a non-master 100-watt plexi with the mains voltage dropped all the way, so the power section sags and compresses into a spongy, chewy, saturated crunch. Thick, not fizzy; big riffs and chunky rhythm on the bridge humbucker, with a low plate wash behind." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="92000">
+    <component-audio version="1">
+      <parameters num-parameters="13">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V1" value="0.8"/>
+        <parameter id="V2" value="0.5"/>
+        <parameter id="B" value="0.55"/>
+        <parameter id="M" value="0.72"/>
+        <parameter id="T" value="0.72"/>
+        <parameter id="Pr" value="0.62"/>
+        <parameter id="Pw" value="0.5"/>
+        <parameter id="Var" value="0"/>
+        <parameter id="Sg" value="0.72"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="Bi" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="1"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="10"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="127000">
+    <component-audio version="1">
+      <parameters num-parameters="4">
+        <parameter id="S1" value="1"/>
+        <parameter id="M2" value="0.12"/>
+        <parameter id="M3" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="26000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Vol" value="0.5256"/>
+        <parameter id="F1" value="0.5"/>
+        <parameter id="G1" value="0.5"/>
+        <parameter id="Q1" value="0.5"/>
+        <parameter id="F2" value="0.5"/>
+        <parameter id="G2" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="Q2" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="92000" target-number="1" target-name="V1" min-value="0.6" max-value="1" controller-name="Volume"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="92000" target-number="1" target-name="Var" min-value="0" max-value="0.6" controller-name="Variac"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="92000" target-number="1" target-name="M" min-value="0.45" max-value="0.95" controller-name="Mids"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="92000" target-number="1" target-name="Pr" min-value="0.3" max-value="0.9" controller-name="Presence"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="127000" target-number="1" target-name="M2" min-value="0" max-value="0.3" controller-name="Plate"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="crunch-low-voltage-brown" category="Crunch" order="110" instrument="guitar" style="Hard Rock">
+  <description>Brown-sound rhythm crunch: a non-master 100-watt plexi with the mains voltage dropped all the way, so the power section sags and compresses into a spongy, chewy, saturated crunch. Thick, not fizzy; big riffs and chunky rhythm on the bridge humbucker, with a low plate wash behind.</description>
+  <tags><tag>Crunch</tag><tag>Hard Rock</tag><tag>Brown Sound</tag><tag>Lead</tag><tag>Rhythm</tag><tag>Plate Reverb</tag></tags>
+  <sources>
+    <source url="https://legendarytones.com/edward-van-halen-brown-sound/" title="Legendary Tones: Edward Van Halen's 'Brown Sound'"/>
+    <source url="https://vintageking.com/blog/2018/03/van-halen" title="Vintage King: the making of Van Halen's debut album"/>
+    <source url="https://jasobrecht.substack.com/p/eddie-van-halen-the-complete-1980" title="Jas Obrecht: Eddie Van Halen, the complete 1980 interview"/>
+    <source url="https://en.wikipedia.org/wiki/Eruption_(instrumental)" title="Eruption (instrumental) (Wikipedia)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

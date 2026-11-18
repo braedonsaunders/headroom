@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Plugin bundles (.component/.vst3) inherit the host's entitlements; this only exists so codesign has a file. -->
+<plist version="1.0"><dict/></plist>

@@ -1,0 +1,11 @@
+# ngspice .op reference: interfax-harmonic-percolator v1 (node voltage)
+in  0.000000e+00
+vcc  9.000000e+00
+w1  0.000000e+00
+b1  8.027294e-01
+c1  7.664730e-01
+b2  1.552225e+00
+e12  9.743647e-01
+c2  2.025095e+00
+o1  -2.08233e-27
+out  -2.08232e-28

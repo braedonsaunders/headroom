@@ -1,0 +1,25 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "test-pentode-se",
+  "version": 1,
+  "name": "6V6GT single-ended stage (validation circuit)",
+  "description": "Cathode-biased 6V6GT: 1 kΩ grid stopper, 220 kΩ grid leak, 470 Ω / 22 µF cathode, 1 kΩ screen resistor, 5 kΩ resistive plate load from 300 V, 0.1 µF coupling into 100 kΩ. Exercises the Koren pentode law, screen current and grid conduction.",
+  "sources": [ { "title": "N. Koren, 'Improved vacuum tube models for SPICE simulations' (pentode equations)" } ],
+  "io": { "input": "in", "output": "out" },
+  "oversampling": 2,
+  "parts": [
+    { "ref": "BPLUS", "type": "V", "nodes": ["bp", "0"], "value": "300" },
+    { "ref": "CIN", "type": "C", "nodes": ["in", "gi"], "value": "100n" },
+    { "ref": "RG", "type": "R", "nodes": ["gi", "0"], "value": "220k" },
+    { "ref": "RS", "type": "R", "nodes": ["gi", "g1"], "value": "1k" },
+    { "ref": "V1", "type": "pentode", "nodes": ["p", "g2", "g1", "k"], "model": "6V6GT" },
+    { "ref": "RK", "type": "R", "nodes": ["k", "0"], "value": "470" },
+    { "ref": "CK", "type": "C", "nodes": ["k", "0"], "value": "22u" },
+    { "ref": "RG2", "type": "R", "nodes": ["bp", "g2"], "value": "1k" },
+    { "ref": "CG2", "type": "C", "nodes": ["g2", "0"], "value": "10u" },
+    { "ref": "RL", "type": "R", "nodes": ["bp", "p"], "value": "5k" },
+    { "ref": "CO", "type": "C", "nodes": ["p", "out"], "value": "100n" },
+    { "ref": "RO", "type": "R", "nodes": ["out", "0"], "value": "100k" }
+  ],
+  "probes": ["p", "k", "g2"]
+}

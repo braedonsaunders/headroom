@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Soul Tremolo Clean</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Soul Tremolo Clean" preset-author="Headroom" preset-comment="60s soul and gospel clean: a blackface combo's own tremolo throbbing at a medium pulse and its spring tank turned up, into a 2x12. Play open chords and let them shake; slow the speed for ballads, deepen it for that 'nervous guitar' sound." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="172000">
+    <component-audio version="1">
+      <parameters num-parameters="14">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="volume" value="0.44"/>
+        <parameter id="bright" value="1"/>
+        <parameter id="treble" value="0.55"/>
+        <parameter id="bass" value="0.45"/>
+        <parameter id="reverb intensity" value="0.3"/>
+        <parameter id="reverb on" value="1"/>
+        <parameter id="reverb mode" value="0"/>
+        <parameter id="speed" value="0.36"/>
+        <parameter id="intensity" value="0.5"/>
+        <parameter id="tremolo on" value="1"/>
+        <parameter id="tremolo sag" value="0.5"/>
+        <parameter id="tempo sync" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.9345"/>
+        <parameter id="c" value="0.35"/>
+        <parameter id="Cab" value="13"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="172000" target-number="1" target-name="intensity" min-value="0.15" max-value="0.9" controller-name="Shake Depth"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="172000" target-number="1" target-name="speed" min-value="0.12" max-value="0.65" controller-name="Shake Speed"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="172000" target-number="1" target-name="reverb intensity" min-value="0.05" max-value="0.6" controller-name="Spring"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="172000" target-number="1" target-name="treble" min-value="0.35" max-value="0.75" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="172000" target-number="1" target-name="volume" min-value="0.3" max-value="0.52" controller-name="Amp Volume"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="clean-soul-tremolo" category="Clean" order="110" instrument="guitar" style="Soul">
+  <description>60s soul and gospel clean: a blackface combo's own tremolo throbbing at a medium pulse and its spring tank turned up, into a 2x12. Play open chords and let them shake; slow the speed for ballads, deepen it for that 'nervous guitar' sound.</description>
+  <tags><tag>Clean</tag><tag>Soul</tag><tag>Gospel</tag><tag>Tremolo</tag><tag>Spring Reverb</tag></tags>
+  <sources>
+    <source url="https://www.guitarplayer.com/players/pops-staples" title="Guitar Player: Pops Staples invented the Americana tone of guitar"/>
+    <source url="https://www.askzac.com/post/pops-staples-preaching-the-tremolo-gospel-ask-zac-113" title="Ask Zac: Pops Staples, preaching the tremolo gospel"/>
+    <source url="https://www.premierguitar.com/digging-deeper-curtis-mayfield" title="Premier Guitar: Digging Deeper, Curtis Mayfield"/>
+    <source url="https://equipboard.com/pros/curtis-mayfield" title="Equipboard: Curtis Mayfield (Fender Twin)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

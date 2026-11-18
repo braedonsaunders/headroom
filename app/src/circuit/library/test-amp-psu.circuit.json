@@ -1,0 +1,443 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "test-amp-psu",
+ "version": 1,
+ "name": "Supply + 12AX7 driver + 6L6 push-pull + OT + speaker (validation circuit)",
+ "description": "GZ34 full-wave supply on 60 Hz mains (2 x 350 Vrms CT), 40 \u00b5F reservoir, 100 \u03a9 + 4 H choke to the 'bp2' node (40 \u00b5F) that feeds the output transformer centre tap and screens, 10 k\u03a9 to 'bp3' (22 \u00b5F) feeding a 12AX7 driver whose plate drives the push-pull pair through ideal unity drivers (+ and \u2212). Run with and without the B+ cuts to measure the cut error; both are checked against ngspice. Every node of the supply chain (bp1, ch, bp2, bp3) is listed as a cut: elements between cut nodes form the supply partition, and anything reaching a non-cut node is a load.",
+ "sources": [
+  {
+   "title": "Classic Fender/Marshall supply + output stage topology; device models as in ModelLibrary.hpp"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "spk"
+ },
+ "oversampling": 2,
+ "cuts": [
+  "bp1",
+  "ch",
+  "bp2",
+  "bp3"
+ ],
+ "subcircuits": {
+  "speaker": {
+   "pins": [
+    "a",
+    "b"
+   ],
+   "parts": [
+    {
+     "ref": "RE",
+     "type": "R",
+     "nodes": [
+      "a",
+      "x1"
+     ],
+     "value": "3.5"
+    },
+    {
+     "ref": "LE",
+     "type": "L",
+     "nodes": [
+      "x1",
+      "x2"
+     ],
+     "value": "0.5m"
+    },
+    {
+     "ref": "RES",
+     "type": "R",
+     "nodes": [
+      "x2",
+      "b"
+     ],
+     "value": "23.3"
+    },
+    {
+     "ref": "LCES",
+     "type": "L",
+     "nodes": [
+      "x2",
+      "b"
+     ],
+     "value": "11.6m"
+    },
+    {
+     "ref": "CMES",
+     "type": "C",
+     "nodes": [
+      "x2",
+      "b"
+     ],
+     "value": "341u"
+    }
+   ]
+  }
+ },
+ "parts": [
+  {
+   "ref": "VA",
+   "type": "V",
+   "nodes": [
+    "sa",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "495",
+    "freq": 60,
+    "phase": 90
+   }
+  },
+  {
+   "ref": "VB",
+   "type": "V",
+   "nodes": [
+    "sb",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "495",
+    "freq": 60,
+    "phase": 270
+   }
+  },
+  {
+   "ref": "DA",
+   "type": "D",
+   "nodes": [
+    "sa",
+    "bp1"
+   ],
+   "model": "GZ34"
+  },
+  {
+   "ref": "DB",
+   "type": "D",
+   "nodes": [
+    "sb",
+    "bp1"
+   ],
+   "model": "GZ34"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "bp1",
+    "0"
+   ],
+   "value": "40u"
+  },
+  {
+   "ref": "RCH",
+   "type": "R",
+   "nodes": [
+    "bp1",
+    "ch"
+   ],
+   "value": "100"
+  },
+  {
+   "ref": "LCH",
+   "type": "L",
+   "nodes": [
+    "ch",
+    "bp2"
+   ],
+   "value": "4"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "bp2",
+    "0"
+   ],
+   "value": "40u"
+  },
+  {
+   "ref": "RD",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "bp3"
+   ],
+   "value": "10k"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "bp3",
+    "0"
+   ],
+   "value": "22u"
+  },
+  {
+   "ref": "RIN",
+   "type": "R",
+   "nodes": [
+    "in",
+    "0"
+   ],
+   "value": "1M"
+  },
+  {
+   "ref": "RGS",
+   "type": "R",
+   "nodes": [
+    "in",
+    "g"
+   ],
+   "value": "68k"
+  },
+  {
+   "ref": "VT",
+   "type": "triode",
+   "nodes": [
+    "pt",
+    "g",
+    "kt"
+   ],
+   "model": "12AX7"
+  },
+  {
+   "ref": "RKT",
+   "type": "R",
+   "nodes": [
+    "kt",
+    "0"
+   ],
+   "value": "1k5"
+  },
+  {
+   "ref": "CKT",
+   "type": "C",
+   "nodes": [
+    "kt",
+    "0"
+   ],
+   "value": "22u"
+  },
+  {
+   "ref": "RPT",
+   "type": "R",
+   "nodes": [
+    "bp3",
+    "pt"
+   ],
+   "value": "100k"
+  },
+  {
+   "ref": "CCT",
+   "type": "C",
+   "nodes": [
+    "pt",
+    "drv"
+   ],
+   "value": "22n"
+  },
+  {
+   "ref": "RDRV",
+   "type": "R",
+   "nodes": [
+    "drv",
+    "0"
+   ],
+   "value": "1M"
+  },
+  {
+   "ref": "VBIAS",
+   "type": "V",
+   "nodes": [
+    "bias",
+    "0"
+   ],
+   "value": "-45"
+  },
+  {
+   "ref": "EA",
+   "type": "vcvs",
+   "nodes": [
+    "da",
+    "0",
+    "drv",
+    "0"
+   ],
+   "gain": 1
+  },
+  {
+   "ref": "EB",
+   "type": "vcvs",
+   "nodes": [
+    "db",
+    "0",
+    "drv",
+    "0"
+   ],
+   "gain": -1
+  },
+  {
+   "ref": "CA",
+   "type": "C",
+   "nodes": [
+    "da",
+    "ga"
+   ],
+   "value": "100n"
+  },
+  {
+   "ref": "CB",
+   "type": "C",
+   "nodes": [
+    "db",
+    "gb"
+   ],
+   "value": "100n"
+  },
+  {
+   "ref": "RGA",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "bias"
+   ],
+   "value": "220k"
+  },
+  {
+   "ref": "RGB",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "bias"
+   ],
+   "value": "220k"
+  },
+  {
+   "ref": "RSA",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "g1a"
+   ],
+   "value": "1k5"
+  },
+  {
+   "ref": "RSB",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "g1b"
+   ],
+   "value": "1k5"
+  },
+  {
+   "ref": "V1",
+   "type": "pentode",
+   "nodes": [
+    "pa",
+    "g2a",
+    "g1a",
+    "0"
+   ],
+   "model": "6L6GC"
+  },
+  {
+   "ref": "V2",
+   "type": "pentode",
+   "nodes": [
+    "pb",
+    "g2b",
+    "g1b",
+    "0"
+   ],
+   "model": "6L6GC"
+  },
+  {
+   "ref": "RS2A",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "g2a"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "RS2B",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "g2b"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "OT",
+   "type": "transformer",
+   "nodes": [
+    "pa",
+    "bp2",
+    "bp2",
+    "pb",
+    "spk",
+    "0"
+   ],
+   "turns": [
+    1,
+    1,
+    0.0632
+   ],
+   "r": [
+    50,
+    50,
+    0.2
+   ],
+   "leak": [
+    "5m",
+    "5m",
+    0
+   ],
+   "lm": 4,
+   "lsat": 1.5
+  },
+  {
+   "ref": "SPK",
+   "type": "sub",
+   "of": "speaker",
+   "nodes": [
+    "spk",
+    "0"
+   ]
+  },
+  {
+   "ref": "CWA",
+   "type": "C",
+   "nodes": [
+    "pa",
+    "0"
+   ],
+   "value": "470p",
+   "label": "OT winding capacitance (half primary)"
+  },
+  {
+   "ref": "CWB",
+   "type": "C",
+   "nodes": [
+    "pb",
+    "0"
+   ],
+   "value": "470p",
+   "label": "OT winding capacitance (half primary)"
+  }
+ ],
+ "probes": [
+  "bp1",
+  "bp2",
+  "bp3",
+  "pa",
+  "spk"
+ ]
+}

@@ -1,0 +1,426 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "test-ota-optics",
+  "version": 1,
+  "name": "OTA and optical devices (validation circuit)",
+  "description": "Wave C device bench. A CA3080 VCA (input attenuated 47k/220R into the + input, both inputs referenced through 220R) whose IABC is swept 70-440 uA at 3 Hz through 33k from a moving control voltage, into 10k; an LM13700 OTA-C unity follower (inverting input on its output, 100n to ground) low-passing a divided copy of the VCA output; an incandescent lamp (Uni-Vibe 28 V / 40 mA bulb, thermal state) driven 4-24 V at 4 Hz through 100R, read by two CdS cells (one with the light-history state) as shunts after 47k from the input; an LED/VTL5C3 vactrol driven at 7 Hz shunting the input after 22k; a 2N5457 voltage-controlled resistor with subthreshold smoothing (ksub 70 mV) biased 0.2 V below VTO, shunting the input after 27k. A T4B-style electroluminescent panel behind 4n7, driven 85 V peak at 700 Hz, lights a third node read by an NSL-32 cell shunting the input after 68k.",
+  "sources": [
+    {
+      "title": "work/circuit-netlists/wave-c/DEVICES.md (device research: OTA §1, optical §4, JFET ksub §5.2)"
+    },
+    {
+      "title": "Intersil CA3080 datasheet FN475.5; TI LM13700 datasheet SNOSBW2F"
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "out"
+  },
+  "oversampling": 2,
+  "models": {
+    "CDS_HIST": {
+      "kind": "cds",
+      "rdark": 5000000.0,
+      "ron": 4000.0,
+      "gamma": 0.8,
+      "kr": 150,
+      "tau_l": 1.5,
+      "tau_h": 0.8,
+      "mh": 0.4,
+      "mr": 1.5
+    },
+    "J5457_SUB": {
+      "kind": "njf",
+      "vto": -1.25,
+      "beta": 0.00104,
+      "lambda": 0.0308,
+      "is": 9.56e-14,
+      "n": 1.0,
+      "ksub": 0.07
+    }
+  },
+  "parts": [
+    {
+      "ref": "VP",
+      "type": "V",
+      "nodes": [
+        "vp",
+        "0"
+      ],
+      "value": "9"
+    },
+    {
+      "ref": "VM",
+      "type": "V",
+      "nodes": [
+        "vm",
+        "0"
+      ],
+      "value": "-9"
+    },
+    {
+      "ref": "VCTL",
+      "type": "V",
+      "nodes": [
+        "vctl",
+        "0"
+      ],
+      "value": "0",
+      "ac": {
+        "amplitude": "6",
+        "freq": 3,
+        "phase": 0
+      }
+    },
+    {
+      "ref": "CIN",
+      "type": "C",
+      "nodes": [
+        "in",
+        "a"
+      ],
+      "value": "1u"
+    },
+    {
+      "ref": "RA",
+      "type": "R",
+      "nodes": [
+        "a",
+        "0"
+      ],
+      "value": "100k"
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "a",
+        "inp"
+      ],
+      "value": "47k"
+    },
+    {
+      "ref": "R2",
+      "type": "R",
+      "nodes": [
+        "inp",
+        "0"
+      ],
+      "value": "220"
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "inn",
+        "0"
+      ],
+      "value": "220"
+    },
+    {
+      "ref": "RABC",
+      "type": "R",
+      "nodes": [
+        "vctl",
+        "abc"
+      ],
+      "value": "33k"
+    },
+    {
+      "ref": "U1",
+      "type": "ota",
+      "nodes": [
+        "out",
+        "inp",
+        "inn",
+        "abc",
+        "vm",
+        "vp"
+      ],
+      "model": "CA3080"
+    },
+    {
+      "ref": "RL",
+      "type": "R",
+      "nodes": [
+        "out",
+        "0"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "RD1",
+      "type": "R",
+      "nodes": [
+        "out",
+        "x2"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "RD2",
+      "type": "R",
+      "nodes": [
+        "x2",
+        "0"
+      ],
+      "value": "1k"
+    },
+    {
+      "ref": "RABC2",
+      "type": "R",
+      "nodes": [
+        "vp",
+        "abc2"
+      ],
+      "value": "100k"
+    },
+    {
+      "ref": "U2",
+      "type": "ota",
+      "nodes": [
+        "o2",
+        "x2",
+        "o2",
+        "abc2",
+        "vm",
+        "vp"
+      ],
+      "model": "LM13700"
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "o2",
+        "0"
+      ],
+      "value": "100n"
+    },
+    {
+      "ref": "VL",
+      "type": "V",
+      "nodes": [
+        "vl",
+        "0"
+      ],
+      "value": "14",
+      "ac": {
+        "amplitude": "10",
+        "freq": 4,
+        "phase": 0
+      }
+    },
+    {
+      "ref": "RLAMP",
+      "type": "R",
+      "nodes": [
+        "vl",
+        "l1"
+      ],
+      "value": "100"
+    },
+    {
+      "ref": "LAMP1",
+      "type": "lamp",
+      "nodes": [
+        "l1",
+        "0"
+      ],
+      "light": "lt1",
+      "model": "UNIVIBE_LAMP"
+    },
+    {
+      "ref": "RC1",
+      "type": "R",
+      "nodes": [
+        "a",
+        "c1"
+      ],
+      "value": "47k"
+    },
+    {
+      "ref": "CELL1",
+      "type": "cds",
+      "nodes": [
+        "c1",
+        "0"
+      ],
+      "light": "lt1",
+      "model": "UNIVIBE_LDR"
+    },
+    {
+      "ref": "RC2",
+      "type": "R",
+      "nodes": [
+        "a",
+        "c2"
+      ],
+      "value": "47k"
+    },
+    {
+      "ref": "CELL2",
+      "type": "cds",
+      "nodes": [
+        "c2",
+        "0"
+      ],
+      "light": "lt1",
+      "model": "CDS_HIST",
+      "couple": 0.8
+    },
+    {
+      "ref": "VLED",
+      "type": "V",
+      "nodes": [
+        "vled",
+        "0"
+      ],
+      "value": "2.6",
+      "ac": {
+        "amplitude": "1.2",
+        "freq": 7,
+        "phase": 0
+      }
+    },
+    {
+      "ref": "RLED",
+      "type": "R",
+      "nodes": [
+        "vled",
+        "la"
+      ],
+      "value": "100"
+    },
+    {
+      "ref": "LED1",
+      "type": "led",
+      "nodes": [
+        "la",
+        "0"
+      ],
+      "light": "lt2",
+      "model": "VTL5C3_LED"
+    },
+    {
+      "ref": "RC3",
+      "type": "R",
+      "nodes": [
+        "a",
+        "c3"
+      ],
+      "value": "22k"
+    },
+    {
+      "ref": "CELL3",
+      "type": "cds",
+      "nodes": [
+        "c3",
+        "0"
+      ],
+      "light": "lt2",
+      "model": "VTL5C3_CELL"
+    },
+    {
+      "ref": "VG",
+      "type": "V",
+      "nodes": [
+        "vg",
+        "0"
+      ],
+      "value": "-1.45"
+    },
+    {
+      "ref": "RG",
+      "type": "R",
+      "nodes": [
+        "vg",
+        "g4"
+      ],
+      "value": "1M"
+    },
+    {
+      "ref": "RC4",
+      "type": "R",
+      "nodes": [
+        "a",
+        "c4"
+      ],
+      "value": "27k"
+    },
+    {
+      "ref": "Q4",
+      "type": "njf",
+      "nodes": [
+        "c4",
+        "g4",
+        "0"
+      ],
+      "model": "J5457_SUB"
+    },
+    {
+      "ref": "VEL",
+      "type": "V",
+      "nodes": [
+        "vel",
+        "0"
+      ],
+      "value": "0",
+      "ac": {
+        "amplitude": "85",
+        "freq": 700,
+        "phase": 0
+      }
+    },
+    {
+      "ref": "CEL",
+      "type": "C",
+      "nodes": [
+        "vel",
+        "el"
+      ],
+      "value": "4.7n",
+      "note": "the LA-2A's series 4n7 to the panel"
+    },
+    {
+      "ref": "EL1",
+      "type": "elpanel",
+      "nodes": [
+        "el",
+        "0"
+      ],
+      "light": "lt3",
+      "model": "T4B_EL"
+    },
+    {
+      "ref": "RC5",
+      "type": "R",
+      "nodes": [
+        "a",
+        "c5"
+      ],
+      "value": "68k"
+    },
+    {
+      "ref": "CELL5",
+      "type": "cds",
+      "nodes": [
+        "c5",
+        "0"
+      ],
+      "light": "lt3",
+      "model": "NSL32_CELL"
+    }
+  ],
+  "probes": [
+    "o2",
+    "c1",
+    "c2",
+    "c3",
+    "c4",
+    "lt1",
+    "lt2",
+    "c5",
+    "lt3"
+  ]
+}

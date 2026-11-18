@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Treble-Boosted Plexi</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Treble-Boosted Plexi" preset-author="Headroom" preset-comment="A germanium treble booster slamming the front of a 100-watt plexi: the late-60s/early-70s British lead bite. The booster cuts the bass and drives the amp's top end into a cutting, vocal crunch that thickens humbuckers and makes single coils scream. Ease the boost for rhythm." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="40000">
+    <component-audio version="1">
+      <parameters num-parameters="3">
+        <parameter id="Bs" value="0.72"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="Br" value="0"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="34000">
+    <component-audio version="1">
+      <parameters num-parameters="14">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V1" value="0.62"/>
+        <parameter id="V2" value="0"/>
+        <parameter id="B" value="0.55"/>
+        <parameter id="M" value="0.68"/>
+        <parameter id="T" value="0.45"/>
+        <parameter id="Pr" value="0.45"/>
+        <parameter id="Pw" value="0.5"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bi" value="0.5"/>
+        <parameter id="G4M" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.9182"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="10"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.1"/>
+        <parameter id="Tm" value="0.5"/>
+        <parameter id="Sz" value="0.35"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Chr" value="0.5"/>
+        <parameter id="iM" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="40000" target-number="1" target-name="Bs" min-value="0.2" max-value="1" controller-name="Boost"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="34000" target-number="1" target-name="V1" min-value="0.4" max-value="0.85" controller-name="Amp Volume"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="34000" target-number="1" target-name="B" min-value="0.3" max-value="0.8" controller-name="Bass"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="34000" target-number="1" target-name="T" min-value="0.25" max-value="0.75" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.35" controller-name="Room"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="crunch-treble-boosted-plexi" category="Crunch" order="120" instrument="guitar" style="Classic Rock">
+  <description>A germanium treble booster slamming the front of a 100-watt plexi: the late-60s/early-70s British lead bite. The booster cuts the bass and drives the amp's top end into a cutting, vocal crunch that thickens humbuckers and makes single coils scream. Ease the boost for rhythm.</description>
+  <tags><tag>Crunch</tag><tag>Classic Rock</tag><tag>Treble Booster</tag><tag>Lead</tag><tag>Humbucker</tag></tags>
+  <sources>
+    <source url="https://en.wikipedia.org/wiki/Dallas_Rangemaster_Treble_Booster" title="Dallas Rangemaster Treble Booster (Wikipedia)"/>
+    <source url="https://en.wikipedia.org/wiki/Treble_booster" title="Treble booster (Wikipedia)"/>
+    <source url="https://en.wikipedia.org/wiki/Marshall_Super_Lead" title="Marshall Super Lead (Wikipedia)"/>
+    <source url="https://www.electrosmash.com/dallas-rangemaster" title="ElectroSmash: Dallas Rangemaster circuit analysis"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

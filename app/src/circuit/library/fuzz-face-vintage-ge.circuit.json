@@ -1,0 +1,240 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "fuzz-face-vintage-ge",
+ "version": 1,
+ "name": "Dallas Arbiter Fuzz Face Vintage (germanium reissue, AC128)",
+ "description": "The Arbiter/Dallas reissue germanium Fuzz Face as drawn by Fuzz Central (variation A): two AC128 PNP germanium transistors, positive ground so the rail is -9 V. Same shunt-series two-stage topology as the 1966 original, with the reissue's different bias and coupling set: 1 kOhm top resistor, 27 kOhm Q1 collector load, 10 kOhm Q2 collector load, 2.2 uF input, 100 kOhm shunt feedback Q2 emitter to Q1 base, 1 kOhm linear Fuzz pot from the Q2 emitter with 47 uF on the wiper, 0.047 uF output cap and a 100 kOhm audio Volume. Differences from the 1966 unit (169000 here vs 166000 'Dallas Arbiter Fuzz Face (Ge)'): the reissue uses AC128 devices (Fuzz Central's second variation is 820R / 6k8 / 0.03 uF; this is variation A), a 27 kOhm / 10 kOhm / 1 kOhm resistor set against the original 33 kOhm / 8.2 kOhm / 470R, a 47 uF fuzz bypass against 20 uF, 0.047 uF out against 0.01 uF, and a 100 kOhm against 500 kOhm volume. ElectroSmash's measured AC128 bias chart (Q1 base -0.2 V, Q1 collector -0.7 V, Q2 emitter -0.5 V, Q2 collector -4.5 V, output -8.7 V at beta 85/120) is the DC target.",
+ "sources": [
+  {
+   "title": "Fuzz Central, 'Arbiter Fuzz Face' (germanium years: 2.2uF input, 20uF fuzz cap, 0.01uF output, 470R / 8K2 / 33K / 100K, 500KA volume, 1KB fuzz, NKT275/AC128/SFT363E; reissue section with AC128 and two traced variations: A = 1K / 27K / 10K / 0.047uF / 100KA volume / 1KB / 47uF / 100K feedback, B = 820R / 6K8 / 0.03uF / 100KA / 1KB / 47uF)",
+   "url": "https://fuzzcentral.ssguitar.com/fuzzface.php"
+  },
+  {
+   "title": "Fuzz Central reissue variation A schematic image (1K top, 27K Q1 load, 10K Q2 load, 0.047uF output, 2.2uF input, 100K feedback, 1KB fuzz, 47uF, Volume 100KA, AC128 PNP, 9 V positive ground)",
+   "url": "https://fuzzcentral.ssguitar.com/fuzzface/fuzzfacereissueschematicA.gif"
+  },
+  {
+   "title": "ElectroSmash, 'Fuzz Face Analysis': AC128 Gummel-Poon cards (low gain IS 85.8n BF 85 and high gain IS 120.8n BF 120, ISE 0.435n NE 1.2 VAF 102.2 CJE 6p CJC 3.75p) and the AC128 bias chart beta 85/120: Q1 base -0.2 V, Q1 collector -0.7 V, Q2 emitter -0.5 V, Q2 collector -4.5 V, output node -8.7 V",
+   "url": "https://www.electrosmash.com/fuzz-face"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "out",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 1.0
+ },
+ "oversampling": 2,
+ "lte": {"start": "bdf2", "note": "LTE substeps start on BDF2 (docs §10.61). Engine 8x fine-step truth, audio band, lead / rock DI: 0.016 / 0.041 % -> 0.0045 / 0.011 %. CPU equal (9900X)"},
+ "minRate": 705600,
+ "multirate": {"rates": {"C1": 64}, "events": true, "note": "Event-local oversampling (docs §10.48, §10.62): the circuit runs at 768 kHz and every LTE event takes 4 substeps (3.07 MHz) into the band-limited output stream. The near-square edges carry content up to MHz: at a fixed 768 kHz they fold (aliasing gate, every bin, 0.25 / 0.5 / 1.0 FS: -58.6 / -54.7 / -46.7 dB), and even a fixed 1.536 MHz or 2-substep events leave -57.5 to -61.5 dB at 1.0 FS. Now -80.4 / -74.1 / -65.6 dB. Engine 8x fine-step truth (band-limited), audio band, lead / rock DI: 0.012 / 0.022 -> 0.0064 / 0.0084 %"},
+ "solver": "auto",
+ "models": {
+  "AC128_Q1": {
+   "kind": "pnp",
+   "is": 8.58e-08,
+   "bf": 85.0,
+   "br": 20.0,
+   "ise": 4.35e-10,
+   "ne": 1.2,
+   "vaf": 102.2,
+   "note": "ElectroSmash AC128 Gummel-Poon card (low-gain pick, BF 85). RB/RE/RC and TF omitted; the card carries no ICBO term, so the reissue's germanium leakage is not modelled (it moves the Q2 collector by about 1 V, see the Ge Fuzz Face notes). CJE 6p / CJC 3.75p from the ElectroSmash card (restored 2026-11-10: with error-controlled substeps the switching edge matches ngspice, 0.09 % at 0.1 V; they set the real edge rate)",
+   "cje": 6e-12,
+   "cjc": 3.75e-12
+  },
+  "AC128_Q2": {
+   "kind": "pnp",
+   "is": 1.208e-07,
+   "bf": 120.0,
+   "br": 20.0,
+   "ise": 4.35e-10,
+   "ne": 1.2,
+   "vaf": 102.2,
+   "note": "ElectroSmash AC128 Gummel-Poon card (high-gain pick, BF 120, IS 120.8n). CJE 6p / CJC 3.75p from the ElectroSmash card (restored 2026-11-10: with error-controlled substeps the switching edge matches ngspice, 0.09 % at 0.1 V; they set the real edge rate)",
+   "cje": 6e-12,
+   "cjc": 3.75e-12
+  }
+ },
+ "controls": [
+  {
+   "id": "volume",
+   "label": "Volume",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "volume"
+   ],
+   "group": "Main",
+   "note": "100 kOhm audio-taper pot after the 0.047 uF output cap (reissue A; the original is 500 kOhm)"
+  },
+  {
+   "id": "fuzz",
+   "label": "Fuzz",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "fuzz"
+   ],
+   "group": "Main",
+   "note": "1 kOhm linear pot from the Q2 emitter to ground, wiper bypassed by 47 uF; clockwise = more gain"
+  },
+  {
+   "id": "mode",
+   "label": "Mode",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "mode"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Catalogue 'Mode' 0-1 has no part in the real reissue circuit; stored for preset round-trip"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VBAT",
+   "type": "V",
+   "nodes": [
+    "0",
+    "vee"
+   ],
+   "value": "9",
+   "label": "9 V battery, positive ground (rail -9 V)"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "in",
+    "b1"
+   ],
+   "value": "2u2",
+   "tolerance": 0.2,
+   "label": "Input cap"
+  },
+  {
+   "ref": "Q1",
+   "type": "pnp",
+   "nodes": [
+    "c1",
+    "b1",
+    "0"
+   ],
+   "model": "AC128_Q1",
+   "label": "Q1 AC128 (beta ~85)"
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "vee",
+    "c1"
+   ],
+   "value": "27k",
+   "tolerance": 0.1,
+   "label": "Q1 collector load (reissue A: 27K)"
+  },
+  {
+   "ref": "Q2",
+   "type": "pnp",
+   "nodes": [
+    "c2",
+    "c1",
+    "e2"
+   ],
+   "model": "AC128_Q2",
+   "label": "Q2 AC128 (beta ~120)"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "x",
+    "c2"
+   ],
+   "value": "10k",
+   "tolerance": 0.1,
+   "label": "Q2 collector load (reissue A: 10K)"
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "vee",
+    "x"
+   ],
+   "value": "1k",
+   "tolerance": 0.1,
+   "label": "Top resistor (reissue A: 1K)"
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "e2",
+    "b1"
+   ],
+   "value": "100k",
+   "tolerance": 0.1,
+   "label": "Shunt feedback"
+  },
+  {
+   "ref": "FUZZ",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "fw",
+    "e2"
+   ],
+   "value": "1k",
+   "taper": "B",
+   "control": "fuzz",
+   "label": "Fuzz"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "fw",
+    "0"
+   ],
+   "value": "47u",
+   "tolerance": 0.2,
+   "label": "Fuzz bypass (reissue: 47 uF)"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "x",
+    "v3"
+   ],
+   "value": "47n",
+   "tolerance": 0.2,
+   "label": "Output cap (reissue A: 0.047 uF)"
+  },
+  {
+   "ref": "VOLUME",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "out",
+    "v3"
+   ],
+   "value": "100k",
+   "taper": "A",
+   "control": "volume",
+   "label": "Volume 100 kA"
+  }
+ ],
+ "probes": [
+  "b1",
+  "c1",
+  "e2",
+  "c2",
+  "x",
+  "out"
+ ],
+ "layout": {}
+}

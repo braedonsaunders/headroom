@@ -1,0 +1,17 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "test-speaker-cab",
+ "version": 1,
+ "name": "Speaker + cabinet as a circuit (SPICE gate)",
+ "description": "A Marshall 1960AX-style 4x12: four Celestion G12M-25 (16 ohm) wired 2s2p as one nonlinear equivalent driver, voltage-driven at its terminals, with the closed-box air spring and the acoustic path fitted to Jester's CC0 Emerald IR (lib:cab-1960ax-g12m25-sm57). 'mic' is the cab output: terminal volts convolved with the IR, times 0.1.",
+ "sources": [{"title": "Jester's Emerald Pack 1.0, Jester Dyne Productions (Bastian Karschewski), CC0 1.0 (cab IR the acoustic path is fitted to)", "url": "https://www.jesterdyne.com/"}],
+ "io": {"input": "in", "output": "mic", "inputVoltsPerFS": 1.0, "outputVoltsPerFS": 1.0},
+ "oversampling": 2,
+ "solver": "auto",
+ "controls": [],
+ "parts": [
+  {"ref": "SPK", "type": "speaker", "nodes": ["in", "0", "cone"], "model": "CELESTION_G12M25_16", "series": 2, "parallel": 2, "label": "4 x G12M-25 16 ohm, 2s2p (16 ohm cab)"},
+  {"ref": "CAB", "type": "sub", "of": "lib:cab-1960ax-g12m25-sm57", "nodes": ["cone", "mic"], "label": "1960AX box and SM57 acoustic path"}
+ ],
+ "probes": ["cone", "mic"]
+}

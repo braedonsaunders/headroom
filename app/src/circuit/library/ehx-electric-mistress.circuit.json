@@ -1,0 +1,1162 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "ehx-electric-mistress",
+  "version": 1,
+  "name": "Electro-Harmonix Electric Mistress (1976 V2, Filter Matrix)",
+  "description": "1976 Electric Mistress V2 (PCB EH-5200-1-A), the first version with the FLANGE / FILTER MATRIX switch. 18 V (2 x 9 V) regulated to about 13.3 V by a CA741 + BC309 series regulator off a 6.8 V zener; the same divider sets the audio/BBD bias through the BIAS trimmer. Audio: 0.1 uF / 5k6 into a CA1458 follower, then an inverting summing stage with treble pre-emphasis (470 + 4k7||47n in, 6k8 feedback) that also takes the COLOR regeneration on its + input through 4.7 nF. Its output drives both inputs of a Reticon SAD1024 whose two 512-stage sections run in parallel on the same clocks (OUT A' and OUT B tied, 10k + 3.3 nF load), and the dry path (47 nF + 13k). The BBD output goes through 47 nF to the FEEDBACK trimmer (100k || 7k5) and COLOR pot (with 470 + 47 nF de-emphasis) and through 10k to the passive mix node, which has the matching 470 + 47 nF de-emphasis. LFO: an LM339 used as a Miller integrator (2.2 uF) charged through the 1M reverse-log RATE pot from a CD4013 SR latch (Q 33k / Qbar 10k), with an LM339 set comparator at 0.44 V and a 680k/1M reset divider, giving a 0.45-10.6 V triangle; RANGE (100K lin) scales it (or a 39k static source in FILTER MATRIX) into the VCO control. The VCO (BC177 current source, 470 pF, LM339 pair, 1N914, CD4013 divide-by-2; 18-280 kHz) is the bbd clock table.",
+  "sources": [
+    {
+      "title": "Ralf Metzger, 'Electric Mistress Mystery Page': 1976 Electric Mistress V2 (EH-5200-1-A) page, parts list (CA1458, SAD1024, SCL4013BE, CA339G, CA741CE; BC309C, BC177A; 1x bias, 1x feedback trimmer; 2x 9 V or 18 V) and redrawn schematic 1976-electric-mistress-v2-schematic.gif (all values in this netlist; dashed parts factory-added on the copper side)",
+      "url": "http://www.metzgerralf.de/elekt/stomp/mistress/electric-mistress-v2.shtml"
+    },
+    {
+      "title": "Ralf Metzger, 1976 Electric Mistress V1 page: V1 = V2 circuit with an On/Off switch in place of FLANGE/FILTER MATRIX",
+      "url": "http://www.metzgerralf.de/elekt/stomp/mistress/electric-mistress-v1.shtml"
+    },
+    {
+      "title": "Ralf Metzger, history page: first sold 1976, filter matrix switch added soon after; 1977-82 small changes, many PCBs",
+      "url": "http://www.metzgerralf.de/elekt/stomp/mistress/electric-mistress-history.shtml"
+    },
+    {
+      "title": "Ralf Metzger, 'How it works': LFO (SR-latch 4013, 0.4 V set, 0.6*VLFO reset at about 6 V, Q/Qbar 3 V / 9 V drive), VCO (BC177 current source, 470 pF, LM339 pair, 4013 divide-by-2)",
+      "url": "http://www.metzgerralf.de/elekt/stomp/mistress/how.shtml"
+    },
+    {
+      "title": "Ralf Metzger, measurements: V2 frequency response, comb filter at min/max feedback, LFO at slowest sweep (0.067 Hz, 0.45-10.6 V at the RANGE wiper), V2 VCO delay vs VLFO (1.15 ms at 0.5 V to 10.75 ms at 9.6 V)",
+      "url": "http://www.metzgerralf.de/elekt/stomp/mistress/measure.shtml"
+    },
+    {
+      "title": "Ralf Metzger, voltages (V4 board, same topology): V+ 13.00 V, divider 11.83 / 6.61 / 0.44 / 0.09 V, IC4a pin 4 6.59-6.61 V, Q/Qbar 0.03-12.91 V, RESET 0.31-6.18 V",
+      "url": "http://www.metzgerralf.de/elekt/stomp/mistress/repair-volt-v2.shtml"
+    },
+    {
+      "title": "Ralf Metzger, alignment: bias for max clean swing at SAD1024 pin 6/12 with 200 Hz (> 1 Vpp); feedback trim just before oscillation (COLOR, RANGE max, RATE mid)",
+      "url": "http://www.metzgerralf.de/elekt/stomp/mistress/align.shtml"
+    },
+    {
+      "title": "Ralf Metzger, BBD page: SAD1024 2 x 512 stages run in parallel in the Mistress; delay = stages / (2 fclock)",
+      "url": "http://www.metzgerralf.de/elekt/stomp/mistress/bbd.shtml"
+    },
+    {
+      "title": "EG&G Reticon SAD-1024 / SAD-512 data sheet (1977): pinout, VDD 10-17 V (15 typ), VBB = VDD-1, fs 1.5 kHz-1.5 MHz, clock line 110 pF, Cin 7 pF, optimum input bias +6 V at 15 V clocks, max input 1-2 Vpp, gain 1.2 typ (load dependent, Fig. 6), output followers about 400 Ohm, THD vs level (Fig. 5), S/N > 70 dB, delay = 512 clock half periods",
+      "url": "http://www.synthdiy.com/show/?id=882"
+    },
+    {
+      "title": "R.G. Keen (GEOFEX), SAD-1024 data sheet transcription",
+      "url": "http://www.geofex.com/sad1024.htm"
+    },
+    {
+      "title": "Texas Instruments LM339 data sheet (SLCS006): large-signal gain 200 V/mV, response time 1.3 us (5 mV overdrive) / 0.3 us (TTL-level step), output sink 16 mA typ, open collector",
+      "url": "https://www.ti.com/lit/ds/symlink/lm339.pdf"
+    },
+    {
+      "title": "DIYstompboxes forum, 'Question on how the SAD1024 is used in the Electric Mistress' (both sections paralleled, not the datasheet's clock-swapped multiplex)",
+      "url": "https://www.diystompboxes.com/smfforum/index.php?topic=110407.0"
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 1.0
+  },
+  "oversampling": 1,
+  "solver": "auto",
+  "models": {
+    "OC_SAT": {
+      "kind": "diode",
+      "is": 1e-06,
+      "n": 1.0,
+      "rs": 10,
+      "note": "unverified: stand-in for the LM339 open-collector saturation (Vf 0.13 V at 0.13 mA, 0.21 V at 2.8 mA; leakage 1 uA)"
+    },
+    "LM339_DRV": {
+      "kind": "opamp",
+      "level": 1,
+      "a0": 200000.0,
+      "gbw": 100000.0,
+      "slew": 100000.0,
+      "swing_hi": 0.1,
+      "swing_lo": 0.0,
+      "note": "unverified: drive stage of the behavioural LM339: A0 200 V/mV (TI LM339 datasheet, large-signal voltage gain typ); GBW/slew assumed"
+    },
+    "CD4013_LATCH": {
+      "kind": "opamp",
+      "level": 1,
+      "a0": 100000.0,
+      "gbw": 1000000.0,
+      "slew": 200000.0,
+      "swing_hi": 0.25,
+      "swing_lo": 0.25,
+      "note": "unverified: behavioural CMOS latch core (rail-to-rail; CD4013B outputs swing within 50 mV of the rails at light load)"
+    }
+  },
+  "subcircuits": {
+    "lm339": {
+      "pins": [
+        "inp",
+        "inn",
+        "out",
+        "vcc",
+        "gnd"
+      ],
+      "parts": [
+        {
+          "ref": "U",
+          "type": "opamp",
+          "nodes": [
+            "inp",
+            "inn",
+            "drv",
+            "vcc",
+            "gnd"
+          ],
+          "model": "LM339_DRV",
+          "note": "unverified: behavioural LM339 section: a macro comparator (its output falls to 0 V when V(+) < V(-)) pulls the output down through a low-drop diode = the open-collector output (about 0.1-0.2 V saturation at the 0.1-3 mA used here; the 16 mA sink limit is not modelled). A real NPN output stage would make each section 4 nonlinear ports and the LFO loop group 10. Dynamic response not fitted: here the LM339s act only at LFO rates; the fast pair IC4c/IC4d is inside the clock table"
+        },
+        {
+          "ref": "D",
+          "type": "D",
+          "nodes": [
+            "out",
+            "drv"
+          ],
+          "model": "OC_SAT"
+        }
+      ]
+    },
+    "cd4013_sr": {
+      "pins": [
+        "s",
+        "r",
+        "q",
+        "qn",
+        "vdd",
+        "gnd"
+      ],
+      "parts": [
+        {
+          "ref": "ES",
+          "type": "vcvs",
+          "nodes": [
+            "sb",
+            "gnd",
+            "s",
+            "gnd"
+          ],
+          "gain": 1,
+          "note": "CMOS input: no current"
+        },
+        {
+          "ref": "ER",
+          "type": "vcvs",
+          "nodes": [
+            "rb",
+            "gnd",
+            "r",
+            "gnd"
+          ],
+          "gain": 1
+        },
+        {
+          "ref": "EH",
+          "type": "vcvs",
+          "nodes": [
+            "vh",
+            "gnd",
+            "vdd",
+            "gnd"
+          ],
+          "gain": 0.515,
+          "note": "unverified: set so that RESET trips at 6.2 V (Metzger V4 reading: the RESET pin peaks at 6.18 V with V+ 13.00 V); the latch resets when R > V(l) - 0.515 VDD and sets when S > 0.515 VDD. CD4013B datasheet: typ. VDD/2, from Metzger's V4 reading (RESET pin peaks at 6.18 V with V+ 13.00 V, where the latch flips); CD4013B datasheet: typ. VDD/2"
+        },
+        {
+          "ref": "R1",
+          "type": "R",
+          "nodes": [
+            "l",
+            "lp"
+          ],
+          "value": "100k"
+        },
+        {
+          "ref": "R2",
+          "type": "R",
+          "nodes": [
+            "sb",
+            "lp"
+          ],
+          "value": "100k"
+        },
+        {
+          "ref": "R3",
+          "type": "R",
+          "nodes": [
+            "rb",
+            "ln"
+          ],
+          "value": "100k"
+        },
+        {
+          "ref": "R4",
+          "type": "R",
+          "nodes": [
+            "vh",
+            "ln"
+          ],
+          "value": "100k"
+        },
+        {
+          "ref": "U",
+          "type": "opamp",
+          "nodes": [
+            "lp",
+            "ln",
+            "l",
+            "vdd",
+            "gnd"
+          ],
+          "model": "CD4013_LATCH",
+          "note": "Q goes high when L + S - R > VDD/2: set at S > VDD/2, reset at R > VDD/2, hold otherwise"
+        },
+        {
+          "ref": "RQ",
+          "type": "R",
+          "nodes": [
+            "l",
+            "q"
+          ],
+          "value": "470",
+          "note": "unverified: CMOS output resistance at 13 V (CD4013B datasheet class, about 0.4-1 kOhm)"
+        },
+        {
+          "ref": "EN",
+          "type": "vcvs",
+          "nodes": [
+            "nb",
+            "gnd",
+            "vdd",
+            "l"
+          ],
+          "gain": 1,
+          "note": "Qbar = VDD - Q"
+        },
+        {
+          "ref": "RQN",
+          "type": "R",
+          "nodes": [
+            "nb",
+            "qn"
+          ],
+          "value": "470"
+        }
+      ]
+    }
+  },
+  "controls": [
+    {
+      "id": "rate",
+      "label": "Rate",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "a"
+      ],
+      "group": "Main",
+      "note": "RATE 1M reverse-log rheostat in the LFO integrator. 0.067 Hz (measured slowest, Metzger) to about 10 Hz"
+    },
+    {
+      "id": "range",
+      "label": "Range",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "r"
+      ],
+      "group": "Main",
+      "note": "RANGE 100K lin: in flange mode it scales the LFO swing reaching the VCO (sweep depth and its top end); in Filter Matrix mode it is the manual delay (comb) setting. Legacy 'Depth'"
+    },
+    {
+      "id": "color",
+      "label": "Color",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "c"
+      ],
+      "group": "Main",
+      "note": "COLOR 10K lin: regeneration (feedback) amount"
+    },
+    {
+      "id": "matrix",
+      "label": "Filter Matrix",
+      "kind": "switch",
+      "default": 0,
+      "params": [
+        "m"
+      ],
+      "group": "Main",
+      "note": "FLANGE (0) / FILTER MATRIX (1) toggle: matrix disconnects the LFO from RANGE and feeds it from V+ through 39k (static comb). Legacy 'Static'"
+    },
+    {
+      "id": "bias",
+      "label": "Bias trim (internal)",
+      "kind": "continuous",
+      "default": 0.78,
+      "params": [],
+      "group": "Internal",
+      "note": "VR1: audio/BBD bias = 6.8 V * position. Factory: maximum clean swing at SAD1024 pin 6/12 with a 200 Hz sine (Metzger alignment). Default 0.78 = 5.3 V, the datasheet's +6 V optimum (15 V clocks) scaled to the 13.3 V clock. unverified: no published V2 bias reading"
+    },
+    {
+      "id": "feedback",
+      "label": "Feedback trim (internal)",
+      "kind": "continuous",
+      "default": 0.1,
+      "params": [],
+      "group": "Internal",
+      "note": "VR2 100k rheostat (in parallel with 7k5) setting the maximum regeneration. Factory: just below self-oscillation at COLOR max. unverified default"
+    },
+    {
+      "id": "sync",
+      "label": "Sync",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "s"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No tempo sync in the pedal; stored only"
+    },
+    {
+      "id": "led",
+      "label": "LED",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "l"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "The 1976 V2 has no status LED; stored only"
+    },
+    {
+      "id": "invert",
+      "label": "Invert",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "i"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No polarity switch; the wet/dry polarity is fixed by the circuit. Stored only"
+    },
+    {
+      "id": "rotate",
+      "label": "Rotate",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "o"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No LFO phase control; stored only"
+    },
+    {
+      "id": "mix",
+      "label": "Mix",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "x"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Dry/wet fixed by the 13k (dry) / 10k (wet) passive mix; no control. Stored only"
+    },
+    {"id": "power", "label": "On/Off", "kind": "switch", "default": 1.0, "params": ["Pwr"], "legacyOnly": true, "group": "Legacy", "note": "Host handles bypass; stored only"}
+  ],
+  "cuts": [
+    "vbias"
+  ],
+  "parts": [
+    {
+      "ref": "VREG",
+      "type": "V",
+      "nodes": [
+        "vplus",
+        "0"
+      ],
+      "value": "13.28",
+      "label": "V+ (regulated, 12.0-13.5 V)",
+      "note": "unverified: ideal source standing in for the real regulator: 18 V (2 x 9 V) -> BC309C series pass, CA741CE error amp (+ = 22k/30k divider, - = 6.8 V zener fed by 100k with 10 uF). The netlist value is the regulator's set point 6.8*(1 + 22k/(30k||100k VR1)) = 13.28 V (Metzger: 12.0-13.5 V; his V4 measured 13.00 V). Not modelled at circuit level: op-amp supply pins must be cut nodes and op-amp outputs cannot be, so the regulator loop (gain 2e5) has to cross the one-sample cut and the DC cut iteration does not converge. Battery sag is irrelevant behind the regulator"
+    },
+    {
+      "ref": "VFB",
+      "type": "V",
+      "nodes": [
+        "fb",
+        "0"
+      ],
+      "value": "6.8",
+      "label": "Regulator feedback node (= zener voltage)",
+      "note": "unverified: the CA741 holds its + input (the 22k/30k divider node, which also feeds VR1) at the 6.8 V zener; ideal source (no zener model). The real zener's +/-5 % tolerance moves V+ and the bias range together"
+    },
+    {
+      "ref": "VR1",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "vbias",
+        "fb"
+      ],
+      "value": "100k",
+      "taper": "B",
+      "control": "bias",
+      "label": "VR1 BIAS trimmer",
+      "note": "VR1 100 kOhm from the regulator's 6.8 V feedback node to ground; its wiper is the audio/BBD bias line. Its 100 kOhm also loads the 30 kOhm divider leg, which is why V+ is 13.3 V rather than 11.8 V. Pin orientation (clockwise = higher bias) assumed"
+    },
+    {
+      "ref": "C_VB",
+      "type": "C",
+      "nodes": [
+        "vbias",
+        "0"
+      ],
+      "value": "10u",
+      "tolerance": 0.2,
+      "label": "Bias line decoupling"
+    },
+    {
+      "ref": "C_IN",
+      "type": "C",
+      "nodes": [
+        "in",
+        "a"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "label": "Input coupling 0.1 uF"
+    },
+    {
+      "ref": "R_IN",
+      "type": "R",
+      "nodes": [
+        "a",
+        "b"
+      ],
+      "value": "5k6",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R_BIAS1",
+      "type": "R",
+      "nodes": [
+        "b",
+        "vbias"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "IC1a input bias"
+    },
+    {
+      "ref": "IC1A",
+      "type": "opamp",
+      "nodes": [
+        "b",
+        "ic1a_o",
+        "ic1a_o",
+        "vplus",
+        "0"
+      ],
+      "model": "LM741",
+      "label": "IC1a input buffer",
+      "note": "unverified: Metzger's drawing labels IC1 '4558' but his V2 parts list and IC photo show a CA1458E (dual 741-class); library LM741 macro used"
+    },
+    {
+      "ref": "R_S1",
+      "type": "R",
+      "nodes": [
+        "ic1a_o",
+        "c"
+      ],
+      "value": "470",
+      "tolerance": 0.05,
+      "label": "Pre-emphasis series R"
+    },
+    {
+      "ref": "R_S2",
+      "type": "R",
+      "nodes": [
+        "c",
+        "e"
+      ],
+      "value": "4k7",
+      "tolerance": 0.05,
+      "label": "IC1b input R"
+    },
+    {
+      "ref": "C_S2",
+      "type": "C",
+      "nodes": [
+        "c",
+        "e"
+      ],
+      "value": "47n",
+      "tolerance": 0.1,
+      "label": "Pre-emphasis cap (across 4k7): treble boost 720 Hz -> 7.2 kHz"
+    },
+    {
+      "ref": "R_F1",
+      "type": "R",
+      "nodes": [
+        "e",
+        "ic1b_o"
+      ],
+      "value": "6k8",
+      "tolerance": 0.05,
+      "label": "IC1b feedback"
+    },
+    {
+      "ref": "R_BIAS2",
+      "type": "R",
+      "nodes": [
+        "p3",
+        "vbias"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "IC1b + bias"
+    },
+    {
+      "ref": "C_FBIN",
+      "type": "C",
+      "nodes": [
+        "p3",
+        "cw"
+      ],
+      "value": "4n7",
+      "tolerance": 0.1,
+      "label": "Regeneration (COLOR) injection into IC1b +"
+    },
+    {
+      "ref": "IC1B",
+      "type": "opamp",
+      "nodes": [
+        "p3",
+        "e",
+        "ic1b_o",
+        "vplus",
+        "0"
+      ],
+      "model": "LM741",
+      "label": "IC1b summing amp (dry inverting x1.45 LF / x14.5 HF; feedback non-inverting) -> SAD1024 input",
+      "note": "unverified: CA1458E per the V2 parts list (see IC1A)"
+    },
+    {
+      "ref": "IC2",
+      "type": "bbd",
+      "nodes": [
+        "ic1b_o",
+        "sad_o",
+        "sad_o",
+        "vco_ctl"
+      ],
+      "model": "SAD1024",
+      "clock": {
+        "points": [
+          [
+            0.1,
+            281811
+          ],
+          [
+            0.2,
+            251049
+          ],
+          [
+            0.3,
+            248655
+          ],
+          [
+            0.5,
+            244093
+          ],
+          [
+            0.7,
+            235078
+          ],
+          [
+            0.85,
+            214397
+          ],
+          [
+            1.0,
+            192404
+          ],
+          [
+            1.25,
+            153196
+          ],
+          [
+            1.5,
+            129826
+          ],
+          [
+            2.0,
+            99489
+          ],
+          [
+            2.5,
+            80805
+          ],
+          [
+            3.0,
+            67936
+          ],
+          [
+            4.0,
+            51560
+          ],
+          [
+            5.0,
+            41526
+          ],
+          [
+            6.0,
+            34754
+          ],
+          [
+            7.0,
+            29874
+          ],
+          [
+            8.0,
+            26189
+          ],
+          [
+            9.0,
+            23311
+          ],
+          [
+            10.0,
+            20997
+          ],
+          [
+            10.5,
+            20002
+          ],
+          [
+            11.0,
+            19095
+          ],
+          [
+            11.5,
+            18263
+          ]
+        ]
+      },
+      "label": "IC2 Reticon SAD1024: both 512-stage sections in parallel, same clocks",
+      "note": "Pins (Reticon datasheet): IN A 2 and IN B 15 tied to IC1b out; phi1A 8 + phi1B 10 tied, phi2A 3 + phi2B 14 tied (4013 Q / Qbar, IC3b pins 13/12); OUT A' 6 and OUT B 12 tied (used), OUT A 5 and OUT B' 11 tied to VDD (unused outputs, as the datasheet requires); VDD 7 and VBB 9 at V+ (13.0-13.3 V, 100 uF decoupling factory-added); GND 1; NC 4/13/16 grounded. Delay = 512 half clock periods = 256/fclk (datasheet). The two used outputs are the opposite-phase half-period outputs of two identical lines, i.e. the engine's out1/out2 pair. The clock table is fclk (the 4013 output, half the comparator VCO rate) versus the RANGE wiper voltage, from an ngspice run of the real VCO (BC177 + 470 pF + LM339 IC4c/IC4d + 1N914 + CD4013) at V+ = 13.28 V; see the notes. Below 0.1 V the VCO stalls (IC4c + below the reset threshold); the circuit never goes there (wiper minimum about 0.1 V). unverified: SAD1024 model parameters must be added to the library (datasheet facts in the notes); the comparator delay in the VCO deck is the LM339 datasheet response time (0.3 us), not a measurement"
+    },
+    {
+      "ref": "C_BBDO",
+      "type": "C",
+      "nodes": [
+        "sad_o",
+        "0"
+      ],
+      "value": "3n3",
+      "tolerance": 0.1,
+      "label": "BBD output filter cap"
+    },
+    {
+      "ref": "R_BBDO",
+      "type": "R",
+      "nodes": [
+        "sad_o",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "BBD output termination (source-follower load)",
+      "note": "10 kOhm termination: datasheet Fig. 6 gives gain about 1.0 at 10 kOhm (0.75 at 1 kOhm, 1.25 at 50 kOhm)"
+    },
+    {
+      "ref": "C_W",
+      "type": "C",
+      "nodes": [
+        "sad_o",
+        "vr2t"
+      ],
+      "value": "47n",
+      "tolerance": 0.1,
+      "label": "Wet coupling"
+    },
+    {
+      "ref": "VR2",
+      "type": "pot",
+      "nodes": [
+        "vr2t",
+        "vr2t",
+        "vr2b"
+      ],
+      "value": "100k",
+      "taper": "B",
+      "control": "feedback",
+      "label": "VR2 FEEDBACK trimmer (rheostat)",
+      "note": "unverified: factory trim is by ear: 'just before oscillation with COLOR and RANGE at maximum, RATE at mid' (Metzger alignment page). Default 0.1 = 90 kOhm (in parallel with 7k5: 6.9 kOhm, the least-feedback end). The engine owner should re-trim with the real bbd block. Wiper tied to the top end as drawn"
+    },
+    {
+      "ref": "R_W1",
+      "type": "R",
+      "nodes": [
+        "vr2t",
+        "vr2b"
+      ],
+      "value": "7k5",
+      "tolerance": 0.05,
+      "label": "Across VR2"
+    },
+    {
+      "ref": "R_W2",
+      "type": "R",
+      "nodes": [
+        "vr2b",
+        "fbx"
+      ],
+      "value": "470",
+      "tolerance": 0.05,
+      "label": "Feedback de-emphasis R"
+    },
+    {
+      "ref": "C_W2",
+      "type": "C",
+      "nodes": [
+        "fbx",
+        "0"
+      ],
+      "value": "47n",
+      "tolerance": 0.1,
+      "label": "Feedback de-emphasis C"
+    },
+    {
+      "ref": "COLOR",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "cw",
+        "vr2b"
+      ],
+      "value": "10k",
+      "taper": "B",
+      "control": "color",
+      "label": "COLOR (10K lin)",
+      "note": "Regeneration amount: wiper -> 4.7 nF -> IC1b +. Clockwise = more feedback (Metzger alignment: COLOR max = CW)"
+    },
+    {
+      "ref": "R_WET",
+      "type": "R",
+      "nodes": [
+        "vr2t",
+        "out"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "Wet mix resistor"
+    },
+    {
+      "ref": "C_D",
+      "type": "C",
+      "nodes": [
+        "ic1b_o",
+        "d1"
+      ],
+      "value": "47n",
+      "tolerance": 0.1,
+      "label": "Dry coupling"
+    },
+    {
+      "ref": "R_DRY",
+      "type": "R",
+      "nodes": [
+        "d1",
+        "out"
+      ],
+      "value": "13k",
+      "tolerance": 0.05,
+      "label": "Dry mix resistor"
+    },
+    {
+      "ref": "R_DE",
+      "type": "R",
+      "nodes": [
+        "out",
+        "mx"
+      ],
+      "value": "470",
+      "tolerance": 0.05,
+      "label": "Output de-emphasis R"
+    },
+    {
+      "ref": "C_DE",
+      "type": "C",
+      "nodes": [
+        "mx",
+        "0"
+      ],
+      "value": "47n",
+      "tolerance": 0.1,
+      "label": "Output de-emphasis C (600 Hz -> 7.2 kHz shelf, mirrors the pre-emphasis)"
+    },
+    {
+      "ref": "R_D1",
+      "type": "R",
+      "nodes": [
+        "vplus",
+        "dp"
+      ],
+      "value": "2k2",
+      "tolerance": 0.05,
+      "label": "Bias divider (BC177 base node)"
+    },
+    {
+      "ref": "R_D2",
+      "type": "R",
+      "nodes": [
+        "dp",
+        "dq"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R_D3",
+      "type": "R",
+      "nodes": [
+        "dq",
+        "dr"
+      ],
+      "value": "12k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R_D4",
+      "type": "R",
+      "nodes": [
+        "dr",
+        "ds"
+      ],
+      "value": "680",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R_D5",
+      "type": "R",
+      "nodes": [
+        "ds",
+        "0"
+      ],
+      "value": "150",
+      "tolerance": 0.05,
+      "note": "150 Ohm on the V2 drawing (130 Ohm on the V4)"
+    },
+    {
+      "ref": "IC4A",
+      "type": "sub",
+      "of": "lm339",
+      "nodes": [
+        "dq",
+        "nn",
+        "k",
+        "vplus",
+        "0"
+      ],
+      "label": "IC4a LM339 (CA339G) used as a Miller integrator: + = 6.6 V divider, - = nn, open collector -> VLFO",
+      "note": "Measured V4: pin 4 6.59-6.61 V = pin 5 6.61 V, i.e. it runs linear (virtual ground)"
+    },
+    {
+      "ref": "R_PU1",
+      "type": "R",
+      "nodes": [
+        "vplus",
+        "k"
+      ],
+      "value": "4k7",
+      "tolerance": 0.05,
+      "label": "IC4a pull-up"
+    },
+    {
+      "ref": "C_K",
+      "type": "C",
+      "nodes": [
+        "k",
+        "0"
+      ],
+      "value": "0.5u",
+      "tolerance": 0.2,
+      "label": "0.5 uF on VLFO (IC4b - input)"
+    },
+    {
+      "ref": "C_INT",
+      "type": "C",
+      "nodes": [
+        "k",
+        "nn"
+      ],
+      "value": "2.2u",
+      "tolerance": 0.1,
+      "label": "LFO integrating cap 2.2 uF (non-polar)"
+    },
+    {
+      "ref": "C_INT2",
+      "type": "C",
+      "nodes": [
+        "k",
+        "nn"
+      ],
+      "value": "50n",
+      "tolerance": 0.1,
+      "label": "50 nF across it, factory-added (dashed)"
+    },
+    {
+      "ref": "C_NN",
+      "type": "C",
+      "nodes": [
+        "nn",
+        "0"
+      ],
+      "value": "0.22u",
+      "tolerance": 0.1,
+      "label": "0.22 uF on the integrator input, factory-added (dashed)"
+    },
+    {
+      "ref": "RATE",
+      "type": "pot",
+      "nodes": [
+        "x",
+        "x",
+        "nn"
+      ],
+      "value": "1M",
+      "taper": "C",
+      "control": "rate",
+      "label": "RATE (1M rev log)",
+      "note": "Rheostat on the wiper-to-pin-3 segment: R = 1M*(1 - t(x)). CCW = maximum resistance = slowest (Metzger). Measured slowest sweep 0.067 Hz (V2); this netlist: T = 13.3 us/Ohm * (R + 7.7k)"
+    },
+    {
+      "ref": "R_QB",
+      "type": "R",
+      "nodes": [
+        "qn",
+        "x"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "From 4013 Qbar"
+    },
+    {
+      "ref": "R_Q",
+      "type": "R",
+      "nodes": [
+        "q",
+        "x"
+      ],
+      "value": "33k",
+      "tolerance": 0.05,
+      "label": "From 4013 Q",
+      "note": "Q -> 33k, Qbar -> 10k: the charge/discharge drive is 3.0 V or 9.9 V against the 6.6 V virtual ground (Metzger)"
+    },
+    {
+      "ref": "IC4B",
+      "type": "sub",
+      "of": "lm339",
+      "nodes": [
+        "dr",
+        "k",
+        "sset",
+        "vplus",
+        "0"
+      ],
+      "label": "IC4b LM339: SET when VLFO < 0.44 V"
+    },
+    {
+      "ref": "R_PU2",
+      "type": "R",
+      "nodes": [
+        "vplus",
+        "sset"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "4013 SET pull-up"
+    },
+    {
+      "ref": "R_HYS",
+      "type": "R",
+      "nodes": [
+        "sset",
+        "dr"
+      ],
+      "value": "470k",
+      "tolerance": 0.05,
+      "label": "Hysteresis, factory-added (dashed)"
+    },
+    {
+      "ref": "R_R1",
+      "type": "R",
+      "nodes": [
+        "k",
+        "rr"
+      ],
+      "value": "680k",
+      "tolerance": 0.05,
+      "label": "RESET divider top"
+    },
+    {
+      "ref": "R_R2",
+      "type": "R",
+      "nodes": [
+        "rr",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "RESET divider bottom (RESET = 0.6*VLFO, trips at about V+/2)"
+    },
+    {
+      "ref": "IC3A",
+      "type": "sub",
+      "of": "cd4013_sr",
+      "nodes": [
+        "sset",
+        "rr",
+        "q",
+        "qn",
+        "vplus",
+        "0"
+      ],
+      "label": "IC3a CD4013 used as an SR latch (C and D grounded)",
+      "note": "unverified: the engine has no CMOS logic; this is a behavioural stand-in (macro comparator with positive feedback, threshold V+/2, Q/Qbar through 470 Ohm). Report: CMOS gate/flip-flop primitive needed"
+    },
+    {
+      "ref": "VKICK",
+      "type": "V",
+      "nodes": [
+        "kick",
+        "0"
+      ],
+      "value": "0",
+      "ac": {
+        "amplitude": "1m",
+        "freq": 0.5,
+        "phase": 0
+      },
+      "label": "LFO start kick",
+      "note": "Simulation aid, not in the pedal: 1 mV through 10 MOhm into the integrator node starts the relaxation loop from its DC balance point"
+    },
+    {
+      "ref": "RKICK",
+      "type": "R",
+      "nodes": [
+        "kick",
+        "nn"
+      ],
+      "value": "10M"
+    },
+    {
+      "ref": "R_MTX",
+      "type": "R",
+      "nodes": [
+        "vplus",
+        "mtop"
+      ],
+      "value": "39k",
+      "tolerance": 0.05,
+      "label": "Filter Matrix source (39k, factory-added on the V2)"
+    },
+    {
+      "ref": "SW_FL",
+      "type": "switch",
+      "nodes": [
+        "k",
+        "rtop"
+      ],
+      "control": "matrix",
+      "invert": true,
+      "label": "FLANGE / FILTER MATRIX: flange throw (LFO)"
+    },
+    {
+      "ref": "SW_MX",
+      "type": "switch",
+      "nodes": [
+        "mtop",
+        "rtop"
+      ],
+      "control": "matrix",
+      "label": "FLANGE / FILTER MATRIX: matrix throw (static, 39k from V+)"
+    },
+    {
+      "ref": "RANGE",
+      "type": "pot",
+      "nodes": [
+        "rbot",
+        "vco_ctl",
+        "rtop"
+      ],
+      "value": "100k",
+      "taper": "B",
+      "control": "range",
+      "label": "RANGE (100K lin)",
+      "note": "Top = LFO (flange) or 39k from V+ (matrix); bottom = 4k7 to the 0.09 V divider node. Wiper = IC4c pin 7 = the VCO control (Metzger's VLFO measurement point). Clockwise = toward the top = longer delay (Metzger: RANGE max = CW)"
+    },
+    {
+      "ref": "R_RB2",
+      "type": "R",
+      "nodes": [
+        "rbot",
+        "ds"
+      ],
+      "value": "4k7",
+      "tolerance": 0.05,
+      "label": "RANGE bottom resistor"
+    },
+    {
+      "ref": "C_CTL",
+      "type": "C",
+      "nodes": [
+        "vco_ctl",
+        "0"
+      ],
+      "value": "100n",
+      "tolerance": 0.2,
+      "label": "0.1 uF on IC4c + (VCO control)"
+    }
+  ],
+  "probes": [
+    "ic1b_o",
+    "sad_o",
+    "vr2t",
+    "cw",
+    "out",
+    "k",
+    "vco_ctl",
+    "q",
+    "vplus",
+    "vbias"
+  ],
+  "multirate": {
+    "slow": {
+      "rate": 4000.0,
+      "nodes": [
+        "vbias",
+        "k",
+        "vco_ctl"
+      ]
+    }
+  },
+  "readouts": {
+    "lfo": "vco_ctl"
+  }
+}

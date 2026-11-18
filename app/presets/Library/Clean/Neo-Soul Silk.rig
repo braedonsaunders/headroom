@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Neo-Soul Silk</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Neo-Soul Silk" preset-author="Headroom" preset-comment="Warm, silky clean for extended voicings and hammer-on fills: a tube leveler, a small blackface combo with the bright switch off and mids kept, a slow, subtle analog chorus and a soft room. Neck or middle pickup with the tone rolled back a little; let the chords breathe." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="124000">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="G0" value="1"/>
+        <parameter id="P1" value="0.5"/>
+        <parameter id="M2" value="0.5"/>
+        <parameter id="D3" value="0.5"/>
+        <parameter id="L4" value="0.5"/>
+        <parameter id="S5" value="0"/>
+        <parameter id="VUMode" value="0"/>
+        <parameter id="VUM" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="172000">
+    <component-audio version="1">
+      <parameters num-parameters="14">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="volume" value="0.52"/>
+        <parameter id="bright" value="0"/>
+        <parameter id="treble" value="0.5"/>
+        <parameter id="bass" value="0.46"/>
+        <parameter id="reverb intensity" value="0.5"/>
+        <parameter id="reverb on" value="0"/>
+        <parameter id="reverb mode" value="0"/>
+        <parameter id="speed" value="0.5"/>
+        <parameter id="intensity" value="0.5"/>
+        <parameter id="tremolo on" value="0"/>
+        <parameter id="tremolo sag" value="0.5"/>
+        <parameter id="tempo sync" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="1"/>
+        <parameter id="c" value="0.2"/>
+        <parameter id="Cab" value="14"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="29000">
+    <component-audio version="1">
+      <parameters num-parameters="14">
+        <parameter id="TS" value="0"/>
+        <parameter id="Vol" value="0.5"/>
+        <parameter id="Md" value="0.5"/>
+        <parameter id="CI" value="0.5"/>
+        <parameter id="VD" value="0.35"/>
+        <parameter id="VR" value="0.22"/>
+        <parameter id="B" value="0.5"/>
+        <parameter id="Mid" value="0.5"/>
+        <parameter id="Trb" value="0.5"/>
+        <parameter id="Mx" value="0.18"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Dly" value="0.5"/>
+        <parameter id="S" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.15"/>
+        <parameter id="Tm" value="0.25"/>
+        <parameter id="Sz" value="0.4"/>
+        <parameter id="H" value="0.4"/>
+        <parameter id="L" value="0.55"/>
+        <parameter id="Chr" value="0.5"/>
+        <parameter id="iM" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="172000" target-number="1" target-name="treble" min-value="0.3" max-value="0.68" controller-name="Warmth"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="29000" target-number="1" target-name="CI" min-value="0" max-value="0.45" controller-name="Chorus"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="29000" target-number="1" target-name="VR" min-value="0.05" max-value="0.5" controller-name="Chorus Rate"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.35" controller-name="Room"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="172000" target-number="1" target-name="volume" min-value="0.3" max-value="0.55" controller-name="Amp Volume"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="clean-neo-soul-silk" category="Clean" order="120" instrument="guitar" style="Neo-Soul">
+  <description>Warm, silky clean for extended voicings and hammer-on fills: a tube leveler, a small blackface combo with the bright switch off and mids kept, a slow, subtle analog chorus and a soft room. Neck or middle pickup with the tone rolled back a little; let the chords breathe.</description>
+  <tags><tag>Clean</tag><tag>Neo-Soul</tag><tag>R&amp;B</tag><tag>Chorus</tag><tag>Compressed</tag><tag>Room</tag></tags>
+  <sources>
+    <source url="https://www.guitarchalk.com/neo-soul-guitar-amp-settings/" title="Guitar Chalk: neo-soul guitar amp settings"/>
+    <source url="https://www.tonemirror.so/genres/neo-soul" title="ToneMirror: neo-soul guitar tone (settings survey)"/>
+    <source url="https://www.fundamental-changes.com/book/neo-soul-guitar-book/" title="Fundamental Changes: The Neo-Soul Guitar Book"/>
+    <source url="https://tonestakr.com/guides/how-to-get-neo-soul-guitar-tone/" title="Tonestakr: how to get neo-soul guitar tone"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

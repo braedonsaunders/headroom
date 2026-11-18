@@ -1,0 +1,3022 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "mesa-dual-rectifier-16000",
+ "version": 1,
+ "name": "Mesa/Boogie Dual Rectifier Solo Head, 3 channel",
+ "description": "Mesa/Boogie Dual Rectifier 3-channel Solo Head as drawn on the 'Preliminary Schematic' set (RECBPR1/2/3, RECBPWR, RECBSUPP, RECBSW1/2 .501): V1a, the CH1 Fender-style stack with Cln/Pushed (RY5/RY5'), shared V2a with the CH1 J175 grid-stopper bypass, CH1 V1b recovery and presence, the CH2/CH3 V2b cold clipper, V3a and V3b cathode follower into each channel's stack, presence and master, the Raw/Vintage/Modern relays RY6-RY9 and the Modern feedback relay RY7, the 4744 master-bus clamp, the series/parallel FX loop (V4a send follower, Mix, V4b, Output, Solo), the LTP PI, four 6L6 (folded in pairs), the tapped OT with 8 ohm feedback, an 8 ohm 4x12-class cab, and the 5U4 x2 / silicon switchable HT supply with Bold/Spongy.",
+ "sources": [
+  {
+   "title": "Mesa/Boogie 3ch Solo Head 'Preliminary Schematic' (11 pages: front/rear part tables, block diagram RECBBLK.S01, power supplies RECBSUPP.501 with XFMR #561140, preamp RECBPR1/2/3.501, CH2 CH3 voicing RECBSW2.501, switching RECBSW1.501, power amp RECBPWR.501)",
+   "url": "http://diy-fever.com/wordpress/wp-content/uploads/2009/12/dual_rectifier.pdf",
+   "note": "PRIMARY and the only source for the 3-channel preamp and switching (single source for CH1 and the relay matrix). Pages 4, 6-8, 11 at 377 ppi, pages 5, 9, 10 at 158-162 ppi (CCITT); every value read from 1:1 crops (coordinates in the notes). Handwritten annotations on pp. 7, 9, 10 are a later tracer's and are disclosed where they disagree with the printed circuit."
+  },
+  {
+   "title": "MESA-BOOGIE DUAL RECTIFIER (2-channel, preamp RF-1F = Rev F, '6-93 GEO. M.'), 6 pages incl. power amp, supplies, FX loop and the LDR switching matrix",
+   "url": "https://www.schematicheaven.net/boogieamps/boogie_dualrectifier.pdf",
+   "note": "Cross-check for the shared circuitry (PI, power amp, HV supply topology, V2b/V3a/V3b chain, CH2/CH3-style stacks). A different revision: every disagreement is disclosed in the notes, not treated as an error."
+  },
+  {
+   "title": "Dual Rectifier Solo Head [2ch. RevF De-Falsified] (same scan, with Rev C/G annotations)",
+   "url": "https://boogieforum.com/books/3571/file",
+   "note": "md5-identical images to the Rev F trace; annotations: plate voltages Rev G 453 V / Rev C 433 V '(6L6GC STR420, Diode, Bold)'."
+  }
+ ],
+ "oversampling": 2,
+ "minRate": 88200,
+ "io": {
+  "input": "in",
+  "output": "t8",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 200.0,
+  "note": "outputVoltsPerFS = 1.5 x the 133.9 V peak at the speaker (8 ohm tap) with Vintage and every catalogue knob dimed (1.0 V, 220 Hz, 192 kHz; the peaks are OT flyback as the 6L6s cut off). Modern dimed 116 V, Raw 106 V, Clean 60 V. Defaults (Raw, knobs 0.5, Output 0.5) at 0.1 V in: 51 V peak."
+ },
+ "solver": "auto",
+ "cuts": [
+  "hra",
+  "hrb",
+  "d1m",
+  "d3m",
+  "sil",
+  "a",
+  "rm",
+  "chk",
+  "b",
+  "c",
+  "d",
+  "e"
+ ],
+ "models": {
+  "5U4GB_X2": {
+   "kind": "vacdiode",
+   "k": 0.00188,
+   "knee": 0.5,
+   "note": "Two 5U4GB plates in parallel: the library 5U4GB perveance (9.4e-4, 44 V at 275 mA, RCA) doubled"
+  }
+ },
+ "controls": [
+  {
+   "id": "gain",
+   "label": "Gain",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Gn"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "Ganged to the three channels' GAIN pots (CH1 1MA, CH2 and CH3 250KA): the Mode selector picks which one is in circuit, so the knob always acts on the selected channel"
+  },
+  {
+   "id": "master",
+   "label": "Master",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Mast"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "The three channel MSTR pots (1MA each), ganged as Gain"
+  },
+  {
+   "id": "bass",
+   "label": "Bass",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Bs"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "CH1 250KA, CH2 / CH3 1MA, ganged"
+  },
+  {
+   "id": "mid",
+   "label": "Mid",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Mid"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "CH1 25KA rheostat, CH2 / CH3 25KL, ganged"
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Trb"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "CH1 250KA, CH2 / CH3 250KL, ganged"
+  },
+  {
+   "id": "presence",
+   "label": "Presence",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Prs"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "CH1 250KL treble-shunt rheostat before its master; CH2 25KL / CH3 100KL either in the power-amp feedback (relay energised) or as a treble shunt on the stack output; ganged"
+  },
+  {
+   "id": "mode",
+   "label": "Mode",
+   "kind": "selector",
+   "default": 0.3333333333333333,
+   "options": [
+    "Clean",
+    "Raw",
+    "Vintage",
+    "Modern"
+   ],
+   "params": [
+    "M"
+   ],
+   "paramRange": [
+    0,
+    3
+   ],
+   "group": "Main",
+   "note": "Clean = CH1 (green; RY1, RY1', RY2 and the V2a J175 in their CH1 state). Raw / Vintage / Modern = the high-gain channel chosen by hgch with its Raw/Vtg/Mdrn switch in that position: Raw energises RY6 (lifts the .002 // 680K), Modern energises RY7 (180 pF on the CH3 treble cap, global feedback open), Vintage/Modern energise RY9 on CH3; RY8 is energised whenever CH2 is selected (decoded from the voicing sheet RECBSW2.501, see notes)"
+  },
+  {
+   "id": "hgch",
+   "label": "Channel",
+   "kind": "selector",
+   "default": 0.0,
+   "options": [
+    "CH3 Red",
+    "CH2 Orange"
+   ],
+   "face": true,
+   "group": "Main",
+   "note": "Which high-gain channel the Raw/Vintage/Modern modes use (RY3, RY4, RY8/RY9). The catalogue has one mode selector; CH3 (red) is the default"
+  },
+  {
+   "id": "push",
+   "label": "CH1 Cln/Pushed",
+   "kind": "switch",
+   "default": 0.0,
+   "options": [
+    "Clean",
+    "Pushed"
+   ],
+   "face": true,
+   "group": "Main",
+   "note": "CH1 Cln/Pushed switch (607101): RY5 / RY5'"
+  },
+  {
+   "id": "rectifier",
+   "label": "Rectifier",
+   "kind": "switch",
+   "default": 1.0,
+   "options": [
+    "Tube (5U4)",
+    "Silicon diode"
+   ],
+   "face": true,
+   "group": "Power",
+   "note": "Rear RECTIFIER SELECT (602112): silicon 1N4007 strings switched in parallel with the two 5U4s"
+  },
+  {
+   "id": "power",
+   "label": "Bold/Spongy",
+   "kind": "switch",
+   "default": 1.0,
+   "options": [
+    "Spongy",
+    "Bold"
+   ],
+   "face": true,
+   "group": "Power",
+   "note": "Rear BOLD/SPONGY switch (600115): primary tap; Spongy scales every secondary by 0.9 (assumption, see notes)"
+  },
+  {
+   "id": "loop",
+   "label": "FX Loop",
+   "kind": "switch",
+   "default": 0.0,
+   "options": [
+    "Active",
+    "Bypass"
+   ],
+   "face": true,
+   "group": "Loop",
+   "note": "RY10 (FX LOOP BYPASS): Active runs V4a / Send / Mix / V4b / Output / Solo with nothing patched; Bypass goes from the master bus straight to the PI"
+  },
+  {
+   "id": "solo",
+   "label": "Solo",
+   "kind": "switch",
+   "default": 0.0,
+   "options": [
+    "Off",
+    "On"
+   ],
+   "face": true,
+   "group": "Loop",
+   "note": "Footswitch / EXT SOLO: On lifts the J175 across the SOLO pot"
+  },
+  {
+   "id": "output",
+   "label": "Output",
+   "kind": "continuous",
+   "default": 0.5,
+   "group": "Loop",
+   "note": "Front-panel OUTPUT 250KA (loop active only); no catalogue param"
+  },
+  {
+   "id": "soloLevel",
+   "label": "Solo Level",
+   "kind": "continuous",
+   "default": 0.5,
+   "group": "Loop",
+   "note": "Front-panel SOLO 250KA; heard with Solo on"
+  },
+  {
+   "id": "sendLevel",
+   "label": "Send Level",
+   "kind": "continuous",
+   "default": 1.0,
+   "group": "Loop",
+   "note": "Rear SEND LEVEL 25KA; also sets the dry level into V4b"
+  },
+  {
+   "id": "mix",
+   "label": "Mix",
+   "kind": "continuous",
+   "default": 0.0,
+   "group": "Loop",
+   "note": "Rear MIX 25KL, 0 = dry (send wiper). With the return unpatched the bottom end is open"
+  },
+  {
+   "id": "stereo",
+   "label": "Stereo",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "CASSt"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "legacyOnly": true,
+   "note": "Stored only"
+  },
+  {
+   "id": "variac",
+   "label": "VAC",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Var"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "legacyOnly": true,
+   "note": "Stored only: the real line-voltage switch is Bold/Spongy (the power face switch), which uses the source scale"
+  },
+  {
+   "id": "sag",
+   "label": "Sag",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Sg"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "legacyOnly": true,
+   "note": "Sag emerges from the 5U4/silicon supply and choke; stored only"
+  },
+  {
+   "id": "response",
+   "label": "Response",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Rsp"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "legacyOnly": true,
+   "note": "No counterpart; stored only"
+  },
+  {
+   "id": "biasLegacy",
+   "label": "Bias",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Bias"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "legacyOnly": true,
+   "note": "The amp's bias is fixed (rear BIAS SELECT 6L6/EL34, left in the 6L6 position for the fitted 6L6s); stored only"
+  },
+  {
+   "id": "pw",
+   "label": "Power",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Hz"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "legacyOnly": true,
+   "note": "Catalogue 'Power' (id Hz), continuous and unused by the legacy model; the drawing has no continuous power control (no 50/100 W switch on this head). Bold/Spongy is the power face switch. Stored only"
+  },
+  {
+   "id": "onoff",
+   "label": "On/Off",
+   "kind": "switch",
+   "default": 1.0,
+   "params": [
+    "Pwr"
+   ],
+   "legacyOnly": true,
+   "note": "Host handles bypass"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VHA",
+   "type": "V",
+   "nodes": [
+    "ha",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "494.97",
+    "freq": 60,
+    "phase": 90
+   },
+   "scale": {
+    "control": "power",
+    "min": 0.9,
+    "max": 1.0
+   },
+   "label": "PT #561140 HT 'RD 350vAC' to the grounded RD/YL centre tap (phase A)",
+   "note": "350 Vrms per half (494.97 V peak), two-source full-wave equivalent of the centre-tapped HT as in the reference amps. scale: the rear BOLD/SPONGY switch selects the primary tap (BK/WH Bold, BLK Spongy); Spongy = 0.9 x every secondary (assumption, see notes: the drawing gives no tap voltage)"
+  },
+  {
+   "ref": "VHB",
+   "type": "V",
+   "nodes": [
+    "hb",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "494.97",
+    "freq": 60,
+    "phase": 270
+   },
+   "scale": {
+    "control": "power",
+    "min": 0.9,
+    "max": 1.0
+   },
+   "label": "PT HT 'RD 350vAC' other end (phase B)"
+  },
+  {
+   "ref": "RPTA",
+   "type": "R",
+   "nodes": [
+    "ha",
+    "hra"
+   ],
+   "value": "10",
+   "label": "HT half winding + reflected primary resistance (A), unverified: fitted to the drawn 476 V at A"
+  },
+  {
+   "ref": "RPTB",
+   "type": "R",
+   "nodes": [
+    "hb",
+    "hrb"
+   ],
+   "value": "10",
+   "label": "HT half winding + reflected primary resistance (B), unverified: fitted"
+  },
+  {
+   "ref": "D1",
+   "type": "D",
+   "nodes": [
+    "hra",
+    "d1m"
+   ],
+   "model": "1N4001",
+   "label": "1N4007 (1N4001 card), leg A, first of two in series"
+  },
+  {
+   "ref": "D2",
+   "type": "D",
+   "nodes": [
+    "d1m",
+    "sil"
+   ],
+   "model": "1N4001",
+   "label": "1N4007, leg A, second"
+  },
+  {
+   "ref": "D3",
+   "type": "D",
+   "nodes": [
+    "hrb",
+    "d3m"
+   ],
+   "model": "1N4001",
+   "label": "1N4007, leg B, first of two in series"
+  },
+  {
+   "ref": "D4",
+   "type": "D",
+   "nodes": [
+    "d3m",
+    "sil"
+   ],
+   "model": "1N4001",
+   "label": "1N4007, leg B, second"
+  },
+  {
+   "ref": "SRECT",
+   "type": "switch",
+   "nodes": [
+    "sil",
+    "a"
+   ],
+   "control": "rectifier",
+   "positions": [
+    1
+   ],
+   "label": "RECTIFIER SELECT: closed = the silicon string feeds the reservoir in parallel with the 5U4s (drawing: SPST from the diode junction to the reservoir; the 5U4 filaments are wired to the reservoir permanently)"
+  },
+  {
+   "ref": "VT1",
+   "type": "D",
+   "nodes": [
+    "hra",
+    "a"
+   ],
+   "model": "5U4GB_X2",
+   "label": "5U4 x2, pins 4 (plate A) of both tubes on the top RD lead; filament (cathode) on the reservoir",
+   "note": "Two 5U4GB plates on the same nodes folded into one Child-Langmuir law with twice the perveance (exact: i = 2 K s^1.5). The 5 VAC filament winding (YLW) is the cathode; its +/-3.5 V heater swing is not modelled."
+  },
+  {
+   "ref": "VT2",
+   "type": "D",
+   "nodes": [
+    "hrb",
+    "a"
+   ],
+   "model": "5U4GB_X2",
+   "label": "5U4 x2, pins 6 (plate B) of both tubes on the bottom RD lead"
+  },
+  {
+   "ref": "CR1",
+   "type": "C",
+   "nodes": [
+    "a",
+    "rm"
+   ],
+   "value": "220u",
+   "label": "Reservoir 220 uF/300 V (upper of the series pair)",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "CR2",
+   "type": "C",
+   "nodes": [
+    "rm",
+    "0"
+   ],
+   "value": "220u",
+   "label": "Reservoir 220 uF/300 V (lower)",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "RR1",
+   "type": "R",
+   "nodes": [
+    "a",
+    "rm"
+   ],
+   "value": "220k",
+   "label": "Reservoir balance 220 k (upper)"
+  },
+  {
+   "ref": "RR2",
+   "type": "R",
+   "nodes": [
+    "rm",
+    "0"
+   ],
+   "value": "220k",
+   "label": "Reservoir balance 220 k (lower)"
+  },
+  {
+   "ref": "CA",
+   "type": "C",
+   "nodes": [
+    "a",
+    "0"
+   ],
+   "value": "47n",
+   "label": "A node .047 uF / 1 kV (after the standby switch, closed = wire)"
+  },
+  {
+   "ref": "LCH",
+   "type": "L",
+   "nodes": [
+    "a",
+    "chk"
+   ],
+   "value": "4",
+   "label": "CHOKE (inductance not on the drawing: unverified typical)"
+  },
+  {
+   "ref": "RCHK",
+   "type": "R",
+   "nodes": [
+    "chk",
+    "b"
+   ],
+   "value": "258",
+   "label": "Choke DCR, unverified: fitted to the drawn 476 V (A) -> 471 V (B)"
+  },
+  {
+   "ref": "CB",
+   "type": "C",
+   "nodes": [
+    "b",
+    "0"
+   ],
+   "value": "30u",
+   "label": "B filter 30 uF/500 V",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "R2K7",
+   "type": "R",
+   "nodes": [
+    "b",
+    "c"
+   ],
+   "value": "2k7",
+   "label": "2K7/2W dropper B -> C"
+  },
+  {
+   "ref": "CC1",
+   "type": "C",
+   "nodes": [
+    "c",
+    "0"
+   ],
+   "value": "10u",
+   "label": "C filter 10 uF/450 V (1 of 3 on C; '10uf 450v x 7')",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "CC2",
+   "type": "C",
+   "nodes": [
+    "c",
+    "0"
+   ],
+   "value": "10u",
+   "label": "C filter 10 uF/450 V (2 of 3 on C; '10uf 450v x 7')",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "CC3",
+   "type": "C",
+   "nodes": [
+    "c",
+    "0"
+   ],
+   "value": "10u",
+   "label": "C filter 10 uF/450 V (3 of 3 on C; '10uf 450v x 7')",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "R15K",
+   "type": "R",
+   "nodes": [
+    "c",
+    "d"
+   ],
+   "value": "15k",
+   "label": "15K dropper C -> D (394 V)"
+  },
+  {
+   "ref": "CD1",
+   "type": "C",
+   "nodes": [
+    "d",
+    "0"
+   ],
+   "value": "10u",
+   "label": "D filter 10 uF/450 V (1 of 2)",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "CD2",
+   "type": "C",
+   "nodes": [
+    "d",
+    "0"
+   ],
+   "value": "10u",
+   "label": "D filter 10 uF/450 V (2 of 2)",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "R22K",
+   "type": "R",
+   "nodes": [
+    "c",
+    "e"
+   ],
+   "value": "22k",
+   "label": "22K dropper C -> E (413 V), hopping over D"
+  },
+  {
+   "ref": "CE1",
+   "type": "C",
+   "nodes": [
+    "e",
+    "0"
+   ],
+   "value": "10u",
+   "label": "E filter 10 uF/450 V (1 of 2)",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "CE2",
+   "type": "C",
+   "nodes": [
+    "e",
+    "0"
+   ],
+   "value": "10u",
+   "label": "E filter 10 uF/450 V (2 of 2)",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "VBIAS",
+   "type": "V",
+   "nodes": [
+    "bias",
+    "0"
+   ],
+   "value": "-54",
+   "scale": {
+    "control": "power",
+    "min": 0.9,
+    "max": 1.0
+   },
+   "label": "BIAS node (drawing p.11: 'BIAS -54v', grids -52 v; supply table '-52v 6L6')",
+   "note": "The bias supply (RD/BL 60 VAC, 4007, 825 R, 47 uF, 3K3, 47 uF, 22K / 82K, 15K + BIAS SELECT in the 6L6 position) is modelled as its filter node, as every reference amp does (a negative half-wave rectifier is not charged at the crest DC point). Scaled by Bold/Spongy like the other secondaries."
+  },
+  {
+   "ref": "RG1A",
+   "type": "R",
+   "nodes": [
+    "in",
+    "0"
+   ],
+   "value": "1M",
+   "label": "V1a grid leak 1M (input jack; ferrite bead in series with the grid = wire at audio)"
+  },
+  {
+   "ref": "V1A",
+   "type": "triode",
+   "nodes": [
+    "p1a",
+    "in",
+    "k1a"
+   ],
+   "model": "12AX7",
+   "label": "V1a 12AX7 (207 V plate, 2 V cathode)"
+  },
+  {
+   "ref": "RL1A",
+   "type": "R",
+   "nodes": [
+    "e",
+    "p1a"
+   ],
+   "value": "220k",
+   "label": "V1a plate 220K from E (413 V)"
+  },
+  {
+   "ref": "RK1A",
+   "type": "R",
+   "nodes": [
+    "k1a",
+    "0"
+   ],
+   "value": "1k8",
+   "label": "V1a cathode 1K8"
+  },
+  {
+   "ref": "CK1A",
+   "type": "C",
+   "nodes": [
+    "k1a",
+    "k1ab"
+   ],
+   "value": "1u",
+   "label": "V1a cathode 1 uF, in series with 100 R"
+  },
+  {
+   "ref": "RK1AB",
+   "type": "R",
+   "nodes": [
+    "k1ab",
+    "0"
+   ],
+   "value": "100",
+   "label": "V1a cathode bypass series 100 R"
+  },
+  {
+   "ref": "RY1A_NC",
+   "type": "switch",
+   "nodes": [
+    "p1a",
+    "t1"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "label": "RY1a nc: V1a plate -> CH1 tone stack (RY1 energised in CH2/CH3)"
+  },
+  {
+   "ref": "RY1A_NO",
+   "type": "switch",
+   "nodes": [
+    "p1a",
+    "n1x"
+   ],
+   "control": "mode",
+   "positions": [
+    1,
+    2,
+    3
+   ],
+   "label": "RY1a no: V1a plate -> CH2/CH3 coupling .02"
+  },
+  {
+   "ref": "C1PL",
+   "type": "C",
+   "nodes": [
+    "t1",
+    "0"
+   ],
+   "value": "1n",
+   "label": "CH1 .001 uF from the V1a plate line to ground"
+  },
+  {
+   "ref": "RY5A",
+   "type": "switch",
+   "nodes": [
+    "t1",
+    "r5a"
+   ],
+   "control": "push",
+   "positions": [
+    1
+   ],
+   "label": "RY5a (CH1 Cln/Pushed) no 'push': adds the .002 to the treble cap; nc 'cln' is an open stub"
+  },
+  {
+   "ref": "R10M1",
+   "type": "R",
+   "nodes": [
+    "t1",
+    "r5a"
+   ],
+   "value": "10M",
+   "label": "CH1 10M bleeder across the open RY5a contact"
+  },
+  {
+   "ref": "C2N1",
+   "type": "C",
+   "nodes": [
+    "r5a",
+    "tt1"
+   ],
+   "value": "2n",
+   "label": "CH1 Push .002 uF treble cap"
+  },
+  {
+   "ref": "CT1",
+   "type": "C",
+   "nodes": [
+    "t1",
+    "tt1"
+   ],
+   "value": "250p",
+   "label": "CH1 treble cap 250 pF"
+  },
+  {
+   "ref": "RSL1",
+   "type": "R",
+   "nodes": [
+    "t1",
+    "s1"
+   ],
+   "value": "150k",
+   "label": "CH1 slope 150K"
+  },
+  {
+   "ref": "CB1",
+   "type": "C",
+   "nodes": [
+    "s1",
+    "tb1"
+   ],
+   "value": "100n",
+   "label": "CH1 bass cap .1 uF"
+  },
+  {
+   "ref": "CM1",
+   "type": "C",
+   "nodes": [
+    "s1",
+    "mt1"
+   ],
+   "value": "47n",
+   "label": "CH1 mid cap .047 uF"
+  },
+  {
+   "ref": "TREB1",
+   "type": "pot",
+   "nodes": [
+    "tb1",
+    "tw1",
+    "tt1"
+   ],
+   "value": "250k",
+   "taper": "A",
+   "control": "treble",
+   "label": "CH1 TRBL 250KA (Mesa 593148)"
+  },
+  {
+   "ref": "BASS1",
+   "type": "pot",
+   "nodes": [
+    "mt1",
+    "tb1",
+    "tb1"
+   ],
+   "value": "250k",
+   "taper": "A",
+   "control": "bass",
+   "label": "CH1 BASS 250KA rheostat (593148)"
+  },
+  {
+   "ref": "MID1",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mt1",
+    "mt1"
+   ],
+   "value": "25k",
+   "taper": "A",
+   "control": "mid",
+   "label": "CH1 MID 25KA rheostat to ground (593736)"
+  },
+  {
+   "ref": "GAIN1",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "gw1",
+    "tw1"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "gain",
+   "label": "CH1 GAIN 1MA (593792), fed from the treble wiper"
+  },
+  {
+   "ref": "CBR1",
+   "type": "C",
+   "nodes": [
+    "tw1",
+    "gw1"
+   ],
+   "value": "120p",
+   "label": "CH1 gain bright cap 120 pF (top to wiper)"
+  },
+  {
+   "ref": "RY1B_NC",
+   "type": "switch",
+   "nodes": [
+    "gw1",
+    "v2in"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "label": "RY1b nc: CH1 gain wiper -> V2a input"
+  },
+  {
+   "ref": "RY1B_NO",
+   "type": "switch",
+   "nodes": [
+    "hgw",
+    "v2in"
+   ],
+   "control": "mode",
+   "positions": [
+    1,
+    2,
+    3
+   ],
+   "label": "RY1b no: CH2/CH3 gain (RY3a common) -> V2a input"
+  },
+  {
+   "ref": "RS2A",
+   "type": "R",
+   "nodes": [
+    "v2in",
+    "g2a"
+   ],
+   "value": "475k",
+   "label": "V2a grid stopper 475K"
+  },
+  {
+   "ref": "J175A",
+   "type": "switch",
+   "nodes": [
+    "v2in",
+    "g2a"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "label": "J175 across the 475K, on in CH1 (gate pulled down by the 6426 driven from the 1' bus while RY1' is released): a switch",
+   "ron": 150,
+   "note": "P-JFET used as a switch: on (Vgs ~ +0.8 V from the Darlington's saturation, rDS(on) <= 125 ohm datasheet) in CH1, pinched off by +15 V in CH2/CH3. ron 150 ohm unverified."
+  },
+  {
+   "ref": "C20P",
+   "type": "C",
+   "nodes": [
+    "g2a",
+    "0"
+   ],
+   "value": "20p",
+   "label": "V2a grid 20 pF to ground"
+  },
+  {
+   "ref": "V2A",
+   "type": "triode",
+   "nodes": [
+    "p2a",
+    "g2a",
+    "k2a"
+   ],
+   "model": "12AX7",
+   "label": "V2a 12AX7 (277 V plate, 2 V cathode)"
+  },
+  {
+   "ref": "RL2A",
+   "type": "R",
+   "nodes": [
+    "d",
+    "p2a"
+   ],
+   "value": "100k",
+   "label": "V2a plate 100K from D (394 V)"
+  },
+  {
+   "ref": "RK2A",
+   "type": "R",
+   "nodes": [
+    "k2a",
+    "0"
+   ],
+   "value": "1k8",
+   "label": "V2a cathode 1K8"
+  },
+  {
+   "ref": "CK2A",
+   "type": "C",
+   "nodes": [
+    "k2a",
+    "k2ab"
+   ],
+   "value": "1u",
+   "label": "V2a cathode 1 uF in series with 100 R"
+  },
+  {
+   "ref": "RK2AB",
+   "type": "R",
+   "nodes": [
+    "k2ab",
+    "0"
+   ],
+   "value": "100",
+   "label": "V2a cathode bypass series 100 R"
+  },
+  {
+   "ref": "CK2C",
+   "type": "C",
+   "nodes": [
+    "k2a",
+    "k2c"
+   ],
+   "value": "15u",
+   "label": "V2a cathode 15 uF, grounded by RY1'a nc (CH1 only)"
+  },
+  {
+   "ref": "RY1PA",
+   "type": "switch",
+   "nodes": [
+    "k2c",
+    "0"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "label": "RY1'a nc: 15 uF full cathode bypass in CH1"
+  },
+  {
+   "ref": "RY1PB_NC",
+   "type": "switch",
+   "nodes": [
+    "p2a",
+    "v1bin"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "label": "RY1'b nc: V2a plate -> CH1 V1b"
+  },
+  {
+   "ref": "RY1PB_NO",
+   "type": "switch",
+   "nodes": [
+    "p2a",
+    "v2bin"
+   ],
+   "control": "mode",
+   "positions": [
+    1,
+    2,
+    3
+   ],
+   "label": "RY1'b no: V2a plate -> CH2/CH3 V2b"
+  },
+  {
+   "ref": "C1BI",
+   "type": "C",
+   "nodes": [
+    "v1bin",
+    "a1"
+   ],
+   "value": "47n",
+   "label": "V1b input .047 uF"
+  },
+  {
+   "ref": "R3M3",
+   "type": "R",
+   "nodes": [
+    "a1",
+    "g1b"
+   ],
+   "value": "3M3",
+   "label": "V1b input 3M3"
+  },
+  {
+   "ref": "C39P",
+   "type": "C",
+   "nodes": [
+    "a1",
+    "g1b"
+   ],
+   "value": "39p",
+   "label": "39 pF across the 3M3"
+  },
+  {
+   "ref": "RY5B",
+   "type": "switch",
+   "nodes": [
+    "a1",
+    "r5b"
+   ],
+   "control": "push",
+   "positions": [
+    1
+   ],
+   "label": "RY5b no 'push': .002 across the 3M3 (nc 'cln' open stub)"
+  },
+  {
+   "ref": "C2N1B",
+   "type": "C",
+   "nodes": [
+    "r5b",
+    "g1b"
+   ],
+   "value": "2n",
+   "label": "Push .002 uF across the 3M3"
+  },
+  {
+   "ref": "R20M",
+   "type": "R",
+   "nodes": [
+    "r5b",
+    "0"
+   ],
+   "value": "20M",
+   "label": "20M bleeder on the RY5b common"
+  },
+  {
+   "ref": "R330G",
+   "type": "R",
+   "nodes": [
+    "g1b",
+    "0"
+   ],
+   "value": "330k",
+   "label": "V1b grid 330K to ground"
+  },
+  {
+   "ref": "C47G",
+   "type": "C",
+   "nodes": [
+    "g1b",
+    "0"
+   ],
+   "value": "47p",
+   "label": "V1b grid 47 pF to ground"
+  },
+  {
+   "ref": "V1B",
+   "type": "triode",
+   "nodes": [
+    "p1b",
+    "g1b",
+    "k1b"
+   ],
+   "model": "12AX7",
+   "label": "V1b 12AX7 (263 V plate, 2 V cathode)"
+  },
+  {
+   "ref": "RL1B",
+   "type": "R",
+   "nodes": [
+    "d",
+    "p1b"
+   ],
+   "value": "100k",
+   "label": "V1b plate 100K from D"
+  },
+  {
+   "ref": "RK1B",
+   "type": "R",
+   "nodes": [
+    "k1b",
+    "0"
+   ],
+   "value": "1k5",
+   "label": "V1b cathode 1K5 unbypassed"
+  },
+  {
+   "ref": "CO1B",
+   "type": "C",
+   "nodes": [
+    "p1b",
+    "o1"
+   ],
+   "value": "47n",
+   "label": "V1b coupling .047 uF"
+  },
+  {
+   "ref": "R220O",
+   "type": "R",
+   "nodes": [
+    "o1",
+    "m1"
+   ],
+   "value": "220k",
+   "label": "V1b output 220K"
+  },
+  {
+   "ref": "R1M5",
+   "type": "R",
+   "nodes": [
+    "m1",
+    "pm1"
+   ],
+   "value": "1M5",
+   "label": "Push attenuator 1M5"
+  },
+  {
+   "ref": "R330P",
+   "type": "R",
+   "nodes": [
+    "m1",
+    "m1x"
+   ],
+   "value": "330k",
+   "label": "Push attenuator 330K (in series with 47 pF, across the 1M5)"
+  },
+  {
+   "ref": "C47P",
+   "type": "C",
+   "nodes": [
+    "m1x",
+    "pm1"
+   ],
+   "value": "47p",
+   "label": "47 pF in series with the 330K"
+  },
+  {
+   "ref": "RY5PA",
+   "type": "switch",
+   "nodes": [
+    "m1",
+    "pm1"
+   ],
+   "control": "push",
+   "positions": [
+    0
+   ],
+   "label": "RY5'a nc 'cln': shorts the 1M5 network (Clean)"
+  },
+  {
+   "ref": "CPR1",
+   "type": "C",
+   "nodes": [
+    "pm1",
+    "pr1"
+   ],
+   "value": "2n",
+   "label": "CH1 PRSNC .002 uF"
+  },
+  {
+   "ref": "PRES1",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "pr1",
+    "pr1"
+   ],
+   "value": "250k",
+   "taper": "B",
+   "control": "presence",
+   "label": "CH1 PRSNC 250KL rheostat to ground (592738): more resistance = less treble shunted"
+  },
+  {
+   "ref": "C250M",
+   "type": "C",
+   "nodes": [
+    "pm1",
+    "0"
+   ],
+   "value": "250p",
+   "label": "CH1 master 250 pF to ground"
+  },
+  {
+   "ref": "MSTR1",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mw1",
+    "pm1"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "master",
+   "label": "CH1 MSTR 1MA (593792)"
+  },
+  {
+   "ref": "RY2B_NO",
+   "type": "switch",
+   "nodes": [
+    "mw1",
+    "mv"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "label": "RY2b no: CH1 master wiper -> master bus (RY2 energised in CH1)"
+  },
+  {
+   "ref": "RY2B_NC",
+   "type": "switch",
+   "nodes": [
+    "hgm",
+    "mv"
+   ],
+   "control": "mode",
+   "positions": [
+    1,
+    2,
+    3
+   ],
+   "label": "RY2b nc: RY4a common (CH2/CH3 master) -> master bus"
+  },
+  {
+   "ref": "C02X",
+   "type": "C",
+   "nodes": [
+    "n1x",
+    "n1"
+   ],
+   "value": "20n",
+   "label": "CH2/CH3 coupling .02 uF from RY1a no"
+  },
+  {
+   "ref": "R2M2G",
+   "type": "R",
+   "nodes": [
+    "n1",
+    "0"
+   ],
+   "value": "2M2",
+   "label": "2M2 to ground"
+  },
+  {
+   "ref": "C82P",
+   "type": "C",
+   "nodes": [
+    "n1",
+    "n2"
+   ],
+   "value": "82p",
+   "label": "82 pF"
+  },
+  {
+   "ref": "R2M2S",
+   "type": "R",
+   "nodes": [
+    "n1",
+    "n2"
+   ],
+   "value": "2M2",
+   "label": "2M2 series"
+  },
+  {
+   "ref": "R680",
+   "type": "R",
+   "nodes": [
+    "n1",
+    "r6"
+   ],
+   "value": "680k",
+   "label": "680K (with .002) switched by RY6a"
+  },
+  {
+   "ref": "C2N6",
+   "type": "C",
+   "nodes": [
+    "n1",
+    "r6"
+   ],
+   "value": "2n",
+   "label": ".002 uF with the 680K"
+  },
+  {
+   "ref": "RY6A",
+   "type": "switch",
+   "nodes": [
+    "r6",
+    "n2"
+   ],
+   "control": "mode",
+   "positions": [
+    0,
+    2,
+    3
+   ],
+   "label": "RY6a nc: .002 // 680K in parallel with the 82 pF // 2M2; RY6 energised in Raw (both channels) lifts it"
+  },
+  {
+   "ref": "RY3B_NO",
+   "type": "switch",
+   "nodes": [
+    "n2",
+    "gt2"
+   ],
+   "control": "hgch",
+   "positions": [
+    1
+   ],
+   "label": "RY3b no: -> CH2 GAIN top (RY3 energised = CH2)"
+  },
+  {
+   "ref": "RY3B_NC",
+   "type": "switch",
+   "nodes": [
+    "n2",
+    "gt3"
+   ],
+   "control": "hgch",
+   "positions": [
+    0
+   ],
+   "label": "RY3b nc: -> CH3 GAIN top"
+  },
+  {
+   "ref": "GAIN2",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "gw2",
+    "gt2"
+   ],
+   "value": "250k",
+   "taper": "A",
+   "control": "gain",
+   "label": "CH2 GAIN 250KA (592794)"
+  },
+  {
+   "ref": "CBR2",
+   "type": "C",
+   "nodes": [
+    "gt2",
+    "gw2"
+   ],
+   "value": "1n",
+   "label": "CH2 gain bright .001 uF"
+  },
+  {
+   "ref": "GAIN3",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "gw3",
+    "gt3"
+   ],
+   "value": "250k",
+   "taper": "A",
+   "control": "gain",
+   "label": "CH3 GAIN 250KA (592794)"
+  },
+  {
+   "ref": "CBR3",
+   "type": "C",
+   "nodes": [
+    "gt3",
+    "gw3"
+   ],
+   "value": "1n",
+   "label": "CH3 gain bright .001 uF"
+  },
+  {
+   "ref": "RY3A_NO",
+   "type": "switch",
+   "nodes": [
+    "gw2",
+    "hgw"
+   ],
+   "control": "hgch",
+   "positions": [
+    1
+   ],
+   "label": "RY3a no: CH2 gain wiper"
+  },
+  {
+   "ref": "RY3A_NC",
+   "type": "switch",
+   "nodes": [
+    "gw3",
+    "hgw"
+   ],
+   "control": "hgch",
+   "positions": [
+    0
+   ],
+   "label": "RY3a nc: CH3 gain wiper"
+  },
+  {
+   "ref": "C2BI",
+   "type": "C",
+   "nodes": [
+    "v2bin",
+    "v2bx"
+   ],
+   "value": "20n",
+   "label": "V2b input .02 uF"
+  },
+  {
+   "ref": "RS2B",
+   "type": "R",
+   "nodes": [
+    "v2bx",
+    "g2b"
+   ],
+   "value": "475k",
+   "label": "V2b grid stopper 475K"
+  },
+  {
+   "ref": "RG2B",
+   "type": "R",
+   "nodes": [
+    "g2b",
+    "0"
+   ],
+   "value": "1M",
+   "label": "V2b grid leak 1M"
+  },
+  {
+   "ref": "V2B",
+   "type": "triode",
+   "nodes": [
+    "p2b",
+    "g2b",
+    "k2b"
+   ],
+   "model": "12AX7",
+   "label": "V2b 12AX7 (380 V plate, 5 V cathode: cold clipper)"
+  },
+  {
+   "ref": "RL2B",
+   "type": "R",
+   "nodes": [
+    "d",
+    "p2b"
+   ],
+   "value": "100k",
+   "label": "V2b plate 100K from D"
+  },
+  {
+   "ref": "CL2B",
+   "type": "C",
+   "nodes": [
+    "d",
+    "p2b"
+   ],
+   "value": "1n",
+   "label": "V2b plate-load bypass .001 uF"
+  },
+  {
+   "ref": "RK2B",
+   "type": "R",
+   "nodes": [
+    "k2b",
+    "0"
+   ],
+   "value": "39k",
+   "label": "V2b cathode 39K unbypassed"
+  },
+  {
+   "ref": "CO2B",
+   "type": "C",
+   "nodes": [
+    "p2b",
+    "o2b"
+   ],
+   "value": "20n",
+   "label": "V2b coupling .02 uF"
+  },
+  {
+   "ref": "R330B",
+   "type": "R",
+   "nodes": [
+    "o2b",
+    "0"
+   ],
+   "value": "330k",
+   "label": "330K to ground"
+  },
+  {
+   "ref": "RS3A",
+   "type": "R",
+   "nodes": [
+    "o2b",
+    "g3a"
+   ],
+   "value": "220k",
+   "label": "V3a grid 220K"
+  },
+  {
+   "ref": "V3A",
+   "type": "triode",
+   "nodes": [
+    "p3a",
+    "g3a",
+    "k3a"
+   ],
+   "model": "12AX7",
+   "label": "V3a 12AX7 (216 V plate, 2 V cathode)"
+  },
+  {
+   "ref": "RL3A",
+   "type": "R",
+   "nodes": [
+    "c",
+    "p3a"
+   ],
+   "value": "220k",
+   "label": "V3a plate 220K from C (435 V)"
+  },
+  {
+   "ref": "RK3A",
+   "type": "R",
+   "nodes": [
+    "k3a",
+    "0"
+   ],
+   "value": "1k8",
+   "label": "V3a cathode 1K8"
+  },
+  {
+   "ref": "CK3A",
+   "type": "C",
+   "nodes": [
+    "k3a",
+    "k3ab"
+   ],
+   "value": "1u",
+   "label": "V3a cathode 1 uF in series with 100 R"
+  },
+  {
+   "ref": "RK3AB",
+   "type": "R",
+   "nodes": [
+    "k3ab",
+    "0"
+   ],
+   "value": "100",
+   "label": "V3a bypass series 100 R"
+  },
+  {
+   "ref": "V3B",
+   "type": "triode",
+   "nodes": [
+    "c",
+    "p3a",
+    "k3b"
+   ],
+   "model": "12AX7",
+   "label": "V3b 12AX7 cathode follower, grid DC-coupled to the V3a plate, plate on C (220 V cathode)"
+  },
+  {
+   "ref": "RK3B",
+   "type": "R",
+   "nodes": [
+    "k3b",
+    "0"
+   ],
+   "value": "100k",
+   "label": "V3b cathode 100K"
+  },
+  {
+   "ref": "RY4B_NC",
+   "type": "switch",
+   "nodes": [
+    "k3b",
+    "t2"
+   ],
+   "control": "hgch",
+   "positions": [
+    1
+   ],
+   "label": "RY4b nc: V3b cathode -> CH2 tone stack"
+  },
+  {
+   "ref": "RY4B_NO",
+   "type": "switch",
+   "nodes": [
+    "k3b",
+    "t3"
+   ],
+   "control": "hgch",
+   "positions": [
+    0
+   ],
+   "label": "RY4b no: -> CH3 tone stack (RY4 energised = CH3)"
+  },
+  {
+   "ref": "CT2",
+   "type": "C",
+   "nodes": [
+    "t2",
+    "tt2"
+   ],
+   "value": "500p",
+   "label": "CH2 treble 500 pF"
+  },
+  {
+   "ref": "RSL2",
+   "type": "R",
+   "nodes": [
+    "t2",
+    "s2"
+   ],
+   "value": "47k",
+   "label": "CH2 slope 47K"
+  },
+  {
+   "ref": "CB2",
+   "type": "C",
+   "nodes": [
+    "s2",
+    "tb2"
+   ],
+   "value": "20n",
+   "label": "CH2 bass .02 uF"
+  },
+  {
+   "ref": "CM2",
+   "type": "C",
+   "nodes": [
+    "s2",
+    "mw2"
+   ],
+   "value": "20n",
+   "label": "CH2 mid .02 uF to the mid wiper"
+  },
+  {
+   "ref": "TREB2",
+   "type": "pot",
+   "nodes": [
+    "tb2",
+    "tw2",
+    "tt2"
+   ],
+   "value": "250k",
+   "taper": "B",
+   "control": "treble",
+   "label": "CH2 TRBL 250KL (592738)"
+  },
+  {
+   "ref": "BASS2",
+   "type": "pot",
+   "nodes": [
+    "mb2",
+    "tb2",
+    "tb2"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "bass",
+   "label": "CH2 BASS 1MA rheostat (drawing; Mesa 593739)"
+  },
+  {
+   "ref": "MID2",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mw2",
+    "mb2"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "mid",
+   "label": "CH2 MID 25KL (593737)"
+  },
+  {
+   "ref": "RPX2",
+   "type": "R",
+   "nodes": [
+    "tw2",
+    "px2"
+   ],
+   "value": "33k",
+   "label": "CH2 presence 33K"
+  },
+  {
+   "ref": "CPX2",
+   "type": "C",
+   "nodes": [
+    "px2",
+    "x2"
+   ],
+   "value": "3n",
+   "label": "CH2 presence .003 uF"
+  },
+  {
+   "ref": "PRES2",
+   "type": "pot",
+   "nodes": [
+    "pb2",
+    "pw2",
+    "x2"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "presence",
+   "label": "CH2 PRSNC 25KL (593737)"
+  },
+  {
+   "ref": "MSTR2",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mw2m",
+    "tw2"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "master",
+   "label": "CH2 MSTR 1MA"
+  },
+  {
+   "ref": "RY8B_NC1",
+   "type": "switch",
+   "nodes": [
+    "0",
+    "pb2"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "label": "RY8b nc (raw position label): pot bottom to ground; released whenever CH2 is not selected (half 1: CH1)"
+  },
+  {
+   "ref": "RY8B_NC2",
+   "type": "switch",
+   "nodes": [
+    "0",
+    "pb2"
+   ],
+   "control": "hgch",
+   "positions": [
+    0
+   ],
+   "label": "RY8b nc, half 2: CH3 selected"
+  },
+  {
+   "ref": "RY8B_NO1",
+   "type": "switch",
+   "nodes": [
+    "0",
+    "r8b"
+   ],
+   "control": "mode",
+   "positions": [
+    1,
+    2,
+    3
+   ],
+   "label": "RY8b no: ground -> presence pot top (CH2 selected), series half 1"
+  },
+  {
+   "ref": "RY8B_NO2",
+   "type": "switch",
+   "nodes": [
+    "r8b",
+    "x2"
+   ],
+   "control": "hgch",
+   "positions": [
+    1
+   ],
+   "label": "RY8b no, series half 2"
+  },
+  {
+   "ref": "RY8A_NC1",
+   "type": "switch",
+   "nodes": [
+    "pw2",
+    "x2"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "label": "RY8a nc: wiper shorted to the pot top (shunt mode), half 1"
+  },
+  {
+   "ref": "RY8A_NC2",
+   "type": "switch",
+   "nodes": [
+    "pw2",
+    "x2"
+   ],
+   "control": "hgch",
+   "positions": [
+    0
+   ],
+   "label": "RY8a nc, half 2"
+  },
+  {
+   "ref": "RY8A_NO1",
+   "type": "switch",
+   "nodes": [
+    "pw2",
+    "r8a"
+   ],
+   "control": "mode",
+   "positions": [
+    1,
+    2,
+    3
+   ],
+   "label": "RY8a no: wiper -> .1 -> FB' (NFB presence), series half 1"
+  },
+  {
+   "ref": "RY8A_NO2",
+   "type": "switch",
+   "nodes": [
+    "r8a",
+    "fp2"
+   ],
+   "control": "hgch",
+   "positions": [
+    1
+   ],
+   "label": "RY8a no, series half 2"
+  },
+  {
+   "ref": "CFP2",
+   "type": "C",
+   "nodes": [
+    "fp2",
+    "f"
+   ],
+   "value": "100n",
+   "label": "CH2 presence .1 uF to FB'"
+  },
+  {
+   "ref": "RY4A_NC",
+   "type": "switch",
+   "nodes": [
+    "mw2m",
+    "hgm"
+   ],
+   "control": "hgch",
+   "positions": [
+    1
+   ],
+   "label": "RY4a nc (hand-corrected on the drawing): CH2 master wiper"
+  },
+  {
+   "ref": "CT3",
+   "type": "C",
+   "nodes": [
+    "t3",
+    "tt3"
+   ],
+   "value": "500p",
+   "label": "CH3 treble 500 pF"
+  },
+  {
+   "ref": "RY7A",
+   "type": "switch",
+   "nodes": [
+    "t3",
+    "r7"
+   ],
+   "control": "mode",
+   "positions": [
+    3
+   ],
+   "label": "RY7a no: adds 180 pF to the CH3 treble cap (RY7 energised in Modern)"
+  },
+  {
+   "ref": "R10M7",
+   "type": "R",
+   "nodes": [
+    "t3",
+    "r7"
+   ],
+   "value": "10M",
+   "label": "10M bleeder across RY7a"
+  },
+  {
+   "ref": "C180",
+   "type": "C",
+   "nodes": [
+    "r7",
+    "tt3"
+   ],
+   "value": "180p",
+   "label": "180 pF Modern treble cap"
+  },
+  {
+   "ref": "RSL3",
+   "type": "R",
+   "nodes": [
+    "t3",
+    "s3"
+   ],
+   "value": "47k",
+   "label": "CH3 slope 47K"
+  },
+  {
+   "ref": "CB3",
+   "type": "C",
+   "nodes": [
+    "s3",
+    "tb3"
+   ],
+   "value": "20n",
+   "label": "CH3 bass .02 uF"
+  },
+  {
+   "ref": "CM3",
+   "type": "C",
+   "nodes": [
+    "s3",
+    "mw3"
+   ],
+   "value": "20n",
+   "label": "CH3 mid .02 uF to the mid wiper"
+  },
+  {
+   "ref": "TREB3",
+   "type": "pot",
+   "nodes": [
+    "tb3",
+    "tw3",
+    "tt3"
+   ],
+   "value": "250k",
+   "taper": "B",
+   "control": "treble",
+   "label": "CH3 TRBL 250KL (592738)"
+  },
+  {
+   "ref": "BASS3",
+   "type": "pot",
+   "nodes": [
+    "mb3",
+    "tb3",
+    "tb3"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "bass",
+   "label": "CH3 BASS 1MA rheostat (drawing; parts table 593148 = the 250KA code, disclosed)"
+  },
+  {
+   "ref": "MID3",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mw3",
+    "mb3"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "mid",
+   "label": "CH3 MID 25KL (593737)"
+  },
+  {
+   "ref": "RPX3",
+   "type": "R",
+   "nodes": [
+    "tw3",
+    "px3"
+   ],
+   "value": "22k",
+   "label": "CH3 presence 22K"
+  },
+  {
+   "ref": "CPX3",
+   "type": "C",
+   "nodes": [
+    "px3",
+    "x3"
+   ],
+   "value": "3n",
+   "label": "CH3 presence .003 uF"
+  },
+  {
+   "ref": "PRES3",
+   "type": "pot",
+   "nodes": [
+    "pb3",
+    "pw3",
+    "x3"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "presence",
+   "label": "CH3 PRSNC 100KL (592151)"
+  },
+  {
+   "ref": "MSTR3",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mw3m",
+    "tw3"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "master",
+   "label": "CH3 MSTR 1MA"
+  },
+  {
+   "ref": "C10P",
+   "type": "C",
+   "nodes": [
+    "mw3m",
+    "0"
+   ],
+   "value": "10p",
+   "label": "CH3 master wiper 10 pF to ground"
+  },
+  {
+   "ref": "RY9A_NC1",
+   "type": "switch",
+   "nodes": [
+    "0",
+    "pb3"
+   ],
+   "control": "mode",
+   "positions": [
+    0,
+    1
+   ],
+   "label": "RY9a nc: pot bottom to ground (released: CH1, Raw, or CH2 selected), half 1"
+  },
+  {
+   "ref": "RY9A_NC2",
+   "type": "switch",
+   "nodes": [
+    "0",
+    "pb3"
+   ],
+   "control": "hgch",
+   "positions": [
+    1
+   ],
+   "label": "RY9a nc, half 2"
+  },
+  {
+   "ref": "RY9A_NO1",
+   "type": "switch",
+   "nodes": [
+    "0",
+    "r9a"
+   ],
+   "control": "mode",
+   "positions": [
+    2,
+    3
+   ],
+   "label": "RY9a no: ground -> pot top, series half 1"
+  },
+  {
+   "ref": "RY9A_NO2",
+   "type": "switch",
+   "nodes": [
+    "r9a",
+    "x3"
+   ],
+   "control": "hgch",
+   "positions": [
+    0
+   ],
+   "label": "RY9a no, series half 2"
+  },
+  {
+   "ref": "RY9B_NC1",
+   "type": "switch",
+   "nodes": [
+    "pw3",
+    "x3"
+   ],
+   "control": "mode",
+   "positions": [
+    0,
+    1
+   ],
+   "label": "RY9b nc: wiper shorted to the top (shunt mode), half 1"
+  },
+  {
+   "ref": "RY9B_NC2",
+   "type": "switch",
+   "nodes": [
+    "pw3",
+    "x3"
+   ],
+   "control": "hgch",
+   "positions": [
+    1
+   ],
+   "label": "RY9b nc, half 2"
+  },
+  {
+   "ref": "RY9B_NO1",
+   "type": "switch",
+   "nodes": [
+    "pw3",
+    "r9b"
+   ],
+   "control": "mode",
+   "positions": [
+    2,
+    3
+   ],
+   "label": "RY9b no: wiper -> .1 -> FB', series half 1"
+  },
+  {
+   "ref": "RY9B_NO2",
+   "type": "switch",
+   "nodes": [
+    "r9b",
+    "fp3"
+   ],
+   "control": "hgch",
+   "positions": [
+    0
+   ],
+   "label": "RY9b no, series half 2"
+  },
+  {
+   "ref": "CFP3",
+   "type": "C",
+   "nodes": [
+    "fp3",
+    "f"
+   ],
+   "value": "100n",
+   "label": "CH3 presence .1 uF to FB'"
+  },
+  {
+   "ref": "RY4A_NO",
+   "type": "switch",
+   "nodes": [
+    "mw3m",
+    "hgm"
+   ],
+   "control": "hgch",
+   "positions": [
+    0
+   ],
+   "label": "RY4a no: CH3 master wiper"
+  },
+  {
+   "ref": "ZM1",
+   "type": "D",
+   "nodes": [
+    "zm",
+    "mv"
+   ],
+   "model": "1N4744A",
+   "label": "4744 bidirectional 15 V clamp on the master bus (zener 1)"
+  },
+  {
+   "ref": "ZM2",
+   "type": "D",
+   "nodes": [
+    "zm",
+    "0"
+   ],
+   "model": "1N4744A",
+   "label": "4744 bidirectional clamp (zener 2, back to back)"
+  },
+  {
+   "ref": "R100M",
+   "type": "R",
+   "nodes": [
+    "mv",
+    "lin"
+   ],
+   "value": "100",
+   "label": "100 R to RY10b (FX loop or V5)"
+  },
+  {
+   "ref": "RY10B_NC",
+   "type": "switch",
+   "nodes": [
+    "lin",
+    "v4ac"
+   ],
+   "control": "loop",
+   "positions": [
+    0
+   ],
+   "label": "RY10b nc: loop active -> V4a"
+  },
+  {
+   "ref": "RY10B_NO",
+   "type": "switch",
+   "nodes": [
+    "lin",
+    "byp"
+   ],
+   "control": "loop",
+   "positions": [
+    1
+   ],
+   "label": "RY10b no: bypass"
+  },
+  {
+   "ref": "RY10A_NO",
+   "type": "switch",
+   "nodes": [
+    "byp",
+    "pio"
+   ],
+   "control": "loop",
+   "positions": [
+    1
+   ],
+   "label": "RY10a no: bypass -> V5"
+  },
+  {
+   "ref": "RY10A_NC",
+   "type": "switch",
+   "nodes": [
+    "lout",
+    "pio"
+   ],
+   "control": "loop",
+   "positions": [
+    0
+   ],
+   "label": "RY10a nc: loop return (OUTPUT LEVEL wiper) -> V5"
+  },
+  {
+   "ref": "C4AI",
+   "type": "C",
+   "nodes": [
+    "v4ac",
+    "g4a"
+   ],
+   "value": "100n",
+   "label": "V4a input .1 uF"
+  },
+  {
+   "ref": "RG4A1",
+   "type": "R",
+   "nodes": [
+    "c",
+    "g4a"
+   ],
+   "value": "2M2",
+   "label": "V4a grid bias 2M2 from C"
+  },
+  {
+   "ref": "RG4A2",
+   "type": "R",
+   "nodes": [
+    "g4a",
+    "0"
+   ],
+   "value": "2M2",
+   "label": "V4a grid bias 2M2 to ground"
+  },
+  {
+   "ref": "V4A",
+   "type": "triode",
+   "nodes": [
+    "c",
+    "g4a",
+    "k4a"
+   ],
+   "model": "12AX7",
+   "label": "V4a 12AX7 send cathode follower (196 V grid, 217 V cathode)"
+  },
+  {
+   "ref": "RK4A",
+   "type": "R",
+   "nodes": [
+    "k4a",
+    "0"
+   ],
+   "value": "100k",
+   "label": "V4a cathode 100K"
+  },
+  {
+   "ref": "C22",
+   "type": "C",
+   "nodes": [
+    "k4a",
+    "sl"
+   ],
+   "value": "220n",
+   "label": "Send .22 uF"
+  },
+  {
+   "ref": "SEND",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "sw4",
+    "sl"
+   ],
+   "value": "25k",
+   "taper": "A",
+   "control": "sendLevel",
+   "label": "SEND LEVEL 25KA (593736)"
+  },
+  {
+   "ref": "MIX",
+   "type": "pot",
+   "nodes": [
+    "sw4",
+    "mxw",
+    "mret"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "mix",
+   "label": "MIX 25KL (593737): top = send wiper (dry), bottom = J175R / return (unpatched: open)"
+  },
+  {
+   "ref": "RG4B",
+   "type": "R",
+   "nodes": [
+    "mxw",
+    "0"
+   ],
+   "value": "47k",
+   "label": "V4b grid 47K"
+  },
+  {
+   "ref": "V4B",
+   "type": "triode",
+   "nodes": [
+    "p4b",
+    "mxw",
+    "k4b"
+   ],
+   "model": "12AX7",
+   "label": "V4b 12AX7 loop recovery (298 V plate, 3 V cathode)"
+  },
+  {
+   "ref": "RL4B",
+   "type": "R",
+   "nodes": [
+    "c",
+    "p4b"
+   ],
+   "value": "120k",
+   "label": "V4b plate 120K from C"
+  },
+  {
+   "ref": "RK4B",
+   "type": "R",
+   "nodes": [
+    "k4b",
+    "0"
+   ],
+   "value": "2k2",
+   "label": "V4b cathode 2K2"
+  },
+  {
+   "ref": "CK4B",
+   "type": "C",
+   "nodes": [
+    "k4b",
+    "0"
+   ],
+   "value": "15u",
+   "label": "V4b cathode bypass 15 uF"
+  },
+  {
+   "ref": "CO4B",
+   "type": "C",
+   "nodes": [
+    "p4b",
+    "ol"
+   ],
+   "value": "47n",
+   "label": "V4b coupling .047 uF"
+  },
+  {
+   "ref": "R330O",
+   "type": "R",
+   "nodes": [
+    "ol",
+    "olx"
+   ],
+   "value": "330k",
+   "label": "Output bleed 330K (with 47 pF, top to wiper)"
+  },
+  {
+   "ref": "C47O",
+   "type": "C",
+   "nodes": [
+    "olx",
+    "lout"
+   ],
+   "value": "47p",
+   "label": "47 pF"
+  },
+  {
+   "ref": "OUTPUT",
+   "type": "pot",
+   "nodes": [
+    "sb",
+    "lout",
+    "ol"
+   ],
+   "value": "250k",
+   "taper": "A",
+   "control": "output",
+   "label": "OUTPUT 250KA (593148)"
+  },
+  {
+   "ref": "SOLO",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "sb",
+    "sb"
+   ],
+   "value": "250k",
+   "taper": "A",
+   "control": "soloLevel",
+   "label": "SOLO 250KA rheostat (593148) under the OUTPUT pot"
+  },
+  {
+   "ref": "J175SO",
+   "type": "switch",
+   "nodes": [
+    "sb",
+    "0"
+   ],
+   "control": "solo",
+   "positions": [
+    0
+   ],
+   "label": "J175 across SOLO, on (shorting it) while Solo is off",
+   "ron": 150,
+   "note": "P-JFET switch: gate held low by the 6426 (base pulled up by 100K) unless the footswitch/EXT SOLO pulls the base to -3 V. ron unverified."
+  },
+  {
+   "ref": "C5BI",
+   "type": "C",
+   "nodes": [
+    "pio",
+    "g5b"
+   ],
+   "value": "20n",
+   "label": "PI input .02 uF"
+  },
+  {
+   "ref": "RG5B",
+   "type": "R",
+   "nodes": [
+    "g5b",
+    "j5"
+   ],
+   "value": "1M",
+   "label": "V5b grid 1M to the tail junction"
+  },
+  {
+   "ref": "RG5A",
+   "type": "R",
+   "nodes": [
+    "g5a",
+    "j5"
+   ],
+   "value": "1M",
+   "label": "V5a grid 1M to the tail junction"
+  },
+  {
+   "ref": "C5AG",
+   "type": "C",
+   "nodes": [
+    "g5a",
+    "f"
+   ],
+   "value": "100n",
+   "label": "V5a grid .1 uF to FB'"
+  },
+  {
+   "ref": "RK5",
+   "type": "R",
+   "nodes": [
+    "k5",
+    "j5"
+   ],
+   "value": "470",
+   "label": "PI cathodes 470 R"
+  },
+  {
+   "ref": "RT10K",
+   "type": "R",
+   "nodes": [
+    "j5",
+    "f"
+   ],
+   "value": "10k",
+   "label": "PI tail 10K"
+  },
+  {
+   "ref": "RT4K7",
+   "type": "R",
+   "nodes": [
+    "f",
+    "0"
+   ],
+   "value": "4k7",
+   "label": "PI tail 4K7 (feedback node FB')"
+  },
+  {
+   "ref": "V5B",
+   "type": "triode",
+   "nodes": [
+    "p5b",
+    "g5b",
+    "k5"
+   ],
+   "model": "12AX7",
+   "label": "V5b 12AX7 LTP (287 V plate, 53 V cathodes)"
+  },
+  {
+   "ref": "V5A",
+   "type": "triode",
+   "nodes": [
+    "p5a",
+    "g5a",
+    "k5"
+   ],
+   "model": "12AX7",
+   "label": "V5a 12AX7 LTP (278 V plate)"
+  },
+  {
+   "ref": "RL5B",
+   "type": "R",
+   "nodes": [
+    "c",
+    "p5b"
+   ],
+   "value": "82k",
+   "label": "V5b plate 82K"
+  },
+  {
+   "ref": "CL5B",
+   "type": "C",
+   "nodes": [
+    "c",
+    "p5b"
+   ],
+   "value": "120p",
+   "label": "V5b plate 120 pF"
+  },
+  {
+   "ref": "RL5A",
+   "type": "R",
+   "nodes": [
+    "c",
+    "p5a"
+   ],
+   "value": "91k",
+   "label": "V5a plate 91K (Rev F R104: 90K)"
+  },
+  {
+   "ref": "CL5A",
+   "type": "C",
+   "nodes": [
+    "c",
+    "p5a"
+   ],
+   "value": "120p",
+   "label": "V5a plate 120 pF"
+  },
+  {
+   "ref": "C75",
+   "type": "C",
+   "nodes": [
+    "p5b",
+    "p5a"
+   ],
+   "value": "75p",
+   "label": "PI plate-to-plate 75 pF"
+  },
+  {
+   "ref": "CGA",
+   "type": "C",
+   "nodes": [
+    "p5b",
+    "ga"
+   ],
+   "value": "47n",
+   "label": ".047 uF to the upper 6L6 pair"
+  },
+  {
+   "ref": "CGB",
+   "type": "C",
+   "nodes": [
+    "p5a",
+    "gb"
+   ],
+   "value": "47n",
+   "label": ".047 uF to the lower 6L6 pair"
+  },
+  {
+   "ref": "RGLA",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "bias"
+   ],
+   "value": "220k",
+   "label": "220K grid leak (upper pair) to BIAS"
+  },
+  {
+   "ref": "RGLB",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "bias"
+   ],
+   "value": "220k",
+   "label": "220K grid leak (lower pair) to BIAS"
+  },
+  {
+   "ref": "RGA",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "g6"
+   ],
+   "value": "750",
+   "label": "2 x 1K5 grid stoppers, folded (/2)",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "RGB",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "g8"
+   ],
+   "value": "750",
+   "label": "2 x 1K5 grid stoppers, folded (/2)",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "RSA",
+   "type": "R",
+   "nodes": [
+    "b",
+    "s6"
+   ],
+   "value": "500",
+   "label": "2 x 1K/2W screen resistors from B, folded (/2)",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "RSB",
+   "type": "R",
+   "nodes": [
+    "b",
+    "s8"
+   ],
+   "value": "500",
+   "label": "2 x 1K/2W screen resistors from B, folded (/2)",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "V6",
+   "type": "pentode",
+   "nodes": [
+    "pa",
+    "s6",
+    "g6",
+    "0"
+   ],
+   "model": "6L6GC",
+   "parallel": 2,
+   "label": "Upper 6L6 pair (472 V plates), folded",
+   "note": "Two tubes folded: the drawing gives each identical 1K5 grid and 1K/2W screen resistors between the same nodes and grounded cathodes, so the fold is exact"
+  },
+  {
+   "ref": "V8",
+   "type": "pentode",
+   "nodes": [
+    "pb",
+    "s8",
+    "g8",
+    "0"
+   ],
+   "model": "6L6GC",
+   "parallel": 2,
+   "label": "Lower 6L6 pair, folded"
+  },
+  {
+   "ref": "OT",
+   "type": "transformer",
+   "nodes": [
+    "pa",
+    "a",
+    "a",
+    "pb",
+    "t4",
+    "0",
+    "t8",
+    "t4",
+    "t16",
+    "t8"
+   ],
+   "turns": [
+    1,
+    1,
+    0.09701,
+    0.04018,
+    0.05683
+   ],
+   "r": [
+    63.0,
+    63.0,
+    0.08,
+    0.04,
+    0.05
+   ],
+   "leak": [
+    "3m",
+    "3m",
+    0,
+    0,
+    0
+   ],
+   "lm": 80,
+   "lsat": 5,
+   "label": "OT: CT on A (475 V); secondary common / 4 / 8 / 16 ohm taps as one tapped winding (three stacked sections)",
+   "note": "unverified: the drawing gives no Raa or DCR; 1700 ohm plate-to-plate class value, turns 2*sqrt(Z/Raa) per tap, primary DCR fitted to 476 -> 472 V, 3 mH leakage, lm 80 H, lsat 5 V s as the other 4 x 6L6 netlists"
+  },
+  {
+   "ref": "CWA",
+   "type": "C",
+   "nodes": [
+    "pa",
+    "cwa"
+   ],
+   "value": "470p",
+   "label": "OT half-primary winding capacitance (A)"
+  },
+  {
+   "ref": "RCWA",
+   "type": "R",
+   "nodes": [
+    "cwa",
+    "a"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (A)"
+  },
+  {
+   "ref": "CWB",
+   "type": "C",
+   "nodes": [
+    "pb",
+    "cwb"
+   ],
+   "value": "470p",
+   "label": "OT half-primary winding capacitance (B)"
+  },
+  {
+   "ref": "RCWB",
+   "type": "R",
+   "nodes": [
+    "cwb",
+    "a"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (B)"
+  },
+  {
+   "ref": "SPK",
+   "type": "sub",
+   "nodes": [
+    "t8",
+    "0"
+   ],
+   "of": "lib:spk-12in-8ohm-british",
+   "label": "8 ohm 4x12-class cab on the 8 OHM jacks"
+  },
+  {
+   "ref": "SLAVE",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "slw",
+    "t4"
+   ],
+   "value": "10k",
+   "taper": "A",
+   "label": "SLAVE LEVEL 10KA from the 4 ohm tap (slave jack unpatched; fixed, not a front-panel control)"
+  },
+  {
+   "ref": "CFB",
+   "type": "C",
+   "nodes": [
+    "t8",
+    "fbx"
+   ],
+   "value": "100n",
+   "label": "Feedback .1 uF from the 8 ohm tap"
+  },
+  {
+   "ref": "RFB",
+   "type": "R",
+   "nodes": [
+    "fbx",
+    "fby"
+   ],
+   "value": "47k",
+   "label": "Feedback 47K"
+  },
+  {
+   "ref": "RY7B",
+   "type": "switch",
+   "nodes": [
+    "fby",
+    "f"
+   ],
+   "control": "mode",
+   "positions": [
+    0,
+    1,
+    2
+   ],
+   "label": "RY7b nc: feedback to FB'; RY7 energised in Modern opens it (no global feedback in Modern)"
+  }
+ ],
+ "probes": [
+  "p1a",
+  "t1",
+  "gw1",
+  "g2a",
+  "p2a",
+  "p1b",
+  "pm1",
+  "p2b",
+  "p3a",
+  "k3b",
+  "tw2",
+  "tw3",
+  "mv",
+  "pio",
+  "p5a",
+  "p5b",
+  "ga",
+  "gb",
+  "pa",
+  "pb",
+  "f",
+  "t8",
+  "a",
+  "b",
+  "c",
+  "d",
+  "e"
+ ],
+ "lte": {
+  "start": "bdf2",
+  "tol": 4.0
+ },
+ "multirate": {
+  "rates": {
+   "V1A": 16
+  },
+  "events": true,
+  "note": "Event-local oversampling (docs §10.48, §10.63): base 96 kHz, 8 substeps (768 kHz) on every LTE event of the signal group. The 3130 Hz gate tone folded about the 96 kHz base at -39.4 / -34.6 / -34.9 dB (0.25 / 0.5 / 1.0 FS, own-mains mask), now -86.5 / -82.0 / -74.5 (2900 Hz -68.7 / -62.0 / -56.2 -> -89.5 / -91.0 / -79.5). A 192 kHz base alone fails at 1.0 FS (-55.6); LTE tol 8 is cheaper (+28 %) but doubles the dimed SPICE-gate error (1.14 -> 2.21 %); a 192 kHz base with 4 substeps is closer to truth (0.023 / 0.059 %) for +59 %. Engine T/16 truth, audio band, lead / rock DI: 0.167 / 0.368 -> 0.065 / 0.125 %. 9900X real / driven: 42.8 / 46.7 -> 61.2 / 64.9 % of a core."
+ }
+}

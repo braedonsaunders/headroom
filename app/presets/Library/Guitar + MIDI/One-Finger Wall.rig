@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>One-Finger Wall</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="One-Finger Wall" preset-author="Headroom" preset-comment="Every note on the low and middle strings becomes a square-wave power chord (root and fifth), pushed with the guitar into a cranked British 120-watt head. Synth and string distort together: a one-finger riff lands like a full stack playing fifths, a strum like a wall. Interval goes from octaves to sus4." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="900001">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="low" value="28"/>
+        <parameter id="high" value="57"/>
+        <parameter id="mode" value="0"/>
+        <parameter id="sens" value="0.55"/>
+        <parameter id="bend" value="2"/>
+        <parameter id="vel" value="0.4"/>
+        <parameter id="thru" value="1"/>
+        <parameter id="engine" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="900002">
+    <component-audio version="1">
+      <parameters num-parameters="11">
+        <parameter id="rate" value="2"/>
+        <parameter id="octave" value="0"/>
+        <parameter id="transpose" value="0"/>
+        <parameter id="harmony" value="2"/>
+        <parameter id="scale" value="0"/>
+        <parameter id="root" value="4"/>
+        <parameter id="arp" value="0"/>
+        <parameter id="hold" value="0"/>
+        <parameter id="bpm" value="120"/>
+        <parameter id="sync" value="1"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="900003">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="sound" value="19"/>
+        <parameter id="tone" value="0.45"/>
+        <parameter id="follow" value="0.9"/>
+        <parameter id="attack" value="0.45"/>
+        <parameter id="release" value="0.35"/>
+        <parameter id="level" value="0.54"/>
+        <parameter id="mix" value="0.2"/>
+        <parameter id="vibrato" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="80000">
+    <component-audio version="1">
+      <parameters num-parameters="14">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="f" value="0.3"/>
+        <parameter id="b" value="0.55"/>
+        <parameter id="t" value="0.4"/>
+        <parameter id="p" value="0.3"/>
+        <parameter id="g" value="0.85"/>
+        <parameter id="m" value="0.6"/>
+        <parameter id="Pw" value="0"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0"/>
+        <parameter id="Bi" value="1"/>
+        <parameter id="Br" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.1219"/>
+        <parameter id="c" value="0"/>
+        <parameter id="Cab" value="2"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="900003" target-number="1" target-name="mix" min-value="0.05" max-value="0.65" controller-name="Wall"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="80000" target-number="1" target-name="g" min-value="0.5" max-value="1" controller-name="Gain"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="900002" target-number="1" target-name="harmony" min-value="0.1428571" max-value="1" controller-name="Interval"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="900003" target-number="1" target-name="tone" min-value="0.2" max-value="0.9" controller-name="Synth Tone"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-tempo bpm="92.000"/>
+<headroom-library version="1" id="gm-one-finger-wall" category="Guitar + MIDI" order="50" instrument="guitar" style="Hybrid Stoner Metal">
+  <description>Every note on the low and middle strings becomes a square-wave power chord (root and fifth), pushed with the guitar into a cranked British 120-watt head. Synth and string distort together: a one-finger riff lands like a full stack playing fifths, a strum like a wall. Interval goes from octaves to sus4.</description>
+  <tags><tag>Guitar + MIDI</tag><tag>Fused</tag><tag>High Gain</tag><tag>Harmony</tag><tag>Synth</tag><tag>Rhythm</tag><tag>Poly</tag></tags>
+  <sources>
+    <source url="https://en.wikipedia.org/wiki/Testify_(Rage_Against_the_Machine_song)" title="Wikipedia: Testify (Whammy set to harmonize above the played note)"/>
+    <source url="https://www.tdpri.com/threads/royal-blood-how-mike-kerr-gets-that-big-sound.803464/" title="TDPRI: how Mike Kerr gets that big sound (octave split into guitar and bass amps)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

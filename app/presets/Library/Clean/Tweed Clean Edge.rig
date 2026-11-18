@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Tweed Clean Edge</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Tweed Clean Edge" preset-author="Headroom" preset-comment="A small tweed combo sitting right below breakup: thick, warm and touch-sensitive. Strum lightly and it stays clean and round; dig in and the chords grow hair. Roll the guitar volume back to clean up, push it for grit. A small room keeps it honest." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="79000">
+    <component-audio version="1">
+      <parameters num-parameters="11">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="vb" value="0.52"/>
+        <parameter id="vn" value="0.5"/>
+        <parameter id="t" value="0.62"/>
+        <parameter id="Pw" value="0.5"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bi" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="input" value="0"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.1795"/>
+        <parameter id="c" value="0.45"/>
+        <parameter id="Cab" value="14"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.12"/>
+        <parameter id="Tm" value="0.2"/>
+        <parameter id="Sz" value="0.3"/>
+        <parameter id="H" value="0.4"/>
+        <parameter id="L" value="0.45"/>
+        <parameter id="Chr" value="0.5"/>
+        <parameter id="iM" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="79000" target-number="1" target-name="vb" min-value="0.3" max-value="0.68" controller-name="Volume"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="79000" target-number="1" target-name="t" min-value="0.35" max-value="0.85" controller-name="Tone"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="156000" target-number="1" target-name="c" min-value="0" max-value="0.9" controller-name="Mic Blend"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.3" controller-name="Room"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="clean-tweed-edge" category="Clean" order="190" instrument="guitar" style="Americana">
+  <description>A small tweed combo sitting right below breakup: thick, warm and touch-sensitive. Strum lightly and it stays clean and round; dig in and the chords grow hair. Roll the guitar volume back to clean up, push it for grit. A small room keeps it honest.</description>
+  <tags><tag>Clean</tag><tag>Americana</tag><tag>Tweed</tag><tag>Edge of Breakup</tag><tag>Room</tag></tags>
+  <sources>
+    <source url="https://robrobinette.com/5e3_Modifications.htm" title="Rob Robinette: 5E3 tweed Deluxe modifications and headroom"/>
+    <source url="https://www.tdpri.com/threads/how-do-you-get-the-neil-young-sound-with-a-5e3-what-are-your-favorite-settings.591443/" title="TDPRI: Neil Young sound with a 5E3 (Larry Cragg's settings)"/>
+    <source url="https://en.wikipedia.org/wiki/Fender_Deluxe" title="Fender Deluxe (Wikipedia)"/>
+    <source url="https://kr-sound.com/tweed-deluxe-channel-interaction/" title="KR Sound: 5E3 tweed Deluxe channel interaction explained"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

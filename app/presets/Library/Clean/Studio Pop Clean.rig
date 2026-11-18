@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Studio Pop Clean</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Studio Pop Clean" preset-author="Headroom" preset-comment="A polished modern pop clean that sits under a vocal: a tube leveling amp evens out every strum, a small blackface combo adds warmth and sparkle, and an EQ trims mud and adds air before a short plate. Strum or arpeggiate; the dynamics stay even and the top end stays smooth." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="124000">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="G0" value="0.8"/>
+        <parameter id="P1" value="0.45"/>
+        <parameter id="M2" value="0.5"/>
+        <parameter id="D3" value="0.5"/>
+        <parameter id="L4" value="0.5"/>
+        <parameter id="S5" value="0"/>
+        <parameter id="VUMode" value="0"/>
+        <parameter id="VUM" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="172000">
+    <component-audio version="1">
+      <parameters num-parameters="14">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="volume" value="0.38"/>
+        <parameter id="bright" value="1"/>
+        <parameter id="treble" value="0.56"/>
+        <parameter id="bass" value="0.4"/>
+        <parameter id="reverb intensity" value="0.5"/>
+        <parameter id="reverb on" value="0"/>
+        <parameter id="reverb mode" value="0"/>
+        <parameter id="speed" value="0.5"/>
+        <parameter id="intensity" value="0.5"/>
+        <parameter id="tremolo on" value="0"/>
+        <parameter id="tremolo sag" value="0.5"/>
+        <parameter id="tempo sync" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.85"/>
+        <parameter id="c" value="0.35"/>
+        <parameter id="Cab" value="14"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="32000">
+    <component-audio version="1">
+      <parameters num-parameters="13">
+        <parameter id="V" value="0.2336"/>
+        <parameter id="mi" value="0.5"/>
+        <parameter id="ma" value="0.5"/>
+        <parameter id="r" value="0.5"/>
+        <parameter id="b1" value="0.38"/>
+        <parameter id="b2" value="0.5"/>
+        <parameter id="b3" value="0.42"/>
+        <parameter id="b4" value="0.5"/>
+        <parameter id="b5" value="0.52"/>
+        <parameter id="b6" value="0.5"/>
+        <parameter id="b7" value="0.64"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="b8" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="127000">
+    <component-audio version="1">
+      <parameters num-parameters="4">
+        <parameter id="S1" value="0"/>
+        <parameter id="M2" value="0.1"/>
+        <parameter id="M3" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="172000" target-number="1" target-name="volume" min-value="0.25" max-value="0.52" controller-name="Amp Volume"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="172000" target-number="1" target-name="treble" min-value="0.35" max-value="0.8" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="32000" target-number="1" target-name="b1" min-value="0.2" max-value="0.65" controller-name="Body"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="32000" target-number="1" target-name="b7" min-value="0.45" max-value="0.85" controller-name="Air"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="127000" target-number="1" target-name="M2" min-value="0" max-value="0.35" controller-name="Plate"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="clean-studio-pop" category="Clean" order="20" instrument="guitar" style="Pop">
+  <description>A polished modern pop clean that sits under a vocal: a tube leveling amp evens out every strum, a small blackface combo adds warmth and sparkle, and an EQ trims mud and adds air before a short plate. Strum or arpeggiate; the dynamics stay even and the top end stays smooth.</description>
+  <tags><tag>Clean</tag><tag>Pop</tag><tag>Compressed</tag><tag>Plate Reverb</tag><tag>Studio</tag></tags>
+  <sources>
+    <source url="https://gearspace.com/board/so-much-gear-so-little-time/1226044-vocal-la2a-hack-engineer-gaaah.html" title="Gearspace: LA-2A on guitar vs vocal in pop tracking (2-4 dB on guitar)"/>
+    <source url="https://www.musicradar.com/news/producers-guide-la-2a" title="MusicRadar: the producer's guide to the LA-2A"/>
+    <source url="https://en.wikipedia.org/wiki/LA-2A_Leveling_Amplifier" title="LA-2A Leveling Amplifier (Wikipedia)"/>
+    <source url="https://en.wikipedia.org/wiki/Fender_Deluxe_Reverb" title="Fender Deluxe Reverb (Wikipedia)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

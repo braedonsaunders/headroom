@@ -1,0 +1,256 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "dallas-fuzz-face-ge",
+ "version": 1,
+ "name": "Dallas Arbiter Fuzz Face (germanium, NKT275, c. 1966-68)",
+ "description": "Arbiter / Dallas Arbiter Fuzz Face, PNP germanium version (NKT275; AC128 and SFT363E were also fitted), positive ground: the battery's + terminal is circuit ground and the rail is −9 V. Same two-stage shunt-series feedback circuit as the silicon unit with a 470 Ω collector top resistor: C1 2.2 µF into the Q1 base, Q1 emitter grounded, 33 kΩ Q1 collector load direct to the Q2 base, Q2 collector 8.2 kΩ to the 470 Ω / 0.01 µF output node, 1 kΩ linear Fuzz pot from the Q2 emitter to ground with 20 µF on the wiper, 100 kΩ feedback from the Q2 emitter to the Q1 base, 500 kΩ audio Volume. Q1 is a low-gain pick (hFE about 70-80), Q2 a higher-gain pick (about 110-130). NEEDS ENGINE FEATURE: the germanium models use proposed Gummel-Poon extension parameters (ise/ne base-emitter recombination, icbo collector-base leakage, vaf, rb) that the current npn/pnp kinds reject; see JFET.md section 'Germanium BJTs'.",
+ "sources": [
+  {
+   "title": "Fuzz Central, 'Arbiter Fuzz Face' (original PNP germanium schematic 'fuzzfacepnpschematic.gif': 2.2 µF, 33K, 8K2, 470 Ω, 100K, 0.01 µF, Volume 500KA, Fuzz 1KB, 20 µF; NKT275 / AC128 / SFT363E; positive ground −9 V; Q1 hFE 70 / Q2 hFE 120 target)",
+   "url": "https://fuzzcentral.ssguitar.com/fuzzface.php"
+  },
+  {
+   "title": "ElectroSmash, 'Fuzz Face Analysis' (BOM C1 2.2 µF, C2 20 µF, C3 0.01 µF, R1 33K, R2 470, R3 8K2, R4 100K, 500K audio volume, 1K linear fuzz; bias chart with AC128 β 85 / 120: Q1 base −0.2 V, Q1 collector −0.7 V, Q2 emitter −0.5 V, Q2 collector −4.5 V, output node −8.7 V; transistor selection β 70-80 / 110-130; AC128 PSpice cards). Archived copy used",
+   "url": "https://www.electrosmash.com/fuzz-face"
+  },
+  {
+   "title": "ElectroSmash AC128 Gummel-Poon cards 'GERPNP_LOWGAIN' (IS=85.8n BF=85 ISE=0.435n NE=1.2 BR=20 ISC=120.8n VAF=102.2 RB=173.3 RE=20 RC=60 CJE=6p CJC=3.75p) and 'GERPNP_HIGHGAIN' (IS=120.8n BF=120, otherwise identical), published in the Fuzz Face analysis; licence not stated on the page",
+   "url": "https://www.electrosmash.com/fuzz-face"
+  },
+  {
+   "title": "Littlediode, NKT275 (DSI) data: VCBO/VCEO 15 V, PD 200 mW, hFE min 30, ICBO max 10 µA, fT ≥ 1 MHz",
+   "url": "https://www.littlediode.com/components/NKT275.html"
+  },
+  {
+   "title": "Radiomuseum, NKT275 (Newmarket Transistors, germanium alloy PNP AF driver)",
+   "url": "https://www.radiomuseum.org/tubes/tube_nkt275.html"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "out",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 1.0
+ },
+ "oversampling": 2,
+ "lte": {"start": "bdf2", "note": "LTE substeps start on BDF2 (docs §10.61). Engine 8x fine-step truth, audio band, lead / rock DI: 0.012 / 0.029 % -> 0.0039 / 0.0097 %. CPU equal (9900X)"},
+ "minRate": 705600,
+ "multirate": {"rates": {"C1": 64}, "events": true, "note": "Event-local oversampling (docs §10.48, §10.62): the circuit runs at 768 kHz and every LTE event takes 4 substeps (3.07 MHz) into the band-limited output stream. The near-square edges carry content up to MHz: at a fixed 768 kHz they fold (aliasing gate, every bin, 0.25 / 0.5 / 1.0 FS: -60.6 / -57.2 / -49.6 dB), and even a fixed 1.536 MHz or 2-substep events leave -57.5 to -61.5 dB at 1.0 FS. Now -85.4 / -74.6 / -71.4 dB. Engine 8x fine-step truth (band-limited), audio band, lead / rock DI: 0.0062 / 0.016 -> 0.0030 / 0.0099 %"},
+ "solver": "auto",
+ "models": {
+  "NKT275_Q1": {
+   "kind": "pnp",
+   "is": 1e-07,
+   "bf": 75.0,
+   "br": 20.0,
+   "ise": 4.35e-10,
+   "ne": 1.2,
+   "vaf": 100.0,
+   "rb": 170.0,
+   "icbo": 1.5e-06,
+   "vleak": 0.2,
+   "note": "PROPOSED PARAMETERS (engine feature needed: ise, ne, vaf, rb, icbo, vleak are not accepted by the v1 pnp kind). unverified: no NKT275 SPICE card exists. IS 0.1 µA reproduces ElectroSmash's measured Vbe ≈ 0.2 V at ≈0.25 mA (AC128 cards use 86-121 nA); BF 75 = the Q1 pick (β 70-80); BR, ISE, NE, VAF, RB from the ElectroSmash AC128 card; ICBO 1.5 µA gives ICEO ≈ 115 µA at β 75 (assumed, inside the 10 µA datasheet maximum); vleak = voltage scale of the leakage turn-on (see JFET.md) CJE 6p / CJC 3.75p: AC128-family values (no NKT275 card exists), assumed; they set the edge rate of the germanium switch.",
+   "cje": 6e-12,
+   "cjc": 3.75e-12
+  },
+  "NKT275_Q2": {
+   "kind": "pnp",
+   "is": 1e-07,
+   "bf": 120.0,
+   "br": 20.0,
+   "ise": 4.35e-10,
+   "ne": 1.2,
+   "vaf": 100.0,
+   "rb": 170.0,
+   "icbo": 2e-06,
+   "vleak": 0.2,
+   "note": "PROPOSED PARAMETERS as NKT275_Q1; BF 120 = the Q2 pick (β 110-130); ICBO 2 µA (ICEO ≈ 240 µA) assumed, unverified CJE 6p / CJC 3.75p: AC128-family values (no NKT275 card exists), assumed; they set the edge rate of the germanium switch.",
+   "cje": 6e-12,
+   "cjc": 3.75e-12
+  }
+ },
+ "controls": [
+  {
+   "id": "volume",
+   "label": "Volume",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "volume"
+   ],
+   "group": "Main",
+   "note": "500 kΩ audio-taper pot after the 0.01 µF output cap"
+  },
+  {
+   "id": "fuzz",
+   "label": "Fuzz",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "fuzz"
+   ],
+   "group": "Main",
+   "note": "1 kΩ linear pot, Q2 emitter (pin 3) to ground (pin 1), wiper bypassed by 20 µF; clockwise = more gain"
+  },
+  {
+   "id": "mode",
+   "label": "Mode",
+   "kind": "continuous",
+   "default": 0.0,
+   "paramRange": [
+    0,
+    2
+   ],
+   "params": [
+    "mode"
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Legacy 0-2 'Mode' parameter. The Fuzz Face has no mode switch; no circuit meaning, stored for preset round-trip. (The engine owner could later map it to transistor-pair selections, e.g. NKT275 / AC128 / SFT363E models.)"
+  },
+  {"id": "stereo", "label": "Stereo", "kind": "continuous", "default": 0.5, "params": ["CASSt"], "legacyOnly": true, "group": "Legacy", "note": "Catalogue stereo parameter; the circuit is mono, stored only"},
+  {"id": "power", "label": "On/Off", "kind": "switch", "default": 1.0, "params": ["Pwr"], "legacyOnly": true, "group": "Legacy", "note": "Host handles bypass; stored only"}
+ ],
+ "parts": [
+  {
+   "ref": "VBAT",
+   "type": "V",
+   "nodes": [
+    "vee",
+    "0"
+   ],
+   "value": "-9",
+   "label": "9 V battery, positive ground (rail −9 V)"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "in",
+    "b1"
+   ],
+   "value": "2.2u",
+   "tolerance": 0.2,
+   "label": "Input cap"
+  },
+  {
+   "ref": "Q1",
+   "type": "pnp",
+   "nodes": [
+    "c1",
+    "b1",
+    "0"
+   ],
+   "model": "NKT275_Q1",
+   "label": "Q1 NKT275 (β ≈ 75)"
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "vee",
+    "c1"
+   ],
+   "value": "33k",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "Q2",
+   "type": "pnp",
+   "nodes": [
+    "c2",
+    "c1",
+    "e2"
+   ],
+   "model": "NKT275_Q2",
+   "label": "Q2 NKT275 (β ≈ 120)"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "x",
+    "c2"
+   ],
+   "value": "8.2k",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "vee",
+    "x"
+   ],
+   "value": "470",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "e2",
+    "b1"
+   ],
+   "value": "100k",
+   "tolerance": 0.1,
+   "label": "Feedback"
+  },
+  {
+   "ref": "FUZZ",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "fw",
+    "e2"
+   ],
+   "value": "1k",
+   "taper": "B",
+   "control": "fuzz",
+   "label": "Fuzz"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "fw",
+    "0"
+   ],
+   "value": "20u",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "x",
+    "v3"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "Output cap"
+  },
+  {
+   "ref": "VOLUME",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "out",
+    "v3"
+   ],
+   "value": "500k",
+   "taper": "A",
+   "control": "volume",
+   "label": "Volume"
+  }
+ ],
+ "probes": [
+  "b1",
+  "c1",
+  "e2",
+  "c2",
+  "x",
+  "out"
+ ],
+ "layout": {}
+}

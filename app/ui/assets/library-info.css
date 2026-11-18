@@ -1,0 +1,21 @@
+/* Library rig info button + popover (assets/library-info.js). */
+.li-btn { position: absolute; z-index: 2; right: 6px; top: 3px; width: 18px; height: 18px; padding: 2px; border: 0; border-radius: 50%; background: transparent; color: var(--text-3); cursor: pointer; }
+.li-btn:hover, .li-btn:focus-visible { color: var(--accent); background: var(--hover); outline: none; }
+.li-btn[hidden] { display: none; }
+.li-btn svg { width: 14px; height: 14px; display: block; }
+.li-pop { position: fixed; z-index: 4000; width: 340px; max-height: 70vh; overflow: auto; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line-3);
+  background: var(--card); color: var(--text); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28); font-size: 12px; line-height: 1.45; }
+.li-pop[hidden] { display: none; }
+.li-h { display: flex; flex-direction: column; gap: 1px; margin-bottom: 6px; }
+.li-h b { font-size: 13px; font-weight: 650; }
+.li-h span { font-size: 10.5px; color: var(--accent); font-weight: 600; }
+.li-d { margin: 0 0 8px; color: var(--text-2); }
+.li-k { display: block; font-size: 10px; font-weight: 650; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-3); margin-bottom: 3px; }
+.li-ib { margin-bottom: 8px; }
+.li-ib em { color: var(--text-3); font-style: normal; }
+.li-src { display: flex; flex-direction: column; gap: 3px; margin-bottom: 8px; }
+.li-src a { display: grid; grid-template-columns: 16px minmax(0, 1fr); column-gap: 6px; color: var(--text); text-decoration: none; padding: 3px 4px; border-radius: 6px; }
+.li-src a:hover { background: var(--hover); }
+.li-src a b { grid-row: span 2; font-size: 10px; color: var(--accent); font-weight: 650; padding-top: 1px; }
+.li-src a i { font-style: normal; font-size: 10.5px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.li-note { margin: 0; padding-top: 7px; border-top: 1px solid var(--line); font-size: 10.5px; color: var(--text-3); }

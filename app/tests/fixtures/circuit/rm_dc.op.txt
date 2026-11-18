@@ -1,0 +1,8 @@
+# ngspice .op reference: dallas-rangemaster v1 (node voltage)
+in  0.000000e+00
+vee  -9.00000e+00
+b1  -1.06078e+00
+c1  -6.79886e+00
+e1  -8.63484e-01
+ow  -8.77989e+00
+out  0.000000e+00

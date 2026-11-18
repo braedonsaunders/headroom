@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Island Steel Pan</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Island Steel Pan" preset-author="Headroom" preset-comment="Steel drums with a short room. Arpeggiated chords and bright melodies."/>
+<rack>
+<non-fix-components>
+  <component id="900001">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="mode" value="0"/>
+        <parameter id="sens" value="0.55"/>
+        <parameter id="bend" value="2"/>
+        <parameter id="low" value="40"/>
+        <parameter id="high" value="88"/>
+        <parameter id="vel" value="0.5"/>
+        <parameter id="thru" value="1"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="900003">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="tone" value="0.65"/>
+        <parameter id="attack" value="0.5"/>
+        <parameter id="release" value="0.5"/>
+        <parameter id="vibrato" value="0"/>
+        <parameter id="follow" value="0.3"/>
+        <parameter id="level" value="0.8532"/>
+        <parameter id="mix" value="1"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="sound" value="138"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.2"/>
+        <parameter id="Tm" value="0.27375"/>
+        <parameter id="Sz" value="0.5625"/>
+        <parameter id="H" value="0.578125"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Chr" value="1"/>
+        <parameter id="iM" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="26000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Vol" value="0.6287"/>
+        <parameter id="F1" value="0.5"/>
+        <parameter id="G1" value="0.5"/>
+        <parameter id="Q1" value="0.5"/>
+        <parameter id="F2" value="0.5"/>
+        <parameter id="G2" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="Q2" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="900003" target-number="1" target-name="tone" min-value="0.2" max-value="1" controller-name="Brightness"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.5" controller-name="Room"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+</headroom-preset>

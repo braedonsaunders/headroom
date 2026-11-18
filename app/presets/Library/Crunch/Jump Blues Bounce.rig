@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Jump Blues Bounce</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Jump Blues Bounce" preset-author="Headroom" preset-comment="Bright, slightly dirty swing tone in the style of a big-bodied archtop into a small tweed combo at moderate volume: snappy, horn-like single-note lines and stabbing chords, with a short slapback and a touch of spring. Neck pickup for warmth, both pickups for shimmer." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="79000">
+    <component-audio version="1">
+      <parameters num-parameters="11">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="vb" value="0.58"/>
+        <parameter id="vn" value="0.5"/>
+        <parameter id="t" value="0.74"/>
+        <parameter id="Pw" value="0.5"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.45"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bi" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="input" value="0"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.1373"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="13"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="158000">
+    <component-audio version="1">
+      <parameters num-parameters="38">
+        <parameter id="mix" value="0.16"/>
+        <parameter id="input" value="0.7224"/>
+        <parameter id="output" value="0.7085"/>
+        <parameter id="pandry" value="0.5"/>
+        <parameter id="panwet" value="0.5"/>
+        <parameter id="stereowidth" value="0.5"/>
+        <parameter id="stereomode" value="0.5"/>
+        <parameter id="timemode" value="0"/>
+        <parameter id="time" value="0.065"/>
+        <parameter id="feedback" value="0.08"/>
+        <parameter id="style" value="0.5"/>
+        <parameter id="ana_bbdtype" value="0.5"/>
+        <parameter id="modern_sat" value="0.5"/>
+        <parameter id="modern_depth" value="0"/>
+        <parameter id="modern_rate" value="0.5"/>
+        <parameter id="modern_stereo" value="0.5"/>
+        <parameter id="diff_amount" value="0.5"/>
+        <parameter id="diff_size" value="0.5"/>
+        <parameter id="diff_movement" value="0.5"/>
+        <parameter id="diff_dense" value="0.5"/>
+        <parameter id="ana_depth" value="0.5"/>
+        <parameter id="ana_rate" value="0.5"/>
+        <parameter id="ana_stereo" value="0.5"/>
+        <parameter id="tape_sat" value="0.5"/>
+        <parameter id="tape_age" value="0.5"/>
+        <parameter id="tape_wowflut" value="0.5"/>
+        <parameter id="tape_noise" value="0.5"/>
+        <parameter id="vd_quality" value="0.5"/>
+        <parameter id="vd_depth" value="0.5"/>
+        <parameter id="vd_rate" value="0.5"/>
+        <parameter id="vd_stereo" value="0.5"/>
+        <parameter id="locut" value="0.5"/>
+        <parameter id="hicut" value="0.5"/>
+        <parameter id="duckingamount" value="0"/>
+        <parameter id="duckingsensitivity" value="0.5"/>
+        <parameter id="duckingrelease" value="0.5"/>
+        <parameter id="duckingmeter" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="27000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Tm" value="0.45"/>
+        <parameter id="Wet" value="0.16"/>
+        <parameter id="SpringLength" value="0.5"/>
+        <parameter id="B" value="0.5"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="iM" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="79000" target-number="1" target-name="vb" min-value="0.35" max-value="0.85" controller-name="Amp Volume"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="79000" target-number="1" target-name="t" min-value="0.45" max-value="0.95" controller-name="Tone"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="158000" target-number="1" target-name="mix" min-value="0" max-value="0.35" controller-name="Slapback"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="27000" target-number="1" target-name="Wet" min-value="0" max-value="0.4" controller-name="Spring"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="crunch-jump-blues-bounce" category="Crunch" order="70" instrument="guitar" style="Jump Blues">
+  <description>Bright, slightly dirty swing tone in the style of a big-bodied archtop into a small tweed combo at moderate volume: snappy, horn-like single-note lines and stabbing chords, with a short slapback and a touch of spring. Neck pickup for warmth, both pickups for shimmer.</description>
+  <tags><tag>Crunch</tag><tag>Jump Blues</tag><tag>Swing</tag><tag>Blues</tag><tag>Tweed</tag><tag>Spring Reverb</tag><tag>Slapback</tag></tags>
+  <sources>
+    <source url="https://www.guitarworld.com/lessons/t-bone-walker-blues-guitar" title="Guitar World: T-Bone Walker changed the course of blues guitar playing"/>
+    <source url="https://www.guitarworld.com/lessons/how-to-play-jump-blues-guitar" title="Guitar World: Introducing jump blues"/>
+    <source url="https://www.premierguitar.com/artists/a-bluesy-world-an-interview-with-duke-robillard?page=1" title="Premier Guitar: A bluesy world, an interview with Duke Robillard"/>
+    <source url="https://somethingelsereviews.com/2011/09/28/something-else-interview-duke-robillard-co-founder-of-roomful-of-blues/" title="Something Else! Interview: Duke Robillard (2011)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

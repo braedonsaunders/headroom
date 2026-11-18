@@ -1,0 +1,9 @@
+# ngspice .op reference: test-pentode-se v1 (node voltage)
+in  0.000000e+00
+bp  3.000000e+02
+gi  0.000000e+00
+g1  0.000000e+00
+p  1.317183e+02
+g2  2.950217e+02
+k  1.815829e+01
+out  0.000000e+00

@@ -1,0 +1,1374 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "tech21-sansamp-gt2",
+ "version": 1,
+ "name": "Tech 21 SansAmp GT2",
+ "description": "Tech 21 SansAmp GT2 as traced by J. Luja (2002, Rev. 2 10-24-02) and drawn on the Tonepad 'Sin Amp 2' schematic (Rev. 2, Jan 24 2003). IC1a buffer and IC1b x5.5 stage share the input node -> AMP switch S3 picks the Drive feed (California C20 .01 / British C25 .0022 from IC1b, Tweed: the C19/C24/C26 + R36 network from the buffer) and IC2a's gain leg (R37, or R37 // R38) -> Drive 100 kB -> IC2a (330 k // 220 p) -> IC2b (330 k // 220 p, MOD switch S2 bank A sets its leg: R29 10 k, or R29 // R24 1 k) -> two Sallen-Key low-pass followers (IC3a ~3 kHz Q ~2 with the R5/C7 shelf, IC3b ~3.2 kHz) -> S2 bank B (Hot Wired through C18 .01, Hi Gain through R30 10 k, Clean direct) -> node Z with R35 to VB and R34 to the Level top -> MIC switch S1 (C17/C23 .0047, C22 .022, R23 6.2 k, R22 22 k) -> Level 100 kB -> IC4a x3.3 -> Baxandall High/Low around IC4b -> NPN emitter-follower output. There are no clipping diodes: the op-amps clip at their rails. Switch throws to positions: Luja's pin labels (poles 3 and 6; throws 1/2/4 and 8/7/5) with the Tonepad schematic's explicit position drawing (position 1 = throws 1 and 8, 2 = 2 and 7, 3 = 4 and 5). Engine note: the rail-clipping IC2b group runs at 8x a 48 kHz host (see multirate).",
+ "sources": [
+  {
+   "title": "Tech 21 SansAmp GT-2 traced schematic, drawn by J. Luja 2002, Rev. 2 10-24-02 (all values, the three 2-pole 3-throw switch banks by pin number, the switch legends)",
+   "url": "https://schematicsonline.com/wp-content/uploads/2022/11/Tech-21-SansAmp-GT-2.pdf"
+  },
+  {
+   "title": "Tonepad 'Sin Amp 2' (SansAmp GT2) schematic and layout, Francisco Pena, Rev. 2 Jan 24 2003: the same values, every switch throw drawn by position (S1A/S1B, S2A/S2B, S3A/S3B, positions 1-3), parts list 4 x TL072 + BC413B",
+   "url": "https://www.pisotones.com/GT2/GT2.pdf"
+  },
+  {
+   "title": "Tech 21 SansAmp GT2 owner's manual (Rev 5/06): switch legends and what each position does; 1 Mohm input",
+   "url": "https://www.tech21nyc.com/t21manuals/GT2-OM.pdf"
+  },
+  {
+   "title": "GroupDIY, 'Sans amp GT2 from tonepad': the Tonepad switch wiring (S?A0/S?B0 common, 1-3 positions), and the observation that MIC positions 1 and 2 look the same in the circuit",
+   "url": "https://groupdiy.com/threads/sans-amp-gt2-from-tonepad.12684/"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "out",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 1.0
+ },
+ "oversampling": 8,
+ "newton": {"groups": {"IC2B": 5e-05}},
+ "solver": "auto",
+ "multirate": {
+  "rates": {
+   "IC2B": 32
+  },
+  "events": true,
+  "note": "Base 384 kHz (oversampling 8, was 2), IC2b's group with events at 32: 4 substeps (1.536 MHz) on every LTE event (docs §10.48, §10.63). IC2b (x175 in Hot Wired / Hi Gain) clips at its rails; that group is the whole path up to the Level amp. Was: base 96 kHz with this group on the ladder at 384 kHz: 3130 Hz gate tone (every bin) -62.8 / -59.2 / -52.5 dB at 0.25 / 0.5 / 1.0 FS (384 kHz folds), 2900 Hz -56.4 / -61.8 / -52.8; now -72.9 / -72.5 / -67.2 and -72.2 / -70.4 / -65.6. The group on the ladder at 768 kHz passes too (-67.8 worst) but is further from the truth (ngspice out 0.129 -> 0.134 %: the converters' phase); 2 substeps fail (-58.7). ngspice T/32 truth, audio band: 0.129 -> 0.035 %; engine T/32 truth lead / rock DI 0.128 / 0.401 -> 0.035 / 0.114 %. 9900X real / driven: 21.9 / 26.7 -> 31.5 / 36.0 % of a core."
+ },
+ "models": {
+  "TL072": {
+   "kind": "opamp",
+   "level": 1,
+   "a0": 200000.0,
+   "gbw": 3000000.0,
+   "slew": 13000000.0,
+   "swing_hi": 1.5,
+   "swing_lo": 1.5,
+   "vhi": 9.0,
+   "vlo": 0.0,
+   "note": "TI TL072 (Tonepad parts list: 4 x TL072): Avd 200 V/mV, GBW 3 MHz, SR 13 V/us typ; single 9 V supply, output swing 1.5 V from each rail (datasheet VOM +/-13.5 V at +/-15 V, 10 kohm). unverified: the original GT2 board's op-amp type is not marked on the Luja trace; the input common-mode limit near the negative rail is not modelled"
+  },
+  "BC413B": {
+   "kind": "npn",
+   "is": 2e-14,
+   "bf": 330.0,
+   "br": 3.0,
+   "note": "BC413B low-noise NPN (Tonepad parts list; the Luja trace leaves the output transistor unmarked): hFE B rank 240-500, BF 330; IS approximate. unverified: no vendor card"
+  }
+ },
+ "controls": [
+  {
+   "id": "drive",
+   "label": "Drive",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "D"
+   ],
+   "group": "Main",
+   "note": "Drive 100 kB: attenuator (with R27 3.3 k foot) between the Amp switch's bank-A pole and IC2a's + input"
+  },
+  {
+   "id": "level",
+   "label": "Level",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "V"
+   ],
+   "group": "Main",
+   "note": "Level 100 kB, foot on VB, into the x3.3 IC4a level amplifier"
+  },
+  {
+   "id": "high",
+   "label": "High",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "T"
+   ],
+   "group": "Main",
+   "note": "High 100 kB, Baxandall treble (C3/C4 .01, R12 3.3 k) around IC4b; centre = flat"
+  },
+  {
+   "id": "low",
+   "label": "Low",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "B"
+   ],
+   "group": "Main",
+   "note": "Low 100 kB, Baxandall bass (R3/R14 10 k, C5/C6 .022, R13 10 k) around IC4b; centre = flat"
+  },
+  {
+   "id": "amp",
+   "label": "Amp",
+   "kind": "selector",
+   "default": 0.5,
+   "params": [
+    "A"
+   ],
+   "group": "Main",
+   "note": "S3 AMP, 3 positions: California (C20 .01 from IC1b; IC2a gain leg R37 only, x16), British (C25 .0022 from IC1b; R37 // R38, x31), Tweed (the C19/C24/C26 + R36 network from the IC1a buffer, C27; R37 // R38). Raw 0 / 0.5 / 1",
+   "options": [
+    "California",
+    "British",
+    "Tweed"
+   ],
+   "paramRange": [
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "id": "mod",
+   "label": "Mod",
+   "kind": "selector",
+   "default": 0.5,
+   "params": [
+    "C"
+   ],
+   "group": "Main",
+   "note": "S2 MOD, 3 positions: Hot Wired (IC2b leg R29 // R24, x175; output to Z through C18 .01), Hi Gain (same gain; through R30 10 k), Clean (R29 only, x31; direct). Raw 0 / 0.5 / 1",
+   "options": [
+    "Hot Wired",
+    "Hi Gain",
+    "Clean"
+   ],
+   "paramRange": [
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "id": "mic",
+   "label": "Mic",
+   "kind": "selector",
+   "default": 0.5,
+   "params": [
+    "MP"
+   ],
+   "group": "Main",
+   "note": "S1 MIC, 3 positions: Off Axis and Center (node N on the Level top, C17 or C23 .0047 from Z into M: a bridged-T around R34) and Classic (R22 22 k divider, flat). On both traces Off Axis and Center use equal parts (C17 = C23 = .0047) and so measure the same. Raw 0 / 0.5 / 1",
+   "options": [
+    "Off Axis",
+    "Center",
+    "Classic"
+   ],
+   "paramRange": [
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "id": "cabmic",
+   "label": "Cab & Mic",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "CM"
+   ],
+   "group": "Legacy",
+   "note": "The GT2's speaker/mic voicing is always in circuit (no on/off); legacy catalogue parameter, stored only",
+   "legacyOnly": true
+  },
+  {
+   "id": "hot",
+   "label": "Hot",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "H"
+   ],
+   "group": "Legacy",
+   "note": "No separate Hot control on the GT2 (Hot Wired is the MOD switch's position 1, on 'C'); stored only",
+   "legacyOnly": true
+  },
+  {
+   "id": "lamp",
+   "label": "Lamp",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "L"
+   ],
+   "group": "Legacy",
+   "note": "Indicator LED; no audio meaning, stored only",
+   "legacyOnly": true
+  },
+  {
+   "id": "stereo",
+   "label": "Stereo",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "CASSt"
+   ],
+   "group": "Legacy",
+   "note": "Catalogue stereo parameter; the GT2 is mono, stored only",
+   "legacyOnly": true
+  },
+  {
+   "id": "power",
+   "label": "On/Off",
+   "kind": "switch",
+   "default": 1.0,
+   "params": [
+    "Pwr"
+   ],
+   "group": "Legacy",
+   "note": "Host handles bypass (the effect-state JFET switch is modelled closed); stored only",
+   "legacyOnly": true
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VBAT",
+   "type": "V",
+   "nodes": [
+    "vcc",
+    "0"
+   ],
+   "value": "9",
+   "label": "9 V battery / adaptor"
+  },
+  {
+   "ref": "C28",
+   "type": "C",
+   "nodes": [
+    "vcc",
+    "0"
+   ],
+   "value": "220u",
+   "tolerance": 0.2,
+   "label": "+9 V reservoir"
+  },
+  {
+   "ref": "R32",
+   "type": "R",
+   "nodes": [
+    "vcc",
+    "vb"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "VB divider top"
+  },
+  {
+   "ref": "R33",
+   "type": "R",
+   "nodes": [
+    "vb",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "VB divider bottom"
+  },
+  {
+   "ref": "C29",
+   "type": "C",
+   "nodes": [
+    "vb",
+    "0"
+   ],
+   "value": "220u",
+   "tolerance": 0.2,
+   "label": "VB reservoir"
+  },
+  {
+   "ref": "C30",
+   "type": "C",
+   "nodes": [
+    "in",
+    "n30"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Input coupling (.022)"
+  },
+  {
+   "ref": "R39",
+   "type": "R",
+   "nodes": [
+    "n30",
+    "x"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Input series"
+  },
+  {
+   "ref": "R40",
+   "type": "R",
+   "nodes": [
+    "x",
+    "vb"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "Input bias to VB (1 Mohm input impedance)"
+  },
+  {
+   "ref": "IC1A",
+   "type": "opamp",
+   "nodes": [
+    "x",
+    "a",
+    "a",
+    "vcc",
+    "0"
+   ],
+   "model": "TL072",
+   "label": "IC1a input buffer (also feeds the bypass path 'A')"
+  },
+  {
+   "ref": "IC1B",
+   "type": "opamp",
+   "nodes": [
+    "x",
+    "m1b",
+    "o1b",
+    "vcc",
+    "0"
+   ],
+   "model": "TL072",
+   "label": "IC1b first gain stage, x5.5 above 154 Hz"
+  },
+  {
+   "ref": "R28",
+   "type": "R",
+   "nodes": [
+    "m1b",
+    "o1b"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "IC1b feedback"
+  },
+  {
+   "ref": "R26",
+   "type": "R",
+   "nodes": [
+    "m1b",
+    "n26"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "IC1b gain leg"
+  },
+  {
+   "ref": "C21",
+   "type": "C",
+   "nodes": [
+    "n26",
+    "vb"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "IC1b gain-leg cap (.047)"
+  },
+  {
+   "ref": "C20",
+   "type": "C",
+   "nodes": [
+    "o1b",
+    "s3t1"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "California coupling (.01) -> S3/1"
+  },
+  {
+   "ref": "C25",
+   "type": "C",
+   "nodes": [
+    "o1b",
+    "s3t2"
+   ],
+   "value": "2.2n",
+   "tolerance": 0.1,
+   "label": "British coupling (.0022) -> S3/2"
+  },
+  {
+   "ref": "C19",
+   "type": "C",
+   "nodes": [
+    "a",
+    "tw1"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Tweed network (.022)"
+  },
+  {
+   "ref": "R25",
+   "type": "R",
+   "nodes": [
+    "tw1",
+    "vb"
+   ],
+   "value": "2.2k",
+   "tolerance": 0.05,
+   "label": "Tweed network shunt"
+  },
+  {
+   "ref": "C24",
+   "type": "C",
+   "nodes": [
+    "tw1",
+    "tw2"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Tweed network (.022)"
+  },
+  {
+   "ref": "R31",
+   "type": "R",
+   "nodes": [
+    "tw2",
+    "vb"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "Tweed network shunt"
+  },
+  {
+   "ref": "C26",
+   "type": "C",
+   "nodes": [
+    "tw2",
+    "tw3"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Tweed network (.022)"
+  },
+  {
+   "ref": "R36",
+   "type": "R",
+   "nodes": [
+    "a",
+    "tw3"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Tweed network direct path"
+  },
+  {
+   "ref": "C27",
+   "type": "C",
+   "nodes": [
+    "tw3",
+    "s3t4"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Tweed coupling (.022) -> S3/4"
+  },
+  {
+   "ref": "S3A1",
+   "type": "switch",
+   "nodes": [
+    "s3t1",
+    "s3p"
+   ],
+   "control": "amp",
+   "positions": [
+    0
+   ],
+   "label": "S3 bank A throw 1 (California)"
+  },
+  {
+   "ref": "S3A2",
+   "type": "switch",
+   "nodes": [
+    "s3t2",
+    "s3p"
+   ],
+   "control": "amp",
+   "positions": [
+    1
+   ],
+   "label": "S3 bank A throw 2 (British)"
+  },
+  {
+   "ref": "S3A3",
+   "type": "switch",
+   "nodes": [
+    "s3t4",
+    "s3p"
+   ],
+   "control": "amp",
+   "positions": [
+    2
+   ],
+   "label": "S3 bank A throw 4 (Tweed)"
+  },
+  {
+   "ref": "DRIVE",
+   "type": "pot",
+   "nodes": [
+    "n27",
+    "dw",
+    "s3p"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "drive",
+   "label": "Drive 100 kB: top on the S3 bank-A pole, wiper into IC2a +"
+  },
+  {
+   "ref": "R27",
+   "type": "R",
+   "nodes": [
+    "n27",
+    "vb"
+   ],
+   "value": "3.3k",
+   "tolerance": 0.05,
+   "label": "Drive pot foot"
+  },
+  {
+   "ref": "IC2A",
+   "type": "opamp",
+   "nodes": [
+    "dw",
+    "m2a",
+    "o2a",
+    "vcc",
+    "0"
+   ],
+   "model": "TL072",
+   "label": "IC2a gain stage"
+  },
+  {
+   "ref": "R21",
+   "type": "R",
+   "nodes": [
+    "m2a",
+    "o2a"
+   ],
+   "value": "330k",
+   "tolerance": 0.05,
+   "label": "IC2a feedback"
+  },
+  {
+   "ref": "C16",
+   "type": "C",
+   "nodes": [
+    "m2a",
+    "o2a"
+   ],
+   "value": "220p",
+   "tolerance": 0.05,
+   "label": "IC2a feedback HF roll-off"
+  },
+  {
+   "ref": "C15",
+   "type": "C",
+   "nodes": [
+    "m2a",
+    "s3q"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "IC2a gain-leg cap (.022)"
+  },
+  {
+   "ref": "R37",
+   "type": "R",
+   "nodes": [
+    "s3q",
+    "vb"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "IC2a gain leg (S3 bank-B pole)"
+  },
+  {
+   "ref": "S3B2",
+   "type": "switch",
+   "nodes": [
+    "s3q",
+    "n38"
+   ],
+   "control": "amp",
+   "positions": [
+    1
+   ],
+   "label": "S3 bank B throw 7 (British): adds R38"
+  },
+  {
+   "ref": "S3B3",
+   "type": "switch",
+   "nodes": [
+    "s3q",
+    "n38"
+   ],
+   "control": "amp",
+   "positions": [
+    2
+   ],
+   "label": "S3 bank B throw 5 (Tweed): adds R38"
+  },
+  {
+   "ref": "R38",
+   "type": "R",
+   "nodes": [
+    "n38",
+    "vb"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "IC2a extra gain leg (British, Tweed)"
+  },
+  {
+   "ref": "IC2B",
+   "type": "opamp",
+   "nodes": [
+    "o2a",
+    "m2b",
+    "o2b",
+    "vcc",
+    "0"
+   ],
+   "model": "TL072",
+   "label": "IC2b gain stage"
+  },
+  {
+   "ref": "R19",
+   "type": "R",
+   "nodes": [
+    "m2b",
+    "o2b"
+   ],
+   "value": "330k",
+   "tolerance": 0.05,
+   "label": "IC2b feedback"
+  },
+  {
+   "ref": "C14",
+   "type": "C",
+   "nodes": [
+    "m2b",
+    "o2b"
+   ],
+   "value": "220p",
+   "tolerance": 0.05,
+   "label": "IC2b feedback HF roll-off"
+  },
+  {
+   "ref": "R20",
+   "type": "R",
+   "nodes": [
+    "m2b",
+    "n20"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "IC2b gain leg"
+  },
+  {
+   "ref": "C36",
+   "type": "C",
+   "nodes": [
+    "n20",
+    "s2p"
+   ],
+   "value": "2.2u",
+   "tolerance": 0.2,
+   "label": "IC2b gain-leg cap (2.2 uF)"
+  },
+  {
+   "ref": "R29",
+   "type": "R",
+   "nodes": [
+    "s2p",
+    "vb"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "IC2b gain leg (S2 bank-A pole)"
+  },
+  {
+   "ref": "S2A1",
+   "type": "switch",
+   "nodes": [
+    "s2p",
+    "n24"
+   ],
+   "control": "mod",
+   "positions": [
+    0
+   ],
+   "label": "S2 bank A throw 1 (Hot Wired): adds R24"
+  },
+  {
+   "ref": "S2A2",
+   "type": "switch",
+   "nodes": [
+    "s2p",
+    "n24"
+   ],
+   "control": "mod",
+   "positions": [
+    1
+   ],
+   "label": "S2 bank A throw 2 (Hi Gain): adds R24"
+  },
+  {
+   "ref": "R24",
+   "type": "R",
+   "nodes": [
+    "n24",
+    "vb"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "IC2b extra gain leg (Hot Wired, Hi Gain)"
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "o2b",
+    "p"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Into the voicing filter"
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "p",
+    "vb"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "Voicing divider"
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "p",
+    "q"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "Sallen-Key R"
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "q",
+    "n5"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Shelf R"
+  },
+  {
+   "ref": "C7",
+   "type": "C",
+   "nodes": [
+    "n5",
+    "vb"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "Shelf C (.047)"
+  },
+  {
+   "ref": "C9",
+   "type": "C",
+   "nodes": [
+    "q",
+    "o3a"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "Sallen-Key feedback C (.01)"
+  },
+  {
+   "ref": "R6",
+   "type": "R",
+   "nodes": [
+    "q",
+    "p3a"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "Sallen-Key R"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "p3a",
+    "vb"
+   ],
+   "value": "560p",
+   "tolerance": 0.05,
+   "label": "Sallen-Key C"
+  },
+  {
+   "ref": "IC3A",
+   "type": "opamp",
+   "nodes": [
+    "p3a",
+    "o3a",
+    "o3a",
+    "vcc",
+    "0"
+   ],
+   "model": "TL072",
+   "label": "IC3a Sallen-Key low-pass (~3 kHz, Q ~2)"
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "o3a",
+    "r"
+   ],
+   "value": "33k",
+   "tolerance": 0.05,
+   "label": "Sallen-Key R"
+  },
+  {
+   "ref": "C13",
+   "type": "C",
+   "nodes": [
+    "r",
+    "o3b"
+   ],
+   "value": "2.2n",
+   "tolerance": 0.1,
+   "label": "Sallen-Key feedback C (.0022)"
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "r",
+    "p3b"
+   ],
+   "value": "33k",
+   "tolerance": 0.05,
+   "label": "Sallen-Key R"
+  },
+  {
+   "ref": "C12",
+   "type": "C",
+   "nodes": [
+    "p3b",
+    "vb"
+   ],
+   "value": "1n",
+   "tolerance": 0.1,
+   "label": "Sallen-Key C (.001)"
+  },
+  {
+   "ref": "IC3B",
+   "type": "opamp",
+   "nodes": [
+    "p3b",
+    "o3b",
+    "o3b",
+    "vcc",
+    "0"
+   ],
+   "model": "TL072",
+   "label": "IC3b Sallen-Key low-pass (~3.2 kHz, Q ~0.74)"
+  },
+  {
+   "ref": "C18",
+   "type": "C",
+   "nodes": [
+    "o3b",
+    "s2t8"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "Hot Wired series C (.01) -> S2/8"
+  },
+  {
+   "ref": "R30",
+   "type": "R",
+   "nodes": [
+    "o3b",
+    "s2t7"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Hi Gain series R -> S2/7"
+  },
+  {
+   "ref": "S2B1",
+   "type": "switch",
+   "nodes": [
+    "s2t8",
+    "z"
+   ],
+   "control": "mod",
+   "positions": [
+    0
+   ],
+   "label": "S2 bank B throw 8 (Hot Wired): via C18"
+  },
+  {
+   "ref": "S2B2",
+   "type": "switch",
+   "nodes": [
+    "s2t7",
+    "z"
+   ],
+   "control": "mod",
+   "positions": [
+    1
+   ],
+   "label": "S2 bank B throw 7 (Hi Gain): via R30"
+  },
+  {
+   "ref": "S2B3",
+   "type": "switch",
+   "nodes": [
+    "o3b",
+    "z"
+   ],
+   "control": "mod",
+   "positions": [
+    2
+   ],
+   "label": "S2 bank B throw 5 (Clean): direct"
+  },
+  {
+   "ref": "R35",
+   "type": "R",
+   "nodes": [
+    "z",
+    "vb"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "Node Z load to VB"
+  },
+  {
+   "ref": "R34",
+   "type": "R",
+   "nodes": [
+    "z",
+    "lv"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "Node Z -> Level top"
+  },
+  {
+   "ref": "S1B1",
+   "type": "switch",
+   "nodes": [
+    "z",
+    "s1t8"
+   ],
+   "control": "mic",
+   "positions": [
+    0
+   ],
+   "label": "S1 bank B throw 8 (Off Axis): C17 into M"
+  },
+  {
+   "ref": "S1B2",
+   "type": "switch",
+   "nodes": [
+    "z",
+    "s1t7"
+   ],
+   "control": "mic",
+   "positions": [
+    1
+   ],
+   "label": "S1 bank B throw 7 (Center): C23 into M"
+  },
+  {
+   "ref": "C17",
+   "type": "C",
+   "nodes": [
+    "s1t8",
+    "m"
+   ],
+   "value": "4.7n",
+   "tolerance": 0.1,
+   "label": "Mic network (.0047)"
+  },
+  {
+   "ref": "C23",
+   "type": "C",
+   "nodes": [
+    "s1t7",
+    "m"
+   ],
+   "value": "4.7n",
+   "tolerance": 0.1,
+   "label": "Mic network (.0047)"
+  },
+  {
+   "ref": "R23",
+   "type": "R",
+   "nodes": [
+    "m",
+    "vb"
+   ],
+   "value": "6.2k",
+   "tolerance": 0.05,
+   "label": "Mic network shunt"
+  },
+  {
+   "ref": "C22",
+   "type": "C",
+   "nodes": [
+    "m",
+    "nn"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Mic network (.022)"
+  },
+  {
+   "ref": "S1A1",
+   "type": "switch",
+   "nodes": [
+    "lv",
+    "nn"
+   ],
+   "control": "mic",
+   "positions": [
+    0
+   ],
+   "label": "S1 bank A throw 1 (Off Axis): node N on the Level top"
+  },
+  {
+   "ref": "S1A2",
+   "type": "switch",
+   "nodes": [
+    "lv",
+    "nn"
+   ],
+   "control": "mic",
+   "positions": [
+    1
+   ],
+   "label": "S1 bank A throw 2 (Center): node N on the Level top"
+  },
+  {
+   "ref": "S1A3",
+   "type": "switch",
+   "nodes": [
+    "lv",
+    "n22"
+   ],
+   "control": "mic",
+   "positions": [
+    2
+   ],
+   "label": "S1 bank A throw 4 (Classic): R22 divider"
+  },
+  {
+   "ref": "R22",
+   "type": "R",
+   "nodes": [
+    "n22",
+    "vb"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "Classic divider"
+  },
+  {
+   "ref": "LEVEL",
+   "type": "pot",
+   "nodes": [
+    "vb",
+    "lw",
+    "lv"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "level",
+   "label": "Level 100 kB, foot on VB"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "lw",
+    "n1"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "Level wiper coupling (.01)"
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "n1",
+    "m4a"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "IC4a input"
+  },
+  {
+   "ref": "IC4A",
+   "type": "opamp",
+   "nodes": [
+    "vb",
+    "m4a",
+    "o4a",
+    "vcc",
+    "0"
+   ],
+   "model": "TL072",
+   "label": "IC4a inverting level amplifier, x3.3"
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "m4a",
+    "o4a"
+   ],
+   "value": "330k",
+   "tolerance": 0.05,
+   "label": "IC4a feedback"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "o4a",
+    "t"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "Into the tone stage (.1)"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "t",
+    "h1"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "High input C (.01)"
+  },
+  {
+   "ref": "HIGH",
+   "type": "pot",
+   "nodes": [
+    "h3",
+    "hw",
+    "h1"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "high",
+   "label": "High 100 kB (CW = input side = boost)"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "h3",
+    "o4b"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "High feedback C (.01)"
+  },
+  {
+   "ref": "R12",
+   "type": "R",
+   "nodes": [
+    "hw",
+    "m4b"
+   ],
+   "value": "3.3k",
+   "tolerance": 0.05,
+   "label": "High wiper to IC4b -"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "t",
+    "l1"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Low input R"
+  },
+  {
+   "ref": "LOW",
+   "type": "pot",
+   "nodes": [
+    "l3",
+    "lw2",
+    "l1"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "low",
+   "label": "Low 100 kB (CW = input side = boost)"
+  },
+  {
+   "ref": "R14",
+   "type": "R",
+   "nodes": [
+    "l3",
+    "o4b"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Low feedback R"
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "l1",
+    "lw2"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Low bypass C (.022)"
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "lw2",
+    "l3"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Low bypass C (.022)"
+  },
+  {
+   "ref": "R13",
+   "type": "R",
+   "nodes": [
+    "lw2",
+    "m4b"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Low wiper to IC4b -"
+  },
+  {
+   "ref": "IC4B",
+   "type": "opamp",
+   "nodes": [
+    "vb",
+    "m4b",
+    "o4b",
+    "vcc",
+    "0"
+   ],
+   "model": "TL072",
+   "label": "IC4b Baxandall tone amplifier"
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "o4b",
+    "bq"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "Into the output follower",
+   "note": "The original's effect-path JFET switch (between R9 and the follower base; type not given on either source) is ON in the effect state and is a closed path here, as on the Tonepad schematic; its few-hundred-ohm channel is in series with a 1 k into a base of several Mohm. The dry-path JFET from the IC1a buffer ('A') is OFF and omitted. Batch-7 re-read (2026-11-12, Tech-21-SansAmp-GT-2.pdf at 300 dpi, crop 3050,100,3450,450): the two devices between R9/'A' and Q1's base are N-channel JFETs (d/s/g lettered, channel bar with the d and s leads, gate arrow pointing in), each with a series diode on its gate (anode at the gate) to an undrawn stub - the classic JFET bypass switch driven by the footswitch logic. 'A' is the IC1a input buffer's output, i.e. the dry signal: the pair selects dry or effect into the Q1 follower, matching the manual's 'custom footswitch actuator ... buffered bypass' (GT2-OM.pdf, Product Overview). They are NOT clippers; the GT2 clips at its op-amp rails, as this description says. A scratch build with both JFETs (2N5457 card, effect gate floating via 10M, dry gate held by its diode at 0 V) measured within 0.03 dB and 0.01 % THD of this closed path at Drive 0/0.5/1, and the dry leak at Level 0 unchanged (-54.2 dB at 1 kHz), so the switch stays modelled closed: its type and gate drive are not on either source."
+  },
+  {
+   "ref": "Q1",
+   "type": "npn",
+   "nodes": [
+    "vcc",
+    "bq",
+    "eq"
+   ],
+   "model": "BC413B",
+   "label": "Output emitter follower"
+  },
+  {
+   "ref": "R17",
+   "type": "R",
+   "nodes": [
+    "eq",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Q1 emitter load"
+  },
+  {
+   "ref": "C31",
+   "type": "C",
+   "nodes": [
+    "eq",
+    "n31"
+   ],
+   "value": "2.2u",
+   "tolerance": 0.2,
+   "label": "Output coupling (2.2 uF)"
+  },
+  {
+   "ref": "R41",
+   "type": "R",
+   "nodes": [
+    "n31",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Output pull-down"
+  },
+  {
+   "ref": "R42",
+   "type": "R",
+   "nodes": [
+    "n31",
+    "out"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "Output series"
+  }
+ ],
+ "probes": [
+  "a",
+  "o1b",
+  "o2a",
+  "o2b",
+  "o3b",
+  "z",
+  "o4a",
+  "o4b",
+  "out"
+ ],
+ "layout": {}
+}

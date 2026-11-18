@@ -1,0 +1,1206 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "ehx-small-stone",
+  "version": 1,
+  "name": "Electro-Harmonix Small Stone (Issue J, CA3094)",
+  "description": "Electro-Harmonix Small Stone, Issue J (1977) circuit: five CA3094 (house-marked EH1048) OTA + Darlington chips on a 9 V battery. Vbias 3.6 V from R3 15 kΩ / R1 10 kΩ with C1 33 µF. Input: R4 100 kΩ, C2 6.8 nF into a 2N5088 / 2N5087 feedback pair (Q1 CE with R6 10 kΩ, Q2 PNP collector driving R42 4.7 kΩ back to Q1's emitter over R7 4.7 kΩ: gain 2), C3 10 µF into four OTA all-pass stages. Each stage: input resistor (30 kΩ first, 27 kΩ others) and output feedback 27 kΩ into the OTA inverting input (pin 2), 1 kΩ from there to Vbias, pin 3 at Vbias, a 6.8 nF cap from the stage input to the OTA output (pin 1), and the on-chip Darlington (Q12/Q13, internal R1 2 kΩ and R2 47 kΩ) as the output follower into 10 kΩ. Mixer: dry R8 30 kΩ from the preamp and wet R13 27 kΩ from stage 4, C7 0.1 µF / R14 470 kΩ to the output (no output buffer). Color switch pole B: on = R11 3.3 kΩ / R12 4.7 kΩ / R10 27 kΩ / C6 0.1 µF feedback from stage 4 into the R4/C2 junction; off = that network grounded and R9 270 kΩ loads the input node. LFO: IC5 CA3094 integrating its output current (IABC set through the 1 MΩ Rate rheostat from the R22 27 kΩ / R23 7.5 kΩ divider) on C12 33 µF; its Darlington emitter drives the four stage IABC pins (pin 5) through R24 100 Ω, and the Darlington collector current (the total stage IABC) returns into the Q3/Q4 2N5087 cross-coupled trigger (R15 4.7 kΩ, R17 15 kΩ, R18 1 kΩ, R19 27 kΩ, R20 1.8 kΩ, C10 0.1 µF) that sets IC5's input polarity. Color pole A switches R16 22 kΩ (off) or the C10 node (on) onto the trigger. The bypass footswitch is the host's unit bypass.",
+  "sources": [
+    {
+      "title": "R. G. Keen, 'EH Small Stone Phaser Issue J' schematic (as compiled in 'All Electro-Harmonix Effects', Experimentalists Anonymous): all Issue J values, CA3094 pin use, Color switch wiring, 9 V battery, R23 7.5k, 'house marked EH1048 ... can be replaced with CA3094'",
+      "url": "https://experimentalistsanonymous.com/diy/Schematics/Miscellaneous/All%20Electro-Harmonix%20Effects.pdf"
+    },
+    {
+      "title": "General Guitar Gadgets, 'Electro-Harmonix Small Stone' (Issue J, R. G. Keen drawing with JD Sleep reference designators, 2007): designators used here; it reads R23 as 2.5k",
+      "url": "http://www.generalguitargadgets.com/pdf/ggg_smallstj_sc.pdf"
+    },
+    {
+      "title": "Aion FX, 'Sunstone OTA Phaser' build documentation v1.1.0 (Issue J adaptation): CA3094 Darlington drawn discretely (2 kΩ collector resistor, 47 kΩ emitter resistor), trigger and rate network values, Rate pot 1MC (reverse log), 2002 reissue Color changes",
+      "url": "https://aionfx.com/app/files/docs/sunstone_documentation.pdf"
+    },
+    {
+      "title": "Intersil CA3094/A/B datasheet FN598: pinout (1 OTA output / compensation, 2 inverting, 3 non-inverting for the pin-6 'source' output, 4 V−, 5 IABC, 6 Darlington emitter, 7 V+, 8 Darlington collector), internal R1 2 kΩ and R2 47 kΩ, VABC 0.68 V at 100 µA, gm 2.2 mS at IABC 100 µA, composite hFE 16 000 min / 100 000 typ",
+      "url": "https://www.experimentalistsanonymous.com/diy/Datasheets/CA3094.pdf"
+    },
+    {
+      "title": "A. Carson, C. Valentini-Botinhao, S. King, S. Bilbao, 'Differentiable grey-box modelling of phaser effects using frame-based spectral processing', DAFx-23 paper 38: Small Stone topology (LFO, four first-order all-pass sections, Color feedback loop) and measured LFO rates (Table 1)",
+      "url": "https://www.dafx.de/paper-archive/2023/DAFx23_paper_38.pdf"
+    },
+    {
+      "title": "A. Huovilainen, 'Enhanced digital models for analog modulation effects', DAFx-05: OTA all-pass stage law of the Small Stone",
+      "url": "https://www.dafx.de/paper-archive/2005/P_155.pdf"
+    },
+    {
+      "title": "Freestompboxes, 'Electro Harmonix Small Stone V1': EH1048 OTAs, version history (V1 1974-78 with two LFO OTAs; Issue J)",
+      "url": "https://www.freestompboxes.org/viewtopic.php?t=24786"
+    },
+    {
+      "title": "Fairchild 2N5087 SPICE card (IS 6.734f BF 254.1 BR 2.683 VAF 45.7 ISE 6.734f NE 1.741 CJE 7.5p CJC 6.2p), as distributed in the LTspice standard.bjt library (licence not stated; quoted as a factual parameter set)",
+      "url": "https://github.com/polimi-ispl/mxrphase90/blob/main/LTspice/standard.bjt"
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 1.0
+  },
+  "oversampling": 1,
+  "solver": "dk",
+  "models": {
+    "2N5087": {
+      "kind": "pnp",
+      "is": 6.734e-15,
+      "bf": 254.1,
+      "br": 2.683,
+      "vaf": 45.7,
+      "ise": 6.734e-15,
+      "ne": 1.741,
+      "cje": 7.5e-12,
+      "cjc": 6.2e-12,
+      "note": "Fairchild 2N5087 SPICE card (LTspice standard.bjt); IKF, RB/RC, TF/TR and junction grading omitted"
+    },
+    "CA3094_Q_TYP": {
+      "kind": "npn",
+      "is": 1e-14,
+      "bf": 316,
+      "br": 1,
+      "note": "unverified: CA3094 output Darlington die (Q12, Q13). D: the datasheet gives only the composite hFE (16 000 min, 100 000 typ at 50 mA), so each die gets sqrt(100 000) = 316. IS is a generic small-signal value. Overrides the library CA3094_Q (hFE 100), whose 1e4 composite gain would pull ~40 nA of base current out of the stage integrator nodes and ~0.1 µA out of the 33 µF LFO cap",
+      "cje": 2e-12,
+      "cjc": 1e-12
+    }
+  },
+  "controls": [
+    {
+      "id": "rate",
+      "label": "Rate",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "Rt"
+      ],
+      "group": "Main",
+      "note": "R21 1 MΩ Rate pot wired as a rheostat from the R22 27 kΩ / R23 7.5 kΩ divider (Thevenin 1.96 V, 5.9 kΩ) into IC5's IABC pin; clockwise = less resistance = more IABC = faster. Reverse-log (C) taper per the Aion Issue J adaptation. DAFx-23 measured 0.086 / 0.625 / 2.28 Hz at 9 / 12 / 3 o'clock (Color off)"
+    },
+    {
+      "id": "color",
+      "label": "Color",
+      "kind": "switch",
+      "default": 0,
+      "params": [
+        "Cl"
+      ],
+      "group": "Main",
+      "note": "DPDT Color switch. On (1): pole B closes the R11/R12/R10/C6 feedback loop from stage 4 into the R4/C2 junction (resonant, deeper sweep); pole A ties the trigger's R18 node to the C10 node (DAFx-23: slower and deeper LFO with Color on). Off (0): pole B grounds the feedback network's C6 end so R9 270 kΩ loads the input node; pole A puts R16 22 kΩ across R17 15 kΩ. Legacy float: >= 0.5 is on"
+    },
+    {
+      "id": "sync",
+      "label": "Sync",
+      "kind": "continuous",
+      "default": 0.0,
+      "params": [
+        "Sy"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Tempo sync has no part in the Small Stone; stored for preset round-trip only"
+    },
+    {
+      "id": "notches",
+      "label": "Notches",
+      "kind": "continuous",
+      "default": 0.0,
+      "paramRange": [
+        1,
+        5
+      ],
+      "params": [
+        "Not"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Legacy 1-5 notch-count parameter. The Small Stone has four all-pass stages (two notches) and no switch; stored only"
+    },
+    {
+      "id": "mode",
+      "label": "Mode",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "CS"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No mode control on the Issue J; stored only"
+    },
+    {
+      "id": "mix",
+      "label": "Mix",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "DW"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "The dry/wet ratio is fixed by R8 30 kΩ (dry) and R13 27 kΩ (wet); no control. Stored only"
+    },
+    {
+      "id": "sweep_min",
+      "label": "Sweep Min",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "F1"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "The sweep range is fixed by the trigger thresholds and the Darlington/IABC law; no control. Stored only"
+    },
+    {
+      "id": "sweep_max",
+      "label": "Sweep Max",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "F2"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "As Sweep Min; stored only"
+    },
+    {
+      "id": "rotate",
+      "label": "Rotate",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "Rot"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No LFO-phase control in the circuit; stored only"
+    },
+    {
+      "id": "invert",
+      "label": "Invert",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "In"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No invert switch in the circuit; stored only"
+    },
+    {
+      "id": "lamp",
+      "label": "Lamp",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "Lm"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "The Issue J has no LED; stored only"
+    },
+    {
+      "id": "power",
+      "label": "On/Off",
+      "kind": "switch",
+      "default": 1.0,
+      "params": [
+        "Pwr"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Host handles bypass; stored only"
+    }
+  ],
+  "cuts": [
+    "vcc",
+    "vb"
+  ],
+  "parts": [
+    {
+      "ref": "VBAT",
+      "type": "V",
+      "nodes": [
+        "vbat",
+        "0"
+      ],
+      "value": "9",
+      "label": "9 V battery",
+      "note": "Issue J runs from the battery only: no DC jack, no reverse-polarity diode and no supply reservoir on Keen's drawing"
+    },
+    {
+      "ref": "RBAT",
+      "type": "R",
+      "nodes": [
+        "vbat",
+        "vcc"
+      ],
+      "value": "2",
+      "label": "Battery internal resistance",
+      "note": "unverified: not a schematic part. Typical fresh 9 V carbon-zinc internal resistance (1-2 Ω, rising as it discharges). Makes vcc a real rail so the LFO's switching current loads it"
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "vb"
+      ],
+      "value": "15k",
+      "tolerance": 0.05,
+      "label": "Vbias divider (top)"
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "vb",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "Vbias divider (bottom)"
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "vb",
+        "0"
+      ],
+      "value": "33u",
+      "tolerance": 0.2,
+      "label": "Vbias filter"
+    },
+    {
+      "ref": "R4",
+      "type": "R",
+      "nodes": [
+        "in",
+        "xin"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Input resistor"
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "xin",
+        "q1b"
+      ],
+      "value": "6.8n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R5",
+      "type": "R",
+      "nodes": [
+        "vb",
+        "q1b"
+      ],
+      "value": "470k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "Q1",
+      "type": "npn",
+      "nodes": [
+        "q1c",
+        "q1b",
+        "q1e"
+      ],
+      "model": "2N5088",
+      "label": "Q1 input stage",
+      "note": "EHX alternated 2N5088/2N5087 with BC239/BC309 pairs (freestompboxes / GGG)"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "q1c"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "q1e",
+        "0"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "Q2",
+      "type": "pnp",
+      "nodes": [
+        "pre",
+        "q1c",
+        "vcc"
+      ],
+      "model": "2N5087",
+      "label": "Q2 feedback-pair output"
+    },
+    {
+      "ref": "R42",
+      "type": "R",
+      "nodes": [
+        "pre",
+        "q1e"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05,
+      "note": "Series feedback: gain 1 + R42/R7 = 2. Q2's collector load is R42 + R7 (Keen draws no separate collector resistor)"
+    },
+    {
+      "ref": "C3",
+      "type": "C",
+      "nodes": [
+        "pre",
+        "s0"
+      ],
+      "value": "10u",
+      "tolerance": 0.2,
+      "note": "Electrolytic, + at the preamp side"
+    },
+    {
+      "ref": "R25",
+      "type": "R",
+      "nodes": [
+        "s0",
+        "n1"
+      ],
+      "value": "30k",
+      "tolerance": 0.05,
+      "label": "Stage 1 input resistor",
+      "note": "30 kΩ on stage 1 only (Keen, GGG, Aion). Aion v1.0.1 corrected its stage-3 equivalent to 27k"
+    },
+    {
+      "ref": "R27",
+      "type": "R",
+      "nodes": [
+        "n1",
+        "vb"
+      ],
+      "value": "1k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R30",
+      "type": "R",
+      "nodes": [
+        "s1",
+        "n1"
+      ],
+      "value": "27k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "s0",
+        "y1"
+      ],
+      "value": "6.8n",
+      "tolerance": 0.1,
+      "label": "Stage 1 cap"
+    },
+    {
+      "ref": "U1",
+      "type": "ota",
+      "nodes": [
+        "y1",
+        "vb",
+        "n1",
+        "lfo",
+        "0",
+        "vcc"
+      ],
+      "model": "CA3094",
+      "label": "IC1 CA3094 (EH1048) OTA",
+      "note": "Pins: out 1, + 3 (Vbias), − 2, abc 5, V− 4, V+ 7"
+    },
+    {
+      "ref": "Q1A",
+      "type": "npn",
+      "nodes": [
+        "d1c",
+        "y1",
+        "d1m"
+      ],
+      "model": "CA3094_Q_TYP",
+      "label": "IC1 Q12 (on-chip)"
+    },
+    {
+      "ref": "RI1A",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "d1c"
+      ],
+      "value": "2k",
+      "label": "IC1 internal R1",
+      "note": "On-chip 2 kΩ from V+ to Q12's collector (CA3094 schematic diagram)"
+    },
+    {
+      "ref": "Q1B",
+      "type": "npn",
+      "nodes": [
+        "vcc",
+        "d1m",
+        "s1"
+      ],
+      "model": "CA3094_Q_TYP",
+      "label": "IC1 Q13 (on-chip)",
+      "note": "Collector = pin 8, wired to V+ on the board"
+    },
+    {
+      "ref": "RI1B",
+      "type": "R",
+      "nodes": [
+        "d1m",
+        "s1"
+      ],
+      "value": "47k",
+      "label": "IC1 internal R2"
+    },
+    {
+      "ref": "R31",
+      "type": "R",
+      "nodes": [
+        "s1",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R28",
+      "type": "R",
+      "nodes": [
+        "s1",
+        "n2"
+      ],
+      "value": "27k",
+      "tolerance": 0.05,
+      "label": "Stage 2 input resistor"
+    },
+    {
+      "ref": "R29",
+      "type": "R",
+      "nodes": [
+        "n2",
+        "vb"
+      ],
+      "value": "1k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R32",
+      "type": "R",
+      "nodes": [
+        "s2",
+        "n2"
+      ],
+      "value": "27k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C5",
+      "type": "C",
+      "nodes": [
+        "s1",
+        "y2"
+      ],
+      "value": "6.8n",
+      "tolerance": 0.1,
+      "label": "Stage 2 cap"
+    },
+    {
+      "ref": "U2",
+      "type": "ota",
+      "nodes": [
+        "y2",
+        "vb",
+        "n2",
+        "lfo",
+        "0",
+        "vcc"
+      ],
+      "model": "CA3094",
+      "label": "IC2 CA3094 (EH1048) OTA"
+    },
+    {
+      "ref": "Q2A",
+      "type": "npn",
+      "nodes": [
+        "d2c",
+        "y2",
+        "d2m"
+      ],
+      "model": "CA3094_Q_TYP",
+      "label": "IC2 Q12 (on-chip)"
+    },
+    {
+      "ref": "RI2A",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "d2c"
+      ],
+      "value": "2k",
+      "label": "IC2 internal R1"
+    },
+    {
+      "ref": "Q2B",
+      "type": "npn",
+      "nodes": [
+        "vcc",
+        "d2m",
+        "s2"
+      ],
+      "model": "CA3094_Q_TYP",
+      "label": "IC2 Q13 (on-chip)"
+    },
+    {
+      "ref": "RI2B",
+      "type": "R",
+      "nodes": [
+        "d2m",
+        "s2"
+      ],
+      "value": "47k",
+      "label": "IC2 internal R2"
+    },
+    {
+      "ref": "R33",
+      "type": "R",
+      "nodes": [
+        "s2",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R41",
+      "type": "R",
+      "nodes": [
+        "s2",
+        "n3"
+      ],
+      "value": "27k",
+      "tolerance": 0.05,
+      "label": "Stage 3 input resistor"
+    },
+    {
+      "ref": "R40",
+      "type": "R",
+      "nodes": [
+        "n3",
+        "vb"
+      ],
+      "value": "1k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R38",
+      "type": "R",
+      "nodes": [
+        "s3",
+        "n3"
+      ],
+      "value": "27k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C9",
+      "type": "C",
+      "nodes": [
+        "s2",
+        "y3"
+      ],
+      "value": "6.8n",
+      "tolerance": 0.1,
+      "label": "Stage 3 cap"
+    },
+    {
+      "ref": "U3",
+      "type": "ota",
+      "nodes": [
+        "y3",
+        "vb",
+        "n3",
+        "lfo",
+        "0",
+        "vcc"
+      ],
+      "model": "CA3094",
+      "label": "IC3 CA3094 (EH1048) OTA"
+    },
+    {
+      "ref": "Q3A",
+      "type": "npn",
+      "nodes": [
+        "d3c",
+        "y3",
+        "d3m"
+      ],
+      "model": "CA3094_Q_TYP",
+      "label": "IC3 Q12 (on-chip)"
+    },
+    {
+      "ref": "RI3A",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "d3c"
+      ],
+      "value": "2k",
+      "label": "IC3 internal R1"
+    },
+    {
+      "ref": "Q3B",
+      "type": "npn",
+      "nodes": [
+        "vcc",
+        "d3m",
+        "s3"
+      ],
+      "model": "CA3094_Q_TYP",
+      "label": "IC3 Q13 (on-chip)"
+    },
+    {
+      "ref": "RI3B",
+      "type": "R",
+      "nodes": [
+        "d3m",
+        "s3"
+      ],
+      "value": "47k",
+      "label": "IC3 internal R2"
+    },
+    {
+      "ref": "R39",
+      "type": "R",
+      "nodes": [
+        "s3",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R37",
+      "type": "R",
+      "nodes": [
+        "s3",
+        "n4"
+      ],
+      "value": "27k",
+      "tolerance": 0.05,
+      "label": "Stage 4 input resistor"
+    },
+    {
+      "ref": "R36",
+      "type": "R",
+      "nodes": [
+        "n4",
+        "vb"
+      ],
+      "value": "1k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R34",
+      "type": "R",
+      "nodes": [
+        "s4",
+        "n4"
+      ],
+      "value": "27k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C8",
+      "type": "C",
+      "nodes": [
+        "s3",
+        "y4"
+      ],
+      "value": "6.8n",
+      "tolerance": 0.1,
+      "label": "Stage 4 cap"
+    },
+    {
+      "ref": "U4",
+      "type": "ota",
+      "nodes": [
+        "y4",
+        "vb",
+        "n4",
+        "lfo",
+        "0",
+        "vcc"
+      ],
+      "model": "CA3094",
+      "label": "IC4 CA3094 (EH1048) OTA"
+    },
+    {
+      "ref": "Q4A",
+      "type": "npn",
+      "nodes": [
+        "d4c",
+        "y4",
+        "d4m"
+      ],
+      "model": "CA3094_Q_TYP",
+      "label": "IC4 Q12 (on-chip)"
+    },
+    {
+      "ref": "RI4A",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "d4c"
+      ],
+      "value": "2k",
+      "label": "IC4 internal R1"
+    },
+    {
+      "ref": "Q4B",
+      "type": "npn",
+      "nodes": [
+        "vcc",
+        "d4m",
+        "s4"
+      ],
+      "model": "CA3094_Q_TYP",
+      "label": "IC4 Q13 (on-chip)"
+    },
+    {
+      "ref": "RI4B",
+      "type": "R",
+      "nodes": [
+        "d4m",
+        "s4"
+      ],
+      "value": "47k",
+      "label": "IC4 internal R2"
+    },
+    {
+      "ref": "R35",
+      "type": "R",
+      "nodes": [
+        "s4",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "pre",
+        "mix"
+      ],
+      "value": "30k",
+      "tolerance": 0.05,
+      "label": "Dry mix"
+    },
+    {
+      "ref": "R13",
+      "type": "R",
+      "nodes": [
+        "s4",
+        "mix"
+      ],
+      "value": "27k",
+      "tolerance": 0.05,
+      "label": "Wet mix"
+    },
+    {
+      "ref": "C7",
+      "type": "C",
+      "nodes": [
+        "mix",
+        "out"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "label": "Output cap"
+    },
+    {
+      "ref": "R14",
+      "type": "R",
+      "nodes": [
+        "out",
+        "0"
+      ],
+      "value": "470k",
+      "tolerance": 0.05,
+      "label": "Output pull-down"
+    },
+    {
+      "ref": "R11",
+      "type": "R",
+      "nodes": [
+        "s4",
+        "cf1"
+      ],
+      "value": "3.3k",
+      "tolerance": 0.05,
+      "label": "Color feedback divider (top)",
+      "note": "The 2002 reissue changed R11 to 2.2k, R10 to 68k and C6 to 3.3n (Aion); Issue J values here"
+    },
+    {
+      "ref": "R12",
+      "type": "R",
+      "nodes": [
+        "cf1",
+        "0"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05,
+      "label": "Color feedback divider (bottom)"
+    },
+    {
+      "ref": "R10",
+      "type": "R",
+      "nodes": [
+        "cf1",
+        "cf2"
+      ],
+      "value": "27k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C6",
+      "type": "C",
+      "nodes": [
+        "cf2",
+        "cf3"
+      ],
+      "value": "100n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R9",
+      "type": "R",
+      "nodes": [
+        "cf3",
+        "xin"
+      ],
+      "value": "270k",
+      "tolerance": 0.05,
+      "note": "Shorted by pole B when Color is on; a 270 kΩ load from the input node to ground when off"
+    },
+    {
+      "ref": "SWB_ON",
+      "type": "switch",
+      "nodes": [
+        "cf3",
+        "xin"
+      ],
+      "control": "color",
+      "label": "Color pole B (on: feedback into the input node)"
+    },
+    {
+      "ref": "SWB_OFF",
+      "type": "switch",
+      "nodes": [
+        "cf3",
+        "0"
+      ],
+      "control": "color",
+      "invert": true,
+      "label": "Color pole B (off: network to ground)"
+    },
+    {
+      "ref": "R15",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "lt"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05,
+      "label": "Trigger emitter resistor"
+    },
+    {
+      "ref": "R17",
+      "type": "R",
+      "nodes": [
+        "lt",
+        "lm"
+      ],
+      "value": "15k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R16",
+      "type": "R",
+      "nodes": [
+        "lt",
+        "la1"
+      ],
+      "value": "22k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "SWA_OFF",
+      "type": "switch",
+      "nodes": [
+        "la1",
+        "lm"
+      ],
+      "control": "color",
+      "invert": true,
+      "label": "Color pole A (off: R16 across R17)"
+    },
+    {
+      "ref": "SWA_ON",
+      "type": "switch",
+      "nodes": [
+        "lk",
+        "lm"
+      ],
+      "control": "color",
+      "label": "Color pole A (on: trigger node to the C10 node)"
+    },
+    {
+      "ref": "Q3",
+      "type": "pnp",
+      "nodes": [
+        "lm",
+        "ln",
+        "lt"
+      ],
+      "model": "2N5087",
+      "label": "Q3 trigger"
+    },
+    {
+      "ref": "Q4",
+      "type": "pnp",
+      "nodes": [
+        "ln",
+        "lp",
+        "lt"
+      ],
+      "model": "2N5087",
+      "label": "Q4 trigger"
+    },
+    {
+      "ref": "R18",
+      "type": "R",
+      "nodes": [
+        "lm",
+        "lp"
+      ],
+      "value": "1k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R20",
+      "type": "R",
+      "nodes": [
+        "lp",
+        "lk"
+      ],
+      "value": "1.8k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C10",
+      "type": "C",
+      "nodes": [
+        "lk",
+        "0"
+      ],
+      "value": "100n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R19",
+      "type": "R",
+      "nodes": [
+        "ln",
+        "0"
+      ],
+      "value": "27k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R22",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "rn"
+      ],
+      "value": "27k",
+      "tolerance": 0.05,
+      "label": "Rate divider (top)"
+    },
+    {
+      "ref": "R23",
+      "type": "R",
+      "nodes": [
+        "rn",
+        "0"
+      ],
+      "value": "7.5k",
+      "tolerance": 0.05,
+      "label": "Rate divider (bottom)",
+      "note": "unverified: Keen's Issue J drawing (Experimentalists Anonymous compilation) and the Aion adaptation give 7.5k; the GGG redrawing of the same drawing reads 2.5k (not an E-series value; taken as a misread)"
+    },
+    {
+      "ref": "R21",
+      "type": "pot",
+      "nodes": [
+        "rn",
+        "rn",
+        "abc5"
+      ],
+      "value": "1M",
+      "taper": "C",
+      "control": "rate",
+      "label": "Rate",
+      "note": "unverified taper: 1 MΩ per Keen; reverse log (1MC) per Aion's Issue J adaptation. Rheostat on the wiper-to-pin-3 segment: R = 1M·(1 − t(x)), so clockwise is faster"
+    },
+    {
+      "ref": "U5",
+      "type": "ota",
+      "nodes": [
+        "l5o",
+        "lp",
+        "ln",
+        "abc5",
+        "0",
+        "vcc"
+      ],
+      "model": "CA3094",
+      "label": "IC5 CA3094 (EH1048) LFO OTA",
+      "note": "Pin 3 (+) on the Q4 base / R18 / R20 node, pin 2 (−) on the Q3 base / R19 node"
+    },
+    {
+      "ref": "C12",
+      "type": "C",
+      "nodes": [
+        "l5o",
+        "0"
+      ],
+      "value": "33u",
+      "tolerance": 0.2,
+      "label": "LFO integrating cap",
+      "note": "Electrolytic on pin 1 (a common failure part, GGG)"
+    },
+    {
+      "ref": "Q5A",
+      "type": "npn",
+      "nodes": [
+        "d5c",
+        "l5o",
+        "d5m"
+      ],
+      "model": "CA3094_Q_TYP",
+      "label": "IC5 Q12 (on-chip)"
+    },
+    {
+      "ref": "RI5A",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "d5c"
+      ],
+      "value": "2k",
+      "label": "IC5 internal R1"
+    },
+    {
+      "ref": "Q5B",
+      "type": "npn",
+      "nodes": [
+        "lp",
+        "d5m",
+        "l5e"
+      ],
+      "model": "CA3094_Q_TYP",
+      "label": "IC5 Q13 (on-chip)",
+      "note": "Collector = pin 8, wired back to pin 3 (Keen's loop over the chip): the total stage IABC is drawn out of the trigger's R18 / R20 node"
+    },
+    {
+      "ref": "RI5B",
+      "type": "R",
+      "nodes": [
+        "d5m",
+        "l5e"
+      ],
+      "value": "47k",
+      "label": "IC5 internal R2"
+    },
+    {
+      "ref": "R24",
+      "type": "R",
+      "nodes": [
+        "l5e",
+        "lfo"
+      ],
+      "value": "100",
+      "tolerance": 0.05,
+      "label": "LFO bus resistor",
+      "note": "Pin 6 to the four stage IABC pins (pin 5). The Aion adaptation adds a 22 µF from this bus to ground ('omitted in some versions'); Keen's Issue J has none, so none here"
+    },
+    {
+      "ref": "VKICK",
+      "type": "V",
+      "nodes": [
+        "kick",
+        "0"
+      ],
+      "value": "0",
+      "ac": {
+        "amplitude": "10m",
+        "freq": 0.6,
+        "phase": 0
+      },
+      "label": "LFO start kick",
+      "note": "Simulation aid, not in the pedal: 1 mV through 10 MΩ into IC5's + input in case the DC operating point sits on the oscillator's balance point"
+    },
+    {
+      "ref": "RKICK",
+      "type": "R",
+      "nodes": [
+        "kick",
+        "lp"
+      ],
+      "value": "10M"
+    }
+  ],
+  "probes": [
+    "pre",
+    "s1",
+    "s2",
+    "s4",
+    "mix",
+    "out",
+    "l5o",
+    "lfo",
+    "lp",
+    "ln"
+  ],
+  "layout": {},
+  "readouts": {
+    "lfo": "l5o"
+  }
+}

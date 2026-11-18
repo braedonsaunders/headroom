@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Worship Clean Ambience</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Worship Clean Ambience" preset-author="Headroom" preset-comment="Modern worship clean: a compressor into a class-A top-boost combo just shy of breakup, a dotted-eighth delay locked to the rig tempo (74 BPM; set your own) and a big, modulated hall behind it. Swell chords with the volume knob or pick eighth notes and let the delay fill the gaps." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="48000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="V" value="1"/>
+        <parameter id="S" value="0.5"/>
+        <parameter id="A" value="0.5"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="T" value="0.6"/>
+        <parameter id="C" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="38000">
+    <component-audio version="1">
+      <parameters num-parameters="15">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0"/>
+        <parameter id="Br" value="0.48"/>
+        <parameter id="Tb" value="0.6"/>
+        <parameter id="Bs" value="0.45"/>
+        <parameter id="Tc" value="0.4"/>
+        <parameter id="TSp" value="0.5"/>
+        <parameter id="TDt" value="0"/>
+        <parameter id="Hz" value="0.5"/>
+        <parameter id="Vr" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bia" value="0.5"/>
+        <parameter id="G5M" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.8489"/>
+        <parameter id="c" value="0.4"/>
+        <parameter id="Cab" value="0"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="158000">
+    <component-audio version="1">
+      <parameters num-parameters="38">
+        <parameter id="mix" value="0.34"/>
+        <parameter id="input" value="0.7224"/>
+        <parameter id="output" value="0.7224"/>
+        <parameter id="pandry" value="0.5"/>
+        <parameter id="panwet" value="0.5"/>
+        <parameter id="stereowidth" value="0.5"/>
+        <parameter id="stereomode" value="0.5"/>
+        <parameter id="timemode" value="2"/>
+        <parameter id="time" value="0.4286"/>
+        <parameter id="feedback" value="0.45"/>
+        <parameter id="style" value="0"/>
+        <parameter id="ana_bbdtype" value="0"/>
+        <parameter id="modern_sat" value="0.5"/>
+        <parameter id="modern_depth" value="0"/>
+        <parameter id="modern_rate" value="0.5"/>
+        <parameter id="modern_stereo" value="0.5"/>
+        <parameter id="diff_amount" value="0.5"/>
+        <parameter id="diff_size" value="0.5"/>
+        <parameter id="diff_movement" value="0.5"/>
+        <parameter id="diff_dense" value="0.5"/>
+        <parameter id="ana_depth" value="0.5"/>
+        <parameter id="ana_rate" value="0.5"/>
+        <parameter id="ana_stereo" value="0.5"/>
+        <parameter id="tape_sat" value="0.5"/>
+        <parameter id="tape_age" value="0.5"/>
+        <parameter id="tape_wowflut" value="0.5"/>
+        <parameter id="tape_noise" value="0.5"/>
+        <parameter id="vd_quality" value="0"/>
+        <parameter id="vd_depth" value="0.5"/>
+        <parameter id="vd_rate" value="0.5"/>
+        <parameter id="vd_stereo" value="0.5"/>
+        <parameter id="locut" value="0.5"/>
+        <parameter id="hicut" value="0.55"/>
+        <parameter id="duckingamount" value="0"/>
+        <parameter id="duckingsensitivity" value="0.5"/>
+        <parameter id="duckingrelease" value="0.5"/>
+        <parameter id="duckingmeter" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="155000">
+    <component-audio version="1">
+      <parameters num-parameters="39">
+        <parameter id="P0" value="0.5"/>
+        <parameter id="S1" value="0.5"/>
+        <parameter id="S7" value="0.5"/>
+        <parameter id="S2" value="0.75"/>
+        <parameter id="B3" value="0.5"/>
+        <parameter id="M4" value="0.5"/>
+        <parameter id="C9" value="0.5"/>
+        <parameter id="H5" value="0.5"/>
+        <parameter id="T11" value="0.5"/>
+        <parameter id="M8" value="0.5"/>
+        <parameter id="M12" value="0.5"/>
+        <parameter id="D13" value="0.3"/>
+        <parameter id="D6" value="0.6"/>
+        <parameter id="R10" value="0.4"/>
+        <parameter id="S30" value="0.5"/>
+        <parameter id="W31" value="0.5"/>
+        <parameter id="E14" value="0.5"/>
+        <parameter id="E18" value="0.5"/>
+        <parameter id="E15" value="0.5"/>
+        <parameter id="E19" value="0.5"/>
+        <parameter id="E16" value="0.5"/>
+        <parameter id="E20" value="0.5"/>
+        <parameter id="E17" value="0.5"/>
+        <parameter id="E21" value="0.5"/>
+        <parameter id="E22" value="0.5"/>
+        <parameter id="E26" value="0.5"/>
+        <parameter id="E23" value="0.5"/>
+        <parameter id="E27" value="0.5"/>
+        <parameter id="I44" value="0.5"/>
+        <parameter id="O45" value="0.5"/>
+        <parameter id="S32" value="0.5"/>
+        <parameter id="I36" value="0"/>
+        <parameter id="I37" value="0"/>
+        <parameter id="O38" value="0"/>
+        <parameter id="O39" value="0"/>
+        <parameter id="P40" value="0"/>
+        <parameter id="P41" value="0"/>
+        <parameter id="Q48" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="158000" target-number="1" target-name="mix" min-value="0" max-value="0.5" controller-name="Delay Mix"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="158000" target-number="1" target-name="feedback" min-value="0.15" max-value="0.75" controller-name="Repeats"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="155000" target-number="1" target-name="D13" min-value="0.05" max-value="0.55" controller-name="Hall"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="38000" target-number="1" target-name="Br" min-value="0.25" max-value="0.6" controller-name="Drive"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="38000" target-number="1" target-name="Tb" min-value="0.4" max-value="0.8" controller-name="Treble"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-tempo bpm="74.000"/>
+<headroom-library version="1" id="clean-worship-ambience" category="Clean" order="160" instrument="guitar" style="Worship">
+  <description>Modern worship clean: a compressor into a class-A top-boost combo just shy of breakup, a dotted-eighth delay locked to the rig tempo (74 BPM; set your own) and a big, modulated hall behind it. Swell chords with the volume knob or pick eighth notes and let the delay fill the gaps.</description>
+  <tags><tag>Clean</tag><tag>Worship</tag><tag>Ambient</tag><tag>Delay</tag><tag>Dotted Eighth</tag><tag>Hall Reverb</tag></tags>
+  <sources>
+    <source url="https://reverb.com/news/the-gear-tones-and-techniques-of-modern-worship-guitar" title="Reverb: the gear, tones and techniques of modern worship guitar"/>
+    <source url="https://worshiponline.com/worship-guitar-pedalboard/" title="Worship Online: how to build a worship guitar pedalboard"/>
+    <source url="https://worshipguitarresources.com/the-complete-guide-to-worship-guitar-delay-settings/" title="Worship Guitar Resources: complete guide to worship delay settings"/>
+    <source url="https://faderandknob.com/blog/vox-ac30-settings-guide" title="Fader &amp; Knob: AC30 settings from jangle to crunch"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

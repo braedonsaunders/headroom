@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Frostbitten Tremolo</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Frostbitten Tremolo" preset-author="Headroom" preset-comment="Cold, thin second-wave black metal: a parametric metal distortion with the lows cut and the treble up, into a near-clean British head, a 4x12 and a wide, dark hall. Buzzy and icy rather than heavy; made for fast tremolo-picked minor chords and blast beats." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="46000">
+    <component-audio version="1">
+      <parameters num-parameters="12">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V" value="0.6"/>
+        <parameter id="B" value="0.2"/>
+        <parameter id="M" value="0.55"/>
+        <parameter id="MF" value="0.6"/>
+        <parameter id="T" value="0.7"/>
+        <parameter id="D" value="0.95"/>
+        <parameter id="PB" value="0.5"/>
+        <parameter id="PQ" value="0.4836"/>
+        <parameter id="PM" value="0.2457"/>
+        <parameter id="PT" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="56000">
+    <component-audio version="1">
+      <parameters num-parameters="15">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V1" value="0.5"/>
+        <parameter id="V2" value="0.7"/>
+        <parameter id="B" value="0.2"/>
+        <parameter id="M" value="0.55"/>
+        <parameter id="T" value="0.75"/>
+        <parameter id="Pr" value="0.7"/>
+        <parameter id="Pw" value="0.5"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bi" value="0.5"/>
+        <parameter id="Hg" value="0"/>
+        <parameter id="G4M" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.8134"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="6"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="155000">
+    <component-audio version="1">
+      <parameters num-parameters="39">
+        <parameter id="P0" value="0.3"/>
+        <parameter id="S1" value="0.5"/>
+        <parameter id="S7" value="0.5"/>
+        <parameter id="S2" value="0.7"/>
+        <parameter id="B3" value="0.5"/>
+        <parameter id="M4" value="0.5"/>
+        <parameter id="C9" value="0.5"/>
+        <parameter id="H5" value="0.4"/>
+        <parameter id="T11" value="0.5"/>
+        <parameter id="M8" value="0.5"/>
+        <parameter id="M12" value="0.5"/>
+        <parameter id="D13" value="0.28"/>
+        <parameter id="D6" value="0.5"/>
+        <parameter id="R10" value="0.5"/>
+        <parameter id="S30" value="0.5"/>
+        <parameter id="W31" value="0.5"/>
+        <parameter id="E14" value="0.5"/>
+        <parameter id="E18" value="0.5"/>
+        <parameter id="E15" value="0.5"/>
+        <parameter id="E19" value="0.5"/>
+        <parameter id="E16" value="0.5"/>
+        <parameter id="E20" value="0.5"/>
+        <parameter id="E17" value="0.5"/>
+        <parameter id="E21" value="0.5"/>
+        <parameter id="E22" value="0.5"/>
+        <parameter id="E26" value="0.5"/>
+        <parameter id="E23" value="0.5"/>
+        <parameter id="E27" value="0.5"/>
+        <parameter id="I44" value="0.5"/>
+        <parameter id="O45" value="0.5"/>
+        <parameter id="S32" value="0.5"/>
+        <parameter id="I36" value="0"/>
+        <parameter id="I37" value="0"/>
+        <parameter id="O38" value="0"/>
+        <parameter id="O39" value="0"/>
+        <parameter id="P40" value="0"/>
+        <parameter id="P41" value="0"/>
+        <parameter id="Q48" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="46000" target-number="1" target-name="D" min-value="0.5" max-value="1" controller-name="Distortion"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="46000" target-number="1" target-name="B" min-value="0.1" max-value="0.6" controller-name="Low End"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="46000" target-number="1" target-name="T" min-value="0.3" max-value="0.8" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="155000" target-number="1" target-name="D13" min-value="0" max-value="0.5" controller-name="Hall"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="155000" target-number="1" target-name="S2" min-value="0.3" max-value="1" controller-name="Size"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="hg-frostbitten-tremolo" category="High Gain" order="100" instrument="guitar" style="Black Metal">
+  <description>Cold, thin second-wave black metal: a parametric metal distortion with the lows cut and the treble up, into a near-clean British head, a 4x12 and a wide, dark hall. Buzzy and icy rather than heavy; made for fast tremolo-picked minor chords and blast beats.</description>
+  <tags><tag>High Gain</tag><tag>Black Metal</tag><tag>90s</tag><tag>Rhythm</tag><tag>Tremolo Picking</tag><tag>Thin</tag><tag>Reverb</tag></tags>
+  <sources>
+    <source url="https://en.wikipedia.org/wiki/Filosofem" title="Filosofem (Wikipedia)"/>
+    <source url="https://en.wikipedia.org/wiki/Transilvanian_Hunger" title="Transilvanian Hunger (Wikipedia)"/>
+    <source url="https://equipboard.com/pros/euronymous" title="Equipboard: Euronymous"/>
+    <source url="https://forum.metal-archives.com/viewtopic.php?t=75150" title="Metal Archives forum: black metal guitar tone"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

@@ -1,0 +1,28 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "test-ad536",
+  "version": 1,
+  "name": "AD536A rms-to-DC side-chain, SSL 82E10 style (validation circuit)",
+  "description": "An AD536AJ wired as the SSL 4000 E dynamics card (82E10) wires it: the side-chain signal through 10 uF and 6.2k into VIN with 10k to 0 V, CAV 3.3 nF to +15 V, -VS on -18 V, RL and COM at 0 V, IOUT open (linear output, 25k), the dB pin (-3 mV/dB) into an inverting amplifier of gain 36.5k / 1.11k (about +100 mV/dB). A second section of the test averages with 1 uF so the linear and dB outputs settle to the rms value; its buffer follows IOUT.",
+  "sources": [
+    { "title": "Analog Devices AD536A integrated circuit true rms-to-dc converter, data sheet rev. G (Figs. 6, 7; Table 3)", "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/AD536A.pdf" },
+    { "title": "Solid State Logic 4000 G service manual, 82E10 dynamics card (T1 AD536J, C2 3n3, R2 6K2, R3 10K, R6 910R, VR1 200R, R7 36K5)", "url": "https://funkwerkes.com/web/wp-content/techdocs/MixedProAudio/SSL-4000G-Console-Service-Manual-v1_1.pdf" }
+  ],
+  "io": { "input": "in", "output": "dbo" },
+  "oversampling": 2,
+  "parts": [
+    { "ref": "VP", "type": "V", "nodes": ["vp", "0"], "value": "15" },
+    { "ref": "VN", "type": "V", "nodes": ["vn", "0"], "value": "-18" },
+    { "ref": "C1", "type": "C", "nodes": ["in", "c1"], "value": "10u" },
+    { "ref": "R2", "type": "R", "nodes": ["c1", "vin"], "value": "6.2k" },
+    { "ref": "R3", "type": "R", "nodes": ["vin", "0"], "value": "10k" },
+    { "ref": "T1", "type": "ad536", "nodes": ["vin", "nc2", "vn", "cav", "db", "bo", "bi", "iout", "0", "0", "nc11", "nc12", "nc13", "vp"], "model": "AD536AJ" },
+    { "ref": "CAV", "type": "C", "nodes": ["cav", "vp"], "value": "3.3n" },
+    { "ref": "R6", "type": "R", "nodes": ["db", "s"], "value": "1.11k" },
+    { "ref": "IC1", "type": "opamp", "nodes": ["0", "s", "dbo", "vp", "vn"], "model": "TL072" },
+    { "ref": "R7", "type": "R", "nodes": ["s", "dbo"], "value": "36.5k" },
+    { "ref": "T2", "type": "ad536", "nodes": ["vin", "nc2b", "vn", "cav2", "db2", "lin", "iout2", "iout2", "0", "0", "nc11b", "nc12b", "nc13b", "vp"], "model": "AD536AJ" },
+    { "ref": "CAV2", "type": "C", "nodes": ["cav2", "vp"], "value": "1u" }
+  ],
+  "probes": ["db", "dbo", "iout", "cav", "lin", "db2"]
+}

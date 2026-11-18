@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Teen Spirit Chorus</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Teen Spirit Chorus" preset-author="Headroom" preset-comment="The loud chorus riff: a hard-clipping orange distortion pedal at full level into a clean, mid-heavy preamp and a 4x12, double-tracked wide. A bypassed chorus waits for the quiet verse and pre-chorus: switch it on and the distortion off." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="17000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="tn" value="0.4"/>
+        <parameter id="vol" value="1"/>
+        <parameter id="Dst" value="0.7"/>
+        <parameter id="Bs" value="0.5"/>
+        <parameter id="M" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="T" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="30000">
+    <component-audio version="1">
+      <parameters num-parameters="19">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.45"/>
+        <parameter id="Br" value="1"/>
+        <parameter id="Bs" value="0.3"/>
+        <parameter id="Md" value="0.8"/>
+        <parameter id="Tr" value="0.6"/>
+        <parameter id="Vr" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bia" value="0.5"/>
+        <parameter id="Hz" value="0.5"/>
+        <parameter id="RvL" value="0.5"/>
+        <parameter id="RvOn" value="0"/>
+        <parameter id="RvTm" value="0.5"/>
+        <parameter id="RvSz" value="0.5"/>
+        <parameter id="ViInt" value="0.5"/>
+        <parameter id="ViSpd" value="0.5"/>
+        <parameter id="ViOn" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.8123"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="10"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="29000">
+    <component-audio version="1">
+      <parameters num-parameters="14">
+        <parameter id="TS" value="0.5"/>
+        <parameter id="Vol" value="0.5"/>
+        <parameter id="Md" value="0.5"/>
+        <parameter id="CI" value="0.5"/>
+        <parameter id="VD" value="0.6"/>
+        <parameter id="VR" value="0.5"/>
+        <parameter id="B" value="0.5"/>
+        <parameter id="Mid" value="0.5"/>
+        <parameter id="Trb" value="0.5"/>
+        <parameter id="Mx" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Dly" value="0.5"/>
+        <parameter id="S" value="0.5"/>
+        <parameter id="Pwr" value="0"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="132000">
+    <component-audio version="1">
+      <parameters num-parameters="5">
+        <parameter id="M0" value="0.3"/>
+        <parameter id="D1" value="0.5"/>
+        <parameter id="S2" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="S3" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="17000" target-number="1" target-name="Dst" min-value="0.3" max-value="1" controller-name="Distortion"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="17000" target-number="1" target-name="tn" min-value="0.1" max-value="0.8" controller-name="Tone"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="30000" target-number="1" target-name="Md" min-value="0.3" max-value="1" controller-name="Mids"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="132000" target-number="1" target-name="M0" min-value="0" max-value="0.6" controller-name="Double"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="29000" target-number="1" target-name="CI" min-value="0" max-value="0.8" controller-name="Chorus Mix"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-tempo bpm="117.000"/>
+<headroom-library version="1" id="teen-spirit-chorus" category="Artist Tones" order="50" instrument="guitar" style="Grunge">
+  <description>The loud chorus riff: a hard-clipping orange distortion pedal at full level into a clean, mid-heavy preamp and a 4x12, double-tracked wide. A bypassed chorus waits for the quiet verse and pre-chorus: switch it on and the distortion off.</description>
+  <tags><tag>Artist Tones</tag><tag>Grunge</tag><tag>Alternative</tag><tag>Distortion</tag><tag>Rhythm</tag><tag>Chorus</tag></tags>
+  <inspired-by artist="Kurt Cobain (Nirvana)" song="Smells Like Teen Spirit" album="Nevermind" part="Chorus power-chord riff" year="1991"/>
+  <sources>
+    <source url="https://www.guitarworld.com/features/the-secrets-behind-kurt-cobains-guitar-tone-on-nirvanas-smells-like-teen-spirit" title="Guitar World: Kurt Cobain's guitar tone on Smells Like Teen Spirit"/>
+    <source url="https://www.groundguitar.com/tone-breakdown/kurt-cobain-nevermind-guitars-amps-effects/" title="Ground Guitar: Kurt Cobain's Nevermind gear"/>
+    <source url="https://pedalplayers.com/kurt-cobains-pedals/" title="PedalPlayers: Kurt Cobain's pedals, the gear myth debunked"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

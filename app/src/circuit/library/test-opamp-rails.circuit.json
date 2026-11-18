@@ -1,0 +1,178 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "test-opamp-rails",
+ "version": 1,
+ "name": "Op-amp on a filtered rail (validation circuit)",
+ "description": "TL072 non-inverting stage (gain 11: 100 k / 10 k + 2.2 uF) powered from a 47 ohm / 100 uF filtered 9 V rail (supply pins on a cut circuit node: rail-node mode), Vref from a 10 k / 10 k divider on the filtered rail, output through 1 k into a 1N914 pair to Vref. Driven hard, the output stage's load current sags the rail and the swing tracks it.",
+ "sources": [
+  {
+   "title": "Headroom circuit engine validation circuit (docs/CIRCUIT_ENGINE.md §10.10)"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "out"
+ },
+ "oversampling": 2,
+ "models": {
+  "TL072R": {
+   "kind": "opamp",
+   "level": 1,
+   "a0": 200000.0,
+   "gbw": 3000000.0,
+   "slew": 13000000.0,
+   "swing_hi": 1.5,
+   "swing_lo": 1.5,
+   "rout": 100,
+   "iq": 0.0014
+  }
+ },
+ "parts": [
+  {
+   "ref": "VBAT",
+   "type": "V",
+   "nodes": [
+    "v9",
+    "0"
+   ],
+   "value": "9"
+  },
+  {
+   "ref": "RF",
+   "type": "R",
+   "nodes": [
+    "v9",
+    "vf"
+   ],
+   "value": "47"
+  },
+  {
+   "ref": "CF",
+   "type": "C",
+   "nodes": [
+    "vf",
+    "0"
+   ],
+   "value": "100u"
+  },
+  {
+   "ref": "RB1",
+   "type": "R",
+   "nodes": [
+    "vf",
+    "vref"
+   ],
+   "value": "10k"
+  },
+  {
+   "ref": "RB2",
+   "type": "R",
+   "nodes": [
+    "vref",
+    "0"
+   ],
+   "value": "10k"
+  },
+  {
+   "ref": "CB",
+   "type": "C",
+   "nodes": [
+    "vref",
+    "0"
+   ],
+   "value": "10u"
+  },
+  {
+   "ref": "CIN",
+   "type": "C",
+   "nodes": [
+    "in",
+    "pin"
+   ],
+   "value": "100n"
+  },
+  {
+   "ref": "RIN",
+   "type": "R",
+   "nodes": [
+    "pin",
+    "vref"
+   ],
+   "value": "1M"
+  },
+  {
+   "ref": "U1",
+   "type": "opamp",
+   "nodes": [
+    "pin",
+    "nin",
+    "o",
+    "vf",
+    "0"
+   ],
+   "model": "TL072R"
+  },
+  {
+   "ref": "RFB",
+   "type": "R",
+   "nodes": [
+    "o",
+    "nin"
+   ],
+   "value": "100k"
+  },
+  {
+   "ref": "RG",
+   "type": "R",
+   "nodes": [
+    "nin",
+    "ng"
+   ],
+   "value": "10k"
+  },
+  {
+   "ref": "CG",
+   "type": "C",
+   "nodes": [
+    "ng",
+    "0"
+   ],
+   "value": "2.2u"
+  },
+  {
+   "ref": "RO",
+   "type": "R",
+   "nodes": [
+    "o",
+    "out"
+   ],
+   "value": "1k"
+  },
+  {
+   "ref": "D1",
+   "type": "D",
+   "nodes": [
+    "out",
+    "vref"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "D2",
+   "type": "D",
+   "nodes": [
+    "vref",
+    "out"
+   ],
+   "model": "1N914"
+  }
+ ],
+ "probes": [
+  "o",
+  "vf",
+  "vref"
+ ],
+ "cuts": [
+  "vf"
+ ]
+}

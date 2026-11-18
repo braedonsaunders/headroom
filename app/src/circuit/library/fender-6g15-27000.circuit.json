@@ -1,0 +1,742 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "fender-6g15-27000",
+ "version": 2,
+ "name": "Fender 6G15 Reverb (Accutronics 4AB3C1B tank)",
+ "description": "Fender 'Reverb' Model 6G15, the stand-alone tube spring reverb, from the factory schematic and layout (H-FA). V1A 12AT7 (1 MOhm input, 100 kOhm + 10 kOhm plate load off +250 V, 1500 || 25 uF) feeds the DWELL 250 kOhm through .01 from the 100k/10k junction; V1B 12AT7 (100 kOhm, 1500 unbypassed) drives the 6K6GT grid through .002 / 220 kOhm; the 6K6GT (1000 Ohm 2 W || 25 uF, screen on the +295 V node) drives the 4AB3C1B tank through TR2 125A12A; V3A 7025 recovers the tank (1500 || 250 uF, 100 kOhm), the CUT OFF pedal grounds its grid; .1 -> TONE 50 kOhm (bottom .01 to ground) -> .00025 -> MIXER 250 kOhm top. Dry: the input jack through .05 into the V3B cathode follower (2.2M/2.2M bias, 100 kOhm cathode) and .1 into the MIXER bottom; the MIXER wiper is the output. Supply (cut at the +295 V node; the +250 V rail stays in the signal group so the start-up settle solves it exactly): TR1 68319-A HT, three selenium cells half-wave, 40 uF (+300 V) - 4 H choke - 40 uF (+295 V) - 10 kOhm 1 W - 40 uF (+250 V). The 6K6GT is the library card fitted to the RCA 6K6-GT curves (work/tube-curves/6K6GT). Notes: wave-e/fender-6g15-27000.notes.md",
+ "sources": [
+  {
+   "title": "Fender 'Reverb' Model 6G15 factory schematic AND layout drawing (H-FA), two pages, read at native resolution (1512x870, 1426x988) in 2-3x crops: every value and connection, and the voltage annotations +105/+1.8, +120/+2, +285/+24, +160/+1.2, +120/+130/+250, +300/+295/+250 V (+-20 %) used as DC targets. The layout settles the 1000-2W cathode resistor, the 100k/10k Dwell divider, the 250K-L pots and the capacitor-input filter",
+   "url": "https://www.schematicheaven.net/fenderamps/reverb_6g15_schem.pdf"
+  },
+  {
+   "title": "Fender '63 Reverb Reissue service manual, June 1994 rev A, PR 263: theory of operation (V1A divider into the Dwell, CUT OFF grounds V3A's input) and parts list (1 kOhm 2 W driver cathode R10, .01 C9, 220 uF C7, 250k B / 50k B pots). Cross-check only: the reissue's driver is a 6V6",
+   "url": "https://www.schematicheaven.net/fenderamps/63_reverb_manual.pdf"
+  },
+  {
+   "title": "RCA 6K6-GT data sheet: 92CM-4881R2, 92CM-5209R2, 92CM-6311R1 and the typical-operation table, digitised to work/tube-curves/6K6GT (the library 6K6GT card)",
+   "url": "https://frank.pocnet.net/sheets/049/6/6K6GT.pdf"
+  },
+  {
+   "title": "Hammond 1750AX data sheet (replacement for Fender 125A12A): 7500:8 Ohm, DCR 345/0.699 Ohm, 6.0 H, 423 mH leakage; 125A12A turns 30.15:1 measured on an original (ampgarage.com 6G15 thread)",
+   "url": "https://www.hammfg.com/files/parts/pdf/1750AX.pdf"
+  },
+  {
+   "title": "Hammond 290WX data sheet (replacement for Fender 68319A): HT 237 V / 50 mA, 255.9 V open circuit, DCR 22.92 / 182.6 Ohm",
+   "url": "https://www.hammfg.com/files/parts/pdf/290WX.pdf"
+  },
+  {
+   "title": "Catalogue unit 27000 mapping: Wet -> MIXER, iM -> CUT OFF pedal, L (High Damp) -> TONE inverted; Tm, SpringLength, B, H legacyOnly (one fixed 4AB3C1B, no size/length/bass/damping controls); Pwr host bypass; Dwell has no catalogue parameter. The catalogue's '3-spring' wording is the legacy description: the 6G15 used a 4AB3C1B two-spring long tank",
+   "url": "localhost: app/src/generated/ComponentCatalog.hpp kParams_27000"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "out",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 1.0
+ },
+ "oversampling": 2,
+ "lte": {"start": "bdf2", "note": "LTE substeps start on BDF2 (docs §10.61): the backward-Euler restart of every continued sample left a 96 kHz base-periodic line (300 Hz at -58 dB re the 2.9 kHz tone, under the hum mask). Engine 8x fine-step truth at the tank drive (tk), audio band, lead / rock DI: 0.692 / 1.298 % -> 0.693 / 0.885 %. CPU equal (9900X)"},
+ "solver": "auto",
+ "cuts": [
+  "sw",
+  "bpr",
+  "chk"
+ ],
+ "models": {
+  "SEL3": {
+   "kind": "diode",
+   "is": 1.411e-08,
+   "n": 5.952,
+   "rs": 0.10167,
+   "note": "three series selenium cells as three identical silicon junctions: the 1N4001 card (is 14.11 nA, n 1.984, rs 0.0339) with n and rs tripled"
+  }
+ },
+ "controls": [
+  {
+   "id": "dwell",
+   "label": "Dwell",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Main",
+   "note": "DWELL 250K-L across the .01 from the V1A divider, bottom grounded, wiper to V1B's grid: the tank drive level. Linear taper: the sheet's '-L', and the '63 Reissue's 250k B. No catalogue parameter: set by id"
+  },
+  {
+   "id": "tone",
+   "label": "Tone",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "L"
+   ],
+   "group": "Main",
+   "note": "TONE 50K-L: V3A's plate through .1 into the pot's top, its bottom through .01 to ground, wiper through .00025 into the mixer: a treble cut on the reverb return only. Answers the catalogue's High Damp (L) inverted (High Damp 0 = Tone full up, bright), which is the same function on the legacy tank: the return's high-frequency loss",
+   "paramRange": [
+    1.0,
+    0.0
+   ]
+  },
+  {
+   "id": "wet",
+   "label": "Mix",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Wet"
+   ],
+   "group": "Main",
+   "note": "MIXER 250K-L: wet (tone wiper through .00025) on one end, dry (cathode follower through .1) on the other, wiper to the output jack. 0 = dry only, 1 = wet only. Linear taper (sheet '-L', '63 Reissue 250k B). Catalogue Wet (Mix)"
+  },
+  {
+   "id": "mute",
+   "label": "Cut Off (footswitch)",
+   "kind": "switch",
+   "default": 0,
+   "params": [
+    "iM"
+   ],
+   "group": "Main",
+   "note": "CUT OFF PEDAL: grounds V3A's grid (the tank's return), so 1 = reverb cut off, 0 = on. Catalogue iM (Mute)"
+  },
+  {
+   "id": "size",
+   "label": "Size",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Tm"
+   ],
+   "paramRange": [
+    0.066271,
+    0.95979
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "legacyOnly: the 6G15 has one fixed 4AB3C1B long two-spring tank; no size parameter exists"
+  },
+  {
+   "id": "springlen",
+   "label": "Spring Length",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "SpringLength"
+   ],
+   "paramRange": [
+    0.0,
+    1.0
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "legacyOnly: one fixed long tank, no selectable spring length"
+  },
+  {
+   "id": "bass",
+   "label": "Bass",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "B"
+   ],
+   "paramRange": [
+    0.17027,
+    1.0
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "legacyOnly: the 6G15 has a Dwell, a Tone and a Mix; no bass control. The fixed bass loss is the 250 pF / tone network and the tank's own roll-off"
+  },
+  {
+   "id": "lowdamp",
+   "label": "Low Damp",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "H"
+   ],
+   "paramRange": [
+    0.0,
+    0.735
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "legacyOnly: the 6G15 has no damping control; the tank's decay is the 4AB3C1B's own"
+  },
+  {
+   "id": "power",
+   "label": "On/Off",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Pwr"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Host bypass. The 6G15 has no bypass switch of its own: it is an always-on outboard unit, and its CUT OFF pedal is the 'mute' control above"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VHT",
+   "type": "V",
+   "nodes": [
+    "sac",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "361.9",
+    "freq": 60,
+    "phase": 90
+   },
+   "label": "TR1 68319-A HT winding (open-circuit EMF)",
+   "note": "Fender 68319-A: the sheet prints no secondary voltage. Hammond lists its 290WX as the drop-in replacement for 68319A: HT 237 V at 50 mA, 255.9 V open circuit at 120 V mains -> 361.9 V peak EMF. The winding resistance is RPT. The sheet's own +300 V at the rectifier is the check (see notes)"
+  },
+  {
+   "ref": "RPT",
+   "type": "R",
+   "nodes": [
+    "sac",
+    "sw"
+   ],
+   "value": "286.8",
+   "label": "TR1 HT winding resistance + reflected primary",
+   "note": "Hammond 290WX DCR: HT 182.6 Ohm + primary 22.92 Ohm x (255.9/120)^2 = 104.2 Ohm reflected"
+  },
+  {
+   "ref": "DSEL",
+   "type": "D",
+   "nodes": [
+    "sw",
+    "bpr"
+   ],
+   "model": "SEL3",
+   "label": "Selenium stack, three cells in series (half-wave)",
+   "note": "The sheet draws three selenium cells in series. Modelled as three identical series junctions (one D with n and rs tripled, which is exact for identical cells) on the 1N4001 card: selenium drops ~1 V per cell where silicon drops ~0.7 V, a ~1 V difference on 300 V; selenium reverse leakage is not modelled"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "bpr",
+    "0"
+   ],
+   "value": "40u",
+   "tolerance": 0.2,
+   "label": "40-450 reservoir at the rectifier (+300 V)",
+   "note": "Capacitor-input filter: the sheet draws this 40 uF on the rectifier side of the choke, with the +300 V annotation pointing at that node, and the second 40 uF after the choke at +295 V"
+  },
+  {
+   "ref": "RL1",
+   "type": "R",
+   "nodes": [
+    "bpr",
+    "chk"
+   ],
+   "value": "167",
+   "tolerance": 0.15,
+   "label": "Filter choke DCR",
+   "note": "The 6G15 choke is given as Fender 125C3A (Hammond's own 6G15 listing, the 194A replacement) or 125C1A by different sources; both are 4 H. 167 Ohm is the Hammond 194A (125C3A) DCR, which reproduces the sheet's 300 -> 295 V drop at the unit's ~29 mA (4.8 V); the 125C1A's 110 Ohm would give 3.2 V"
+  },
+  {
+   "ref": "L1",
+   "type": "L",
+   "nodes": [
+    "chk",
+    "bpa"
+   ],
+   "value": "4",
+   "label": "Filter choke 4 H"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "bpa",
+    "0"
+   ],
+   "value": "40u",
+   "tolerance": 0.2,
+   "label": "40-450 after the choke (+295 V): 6K6GT plate (via TR2) and screen"
+  },
+  {
+   "ref": "RDR",
+   "type": "R",
+   "nodes": [
+    "bpa",
+    "bpb"
+   ],
+   "value": "10k",
+   "tolerance": 0.1,
+   "label": "10 kOhm 1 W dropper to the +250 V preamp rail"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "bpb",
+    "0"
+   ],
+   "value": "40u",
+   "tolerance": 0.2,
+   "label": "40-450 on the +250 V rail"
+  },
+  {
+   "ref": "RIN",
+   "type": "R",
+   "nodes": [
+    "in",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.1,
+   "label": "1 MOhm across the input jack"
+  },
+  {
+   "ref": "V1A",
+   "type": "triode",
+   "nodes": [
+    "p1a",
+    "in",
+    "k1a"
+   ],
+   "model": "12AT7",
+   "label": "V1A input stage (+105 V plate, +1.8 V cathode)"
+  },
+  {
+   "ref": "RPA",
+   "type": "R",
+   "nodes": [
+    "p1a",
+    "dvd"
+   ],
+   "value": "100k",
+   "tolerance": 0.1,
+   "label": "V1A plate load 100 kOhm"
+  },
+  {
+   "ref": "RDV",
+   "type": "R",
+   "nodes": [
+    "dvd",
+    "bpb"
+   ],
+   "value": "10k",
+   "tolerance": 0.1,
+   "label": "10 kOhm from the plate load to +250 V",
+   "note": "Both factory drawings (schematic and layout) put the 10 kOhm between the 100 kOhm plate load and the +250 V eyelet 'A', and take the Dwell feed from their junction; the '63 Reissue theory of operation describes the same divider ('The voltage divider R2 and R3 reduce the voltage so the overall gain is about 3')"
+  },
+  {
+   "ref": "RKA",
+   "type": "R",
+   "nodes": [
+    "k1a",
+    "0"
+   ],
+   "value": "1k5",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "CKA",
+   "type": "C",
+   "nodes": [
+    "k1a",
+    "0"
+   ],
+   "value": "25u",
+   "tolerance": 0.2,
+   "label": "25-25 cathode bypass"
+  },
+  {
+   "ref": "CDL",
+   "type": "C",
+   "nodes": [
+    "dvd",
+    "dwl"
+   ],
+   "value": "0.01u",
+   "tolerance": 0.2,
+   "label": ".01 to the DWELL pot"
+  },
+  {
+   "ref": "DWELL",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "dwlv",
+    "dwl"
+   ],
+   "value": "250k",
+   "taper": "B",
+   "control": "dwell",
+   "label": "DWELL 250K-L"
+  },
+  {
+   "ref": "V1B",
+   "type": "triode",
+   "nodes": [
+    "p1b",
+    "dwlv",
+    "k1b"
+   ],
+   "model": "12AT7",
+   "label": "V1B driver stage (+120 V plate, +2 V cathode)"
+  },
+  {
+   "ref": "RPB",
+   "type": "R",
+   "nodes": [
+    "p1b",
+    "bpb"
+   ],
+   "value": "100k",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "RKB",
+   "type": "R",
+   "nodes": [
+    "k1b",
+    "0"
+   ],
+   "value": "1k5",
+   "tolerance": 0.1,
+   "label": "1500 cathode resistor, unbypassed",
+   "note": "The sheet draws no bypass capacitor on V1B (+2 V cathode) and the layout has none at that eyelet; the '63 Reissue likewise bypasses only V1A (C2) and the driver (C4)"
+  },
+  {
+   "ref": "CDRV",
+   "type": "C",
+   "nodes": [
+    "p1b",
+    "g6"
+   ],
+   "value": "0.002u",
+   "tolerance": 0.2,
+   "label": ".002 onto the 6K6GT grid"
+  },
+  {
+   "ref": "RGL",
+   "type": "R",
+   "nodes": [
+    "g6",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.1,
+   "label": "6K6GT grid leak"
+  },
+  {
+   "ref": "V2",
+   "type": "pentode",
+   "nodes": [
+    "p6",
+    "bpa",
+    "g6",
+    "k6"
+   ],
+   "model": "6K6GT",
+   "label": "6K6GT reverb driver (+285 V plate, +24 V cathode)"
+  },
+  {
+   "ref": "RK6",
+   "type": "R",
+   "nodes": [
+    "k6",
+    "0"
+   ],
+   "value": "1k",
+   "tolerance": 0.1,
+   "label": "Cathode resistor 1000 Ohm 2 W",
+   "note": "Read as 1000 Ohm 2 W: the layout drawing prints '1000-2W' at that eyelet in clear lettering, and on the schematic the vertical '2W / 1000' label is what earlier passes read as 240/250. 1 kOhm is the value the printed +24 V needs (24 mA of cathode current, consistent with the 6K6GT card at this screen voltage), and the '63 Reissue uses a 1 kOhm 2 W (R10) in the same place"
+  },
+  {
+   "ref": "CK6",
+   "type": "C",
+   "nodes": [
+    "k6",
+    "0"
+   ],
+   "value": "25u",
+   "tolerance": 0.2,
+   "label": "25-25 cathode bypass"
+  },
+  {
+   "ref": "TR2",
+   "type": "transformer",
+   "nodes": [
+    "p6",
+    "bpa",
+    "tk",
+    "0"
+   ],
+   "turns": [
+    1,
+    0.033167
+   ],
+   "r": [
+    345,
+    0.699
+   ],
+   "leak": [
+    "423m",
+    0
+   ],
+   "lm": 6.0,
+   "lsat": 0.6,
+   "label": "TR2 125A12A reverb driver transformer (~7.3 kOhm : 8 Ohm)",
+   "note": "Turns 30.15 : 1, measured on an original 125A12A (Amp Garage 6G15 thread, impedance ratio 909:1 = 7.27 kOhm on 8 Ohm). DCR 345 / 0.699 Ohm, primary 6.0 H, leakage 423 mH from the Hammond 1750AX data sheet (the replacement Hammond designed to the original). lsat 0.6 V*s is an assumption: above the 0.52 V*s peak flux of the 1750AX's rated 3.5 W at 70 Hz, which it passes at under 1.5 % THD. The plate's 285 V (sheet) against the 295 V node is consistent with ~345 Ohm at ~26 mA"
+  },
+  {
+   "ref": "TANK",
+   "type": "spring",
+   "nodes": [
+    "tk",
+    "0",
+    "g3",
+    "0"
+   ],
+   "model": "4AB3C1B",
+   "label": "Accutronics 4AB3C1B tank (input coil on TR2, output to V3A's grid)",
+   "note": "The drive is permanently connected: the CUT OFF pedal does not open it. The tank output coil is V3A's only grid return (the sheet draws no grid leak)"
+  },
+  {
+   "ref": "CUT",
+   "type": "switch",
+   "nodes": [
+    "g3",
+    "0"
+   ],
+   "control": "mute",
+   "label": "CUT OFF PEDAL (shorts V3A's grid to ground)",
+   "note": "The pedal's jack tip is wired to the reverb-return line at V3A's grid and the pedal switch grounds it (sheet); the '63 Reissue: 'The footswitch turns the reverb on and off by grounding the input to the reverb recovery circuit'"
+  },
+  {
+   "ref": "V3A",
+   "type": "triode",
+   "nodes": [
+    "p3",
+    "g3",
+    "k3"
+   ],
+   "model": "12AX7",
+   "label": "V3A 7025 reverb recovery (+160 V plate, +1.2 V cathode)"
+  },
+  {
+   "ref": "RP3",
+   "type": "R",
+   "nodes": [
+    "p3",
+    "bpb"
+   ],
+   "value": "100k",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "RK3",
+   "type": "R",
+   "nodes": [
+    "k3",
+    "0"
+   ],
+   "value": "1k5",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "CK3",
+   "type": "C",
+   "nodes": [
+    "k3",
+    "0"
+   ],
+   "value": "250u",
+   "tolerance": 0.2,
+   "label": "250-6 cathode bypass",
+   "note": "Labelled '6' and '250' on both drawings: read as 250 uF 6 V, the Fender value-voltage order, a 6 V rating suiting a +1.2 V cathode; the '63 Reissue fits 220 uF 16 V (C7) here"
+  },
+  {
+   "ref": "CTN",
+   "type": "C",
+   "nodes": [
+    "p3",
+    "tnt"
+   ],
+   "value": "0.1u",
+   "tolerance": 0.2,
+   "label": ".1 to the TONE pot"
+  },
+  {
+   "ref": "TONE",
+   "type": "pot",
+   "nodes": [
+    "tnb",
+    "tnw",
+    "tnt"
+   ],
+   "value": "50k",
+   "taper": "B",
+   "control": "tone",
+   "label": "TONE 50K-L"
+  },
+  {
+   "ref": "CTN2",
+   "type": "C",
+   "nodes": [
+    "tnb",
+    "0"
+   ],
+   "value": "0.01u",
+   "tolerance": 0.2,
+   "label": ".01 from the TONE pot's bottom to ground",
+   "note": "Both drawings print .01 here (the earlier pass had 0.1); the '63 Reissue's C9 is .01 too"
+  },
+  {
+   "ref": "CWT",
+   "type": "C",
+   "nodes": [
+    "tnw",
+    "mxw"
+   ],
+   "value": "250p",
+   "tolerance": 0.1,
+   "label": ".00025 tone wiper to the MIXER top"
+  },
+  {
+   "ref": "RLEAK",
+   "type": "R",
+   "nodes": [
+    "tnw",
+    "0"
+   ],
+   "value": "1G",
+   "label": "Tone-wiper DC bleed",
+   "note": "the TONE wiper sits between the .1 and .00025 capacitors and has no DC path of its own; 1 GOhm stands in for their leakage so the node's operating point is defined"
+  },
+  {
+   "ref": "MIX",
+   "type": "pot",
+   "nodes": [
+    "mxd",
+    "out",
+    "mxw"
+   ],
+   "value": "250k",
+   "taper": "B",
+   "control": "wet",
+   "label": "MIXER 250K-L (wiper = output jack)"
+  },
+  {
+   "ref": "RLOAD",
+   "type": "R",
+   "nodes": [
+    "out",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "Amplifier input the unit drives (1 MOhm)",
+   "note": "the 6G15 is an outboard unit plugged into an amplifier's 1 MOhm input; that load is the output node's DC path (the mixer sits between two coupling capacitors). Added as the unit's specified load, not a part of the unit"
+  },
+  {
+   "ref": "CDRY",
+   "type": "C",
+   "nodes": [
+    "in",
+    "cfg"
+   ],
+   "value": "0.05u",
+   "tolerance": 0.2,
+   "label": ".05 dry feed from the input jack"
+  },
+  {
+   "ref": "RB1",
+   "type": "R",
+   "nodes": [
+    "bpb",
+    "cfg"
+   ],
+   "value": "2M2",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "RB2",
+   "type": "R",
+   "nodes": [
+    "cfg",
+    "0"
+   ],
+   "value": "2M2",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "V3B",
+   "type": "triode",
+   "nodes": [
+    "bpb",
+    "cfg",
+    "cfk"
+   ],
+   "model": "12AX7",
+   "label": "V3B 7025 cathode follower (grid +120 V, cathode +130 V, plate on +250 V)"
+  },
+  {
+   "ref": "RKF",
+   "type": "R",
+   "nodes": [
+    "cfk",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "CDRY2",
+   "type": "C",
+   "nodes": [
+    "cfk",
+    "mxd"
+   ],
+   "value": "0.1u",
+   "tolerance": 0.2,
+   "label": ".1 into the MIXER bottom"
+  }
+ ],
+ "probes": [
+  "in",
+  "p1a",
+  "dvd",
+  "dwlv",
+  "p1b",
+  "g6",
+  "p6",
+  "k6",
+  "tk",
+  "g3",
+  "p3",
+  "tnw",
+  "cfk",
+  "out",
+  "bpr",
+  "bpa",
+  "bpb"
+ ],
+ "readouts": {},
+ "layout": {
+  "columns": {
+   "in": 0,
+   "p1a": 2,
+   "p1b": 4,
+   "g6": 6,
+   "tk": 8,
+   "g3": 10,
+   "p3": 12,
+   "out": 16
+  },
+  "rows": {
+   "bpa": 0,
+   "bpb": 2
+  }
+ }
+}

@@ -1,0 +1,4643 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "roland-jc-120",
+ "version": 4,
+ "name": "Roland JC-120 Jazz Chorus (1982)",
+ "description": "The 1982 JC-120 as drawn (Roland JC-120 '82 sheet; JC-120/JC-160 Service Notes 5th ed., S/N 258100+): the effect channel CH-2 (2SK117 input stage, FMV tone stack, JFET distortion with its feedback clipper, bright/volume, Q5 and the Q16/Q15 feedback pair), Z-3F spring reverb with its push-pull current drive, the MN3007/MN3101 chorus-vibrato with the IC5 LFO, the JFET dry/wet switches and the channel-mix matrix, CH-1's output stage (its volume at 0), both discrete 60 W power amplifiers into one 12-inch speaker each, and the +-37 V bridge supply with its +30 / +15 / +26 / +12.5 V regulators. Left = CH-1 amp (dry), right = CH-2 amp (dry, or the BBD signal in Chorus/Vibrato).",
+ "sources": [
+  {
+   "title": "Roland JC-120 1982 circuit diagram ('Roland JC 120' 82', 2543x1982), music-electronics-forum thread 4690",
+   "url": "https://music-electronics-forum.com/filedata/fetch?id=811911"
+  },
+  {
+   "title": "Roland JC-120/JC-160 Service Notes, 5th edition (S/N 258100+; schematic p.3, parts list p.4)",
+   "url": "https://music-electronics-forum.com/filedata/fetch?id=834969"
+  },
+  {
+   "title": "Roland JC-120/JC-120A/JC-160 Service Notes, 4th edition (S/N 789500-248099), specifications (22 V RMS into 8 ohm per channel)",
+   "url": "https://music-electronics-forum.com/filedata/fetch?id=834969"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "spkL",
+  "outputR": "spkR",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 59.0
+ },
+ "oversampling": 2,
+ "solver": "auto",
+ "models": {
+  "2SK117GR": {
+   "kind": "njf",
+   "vto": -0.7,
+   "beta": 0.0092,
+   "lambda": 0.01,
+   "is": 1e-14,
+   "n": 1.0,
+   "cgs": 1.3e-11,
+   "cgd": 3e-12,
+   "note": "Toshiba 2SK117-GR: GR-rank IDSS 2.6-6.5 mA, VGS(off) -0.2 to -1.5 V; card takes IDSS 4.5 mA, Vp -0.7 V (BETA = IDSS/Vp^2), Ciss 13 pF / Crss 3 pF. Mid-rank (A). Reproduces the drawn Q1 drain +12.4 V and Q3 drain +10.4 V within 0.1 V"
+  },
+  "2SK246GR": {
+   "kind": "njf",
+   "vto": -1.5,
+   "beta": 0.002,
+   "lambda": 0.01,
+   "is": 1e-14,
+   "n": 1.0,
+   "cgs": 9e-12,
+   "cgd": 2.5e-12,
+   "note": "Toshiba 2SK246-GR switching JFET: IDSS 2.6-6.5 mA, VGS(off) -0.7 to -6.0 V; card IDSS 4.5 mA, Vp -1.5 V, Rds(on) ~170 ohm. Mid-rank (A)"
+  },
+  "2SA970GR": {
+   "kind": "pnp",
+   "is": 1e-14,
+   "bf": 300,
+   "br": 3,
+   "vaf": 100,
+   "cje": 1e-11,
+   "cjc": 4e-12,
+   "note": "Toshiba 2SA970-GR low-noise PNP, hFE 200-400; generic EM values (A)"
+  },
+  "2SC2240GR": {
+   "kind": "npn",
+   "is": 1e-14,
+   "bf": 300,
+   "br": 3,
+   "vaf": 100,
+   "cje": 8e-12,
+   "cjc": 3e-12,
+   "note": "Toshiba 2SC2240-GR low-noise NPN, hFE 200-400; generic EM values (A)"
+  },
+  "2SC1815GR": {
+   "kind": "npn",
+   "is": 2e-14,
+   "bf": 300,
+   "br": 3,
+   "vaf": 100,
+   "cje": 8e-12,
+   "cjc": 3e-12,
+   "note": "Toshiba 2SC1815-GR, hFE 200-400; library-class EM values (A)"
+  },
+  "2SC2229": {
+   "kind": "npn",
+   "is": 1e-14,
+   "bf": 120,
+   "br": 3,
+   "vaf": 100,
+   "cje": 1e-11,
+   "cjc": 4e-12,
+   "note": "Toshiba 2SC2229 150 V voltage-amplifier NPN, hFE 70-240; generic EM values (A)"
+  },
+  "2SD669": {
+   "kind": "npn",
+   "is": 1e-13,
+   "bf": 140,
+   "br": 4,
+   "vaf": 100,
+   "cje": 5e-11,
+   "cjc": 2e-11,
+   "note": "Hitachi 2SD669A-C driver NPN, hFE C 100-200; generic medium-power EM values (A)"
+  },
+  "2SB649": {
+   "kind": "pnp",
+   "is": 1e-13,
+   "bf": 140,
+   "br": 4,
+   "vaf": 100,
+   "cje": 5e-11,
+   "cjc": 2.5e-11,
+   "note": "Hitachi 2SB649A-C driver PNP, hFE C 100-200; generic medium-power EM values (A)"
+  },
+  "2SD845": {
+   "kind": "npn",
+   "is": 2.5e-13,
+   "bf": 80,
+   "br": 4,
+   "vaf": 100,
+   "cje": 3e-10,
+   "cjc": 1.2e-10,
+   "note": "NEC 2SD845 (or 2SC3182/2SC2773/2SC2564) output NPN; generic power EM values (A); IS sets the idle current with the spreader (notes 6.3)"
+  },
+  "2SD667": {
+   "kind": "npn",
+   "is": 5e-14,
+   "bf": 150,
+   "br": 4,
+   "cje": 4e-11,
+   "cjc": 1e-11,
+   "note": "Hitachi 2SD667-C NPN (reverb driver, +30 V pass); generic EM values (A)"
+  },
+  "2SB647": {
+   "kind": "pnp",
+   "is": 5e-14,
+   "bf": 150,
+   "br": 4,
+   "cje": 4e-11,
+   "cjc": 1.2e-11,
+   "note": "Hitachi 2SB647-C PNP reverb driver; generic EM values (A)"
+  },
+  "2SD313E": {
+   "kind": "npn",
+   "is": 1e-12,
+   "bf": 100,
+   "br": 4,
+   "note": "2SD313-E TO-220 +15 V pass NPN, hFE E 100-200; generic EM values (A)"
+  },
+  "2SC667": {
+   "kind": "npn",
+   "is": 5e-14,
+   "bf": 150,
+   "br": 4,
+   "note": "2SC667-C CH-1 +30 V pass NPN; generic EM values (A)"
+  },
+  "1S2473": {
+   "kind": "diode",
+   "is": 2.52e-09,
+   "n": 1.752,
+   "rs": 0.568,
+   "note": "Hitachi 1S2473 switching diode: the library 1N914 card (as the HM-2)"
+  },
+  "M4C52": {
+   "kind": "diode",
+   "is": 1.411e-08,
+   "n": 1.984,
+   "rs": 0.0339,
+   "note": "M4C52 (M4C51) bridge leg: the 1N4001 card (A)"
+  },
+  "RD16EB2": {
+   "kind": "diode",
+   "is": 1e-14,
+   "n": 1.0,
+   "rs": 1.0,
+   "bv": 15.95,
+   "ibv": 0.005,
+   "nbv": 1.3,
+   "note": "NEC RD16E-B2 500 mW zener; bv FITTED so the +15 V rail reads the drawn 15 V at the drawn loads (Vz 15.9 V at ~3 mA is inside the RD16E B-ranks); Zzt ~ nbv*Vt/I (A)"
+  },
+  "RD30EB4": {
+   "kind": "diode",
+   "is": 1e-14,
+   "n": 1.0,
+   "rs": 2.0,
+   "bv": 30.75,
+   "ibv": 0.001,
+   "nbv": 1.5,
+   "note": "NEC RD30E-B4 500 mW zener; bv FITTED so the two +30 V rails read the drawn 30 V (A)"
+  },
+  "NJM4558": {
+   "kind": "opamp",
+   "level": 1,
+   "a0": 100000.0,
+   "gbw": 3000000.0,
+   "slew": 1000000.0,
+   "swing_hi": 1.5,
+   "swing_lo": 1.5,
+   "vhi": 28.5,
+   "vlo": 1.5,
+   "note": "NJM4558DD (IC1, IC2, IC5): the library JRC4558 card (Av 100 dB, GBW 3 MHz, SR 1 V/us), rails from the supply pins (0/+30 V, 0/+15 V)"
+  },
+  "MN3007_JC": {
+   "kind": "bbd",
+   "stages": 1024,
+   "eps": 0.1,
+   "a2": 0.0091,
+   "vlo": 4.0,
+   "vhi": 10.4,
+   "vshift": 0,
+   "noise": 0.0003,
+   "rout": 2000.0,
+   "cin": 0,
+   "note": "the library MN3007 card with its -11 / -4.6 V window referred to this circuit's VSS = +15 V (pin 1) and VDD = 0 V (pin 5): window 4.0-10.4 V around the 7.5 V input bias set by IC2 / R126-R127"
+  },
+  "Z3F": {
+   "kind": "springtank",
+   "rin": 8.0,
+   "lin": 0.0008,
+   "rout": 2575.0,
+   "delay1": 0.0165,
+   "delay2": 0.0198,
+   "t60": 2.0,
+   "disp": 0.55,
+   "stages": 24,
+   "lp": 5200,
+   "hp": 140,
+   "gain": 0.08,
+   "note": "Roland Z-3F reverb unit (parts list p.4): no published data; short two-spring tank FITTED (8 ohm in, 2575 ohm out, flight 16.5/19.8 ms, T60 2.0 s) as in v2"
+  },
+  "NJM4558_15": {
+   "kind": "opamp",
+   "level": 1,
+   "a0": 100000.0,
+   "gbw": 3000000.0,
+   "slew": 1000000.0,
+   "swing_hi": 1.5,
+   "swing_lo": 1.5,
+   "vhi": 13.83,
+   "vlo": 1.5,
+   "note": "NJM4558DD on the regulated +15 V rail (IC2, IC5): the library JRC4558 card with fixed rails 1.5 / 13.83 V (+15 V rail measured 15.33 V, 7 uV ripple). Fixed rails because the rail-node form on this supply-cut rail storms under LTE substeps (notes session 7)"
+  },
+  "NJM4558_30": {
+   "kind": "opamp",
+   "level": 1,
+   "a0": 100000.0,
+   "gbw": 3000000.0,
+   "slew": 1000000.0,
+   "swing_hi": 1.5,
+   "swing_lo": 1.5,
+   "vhi": 28.62,
+   "vlo": 1.5,
+   "note": "NJM4558DD on the regulated +30 V rail (IC1): fixed rails 1.5 / 28.62 V (+30 V rail 30.12 V)"
+  }
+ },
+ "controls": [
+  {
+   "id": "volume",
+   "label": "Volume",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "V"
+   ],
+   "group": "Main",
+   "note": "VR1 VOL 1MB"
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "T"
+   ],
+   "group": "Main",
+   "note": "VR2 TRE 250KB"
+  },
+  {
+   "id": "mid",
+   "label": "Middle",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "M"
+   ],
+   "group": "Main",
+   "note": "VR3 MID 10KB rheostat"
+  },
+  {
+   "id": "bass",
+   "label": "Bass",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "a"
+   ],
+   "group": "Main",
+   "note": "VR4 BASS 250KA rheostat"
+  },
+  {
+   "id": "bright",
+   "label": "Bright",
+   "kind": "switch",
+   "default": 0.0,
+   "params": [
+    "B"
+   ],
+   "group": "Main",
+   "note": "BRIGHT switch: C5 220P across the top of the volume pot"
+  },
+  {
+   "id": "dist",
+   "label": "Distortion",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [],
+   "group": "Main",
+   "note": "VR5 DIST 10KC rheostat in Q3's source bypass (heard only with Distortion on)"
+  },
+  {
+   "id": "dist_on",
+   "label": "Distortion on",
+   "kind": "switch",
+   "default": 0.0,
+   "params": [],
+   "face": true,
+   "options": [
+    "Off",
+    "On"
+   ],
+   "group": "Main",
+   "note": "VR5's switch: the knob's OFF end closes it, which turns Q4 off; the DIST foot switch jack (pin 16) is in parallel (open with no pedal)"
+  },
+  {
+   "id": "reverb",
+   "label": "Reverb",
+   "kind": "continuous",
+   "default": 0.3,
+   "params": [],
+   "group": "Main",
+   "note": "VR6 REV 10KB"
+  },
+  {
+   "id": "rate",
+   "label": "Vibrato Speed",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "R"
+   ],
+   "group": "Effect",
+   "note": "VR7 SPEED 100KA (vibrato only: chorus runs at the fixed R140/R148 tap)"
+  },
+  {
+   "id": "depth",
+   "label": "Vibrato Depth",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "d"
+   ],
+   "group": "Effect",
+   "note": "VR8 DEPTH 100KB (vibrato only)"
+  },
+  {
+   "id": "em",
+   "label": "Effect",
+   "kind": "selector",
+   "default": 0.5,
+   "options": [
+    "Off",
+    "Chorus",
+    "Vibrato"
+   ],
+   "params": [
+    "em"
+   ],
+   "paramRange": [
+    0,
+    2
+   ],
+   "group": "Effect",
+   "note": "SW2 (A)-(C) VIB./CHORUS with its middle OFF position (the position drawn). Off: dry on both amps. Chorus/Vibrato: Q10 mutes the dry on the CH-2 (right) amp and Q9 puts the BBD signal there; the left amp keeps the dry"
+  },
+  {
+   "id": "input",
+   "label": "Input",
+   "kind": "selector",
+   "default": 0.0,
+   "options": [
+    "High",
+    "Low"
+   ],
+   "params": [],
+   "face": true,
+   "group": "Main",
+   "note": "Which CH-2 input jack the guitar is in: HIGH (19 mV sensitivity) or LOW (59 mV)"
+  },
+  {
+   "id": "stereo",
+   "label": "Stereo",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "CASSt"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "No such control: the amp is always two power amps; stored only"
+  },
+  {
+   "id": "power",
+   "label": "On/Off",
+   "kind": "switch",
+   "default": 1.0,
+   "params": [
+    "Pwr"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Host handles bypass; stored only"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VSA",
+   "type": "V",
+   "nodes": [
+    "sa",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "44.8",
+    "freq": 60,
+    "phase": 90
+   },
+   "label": "Secondary half A (ORN, pin 7 via F1)",
+   "note": "37 V x 2 secondary (drawing: 'Secondary Winding Ratings (DC) 37V x 2 @2.5A 3300uF INPUT', x 1800, y 1545); amplitude and winding resistance FITTED so the rails read 37.0 V DC at the rated 2.5 A and the idle rails follow (notes 6.4)"
+  },
+  {
+   "ref": "VSB",
+   "type": "V",
+   "nodes": [
+    "sb",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "44.8",
+    "freq": 60,
+    "phase": 270
+   },
+   "label": "Secondary half B (ORN, pin 6 via F2)",
+   "note": "antiphase half of the centre-tapped winding (BLK centre tap = chassis 0 V)"
+  },
+  {
+   "ref": "RWA",
+   "type": "R",
+   "nodes": [
+    "sa",
+    "sar"
+   ],
+   "value": "0.55",
+   "label": "Secondary half A resistance",
+   "note": "winding DCR + reflected primary resistance per half, FITTED (not on the drawing); F1 fuse (6 A) taken as 0 ohm"
+  },
+  {
+   "ref": "RWB",
+   "type": "R",
+   "nodes": [
+    "sb",
+    "sbr"
+   ],
+   "value": "0.55",
+   "label": "Secondary half B resistance",
+   "note": "as RWA; F2 fuse taken as 0 ohm"
+  },
+  {
+   "ref": "DB1",
+   "type": "D",
+   "nodes": [
+    "sar",
+    "p37"
+   ],
+   "model": "M4C52",
+   "label": "Bridge rectifier M4C52 leg",
+   "note": "bridge M4C52 (M4C51), pins 8/10 AC, 11 +, 9 - (x 2080-2180, y 1150-1330)"
+  },
+  {
+   "ref": "DB2",
+   "type": "D",
+   "nodes": [
+    "sbr",
+    "p37"
+   ],
+   "model": "M4C52",
+   "label": "Bridge rectifier M4C52 leg",
+   "note": "bridge M4C52 (M4C51), pins 8/10 AC, 11 +, 9 - (x 2080-2180, y 1150-1330)"
+  },
+  {
+   "ref": "DB3",
+   "type": "D",
+   "nodes": [
+    "n37",
+    "sar"
+   ],
+   "model": "M4C52",
+   "label": "Bridge rectifier M4C52 leg",
+   "note": "bridge M4C52 (M4C51), pins 8/10 AC, 11 +, 9 - (x 2080-2180, y 1150-1330)"
+  },
+  {
+   "ref": "DB4",
+   "type": "D",
+   "nodes": [
+    "n37",
+    "sbr"
+   ],
+   "model": "M4C52",
+   "label": "Bridge rectifier M4C52 leg",
+   "note": "bridge M4C52 (M4C51), pins 8/10 AC, 11 +, 9 - (x 2080-2180, y 1150-1330)"
+  },
+  {
+   "ref": "C85",
+   "type": "C",
+   "nodes": [
+    "p37",
+    "0"
+   ],
+   "value": "3300u",
+   "label": "C85 +37 V reservoir",
+   "note": "3300 uF / 50 V, pin 32-33 (x 2080, y 1150)"
+  },
+  {
+   "ref": "C86",
+   "type": "C",
+   "nodes": [
+    "0",
+    "n37"
+   ],
+   "value": "3300u",
+   "label": "C86 -37 V reservoir",
+   "note": "3300 uF / 50 V, pin 33-34 (x 2080, y 1205)"
+  },
+  {
+   "ref": "R1PS",
+   "type": "R",
+   "nodes": [
+    "sar",
+    "ledr"
+   ],
+   "value": "3.3k",
+   "label": "R1 power LED feed",
+   "note": "R1 3.3K 1/2 W from bridge pin 8 (x 2280, y 1205)"
+  },
+  {
+   "ref": "D2PS",
+   "type": "D",
+   "nodes": [
+    "ledr",
+    "leda"
+   ],
+   "model": "1N4001",
+   "label": "D2 LED rectifier",
+   "note": "D2 1N4003 (x 2310, y 1205); 1N4001 card"
+  },
+  {
+   "ref": "LED1",
+   "type": "D",
+   "nodes": [
+    "leda",
+    "0"
+   ],
+   "model": "LED_RED",
+   "label": "Power LED SLP-48",
+   "note": "SLP-48 power LED (x 2370, y 1235); the library generic red LED card"
+  },
+  {
+   "ref": "R151",
+   "type": "R",
+   "nodes": [
+    "p37",
+    "c2r"
+   ],
+   "value": "10",
+   "label": "R151 FU10",
+   "note": "R151 FU 10 1/2 W fusible (x 1960, y 1135)"
+  },
+  {
+   "ref": "D10",
+   "type": "D",
+   "nodes": [
+    "c2r",
+    "vraw"
+   ],
+   "model": "1N4001",
+   "label": "D10",
+   "note": "D10 1N4003 or S5500G (x 1915, y 1135); 1N4001 card"
+  },
+  {
+   "ref": "C76",
+   "type": "C",
+   "nodes": [
+    "vraw",
+    "0"
+   ],
+   "value": "470u",
+   "label": "C76",
+   "note": "C76 470/50 (x 1910, y 1225)"
+  },
+  {
+   "ref": "Q27",
+   "type": "npn",
+   "nodes": [
+    "vraw",
+    "zb15",
+    "v15"
+   ],
+   "model": "2SD313E",
+   "label": "Q27 +15 V regulator",
+   "note": "Q27 2SD313E +15 V pass (pins 4/5/6, x 1795, y 1140)"
+  },
+  {
+   "ref": "R18",
+   "type": "R",
+   "nodes": [
+    "vraw",
+    "zb15"
+   ],
+   "value": "6.8k",
+   "label": "R18",
+   "note": "R18 6.8K 1/2W (x 1855, y 1170)"
+  },
+  {
+   "ref": "D15",
+   "type": "D",
+   "nodes": [
+    "0",
+    "zb15"
+   ],
+   "model": "RD16EB2",
+   "label": "D15 RD16EB2",
+   "note": "D15 RD16EB2 zener (x 1800, y 1195)"
+  },
+  {
+   "ref": "C7",
+   "type": "C",
+   "nodes": [
+    "zb15",
+    "0"
+   ],
+   "value": "220u",
+   "label": "C7",
+   "note": "C7 220/16 (x 1855, y 1200)"
+  },
+  {
+   "ref": "C18",
+   "type": "C",
+   "nodes": [
+    "v15",
+    "0"
+   ],
+   "value": "100u",
+   "label": "C18 +15 V",
+   "note": "C18 100/16 at pin 6 (+15 V, x 1740, y 1170)"
+  },
+  {
+   "ref": "Q11",
+   "type": "npn",
+   "nodes": [
+    "vraw",
+    "zb30",
+    "v30"
+   ],
+   "model": "2SD667",
+   "label": "Q11 +30 V regulator",
+   "note": "Q11 2SD667-C +30 V pass (x 1795, y 1320)"
+  },
+  {
+   "ref": "R19",
+   "type": "R",
+   "nodes": [
+    "vraw",
+    "zb30"
+   ],
+   "value": "4.7k",
+   "label": "R19",
+   "note": "R19 4.7K 1/2W (x 1855, y 1340)"
+  },
+  {
+   "ref": "D16",
+   "type": "D",
+   "nodes": [
+    "0",
+    "zb30"
+   ],
+   "model": "RD30EB4",
+   "label": "D16 RD30EB4",
+   "note": "D16 RD30EB4 zener (x 1800, y 1360)"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "zb30",
+    "0"
+   ],
+   "value": "47u",
+   "label": "C8",
+   "note": "C8 47/35 (x 1855, y 1375)"
+  },
+  {
+   "ref": "C13",
+   "type": "C",
+   "nodes": [
+    "v30",
+    "0"
+   ],
+   "value": "1000u",
+   "label": "C13 +30 V",
+   "note": "C13 1000/35 (x 1740, y 1350)"
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "v30",
+    "v26"
+   ],
+   "value": "1k",
+   "label": "R7 +26 V dropper",
+   "note": "R7 1K from +30 V (x 960, y 515)"
+  },
+  {
+   "ref": "C9",
+   "type": "C",
+   "nodes": [
+    "v26",
+    "0"
+   ],
+   "value": "220u",
+   "label": "C9 +26 V",
+   "note": "C9 220/35 (x 905, y 535)"
+  },
+  {
+   "ref": "R105",
+   "type": "R",
+   "nodes": [
+    "v15",
+    "v12"
+   ],
+   "value": "680",
+   "label": "R105 +12.5 V dropper",
+   "note": "R105 680 from +15 V, rail marked '+12.5V' (x 1050, y 515)"
+  },
+  {
+   "ref": "C47",
+   "type": "C",
+   "nodes": [
+    "v12",
+    "0"
+   ],
+   "value": "100u",
+   "label": "C47 +12.5 V",
+   "note": "C47 100/16 (x 1090, y 540)"
+  },
+  {
+   "ref": "C71",
+   "type": "C",
+   "nodes": [
+    "v15",
+    "0"
+   ],
+   "value": "1000u",
+   "label": "C71 BBD supply decoupling",
+   "note": "C71 1000/16 on +15 V at IC3/IC4 (x 920, y 1360)"
+  },
+  {
+   "ref": "R31_1",
+   "type": "R",
+   "nodes": [
+    "p37",
+    "c1r"
+   ],
+   "value": "10",
+   "label": "CH-1 R31 FU10",
+   "note": "CH-1 R31 FU 10 1/2 W (x 1230, y 85)"
+  },
+  {
+   "ref": "D4_1",
+   "type": "D",
+   "nodes": [
+    "c1r",
+    "v1raw"
+   ],
+   "model": "1N4001",
+   "label": "CH-1 D4",
+   "note": "CH-1 D4 1N4003 or S5500G (x 1195, y 95)"
+  },
+  {
+   "ref": "C13_1",
+   "type": "C",
+   "nodes": [
+    "v1raw",
+    "0"
+   ],
+   "value": "470u",
+   "label": "CH-1 C13",
+   "note": "CH-1 C13 470/50 (x 1205, y 145)"
+  },
+  {
+   "ref": "Q4_1",
+   "type": "npn",
+   "nodes": [
+    "v1raw",
+    "zb1",
+    "v30a"
+   ],
+   "model": "2SC667",
+   "label": "CH-1 Q4 +30 V regulator",
+   "note": "CH-1 Q4 2SC667-C +30 V pass (x 1135, y 135)"
+  },
+  {
+   "ref": "R26_1",
+   "type": "R",
+   "nodes": [
+    "v1raw",
+    "zb1"
+   ],
+   "value": "4.7k",
+   "label": "CH-1 R26",
+   "note": "CH-1 R26 1/2 W (x 1185, y 155): the first digit reads 1 or 4 at 1:1 and the SM copy is illegible; 4.7K adopted, the value of the identical CH-2 regulator's R19"
+  },
+  {
+   "ref": "D3_1",
+   "type": "D",
+   "nodes": [
+    "0",
+    "zb1"
+   ],
+   "model": "RD30EB4",
+   "label": "CH-1 D3 RD30EB4",
+   "note": "CH-1 D3 RD-30EB4 zener (x 1135, y 210)"
+  },
+  {
+   "ref": "C19_1",
+   "type": "C",
+   "nodes": [
+    "zb1",
+    "0"
+   ],
+   "value": "100u",
+   "label": "CH-1 C19",
+   "note": "CH-1 C19 100/35 (x 1160, y 215)"
+  },
+  {
+   "ref": "C11_1",
+   "type": "C",
+   "nodes": [
+    "v30a",
+    "0"
+   ],
+   "value": "100u",
+   "label": "CH-1 C11 +30 V",
+   "note": "CH-1 C11 100/35 at the CH-1 +30 V output (x 1085, y 185)"
+  },
+  {
+   "ref": "SIH",
+   "type": "switch",
+   "nodes": [
+    "in",
+    "j1"
+   ],
+   "control": "input",
+   "positions": [
+    0
+   ],
+   "label": "HIGH input jack",
+   "note": "HIGH jack tip -> pin 1"
+  },
+  {
+   "ref": "SJL",
+   "type": "switch",
+   "nodes": [
+    "j1",
+    "j2"
+   ],
+   "control": "input",
+   "positions": [
+    0
+   ],
+   "label": "LOW jack NC contact",
+   "note": "LOW jack's normally-closed contact ties pin 2 to pin 1 while no plug is in LOW"
+  },
+  {
+   "ref": "SIL",
+   "type": "switch",
+   "nodes": [
+    "in",
+    "j2"
+   ],
+   "control": "input",
+   "positions": [
+    1
+   ],
+   "label": "LOW input jack",
+   "note": "LOW jack tip -> pin 2"
+  },
+  {
+   "ref": "SGH",
+   "type": "switch",
+   "nodes": [
+    "j1",
+    "0"
+   ],
+   "control": "input",
+   "positions": [
+    1
+   ],
+   "label": "HIGH jack NC contact",
+   "note": "HIGH jack's normally-closed contact grounds pin 1 while no plug is in HIGH"
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "j1",
+    "na"
+   ],
+   "value": "33k",
+   "note": "R4 33K (x 215, y 615)"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "j2",
+    "na"
+   ],
+   "value": "68k",
+   "note": "R3 68K (x 215, y 680)"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "na",
+    "0"
+   ],
+   "value": "100p",
+   "note": "C3 100P (x 300, y 730); D13/D14 at this node are drawn dashed (not fitted)"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "na",
+    "nb"
+   ],
+   "value": "82n",
+   "note": "C1 .082 (x 270, y 615)"
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "nb",
+    "g1"
+   ],
+   "value": "1k",
+   "note": "R5 1K, gate marked +0.7 (x 330, y 615)"
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "g1",
+    "gb1"
+   ],
+   "value": "1M",
+   "note": "R1 1M (x 360, y 680)"
+  },
+  {
+   "ref": "R6",
+   "type": "R",
+   "nodes": [
+    "v26",
+    "gb1"
+   ],
+   "value": "220k",
+   "note": "R6 220K (x 315, y 575)"
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "gb1",
+    "0"
+   ],
+   "value": "6.8k",
+   "note": "R2 6.8K (x 315, y 735)"
+  },
+  {
+   "ref": "Q1",
+   "type": "njf",
+   "nodes": [
+    "d1",
+    "g1",
+    "s1"
+   ],
+   "model": "2SK117GR",
+   "note": "Q1 2SK117-GR input stage (x 385, y 615); drain marked 180 mV / +12.4 V"
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "s1",
+    "0"
+   ],
+   "value": "1k",
+   "note": "R8 1K (x 380, y 735)"
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "v26",
+    "d1"
+   ],
+   "value": "12k",
+   "note": "R9 12K (x 395, y 565)"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "d1",
+    "g1"
+   ],
+   "value": "47p",
+   "note": "C2 47P drain-gate (x 375, y 585)"
+  },
+  {
+   "ref": "C22",
+   "type": "C",
+   "nodes": [
+    "d1",
+    "ttop"
+   ],
+   "value": "150p",
+   "note": "C22 150P (x 440, y 580)"
+  },
+  {
+   "ref": "R36",
+   "type": "R",
+   "nodes": [
+    "d1",
+    "tm"
+   ],
+   "value": "100k",
+   "note": "R36 100K (x 430, y 610)"
+  },
+  {
+   "ref": "C23",
+   "type": "C",
+   "nodes": [
+    "tm",
+    "tB"
+   ],
+   "value": "82n",
+   "note": "C23 .082 (x 450, y 640)"
+  },
+  {
+   "ref": "C27",
+   "type": "C",
+   "nodes": [
+    "tm",
+    "tK"
+   ],
+   "value": "47n",
+   "note": "C27 .047 (x 450, y 715)"
+  },
+  {
+   "ref": "VR2",
+   "type": "pot",
+   "nodes": [
+    "tB",
+    "tw",
+    "ttop"
+   ],
+   "value": "250k",
+   "taper": "B",
+   "control": "treble",
+   "label": "VR2 TREBLE",
+   "note": "VR2 TRE 250KB (x 480, y 600); wiper = stack output"
+  },
+  {
+   "ref": "VR4",
+   "type": "pot",
+   "nodes": [
+    "tL",
+    "tB",
+    "tB"
+   ],
+   "value": "250k",
+   "taper": "A",
+   "control": "bass",
+   "label": "VR4 BASS",
+   "note": "VR4 BASS 250KA as a rheostat, wiper tied to its top (x 480, y 650)"
+  },
+  {
+   "ref": "R158",
+   "type": "R",
+   "nodes": [
+    "tL",
+    "tK"
+   ],
+   "value": "1k",
+   "note": "R158 1K (x 480, y 700)"
+  },
+  {
+   "ref": "VR3",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "tK",
+    "tK"
+   ],
+   "value": "10k",
+   "taper": "B",
+   "control": "mid",
+   "label": "VR3 MIDDLE",
+   "note": "VR3 MID 10KB as a rheostat to ground (x 480, y 740)"
+  },
+  {
+   "ref": "C17",
+   "type": "C",
+   "nodes": [
+    "tw",
+    "g2a"
+   ],
+   "value": "82n",
+   "note": "C17 .082 (x 520, y 610)"
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "g2a",
+    "g2"
+   ],
+   "value": "1k",
+   "note": "R15 1K (x 570, y 610); gate marked 24 mV / +12.2"
+  },
+  {
+   "ref": "R13",
+   "type": "R",
+   "nodes": [
+    "g2",
+    "gb2"
+   ],
+   "value": "470k",
+   "note": "R13 470K (x 610, y 660)"
+  },
+  {
+   "ref": "R12",
+   "type": "R",
+   "nodes": [
+    "v26",
+    "gb2"
+   ],
+   "value": "220k",
+   "note": "R12 220K (x 555, y 560)"
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "gb2",
+    "0"
+   ],
+   "value": "220k",
+   "note": "R11 220K (x 555, y 740)"
+  },
+  {
+   "ref": "Q2",
+   "type": "njf",
+   "nodes": [
+    "v26",
+    "g2",
+    "s2"
+   ],
+   "model": "2SK117GR",
+   "note": "Q2 2SK117-GR source follower (x 640, y 610); source marked 27 mV / +13.2"
+  },
+  {
+   "ref": "R10",
+   "type": "R",
+   "nodes": [
+    "s2",
+    "0"
+   ],
+   "value": "12k",
+   "note": "R10 12K (x 660, y 730)"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "s2",
+    "cln"
+   ],
+   "value": "82n",
+   "note": "C4 .082 -> R16 (x 640, y 640)"
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "cln",
+    "vtop"
+   ],
+   "value": "100k",
+   "note": "R16 100K clean path to the volume pot top (x 840, y 585)"
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "s2",
+    "ds1"
+   ],
+   "value": "82n",
+   "note": "C6 .082 (x 640, y 665)"
+  },
+  {
+   "ref": "R17",
+   "type": "R",
+   "nodes": [
+    "ds1",
+    "g3"
+   ],
+   "value": "33k",
+   "note": "R17 33K (x 690, y 665)"
+  },
+  {
+   "ref": "R22",
+   "type": "R",
+   "nodes": [
+    "g3",
+    "gb3"
+   ],
+   "value": "1M",
+   "note": "R22 1M (x 690, y 685)"
+  },
+  {
+   "ref": "R21",
+   "type": "R",
+   "nodes": [
+    "v26",
+    "gb3"
+   ],
+   "value": "220k",
+   "note": "R21 220K (x 670, y 565)"
+  },
+  {
+   "ref": "R20",
+   "type": "R",
+   "nodes": [
+    "gb3",
+    "0"
+   ],
+   "value": "47k",
+   "note": "R20 47K (x 670, y 740)"
+  },
+  {
+   "ref": "Q3",
+   "type": "njf",
+   "nodes": [
+    "d3",
+    "g3",
+    "s3"
+   ],
+   "model": "2SK117GR",
+   "note": "Q3 2SK117-GR distortion stage (x 745, y 640); drain marked +10.4"
+  },
+  {
+   "ref": "R23",
+   "type": "R",
+   "nodes": [
+    "v26",
+    "d3"
+   ],
+   "value": "15k",
+   "note": "R23 15K (x 720, y 565)"
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "d3",
+    "g3"
+   ],
+   "value": "100p",
+   "note": "C11 100P (x 720, y 630)"
+  },
+  {
+   "ref": "D1",
+   "type": "D",
+   "nodes": [
+    "g3",
+    "z3"
+   ],
+   "model": "1S2473",
+   "note": "D1 1S2473 (x 720, y 720), antiparallel with D2 between the gate and the C10 node"
+  },
+  {
+   "ref": "D2",
+   "type": "D",
+   "nodes": [
+    "z3",
+    "g3"
+   ],
+   "model": "1S2473",
+   "note": "D2 1S2473 (x 695, y 720)"
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "d3",
+    "z3"
+   ],
+   "value": "82n",
+   "note": "C10 .082 drain to the diode pair (x 830, y 660): the clipper sits in the drain-gate feedback"
+  },
+  {
+   "ref": "R24",
+   "type": "R",
+   "nodes": [
+    "s3",
+    "0"
+   ],
+   "value": "4.7k",
+   "note": "R24 4.7K (x 765, y 740)"
+  },
+  {
+   "ref": "C43",
+   "type": "C",
+   "nodes": [
+    "s3",
+    "c43n"
+   ],
+   "value": "1u",
+   "note": "C43 1/50 (x 775, y 630)"
+  },
+  {
+   "ref": "R29",
+   "type": "R",
+   "nodes": [
+    "c43n",
+    "vr5t"
+   ],
+   "value": "330",
+   "note": "R29 330 (x 800, y 665)"
+  },
+  {
+   "ref": "VR5",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "0",
+    "vr5t"
+   ],
+   "value": "10k",
+   "taper": "C",
+   "control": "dist",
+   "label": "VR5 DISTORTION",
+   "note": "VR5 DIST 10KC (w/SW) as a rheostat, wiper to ground (x 800, y 710): 1 = minimum source resistance = most gain"
+  },
+  {
+   "ref": "C12",
+   "type": "C",
+   "nodes": [
+    "d3",
+    "d4i"
+   ],
+   "value": "82n",
+   "note": "C12 .082 (x 860, y 600)"
+  },
+  {
+   "ref": "R28",
+   "type": "R",
+   "nodes": [
+    "d4i",
+    "q4a"
+   ],
+   "value": "10k",
+   "note": "R28 10K (x 865, y 630)"
+  },
+  {
+   "ref": "R27",
+   "type": "R",
+   "nodes": [
+    "q4a",
+    "vsw15"
+   ],
+   "value": "10k",
+   "note": "R27 10K (x 865, y 700)"
+  },
+  {
+   "ref": "Q4",
+   "type": "njf",
+   "nodes": [
+    "q4b",
+    "gq4",
+    "q4a"
+   ],
+   "model": "2SK246GR",
+   "note": "Q4 2SK246-GR distortion on/off switch (x 895, y 660)"
+  },
+  {
+   "ref": "D3",
+   "type": "D",
+   "nodes": [
+    "gq4",
+    "dctl"
+   ],
+   "model": "1S2473",
+   "note": "D3 1S2473 gate steering diode (x 895, y 700)"
+  },
+  {
+   "ref": "R26",
+   "type": "R",
+   "nodes": [
+    "q4b",
+    "vsw15"
+   ],
+   "value": "1M",
+   "note": "R26 1M (x 930, y 695)"
+  },
+  {
+   "ref": "C15",
+   "type": "C",
+   "nodes": [
+    "q4b",
+    "vtop"
+   ],
+   "value": "82n",
+   "note": "C15 .082 (x 930, y 660)"
+  },
+  {
+   "ref": "R31",
+   "type": "R",
+   "nodes": [
+    "v30",
+    "dk"
+   ],
+   "value": "220k",
+   "note": "R31 220K (x 305, y 1282)"
+  },
+  {
+   "ref": "C24",
+   "type": "C",
+   "nodes": [
+    "dk",
+    "0"
+   ],
+   "value": "470n",
+   "note": "C24 .47/50 (x 250, y 1305)"
+  },
+  {
+   "ref": "R48",
+   "type": "R",
+   "nodes": [
+    "dk",
+    "p16"
+   ],
+   "value": "1k",
+   "note": "R48 1K to pin 16 / the DIST foot switch jack (x 285, y 1335)"
+  },
+  {
+   "ref": "SWD",
+   "type": "switch",
+   "nodes": [
+    "p16",
+    "0"
+   ],
+   "control": "dist_on",
+   "invert": true,
+   "label": "VR5 SW distortion on/off",
+   "note": "VR5's switch (closed at the knob's OFF end); open = distortion on (Q4 conducting)"
+  },
+  {
+   "ref": "R25",
+   "type": "R",
+   "nodes": [
+    "dk",
+    "dctl"
+   ],
+   "value": "1M",
+   "note": "R25 1M (x 285, y 1245)"
+  },
+  {
+   "ref": "C14",
+   "type": "C",
+   "nodes": [
+    "dctl",
+    "0"
+   ],
+   "value": "47n",
+   "note": "C14 .047 (x 250, y 1225)"
+  },
+  {
+   "ref": "R33",
+   "type": "R",
+   "nodes": [
+    "v30",
+    "vsw15"
+   ],
+   "value": "33k",
+   "note": "R33 33K (x 350, y 1335)"
+  },
+  {
+   "ref": "R32",
+   "type": "R",
+   "nodes": [
+    "vsw15",
+    "0"
+   ],
+   "value": "33k",
+   "note": "R32 33K (x 350, y 1420)"
+  },
+  {
+   "ref": "C20",
+   "type": "C",
+   "nodes": [
+    "vsw15",
+    "0"
+   ],
+   "value": "10u",
+   "note": "C20 10/16 (x 375, y 1420)"
+  },
+  {
+   "ref": "VR1",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "vw",
+    "vtop"
+   ],
+   "value": "1M",
+   "taper": "B",
+   "control": "volume",
+   "label": "VR1 VOLUME",
+   "note": "VR1 VOL 1MB (x 960, y 690); parts list EVH-6PA361B16 1MB"
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "vtop",
+    "brA"
+   ],
+   "value": "220p",
+   "note": "C5 220P (x 1010, y 585)"
+  },
+  {
+   "ref": "R14",
+   "type": "R",
+   "nodes": [
+    "brA",
+    "vw"
+   ],
+   "value": "1M",
+   "note": "R14 1M across the BRIGHT switch (x 1000, y 625)"
+  },
+  {
+   "ref": "SWB",
+   "type": "switch",
+   "nodes": [
+    "brA",
+    "vw"
+   ],
+   "control": "bright",
+   "label": "BRIGHT switch",
+   "note": "BRIGHT switch (x 1035, y 640)"
+  },
+  {
+   "ref": "C16",
+   "type": "C",
+   "nodes": [
+    "vw",
+    "g5a"
+   ],
+   "value": "82n",
+   "note": "C16 .082 (x 1060, y 670)"
+  },
+  {
+   "ref": "R30",
+   "type": "R",
+   "nodes": [
+    "g5a",
+    "g5"
+   ],
+   "value": "1k",
+   "note": "R30 1K (x 1105, y 635); gate marked 20 mV / +0.23"
+  },
+  {
+   "ref": "R40",
+   "type": "R",
+   "nodes": [
+    "g5",
+    "gb5"
+   ],
+   "value": "1M",
+   "note": "R40 1M (x 1125, y 660)"
+  },
+  {
+   "ref": "R50",
+   "type": "R",
+   "nodes": [
+    "v12",
+    "gb5"
+   ],
+   "value": "220k",
+   "note": "R50 220K (x 1080, y 560)"
+  },
+  {
+   "ref": "R39",
+   "type": "R",
+   "nodes": [
+    "gb5",
+    "0"
+   ],
+   "value": "4.7k",
+   "note": "R39 4.7K (x 1080, y 720)"
+  },
+  {
+   "ref": "Q5",
+   "type": "njf",
+   "nodes": [
+    "d5",
+    "g5",
+    "s5"
+   ],
+   "model": "2SK117GR",
+   "note": "Q5 2SK117-GR (x 1150, y 615); drain marked 200 mV; C21/R34 at the source drawn dashed (not fitted)"
+  },
+  {
+   "ref": "R80",
+   "type": "R",
+   "nodes": [
+    "v12",
+    "d5"
+   ],
+   "value": "12k",
+   "note": "R80 12K (x 1165, y 565)"
+  },
+  {
+   "ref": "R35",
+   "type": "R",
+   "nodes": [
+    "s5",
+    "0"
+   ],
+   "value": "1k",
+   "note": "R35 1K (x 1160, y 730)"
+  },
+  {
+   "ref": "C52",
+   "type": "C",
+   "nodes": [
+    "d5",
+    "g16a"
+   ],
+   "value": "82n",
+   "note": "C52 .082 (x 1230, y 610)"
+  },
+  {
+   "ref": "R96",
+   "type": "R",
+   "nodes": [
+    "g16a",
+    "g16"
+   ],
+   "value": "1k",
+   "note": "R96 1K (x 1270, y 610)"
+  },
+  {
+   "ref": "R99",
+   "type": "R",
+   "nodes": [
+    "g16",
+    "gb16"
+   ],
+   "value": "1M",
+   "note": "R99 1M (x 1300, y 665)"
+  },
+  {
+   "ref": "R102",
+   "type": "R",
+   "nodes": [
+    "v12",
+    "gb16"
+   ],
+   "value": "100k",
+   "note": "R102 100K (x 1250, y 560)"
+  },
+  {
+   "ref": "R100",
+   "type": "R",
+   "nodes": [
+    "gb16",
+    "0"
+   ],
+   "value": "220k",
+   "note": "R100 220K (x 1250, y 725)"
+  },
+  {
+   "ref": "Q16",
+   "type": "njf",
+   "nodes": [
+    "d16",
+    "g16",
+    "s16"
+   ],
+   "model": "2SK117GR",
+   "note": "Q16 2SK117-GR (x 1320, y 610)"
+  },
+  {
+   "ref": "R90",
+   "type": "R",
+   "nodes": [
+    "v12",
+    "d16"
+   ],
+   "value": "33k",
+   "note": "R90 33K (x 1335, y 555)"
+  },
+  {
+   "ref": "Q15",
+   "type": "pnp",
+   "nodes": [
+    "c15",
+    "d16",
+    "v12"
+   ],
+   "model": "2SA970GR",
+   "note": "Q15 2SA970-GR (x 1370, y 585); collector marked 2.1 V / +6.27"
+  },
+  {
+   "ref": "C50",
+   "type": "C",
+   "nodes": [
+    "s16",
+    "c15"
+   ],
+   "value": "150p",
+   "note": "C50 150P (x 1345, y 665)"
+  },
+  {
+   "ref": "R93",
+   "type": "R",
+   "nodes": [
+    "s16",
+    "c15"
+   ],
+   "value": "100k",
+   "note": "R93 100K (x 1345, y 690)"
+  },
+  {
+   "ref": "C53",
+   "type": "C",
+   "nodes": [
+    "s16",
+    "c53n"
+   ],
+   "value": "10u",
+   "note": "C53 10/16 (x 1325, y 720)"
+  },
+  {
+   "ref": "R94",
+   "type": "R",
+   "nodes": [
+    "c53n",
+    "0"
+   ],
+   "value": "8.2k",
+   "note": "R94 8.2K (x 1330, y 745)"
+  },
+  {
+   "ref": "R87",
+   "type": "R",
+   "nodes": [
+    "c15",
+    "0"
+   ],
+   "value": "2.2k",
+   "note": "R87 2.2K (x 1375, y 735)"
+  },
+  {
+   "ref": "C42",
+   "type": "C",
+   "nodes": [
+    "c15",
+    "dr1"
+   ],
+   "value": "1u",
+   "note": "C42 1/50 NP (x 1400, y 665)"
+  },
+  {
+   "ref": "R67",
+   "type": "R",
+   "nodes": [
+    "dr1",
+    "vsw15b"
+   ],
+   "value": "1M",
+   "note": "R67 1M (x 1420, y 740)"
+  },
+  {
+   "ref": "R70",
+   "type": "R",
+   "nodes": [
+    "dr1",
+    "q10a"
+   ],
+   "value": "47k",
+   "note": "R70 47K (x 1440, y 665)"
+  },
+  {
+   "ref": "Q10",
+   "type": "njf",
+   "nodes": [
+    "dmix",
+    "gq10",
+    "q10a"
+   ],
+   "model": "2SK246GR",
+   "note": "Q10 2SK246-GR dry switch (x 1480, y 660)"
+  },
+  {
+   "ref": "D6",
+   "type": "D",
+   "nodes": [
+    "gq10",
+    "ctl10"
+   ],
+   "model": "1S2473",
+   "note": "D6 1S2473 (x 1480, y 705)"
+  },
+  {
+   "ref": "C81",
+   "type": "C",
+   "nodes": [
+    "dmix",
+    "pamix"
+   ],
+   "value": "82n",
+   "note": "C81 .082 (x 1530, y 665)"
+  },
+  {
+   "ref": "C30",
+   "type": "C",
+   "nodes": [
+    "c15",
+    "dr2"
+   ],
+   "value": "1u",
+   "note": "C30 1/50 NP (x 1390, y 630)"
+  },
+  {
+   "ref": "R58",
+   "type": "R",
+   "nodes": [
+    "dr2",
+    "m1"
+   ],
+   "value": "47k",
+   "note": "R58 47K to pin 11 -> CH-1 pin 7 (x 1415, y 570)"
+  },
+  {
+   "ref": "R61",
+   "type": "R",
+   "nodes": [
+    "m1",
+    "ymix"
+   ],
+   "value": "100k",
+   "note": "R61 100K (x 1435, y 550)"
+  },
+  {
+   "ref": "R59",
+   "type": "R",
+   "nodes": [
+    "ymix",
+    "xmix"
+   ],
+   "value": "100k",
+   "note": "R59 100K (x 1470, y 600)"
+  },
+  {
+   "ref": "R38",
+   "type": "R",
+   "nodes": [
+    "a1",
+    "xmix"
+   ],
+   "value": "47k",
+   "note": "R38 47K from pin 9 <- CH-1 pin 5 (x 1515, y 555)"
+  },
+  {
+   "ref": "C26",
+   "type": "C",
+   "nodes": [
+    "xmix",
+    "pamix"
+   ],
+   "value": "82n",
+   "note": "C26 .082 (x 1540, y 600)"
+  },
+  {
+   "ref": "R49",
+   "type": "R",
+   "nodes": [
+    "pamix",
+    "g6"
+   ],
+   "value": "1k",
+   "note": "R49 1K (x 1595, y 600)"
+  },
+  {
+   "ref": "R47",
+   "type": "R",
+   "nodes": [
+    "g6",
+    "gb6"
+   ],
+   "value": "1M",
+   "note": "R47 1M (x 1610, y 670)"
+  },
+  {
+   "ref": "R42",
+   "type": "R",
+   "nodes": [
+    "v30",
+    "gb6"
+   ],
+   "value": "220k",
+   "note": "R42 220K (x 1580, y 560)"
+  },
+  {
+   "ref": "R43",
+   "type": "R",
+   "nodes": [
+    "gb6",
+    "0"
+   ],
+   "value": "220k",
+   "note": "R43 220K (x 1580, y 735)"
+  },
+  {
+   "ref": "Q6",
+   "type": "njf",
+   "nodes": [
+    "v30",
+    "g6",
+    "s6"
+   ],
+   "model": "2SK117GR",
+   "note": "Q6 2SK117-GR source follower (x 1630, y 600); gate marked +13.3 (meter-loaded)"
+  },
+  {
+   "ref": "R41",
+   "type": "R",
+   "nodes": [
+    "s6",
+    "0"
+   ],
+   "value": "12k",
+   "note": "R41 12K (x 1640, y 690)"
+  },
+  {
+   "ref": "C25",
+   "type": "C",
+   "nodes": [
+    "s6",
+    "mi2"
+   ],
+   "value": "1u",
+   "note": "C25 1/50 (x 1660, y 625)"
+  },
+  {
+   "ref": "R53",
+   "type": "R",
+   "nodes": [
+    "mi2",
+    "0"
+   ],
+   "value": "100k",
+   "note": "R53 100K (x 1680, y 690); MAIN IN jack pin 12 -> NC contact -> pin 19 (no plug)"
+  },
+  {
+   "ref": "C44",
+   "type": "C",
+   "nodes": [
+    "mi2",
+    "pi2a"
+   ],
+   "value": "82n",
+   "note": "C44 .082 (x 1910, y 610); MAIN IN marked 800 mV"
+  },
+  {
+   "ref": "R83",
+   "type": "R",
+   "nodes": [
+    "pi2a",
+    "pi2"
+   ],
+   "value": "1k",
+   "note": "R83 1K (x 1945, y 605)"
+  },
+  {
+   "ref": "R82",
+   "type": "R",
+   "nodes": [
+    "pi2",
+    "0"
+   ],
+   "value": "100k",
+   "note": "R82 100K (x 1925, y 670)"
+  },
+  {
+   "ref": "C45",
+   "type": "C",
+   "nodes": [
+    "pi2",
+    "0"
+   ],
+   "value": "150p",
+   "note": "C45 150P (x 1965, y 660)"
+  },
+  {
+   "ref": "R81",
+   "type": "R",
+   "nodes": [
+    "d5",
+    "rs1"
+   ],
+   "value": "100k",
+   "note": "R81 100K from the Q5 drain line (x 265, y 865)"
+  },
+  {
+   "ref": "C36",
+   "type": "C",
+   "nodes": [
+    "rs1",
+    "rvp"
+   ],
+   "value": "470n",
+   "note": "C36 .47/50 (x 260, y 910); IC1 + marked 100 mV"
+  },
+  {
+   "ref": "R62",
+   "type": "R",
+   "nodes": [
+    "rvp",
+    "vb15r"
+   ],
+   "value": "100k",
+   "note": "R62 100K (x 255, y 1020)"
+  },
+  {
+   "ref": "IC1A",
+   "type": "opamp",
+   "nodes": [
+    "rvp",
+    "rvn",
+    "rvo",
+    "v30",
+    "0"
+   ],
+   "model": "NJM4558",
+   "note": "IC1 NJM4558DD, pins 3/2/1 on 0 / +30 V (x 320, y 935)"
+  },
+  {
+   "ref": "R60",
+   "type": "R",
+   "nodes": [
+    "rvo",
+    "rvn"
+   ],
+   "value": "47k",
+   "note": "R60 47K (x 330, y 885)"
+  },
+  {
+   "ref": "C34",
+   "type": "C",
+   "nodes": [
+    "rvo",
+    "rvn"
+   ],
+   "value": "47p",
+   "note": "C34 47P (x 330, y 865)"
+  },
+  {
+   "ref": "C32",
+   "type": "C",
+   "nodes": [
+    "rvn",
+    "rvs"
+   ],
+   "value": "10u",
+   "note": "C32 10/16 (x 290, y 975)"
+  },
+  {
+   "ref": "R64",
+   "type": "R",
+   "nodes": [
+    "rvs",
+    "0"
+   ],
+   "value": "680",
+   "note": "R64 680 (x 290, y 1030)"
+  },
+  {
+   "ref": "R44",
+   "type": "R",
+   "nodes": [
+    "rvs",
+    "tsense"
+   ],
+   "value": "680",
+   "note": "R44 680 from the tank-return sense node (x 420, y 1082)"
+  },
+  {
+   "ref": "C31",
+   "type": "C",
+   "nodes": [
+    "rvo",
+    "b8"
+   ],
+   "value": "10u",
+   "note": "C31 10/16 (x 400, y 920)"
+  },
+  {
+   "ref": "C33",
+   "type": "C",
+   "nodes": [
+    "rvo",
+    "b7"
+   ],
+   "value": "10u",
+   "note": "C33 10/16 (x 400, y 975)"
+  },
+  {
+   "ref": "R54",
+   "type": "R",
+   "nodes": [
+    "v15r",
+    "b8"
+   ],
+   "value": "2.2k",
+   "note": "R54 2.2K (x 420, y 865)"
+  },
+  {
+   "ref": "D4",
+   "type": "D",
+   "nodes": [
+    "b8",
+    "bm"
+   ],
+   "model": "1S2473",
+   "note": "D4 1S2473 bias (x 425, y 935)"
+  },
+  {
+   "ref": "D5",
+   "type": "D",
+   "nodes": [
+    "bm",
+    "b7"
+   ],
+   "model": "1S2473",
+   "note": "D5 1S2473 bias (x 425, y 980)"
+  },
+  {
+   "ref": "R57",
+   "type": "R",
+   "nodes": [
+    "b7",
+    "0"
+   ],
+   "value": "2.2k",
+   "note": "R57 2.2K (x 430, y 1045)"
+  },
+  {
+   "ref": "Q8",
+   "type": "npn",
+   "nodes": [
+    "v15r",
+    "b8",
+    "e8"
+   ],
+   "model": "2SD667",
+   "note": "Q8 2SD667-C (x 465, y 890)"
+  },
+  {
+   "ref": "R46",
+   "type": "R",
+   "nodes": [
+    "e8",
+    "rvout"
+   ],
+   "value": "10",
+   "note": "R46 10 1/2W (x 465, y 935)"
+  },
+  {
+   "ref": "R45",
+   "type": "R",
+   "nodes": [
+    "rvout",
+    "e7"
+   ],
+   "value": "10",
+   "note": "R45 10 1/2W (x 465, y 975)"
+  },
+  {
+   "ref": "Q7",
+   "type": "pnp",
+   "nodes": [
+    "0",
+    "b7",
+    "e7"
+   ],
+   "model": "2SB647",
+   "note": "Q7 2SB647-C (x 465, y 1015)"
+  },
+  {
+   "ref": "R51",
+   "type": "R",
+   "nodes": [
+    "v15",
+    "v15r"
+   ],
+   "value": "4.7",
+   "note": "R51 4.7 from +15 V (x 545, y 862)"
+  },
+  {
+   "ref": "C29",
+   "type": "C",
+   "nodes": [
+    "v15r",
+    "0"
+   ],
+   "value": "100u",
+   "note": "C29 100/16 (x 510, y 890)"
+  },
+  {
+   "ref": "C19",
+   "type": "C",
+   "nodes": [
+    "rvout",
+    "tin"
+   ],
+   "value": "47u",
+   "note": "C19 47/16 (x 485, y 955)"
+  },
+  {
+   "ref": "TANK",
+   "type": "spring",
+   "nodes": [
+    "tin",
+    "tsense",
+    "tout",
+    "0"
+   ],
+   "model": "Z3F",
+   "label": "REV. UNIT Z-3F",
+   "note": "REV. UNIT pins 7/8 in, 15/13 out (x 520-600, y 940-990); Roland Z-3F"
+  },
+  {
+   "ref": "R37",
+   "type": "R",
+   "nodes": [
+    "tsense",
+    "0"
+   ],
+   "value": "0.5",
+   "note": "R37 .5 current sense (x 525, y 1030)"
+  },
+  {
+   "ref": "C35",
+   "type": "C",
+   "nodes": [
+    "tout",
+    "rrp"
+   ],
+   "value": "1u",
+   "note": "C35 1/50 (x 630, y 955)"
+  },
+  {
+   "ref": "R65",
+   "type": "R",
+   "nodes": [
+    "rrp",
+    "vb15r"
+   ],
+   "value": "100k",
+   "note": "R65 100K (x 650, y 1020)"
+  },
+  {
+   "ref": "IC1B",
+   "type": "opamp",
+   "nodes": [
+    "rrp",
+    "rrn",
+    "rro",
+    "v30",
+    "0"
+   ],
+   "model": "NJM4558",
+   "note": "IC1 pins 5/6/7 (x 700, y 935)"
+  },
+  {
+   "ref": "R68",
+   "type": "R",
+   "nodes": [
+    "rro",
+    "rrn"
+   ],
+   "value": "56k",
+   "note": "R68 56K (x 715, y 885)"
+  },
+  {
+   "ref": "C39",
+   "type": "C",
+   "nodes": [
+    "rro",
+    "rrn"
+   ],
+   "value": "47p",
+   "note": "C39 47P (x 715, y 865)"
+  },
+  {
+   "ref": "C40",
+   "type": "C",
+   "nodes": [
+    "rrn",
+    "c40n"
+   ],
+   "value": "10u",
+   "note": "C40 10/16 (x 670, y 990)"
+  },
+  {
+   "ref": "R72",
+   "type": "R",
+   "nodes": [
+    "c40n",
+    "0"
+   ],
+   "value": "1k",
+   "note": "R72 1K (x 670, y 1035)"
+  },
+  {
+   "ref": "C38",
+   "type": "C",
+   "nodes": [
+    "rro",
+    "rr1"
+   ],
+   "value": "82n",
+   "note": "C38 .082 (x 770, y 940)"
+  },
+  {
+   "ref": "R69",
+   "type": "R",
+   "nodes": [
+    "rr1",
+    "rvtop"
+   ],
+   "value": "1k",
+   "note": "R69 1K (x 800, y 940); pin 17 = REVERB FOOT SW jack on this node (open with no pedal)"
+  },
+  {
+   "ref": "VR6",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "ymix",
+    "rvtop"
+   ],
+   "value": "10k",
+   "taper": "B",
+   "control": "reverb",
+   "label": "VR6 REVERB",
+   "note": "VR6 REV 10KB, wiper -> the mix node shared by both power amps (x 840, y 1020)"
+  },
+  {
+   "ref": "R75",
+   "type": "R",
+   "nodes": [
+    "v30",
+    "vb15r"
+   ],
+   "value": "33k",
+   "note": "R75 33K (x 330, y 1090)"
+  },
+  {
+   "ref": "R74",
+   "type": "R",
+   "nodes": [
+    "vb15r",
+    "0"
+   ],
+   "value": "33k",
+   "note": "R74 33K (x 215, y 1135)"
+  },
+  {
+   "ref": "C41",
+   "type": "C",
+   "nodes": [
+    "vb15r",
+    "0"
+   ],
+   "value": "10u",
+   "note": "C41 10/16 (x 285, y 1135)"
+  },
+  {
+   "ref": "C55",
+   "type": "C",
+   "nodes": [
+    "d5",
+    "g19a"
+   ],
+   "value": "47n",
+   "note": "C55 .047 from the Q5 drain line (x 975, y 925)"
+  },
+  {
+   "ref": "R106",
+   "type": "R",
+   "nodes": [
+    "g19a",
+    "g19"
+   ],
+   "value": "1k",
+   "note": "R106 1K (x 950, y 925)"
+  },
+  {
+   "ref": "R107",
+   "type": "R",
+   "nodes": [
+    "g19",
+    "gb19"
+   ],
+   "value": "1M",
+   "note": "R107 1M (x 930, y 965)"
+  },
+  {
+   "ref": "R109",
+   "type": "R",
+   "nodes": [
+    "v12",
+    "gb19"
+   ],
+   "value": "220k",
+   "note": "R109 220K (x 975, y 880)"
+  },
+  {
+   "ref": "R108",
+   "type": "R",
+   "nodes": [
+    "gb19",
+    "0"
+   ],
+   "value": "220k",
+   "note": "R108 220K (x 975, y 1030)"
+  },
+  {
+   "ref": "Q19",
+   "type": "njf",
+   "nodes": [
+    "v12",
+    "g19",
+    "s19"
+   ],
+   "model": "2SK117GR",
+   "note": "Q19 2SK117-GR chorus input follower (x 900, y 925)"
+  },
+  {
+   "ref": "R110",
+   "type": "R",
+   "nodes": [
+    "s19",
+    "0"
+   ],
+   "value": "12k",
+   "note": "R110 12K (x 895, y 1030)"
+  },
+  {
+   "ref": "C59",
+   "type": "C",
+   "nodes": [
+    "s19",
+    "chP"
+   ],
+   "value": "47n",
+   "note": "C59 .047 (x 460, y 1350); IC2 input marked 185 mV"
+  },
+  {
+   "ref": "R115",
+   "type": "R",
+   "nodes": [
+    "chP",
+    "chQ"
+   ],
+   "value": "5.6k",
+   "note": "R115 5.6K (x 520, y 1395)"
+  },
+  {
+   "ref": "C61",
+   "type": "C",
+   "nodes": [
+    "chQ",
+    "0"
+   ],
+   "value": "2.2n",
+   "note": "C61 .0022 (x 540, y 1420)"
+  },
+  {
+   "ref": "R120",
+   "type": "R",
+   "nodes": [
+    "chQ",
+    "ic2bp"
+   ],
+   "value": "56k",
+   "note": "R120 56K (x 575, y 1395)"
+  },
+  {
+   "ref": "C62",
+   "type": "C",
+   "nodes": [
+    "ic2bp",
+    "0"
+   ],
+   "value": "220p",
+   "note": "C62 220P (x 600, y 1420)"
+  },
+  {
+   "ref": "R114",
+   "type": "R",
+   "nodes": [
+    "chP",
+    "vb7"
+   ],
+   "value": "220k",
+   "note": "R114 220K (x 490, y 1365)"
+  },
+  {
+   "ref": "R121",
+   "type": "R",
+   "nodes": [
+    "vb7",
+    "ic2bn"
+   ],
+   "value": "27k",
+   "note": "R121 27K (x 540, y 1330)"
+  },
+  {
+   "ref": "R123",
+   "type": "R",
+   "nodes": [
+    "vb7",
+    "c65a"
+   ],
+   "value": "4.7k",
+   "note": "R123 4.7K (x 520, y 1300)"
+  },
+  {
+   "ref": "C65",
+   "type": "C",
+   "nodes": [
+    "c65a",
+    "ic2bn"
+   ],
+   "value": "10n",
+   "note": "C65 .01 (x 565, y 1300)"
+  },
+  {
+   "ref": "R125",
+   "type": "R",
+   "nodes": [
+    "ic2bn",
+    "ic2bo"
+   ],
+   "value": "56k",
+   "note": "R125 56K (x 620, y 1300)"
+  },
+  {
+   "ref": "C64",
+   "type": "C",
+   "nodes": [
+    "ic2bn",
+    "ic2bo"
+   ],
+   "value": "100p",
+   "note": "C64 100P (x 620, y 1330)"
+  },
+  {
+   "ref": "IC2B",
+   "type": "opamp",
+   "nodes": [
+    "ic2bp",
+    "ic2bn",
+    "ic2bo"
+   ],
+   "model": "NJM4558_15",
+   "note": "IC2 NJM4558DD pins 5/6/7 fixed rails 1.5 / 13.83 V (the regulated +15 V rail, 15.33 V) (x 620, y 1380); output marked 940 mV"
+  },
+  {
+   "ref": "R132",
+   "type": "R",
+   "nodes": [
+    "ic2bo",
+    "bbdin"
+   ],
+   "value": "1k",
+   "note": "R132 1K into IC3 pin 3 (x 685, y 1380)"
+  },
+  {
+   "ref": "IC3",
+   "type": "bbd",
+   "nodes": [
+    "bbdin",
+    "bbdo",
+    "bbdo",
+    "q24e"
+   ],
+   "model": "MN3007_JC",
+   "clock": {
+    "points": [
+     [
+      0.0,
+      40000.0
+     ],
+     [
+      2.04,
+      40000.0
+     ],
+     [
+      3.2,
+      83333.0
+     ],
+     [
+      11.66,
+      400000.0
+     ],
+     [
+      15.0,
+      525000.0
+     ]
+    ]
+   },
+   "label": "IC3 MN3007 1024-stage BBD",
+   "note": "IC3 MN3007 (x 750-820, y 1265-1330): pin 3 in, pins 7+8 joined out, pin 1 +15 V, pin 5 0 V; clock from IC4 MN3101 (x 760-860, y 1370-1440), whose RC/VCO parts (R141 3.9K, C73 22P, D8, R133/R134 47 clock-line resistors, C72 1/50) are inside the block's clock law. Clock law FITTED to the drawing's '2.5~12 uS' clock annotation over the chorus-mode LFO swing at Q24's emitter (notes 6.5)"
+  },
+  {
+   "ref": "R129",
+   "type": "R",
+   "nodes": [
+    "v15",
+    "bbdo"
+   ],
+   "value": "56k",
+   "note": "R129 56K output load to +15 V (x 760, y 1240)"
+  },
+  {
+   "ref": "C68",
+   "type": "C",
+   "nodes": [
+    "bbdo",
+    "bo"
+   ],
+   "value": "47n",
+   "note": "C68 .047 (x 790, y 1255)"
+  },
+  {
+   "ref": "R130",
+   "type": "R",
+   "nodes": [
+    "bo",
+    "vb7"
+   ],
+   "value": "220k",
+   "note": "R130 220K (x 850, y 1250)"
+  },
+  {
+   "ref": "R126",
+   "type": "R",
+   "nodes": [
+    "v15",
+    "vb7"
+   ],
+   "value": "10k",
+   "note": "R126 10K (x 935, y 1225)"
+  },
+  {
+   "ref": "R127",
+   "type": "R",
+   "nodes": [
+    "vb7",
+    "0"
+   ],
+   "value": "10k",
+   "note": "R127 10K (x 935, y 1275)"
+  },
+  {
+   "ref": "C66",
+   "type": "C",
+   "nodes": [
+    "vb7",
+    "0"
+   ],
+   "value": "100u",
+   "note": "C66 100/16 (x 975, y 1275)"
+  },
+  {
+   "ref": "R137",
+   "type": "R",
+   "nodes": [
+    "bo",
+    "f1"
+   ],
+   "value": "8.2k",
+   "note": "R137 8.2K (x 1000, y 1170)"
+  },
+  {
+   "ref": "C75",
+   "type": "C",
+   "nodes": [
+    "f1",
+    "0"
+   ],
+   "value": "3.3n",
+   "note": "C75 .0033 (x 1035, y 1200)"
+  },
+  {
+   "ref": "R136",
+   "type": "R",
+   "nodes": [
+    "f1",
+    "f2"
+   ],
+   "value": "8.2k",
+   "note": "R136 8.2K (x 1065, y 1170)"
+  },
+  {
+   "ref": "C69",
+   "type": "C",
+   "nodes": [
+    "f2",
+    "e23"
+   ],
+   "value": "8.2n",
+   "note": "C69 .0082 (x 1125, y 1140)"
+  },
+  {
+   "ref": "R135",
+   "type": "R",
+   "nodes": [
+    "f2",
+    "b23"
+   ],
+   "value": "8.2k",
+   "note": "R135 8.2K (x 1105, y 1110)"
+  },
+  {
+   "ref": "C70",
+   "type": "C",
+   "nodes": [
+    "b23",
+    "0"
+   ],
+   "value": "470p",
+   "note": "C70 470P (x 1080, y 1095)"
+  },
+  {
+   "ref": "Q23",
+   "type": "npn",
+   "nodes": [
+    "v15",
+    "b23",
+    "e23"
+   ],
+   "model": "2SC1815GR",
+   "note": "Q23 2SC1815-GR (x 1135, y 1070)"
+  },
+  {
+   "ref": "R131",
+   "type": "R",
+   "nodes": [
+    "e23",
+    "0"
+   ],
+   "value": "10k",
+   "note": "R131 10K (x 1150, y 1180)"
+  },
+  {
+   "ref": "C60",
+   "type": "C",
+   "nodes": [
+    "e23",
+    "ic2ap"
+   ],
+   "value": "47n",
+   "note": "C60 .047 (x 1170, y 1140)"
+  },
+  {
+   "ref": "R116",
+   "type": "R",
+   "nodes": [
+    "ic2ap",
+    "vb7"
+   ],
+   "value": "220k",
+   "note": "R116 220K (x 1210, y 1180)"
+  },
+  {
+   "ref": "R112",
+   "type": "R",
+   "nodes": [
+    "ic2an",
+    "vb7"
+   ],
+   "value": "22k",
+   "note": "R112 22K (x 1190, y 1070): its top joins the pin-2 node on the 5th-ed. service-notes copy (the 1982 raster loses that short line)"
+  },
+  {
+   "ref": "R111",
+   "type": "R",
+   "nodes": [
+    "ic2ao",
+    "ic2an"
+   ],
+   "value": "47k",
+   "note": "R111 47K (x 1240, y 1040)"
+  },
+  {
+   "ref": "R113",
+   "type": "R",
+   "nodes": [
+    "ic2an",
+    "c58a"
+   ],
+   "value": "8.2k",
+   "note": "R113 8.2K (x 1225, y 1065)"
+  },
+  {
+   "ref": "C58",
+   "type": "C",
+   "nodes": [
+    "c58a",
+    "ic2ao"
+   ],
+   "value": "4.7n",
+   "note": "C58 .0047 (x 1270, y 1065)"
+  },
+  {
+   "ref": "IC2A",
+   "type": "opamp",
+   "nodes": [
+    "ic2ap",
+    "ic2an",
+    "ic2ao"
+   ],
+   "model": "NJM4558_15",
+   "note": "IC2 pins 3/2/1 (x 1250, y 1120); output marked 2.2 V / +7.6"
+  },
+  {
+   "ref": "C48",
+   "type": "C",
+   "nodes": [
+    "ic2ao",
+    "w1"
+   ],
+   "value": "47n",
+   "note": "C48 .047 (x 1290, y 975)"
+  },
+  {
+   "ref": "R63",
+   "type": "R",
+   "nodes": [
+    "vsw15b",
+    "w1"
+   ],
+   "value": "1M",
+   "note": "R63 1M (x 1250, y 860)"
+  },
+  {
+   "ref": "R66",
+   "type": "R",
+   "nodes": [
+    "w1",
+    "q9a"
+   ],
+   "value": "47k",
+   "note": "R66 47K (x 1310, y 830)"
+  },
+  {
+   "ref": "Q9",
+   "type": "njf",
+   "nodes": [
+    "dmix",
+    "gq9",
+    "q9a"
+   ],
+   "model": "2SK246GR",
+   "note": "Q9 2SK246-GR wet switch (x 1360, y 830)"
+  },
+  {
+   "ref": "D7",
+   "type": "D",
+   "nodes": [
+    "gq9",
+    "ctl9"
+   ],
+   "model": "1S2473",
+   "note": "D7 1S2473 (x 1360, y 880)"
+  },
+  {
+   "ref": "R56",
+   "type": "R",
+   "nodes": [
+    "dmix",
+    "vsw15b"
+   ],
+   "value": "1M",
+   "note": "R56 1M (x 1405, y 870)"
+  },
+  {
+   "ref": "R55",
+   "type": "R",
+   "nodes": [
+    "v30",
+    "vsw15b"
+   ],
+   "value": "33k",
+   "note": "R55 33K (x 1190, y 880)"
+  },
+  {
+   "ref": "R52",
+   "type": "R",
+   "nodes": [
+    "vsw15b",
+    "0"
+   ],
+   "value": "33k",
+   "note": "R52 33K (x 1190, y 945)"
+  },
+  {
+   "ref": "C28",
+   "type": "C",
+   "nodes": [
+    "vsw15b",
+    "0"
+   ],
+   "value": "10u",
+   "note": "C28 10/16 (x 1215, y 945)"
+  },
+  {
+   "ref": "R78",
+   "type": "R",
+   "nodes": [
+    "v30",
+    "n78"
+   ],
+   "value": "100k",
+   "note": "R78 100K (x 1572, y 1010)"
+  },
+  {
+   "ref": "SW2A",
+   "type": "switch",
+   "nodes": [
+    "n78",
+    "0"
+   ],
+   "control": "em",
+   "positions": [
+    0
+   ],
+   "label": "SW2 (A)",
+   "note": "SW2(A): the middle (OFF) position grounds this node; pin 14 / CHO-VIB FOOT SW is on it too (open with no pedal)"
+  },
+  {
+   "ref": "R79",
+   "type": "R",
+   "nodes": [
+    "n78",
+    "b12"
+   ],
+   "value": "1M",
+   "note": "R79 1M (x 1490, y 1070)"
+  },
+  {
+   "ref": "R77",
+   "type": "R",
+   "nodes": [
+    "b12",
+    "0"
+   ],
+   "value": "100k",
+   "note": "R77 100K (x 1470, y 1110)"
+  },
+  {
+   "ref": "Q12",
+   "type": "npn",
+   "nodes": [
+    "c12",
+    "b12",
+    "0"
+   ],
+   "model": "2SC1815GR",
+   "note": "Q12 2SC1815-GR (x 1440, y 1070)"
+  },
+  {
+   "ref": "R76",
+   "type": "R",
+   "nodes": [
+    "v30",
+    "c12"
+   ],
+   "value": "100k",
+   "note": "R76 100K (x 1440, y 1010)"
+  },
+  {
+   "ref": "R73",
+   "type": "R",
+   "nodes": [
+    "c12",
+    "ctl10"
+   ],
+   "value": "1M",
+   "note": "R73 1M (x 1475, y 1010)"
+  },
+  {
+   "ref": "C89",
+   "type": "C",
+   "nodes": [
+    "ctl10",
+    "0"
+   ],
+   "value": "47n",
+   "note": "C89 .047 (x 1505, y 1015)"
+  },
+  {
+   "ref": "R71",
+   "type": "R",
+   "nodes": [
+    "n78",
+    "ctl9"
+   ],
+   "value": "1M",
+   "note": "R71 1M (x 1400, y 1150)"
+  },
+  {
+   "ref": "C37",
+   "type": "C",
+   "nodes": [
+    "ctl9",
+    "0"
+   ],
+   "value": "47n",
+   "note": "C37 .047 (x 1360, y 1145)"
+  },
+  {
+   "ref": "R156",
+   "type": "R",
+   "nodes": [
+    "v15",
+    "vref"
+   ],
+   "value": "10k",
+   "note": "R156 10K (x 1480, y 1480)"
+  },
+  {
+   "ref": "R157",
+   "type": "R",
+   "nodes": [
+    "vref",
+    "0"
+   ],
+   "value": "10k",
+   "note": "R157 10K (x 1480, y 1530)"
+  },
+  {
+   "ref": "C88",
+   "type": "C",
+   "nodes": [
+    "vref",
+    "0"
+   ],
+   "value": "100u",
+   "note": "C88 100/16 (x 1450, y 1525)"
+  },
+  {
+   "ref": "IC5A",
+   "type": "opamp",
+   "nodes": [
+    "s3p",
+    "s3n",
+    "sq",
+    "v15",
+    "0"
+   ],
+   "model": "NJM4558",
+   "note": "IC5 NJM4558DD pins 3/2/1 Schmitt trigger (x 1420, y 1335)"
+  },
+  {
+   "ref": "R153",
+   "type": "R",
+   "nodes": [
+    "sq",
+    "s3p"
+   ],
+   "value": "39k",
+   "note": "R153 39K hysteresis (x 1400, y 1275)"
+  },
+  {
+   "ref": "R150",
+   "type": "R",
+   "nodes": [
+    "tri",
+    "s3p"
+   ],
+   "value": "27k",
+   "note": "R150 27K from the triangle (x 1305, y 1240)"
+  },
+  {
+   "ref": "C87",
+   "type": "C",
+   "nodes": [
+    "s3p",
+    "vref"
+   ],
+   "value": "1u",
+   "note": "C87 1/50 NP (x 1450, y 1385)"
+  },
+  {
+   "ref": "R152",
+   "type": "R",
+   "nodes": [
+    "v15",
+    "s3n"
+   ],
+   "value": "100k",
+   "note": "R152 100K (x 1480, y 1280)"
+  },
+  {
+   "ref": "Q26",
+   "type": "npn",
+   "nodes": [
+    "s3n",
+    "b26",
+    "vref"
+   ],
+   "model": "2SC1815GR",
+   "note": "Q26 2SC1815-GR: holds the comparator reference at 7.5 V while signal is present (x 1490, y 1335)"
+  },
+  {
+   "ref": "R155",
+   "type": "R",
+   "nodes": [
+    "c84p",
+    "b26"
+   ],
+   "value": "4.7k",
+   "note": "R155 4.7K (x 1530, y 1325)"
+  },
+  {
+   "ref": "C84",
+   "type": "C",
+   "nodes": [
+    "c84p",
+    "vref"
+   ],
+   "value": "10u",
+   "note": "C84 10/16 (x 1555, y 1365)"
+  },
+  {
+   "ref": "D12",
+   "type": "D",
+   "nodes": [
+    "d12a",
+    "c84p"
+   ],
+   "model": "1S2473",
+   "note": "D12 1S2473 (x 1570, y 1325)"
+  },
+  {
+   "ref": "R147",
+   "type": "R",
+   "nodes": [
+    "d12a",
+    "vref"
+   ],
+   "value": "10k",
+   "note": "R147 10K (x 1595, y 1370)"
+  },
+  {
+   "ref": "C83",
+   "type": "C",
+   "nodes": [
+    "c25",
+    "d12a"
+   ],
+   "value": "10u",
+   "note": "C83 10/16 NP (x 1605, y 1325)"
+  },
+  {
+   "ref": "Q25",
+   "type": "npn",
+   "nodes": [
+    "c25",
+    "b25",
+    "0"
+   ],
+   "model": "2SC1815GR",
+   "note": "Q25 2SC1815-GR (x 1635, y 1350)"
+  },
+  {
+   "ref": "R144",
+   "type": "R",
+   "nodes": [
+    "v15",
+    "c25"
+   ],
+   "value": "10k",
+   "note": "R144 10K (x 1630, y 1265)"
+  },
+  {
+   "ref": "R143",
+   "type": "R",
+   "nodes": [
+    "c25",
+    "b25"
+   ],
+   "value": "1.5M",
+   "note": "R143 1.5M (x 1650, y 1300)"
+  },
+  {
+   "ref": "C79",
+   "type": "C",
+   "nodes": [
+    "c25",
+    "b25"
+   ],
+   "value": "220p",
+   "note": "C79 220P (x 1650, y 1325)"
+  },
+  {
+   "ref": "D11",
+   "type": "D",
+   "nodes": [
+    "0",
+    "b25"
+   ],
+   "model": "1S2473",
+   "note": "D11 1S2473 (x 1675, y 1370)"
+  },
+  {
+   "ref": "C78",
+   "type": "C",
+   "nodes": [
+    "b25",
+    "r146b"
+   ],
+   "value": "10n",
+   "note": "C78 .01 (x 1675, y 1250)"
+  },
+  {
+   "ref": "R146",
+   "type": "R",
+   "nodes": [
+    "r146b",
+    "spkL"
+   ],
+   "value": "47k",
+   "note": "R146 47K from CH-2 pin 30 <- CH-1 pin 21 = the CH-1 power-amp output (x 1675, y 1210)"
+  },
+  {
+   "ref": "IC5B",
+   "type": "opamp",
+   "nodes": [
+    "vref",
+    "intn",
+    "tri",
+    "v15",
+    "0"
+   ],
+   "model": "NJM4558",
+   "note": "IC5 pins 5/6/7 integrator (x 1215, y 1435); the drawing's triangles: chorus 1.2 s / 9 V p-p, vibrato 120-500 ms / 10 V p-p"
+  },
+  {
+   "ref": "C82",
+   "type": "C",
+   "nodes": [
+    "tri",
+    "intn"
+   ],
+   "value": "82n",
+   "note": "C82 .082 (x 1190, y 1370)"
+  },
+  {
+   "ref": "R149",
+   "type": "R",
+   "nodes": [
+    "r149i",
+    "intn"
+   ],
+   "value": "220k",
+   "note": "R149 220K (x 1245, y 1410)"
+  },
+  {
+   "ref": "SW2C_CH",
+   "type": "switch",
+   "nodes": [
+    "r149i",
+    "spch"
+   ],
+   "control": "em",
+   "positions": [
+    1
+   ],
+   "label": "SW2 (C) chorus",
+   "note": "SW2(C) CH contact: fixed chorus rate from the R140/R148 tap"
+  },
+  {
+   "ref": "SW2C_VIB",
+   "type": "switch",
+   "nodes": [
+    "r149i",
+    "spw"
+   ],
+   "control": "em",
+   "positions": [
+    2
+   ],
+   "label": "SW2 (C) vibrato",
+   "note": "SW2(C) VIB contact: VR7 SPEED wiper"
+  },
+  {
+   "ref": "VR7",
+   "type": "pot",
+   "nodes": [
+    "r140t",
+    "spw",
+    "sq"
+   ],
+   "value": "100k",
+   "taper": "A",
+   "control": "rate",
+   "label": "VR7 VIBRATO SPEED",
+   "note": "VR7 SPEED 100KA (x 1360, y 1335)"
+  },
+  {
+   "ref": "R140",
+   "type": "R",
+   "nodes": [
+    "r140t",
+    "spch"
+   ],
+   "value": "10k",
+   "note": "R140 10K (x 1365, y 1395)"
+  },
+  {
+   "ref": "R148",
+   "type": "R",
+   "nodes": [
+    "spch",
+    "vref"
+   ],
+   "value": "3.9k",
+   "note": "R148 3.9K (x 1365, y 1455)"
+  },
+  {
+   "ref": "SW2B_CH",
+   "type": "switch",
+   "nodes": [
+    "r145i",
+    "tri"
+   ],
+   "control": "em",
+   "positions": [
+    1
+   ],
+   "label": "SW2 (B) chorus",
+   "note": "SW2(B) CH contact: the triangle straight to R145 (fixed chorus depth)"
+  },
+  {
+   "ref": "SW2B_VIB",
+   "type": "switch",
+   "nodes": [
+    "r145i",
+    "dep"
+   ],
+   "control": "em",
+   "positions": [
+    2
+   ],
+   "label": "SW2 (B) vibrato",
+   "note": "SW2(B) VIB contact: VR8 DEPTH via R128 / C80"
+  },
+  {
+   "ref": "R145",
+   "type": "R",
+   "nodes": [
+    "r145i",
+    "b24"
+   ],
+   "value": "220k",
+   "note": "R145 220K (x 1045, y 1395)"
+  },
+  {
+   "ref": "C77",
+   "type": "C",
+   "nodes": [
+    "b24",
+    "0"
+   ],
+   "value": "4.7n",
+   "note": "C77 .0047 (x 995, y 1525)"
+  },
+  {
+   "ref": "VR8",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "dpw",
+    "tri"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "depth",
+   "label": "VR8 VIBRATO DEPTH",
+   "note": "VR8 DEPTH 100KB, triangle to ground (x 1140, y 1490)"
+  },
+  {
+   "ref": "R128",
+   "type": "R",
+   "nodes": [
+    "dpw",
+    "dep"
+   ],
+   "value": "100k",
+   "note": "R128 100K (x 1100, y 1490)"
+  },
+  {
+   "ref": "C80",
+   "type": "C",
+   "nodes": [
+    "dep",
+    "0"
+   ],
+   "value": "1u",
+   "note": "C80 1/50 (x 1080, y 1520)"
+  },
+  {
+   "ref": "Q24",
+   "type": "npn",
+   "nodes": [
+    "v15",
+    "b24",
+    "q24e"
+   ],
+   "model": "2SC1815GR",
+   "note": "Q24 2SC1815-GR LFO buffer into the MN3101 timing node (x 965, y 1395)"
+  },
+  {
+   "ref": "R139",
+   "type": "R",
+   "nodes": [
+    "q24e",
+    "d9a"
+   ],
+   "value": "15k",
+   "note": "R139 15K (x 955, y 1450)"
+  },
+  {
+   "ref": "C74",
+   "type": "C",
+   "nodes": [
+    "d9a",
+    "0"
+   ],
+   "value": "1.5n",
+   "note": "C74 .0015 (x 955, y 1520)"
+  },
+  {
+   "ref": "D9",
+   "type": "D",
+   "nodes": [
+    "d9a",
+    "tn"
+   ],
+   "model": "1S2473",
+   "note": "D9 1S2473 (x 935, y 1470)"
+  },
+  {
+   "ref": "R142",
+   "type": "R",
+   "nodes": [
+    "v15",
+    "tn"
+   ],
+   "value": "270k",
+   "note": "R142 270K (x 915, y 1420)"
+  },
+  {
+   "ref": "R141",
+   "type": "R",
+   "nodes": [
+    "tn",
+    "0"
+   ],
+   "value": "3.9k",
+   "note": "R141 3.9K (x 790, y 1495): its far end is an MN3101 oscillator pin, not modelled; returned to 0 V as the stand-in that gives Q24/D9 their DC path (notes 6.5)"
+  },
+  {
+   "ref": "Q13_2",
+   "type": "pnp",
+   "nodes": [
+    "cin_2",
+    "pi2",
+    "te_2"
+   ],
+   "model": "2SA970GR",
+   "note": "Q13 2SA970-GR input pair"
+  },
+  {
+   "ref": "Q14_2",
+   "type": "pnp",
+   "nodes": [
+    "cfb_2",
+    "fb_2",
+    "te_2"
+   ],
+   "model": "2SA970GR",
+   "note": "Q14 2SA970-GR feedback side"
+  },
+  {
+   "ref": "R84_2",
+   "type": "R",
+   "nodes": [
+    "te_2",
+    "tf_2"
+   ],
+   "value": "100k",
+   "note": "R84 100K tail"
+  },
+  {
+   "ref": "C46_2",
+   "type": "C",
+   "nodes": [
+    "tf_2",
+    "0"
+   ],
+   "value": "47u",
+   "note": "C46 47/50 tail decoupling"
+  },
+  {
+   "ref": "R88_2",
+   "type": "R",
+   "nodes": [
+    "p37",
+    "tf_2"
+   ],
+   "value": "2.2k",
+   "note": "R88 2.2K"
+  },
+  {
+   "ref": "R86_2",
+   "type": "R",
+   "nodes": [
+    "cin_2",
+    "n37"
+   ],
+   "value": "4.7k",
+   "note": "R86 4.7K"
+  },
+  {
+   "ref": "R85_2",
+   "type": "R",
+   "nodes": [
+    "cfb_2",
+    "n37"
+   ],
+   "value": "4.7k",
+   "note": "R85 4.7K"
+  },
+  {
+   "ref": "R95_2",
+   "type": "R",
+   "nodes": [
+    "spkR",
+    "fb_2"
+   ],
+   "value": "27k",
+   "note": "R95 27K global feedback"
+  },
+  {
+   "ref": "C49_2",
+   "type": "C",
+   "nodes": [
+    "fb_2",
+    "cnf_2"
+   ],
+   "value": "10u",
+   "note": "C49 10/16"
+  },
+  {
+   "ref": "R89_2",
+   "type": "R",
+   "nodes": [
+    "cnf_2",
+    "0"
+   ],
+   "value": "1k",
+   "note": "R89 1K (closed-loop gain 28: 800 mV in -> 21.5 V out)"
+  },
+  {
+   "ref": "Q17_2",
+   "type": "npn",
+   "nodes": [
+    "lb_2",
+    "cin_2",
+    "ev_2"
+   ],
+   "model": "2SC2229",
+   "note": "Q17 2SC2229 voltage amplifier"
+  },
+  {
+   "ref": "R92_2",
+   "type": "R",
+   "nodes": [
+    "ev_2",
+    "n37"
+   ],
+   "value": "100",
+   "note": "R92 100"
+  },
+  {
+   "ref": "C51_2",
+   "type": "C",
+   "nodes": [
+    "lb_2",
+    "cin_2"
+   ],
+   "value": "47p",
+   "note": "C51 47P"
+  },
+  {
+   "ref": "R124_2",
+   "type": "R",
+   "nodes": [
+    "p37",
+    "bs_2"
+   ],
+   "value": "4.7k",
+   "note": "R124 4.7K"
+  },
+  {
+   "ref": "C63_2",
+   "type": "C",
+   "nodes": [
+    "bs_2",
+    "spkR"
+   ],
+   "value": "100u",
+   "note": "C63 100/50 bootstrap"
+  },
+  {
+   "ref": "R122_2",
+   "type": "R",
+   "nodes": [
+    "bs_2",
+    "ub_2"
+   ],
+   "value": "10k",
+   "note": "R122 10K"
+  },
+  {
+   "ref": "R119_2",
+   "type": "R",
+   "nodes": [
+    "ub_2",
+    "bm_2"
+   ],
+   "value": "4.7k",
+   "note": "R119 4.7K (bias spreader, Q-pair base tap)"
+  },
+  {
+   "ref": "R117_2",
+   "type": "R",
+   "nodes": [
+    "bm_2",
+    "lb_2"
+   ],
+   "value": "12k",
+   "note": "R117 12K"
+  },
+  {
+   "ref": "Q21_2",
+   "type": "pnp",
+   "nodes": [
+    "cs_2",
+    "bm_2",
+    "ub_2"
+   ],
+   "model": "2SA970GR",
+   "note": "Q21 2SA970-GR bias spreader"
+  },
+  {
+   "ref": "Q22_2",
+   "type": "npn",
+   "nodes": [
+    "ub_2",
+    "cs_2",
+    "lb_2"
+   ],
+   "model": "2SC2240GR",
+   "note": "Q22 2SC2240-GR bias spreader"
+  },
+  {
+   "ref": "C57_2",
+   "type": "C",
+   "nodes": [
+    "ub_2",
+    "lb_2"
+   ],
+   "value": "22n",
+   "note": "C57 .022"
+  },
+  {
+   "ref": "C56_2",
+   "type": "C",
+   "nodes": [
+    "ub_2",
+    "p37"
+   ],
+   "value": "150p",
+   "note": "C56 150P"
+  },
+  {
+   "ref": "C54_2",
+   "type": "C",
+   "nodes": [
+    "lb_2",
+    "cdl_2"
+   ],
+   "value": "150p",
+   "note": "C54 150P"
+  },
+  {
+   "ref": "Q20_2",
+   "type": "npn",
+   "nodes": [
+    "p37",
+    "ub_2",
+    "edu_2"
+   ],
+   "model": "2SD669",
+   "note": "Q20 2SD669-AC upper driver"
+  },
+  {
+   "ref": "R91_2",
+   "type": "R",
+   "nodes": [
+    "edu_2",
+    "bou_2"
+   ],
+   "value": "10",
+   "note": "R91 FU 10 1/2 W"
+  },
+  {
+   "ref": "R104_2",
+   "type": "R",
+   "nodes": [
+    "edu_2",
+    "spkR"
+   ],
+   "value": "330",
+   "note": "R104 330 1/2 W"
+  },
+  {
+   "ref": "Q28_2",
+   "type": "npn",
+   "nodes": [
+    "p37",
+    "bou_2",
+    "eou_2"
+   ],
+   "model": "2SD845",
+   "note": "Q28 2SD845 upper output (Darlington with the driver)"
+  },
+  {
+   "ref": "R101_2",
+   "type": "R",
+   "nodes": [
+    "eou_2",
+    "spkR"
+   ],
+   "value": "0.33",
+   "note": "R101 .33 5 W"
+  },
+  {
+   "ref": "Q18_2",
+   "type": "pnp",
+   "nodes": [
+    "cdl_2",
+    "lb_2",
+    "spkR"
+   ],
+   "model": "2SB649",
+   "note": "Q18 2SB649-AC lower driver (complementary-feedback pair with the 2SD845)"
+  },
+  {
+   "ref": "R97_2",
+   "type": "R",
+   "nodes": [
+    "cdl_2",
+    "bol_2"
+   ],
+   "value": "10",
+   "note": "R97 FU 10 1/2 W"
+  },
+  {
+   "ref": "R98_2",
+   "type": "R",
+   "nodes": [
+    "cdl_2",
+    "n37"
+   ],
+   "value": "330",
+   "note": "R98 330 1/2 W"
+  },
+  {
+   "ref": "Q29_2",
+   "type": "npn",
+   "nodes": [
+    "spkR",
+    "bol_2",
+    "eol_2"
+   ],
+   "model": "2SD845",
+   "note": "Q29 2SD845 lower output"
+  },
+  {
+   "ref": "R103_2",
+   "type": "R",
+   "nodes": [
+    "eol_2",
+    "n37"
+   ],
+   "value": "0.33",
+   "note": "R103 .33 5 W"
+  },
+  {
+   "ref": "R118_2",
+   "type": "R",
+   "nodes": [
+    "spkR",
+    "lineout"
+   ],
+   "value": "47k",
+   "note": "R118 47K to the LINE OUT node. A load of the lineout cut with R49_1 (docs/CIRCUIT_ENGINE.md §10.33): the 100 R LINE OUT divider is fed only through the two 47k resistors, so it is its own group and the two power amps no longer read each other within a sample (intra-unit lanes). Against R118_2 in the right amp's group (autocut --try, unit path, lead DI): DI null -153.3 dB rms / -137.6 dB peak, sine -152.8, dimed -154.0 dB."
+  },
+  {
+   "ref": "C67_2",
+   "type": "C",
+   "nodes": [
+    "spkR",
+    "z_2"
+   ],
+   "value": "10n",
+   "note": "C67 .01 200 V Zobel"
+  },
+  {
+   "ref": "R138_2",
+   "type": "R",
+   "nodes": [
+    "z_2",
+    "0"
+   ],
+   "value": "27",
+   "note": "R138 27 1/2 W Zobel"
+  },
+  {
+   "ref": "Q7_1",
+   "type": "pnp",
+   "nodes": [
+    "cin_1",
+    "pi1",
+    "te_1"
+   ],
+   "model": "2SA970GR",
+   "note": "Q7 2SA970-GR input pair"
+  },
+  {
+   "ref": "Q6_1",
+   "type": "pnp",
+   "nodes": [
+    "cfb_1",
+    "fb_1",
+    "te_1"
+   ],
+   "model": "2SA970GR",
+   "note": "Q6 2SA970-GR feedback side"
+  },
+  {
+   "ref": "R38_1",
+   "type": "R",
+   "nodes": [
+    "te_1",
+    "tf_1"
+   ],
+   "value": "100k",
+   "note": "R38 100K tail"
+  },
+  {
+   "ref": "C18_1",
+   "type": "C",
+   "nodes": [
+    "tf_1",
+    "0"
+   ],
+   "value": "47u",
+   "note": "C18 47/50 tail decoupling"
+  },
+  {
+   "ref": "R30_1",
+   "type": "R",
+   "nodes": [
+    "p37",
+    "tf_1"
+   ],
+   "value": "2.2k",
+   "note": "R30 2.2K"
+  },
+  {
+   "ref": "R34_1",
+   "type": "R",
+   "nodes": [
+    "cin_1",
+    "n37"
+   ],
+   "value": "4.7k",
+   "note": "R34 4.7K"
+  },
+  {
+   "ref": "R33_1",
+   "type": "R",
+   "nodes": [
+    "cfb_1",
+    "n37"
+   ],
+   "value": "4.7k",
+   "note": "R33 4.7K"
+  },
+  {
+   "ref": "R35_1",
+   "type": "R",
+   "nodes": [
+    "spkL",
+    "fb_1"
+   ],
+   "value": "27k",
+   "note": "R35 27K global feedback"
+  },
+  {
+   "ref": "C16_1",
+   "type": "C",
+   "nodes": [
+    "fb_1",
+    "cnf_1"
+   ],
+   "value": "10u",
+   "note": "C16 10/16"
+  },
+  {
+   "ref": "R32_1",
+   "type": "R",
+   "nodes": [
+    "cnf_1",
+    "0"
+   ],
+   "value": "1k",
+   "note": "R32 1K (closed-loop gain 28: 800 mV in -> 21.5 V out)"
+  },
+  {
+   "ref": "Q9_1",
+   "type": "npn",
+   "nodes": [
+    "lb_1",
+    "cin_1",
+    "ev_1"
+   ],
+   "model": "2SC2229",
+   "note": "Q9 2SC2229 voltage amplifier"
+  },
+  {
+   "ref": "R40_1",
+   "type": "R",
+   "nodes": [
+    "ev_1",
+    "n37"
+   ],
+   "value": "100",
+   "note": "R40 100"
+  },
+  {
+   "ref": "C22_1",
+   "type": "C",
+   "nodes": [
+    "lb_1",
+    "cin_1"
+   ],
+   "value": "47p",
+   "note": "C22 47P"
+  },
+  {
+   "ref": "R29_1",
+   "type": "R",
+   "nodes": [
+    "p37",
+    "bs_1"
+   ],
+   "value": "4.7k",
+   "note": "R29 4.7K"
+  },
+  {
+   "ref": "C24_1",
+   "type": "C",
+   "nodes": [
+    "bs_1",
+    "spkL"
+   ],
+   "value": "100u",
+   "note": "C24 100/50 bootstrap"
+  },
+  {
+   "ref": "R46_1",
+   "type": "R",
+   "nodes": [
+    "bs_1",
+    "ub_1"
+   ],
+   "value": "10k",
+   "note": "R46 10K"
+  },
+  {
+   "ref": "R47_1",
+   "type": "R",
+   "nodes": [
+    "ub_1",
+    "bm_1"
+   ],
+   "value": "4.7k",
+   "note": "R47 4.7K (bias spreader, Q-pair base tap)"
+  },
+  {
+   "ref": "R48_1",
+   "type": "R",
+   "nodes": [
+    "bm_1",
+    "lb_1"
+   ],
+   "value": "12k",
+   "note": "R48 12K"
+  },
+  {
+   "ref": "Q11_1",
+   "type": "pnp",
+   "nodes": [
+    "cs_1",
+    "bm_1",
+    "ub_1"
+   ],
+   "model": "2SA970GR",
+   "note": "Q11 2SA970-GR bias spreader"
+  },
+  {
+   "ref": "Q12_1",
+   "type": "npn",
+   "nodes": [
+    "ub_1",
+    "cs_1",
+    "lb_1"
+   ],
+   "model": "2SC2240GR",
+   "note": "Q12 2SC2240-GR bias spreader"
+  },
+  {
+   "ref": "C25_1",
+   "type": "C",
+   "nodes": [
+    "ub_1",
+    "lb_1"
+   ],
+   "value": "22n",
+   "note": "C25 .022"
+  },
+  {
+   "ref": "C21_1",
+   "type": "C",
+   "nodes": [
+    "ub_1",
+    "p37"
+   ],
+   "value": "150p",
+   "note": "C21 150P"
+  },
+  {
+   "ref": "C23_1",
+   "type": "C",
+   "nodes": [
+    "lb_1",
+    "cdl_1"
+   ],
+   "value": "150p",
+   "note": "C23 150P"
+  },
+  {
+   "ref": "Q8_1",
+   "type": "npn",
+   "nodes": [
+    "p37",
+    "ub_1",
+    "edu_1"
+   ],
+   "model": "2SD669",
+   "note": "Q8 2SD669-AC upper driver"
+  },
+  {
+   "ref": "R37_1",
+   "type": "R",
+   "nodes": [
+    "edu_1",
+    "bou_1"
+   ],
+   "value": "10",
+   "note": "R37 FU 10 1/2 W"
+  },
+  {
+   "ref": "R42_1",
+   "type": "R",
+   "nodes": [
+    "edu_1",
+    "spkL"
+   ],
+   "value": "330",
+   "note": "R42 330 1/2 W"
+  },
+  {
+   "ref": "Q13_1",
+   "type": "npn",
+   "nodes": [
+    "p37",
+    "bou_1",
+    "eou_1"
+   ],
+   "model": "2SD845",
+   "note": "Q13 2SD845 upper output (Darlington with the driver)"
+  },
+  {
+   "ref": "R45_1",
+   "type": "R",
+   "nodes": [
+    "eou_1",
+    "spkL"
+   ],
+   "value": "0.33",
+   "note": "R45 .33 5 W"
+  },
+  {
+   "ref": "Q10_1",
+   "type": "pnp",
+   "nodes": [
+    "cdl_1",
+    "lb_1",
+    "spkL"
+   ],
+   "model": "2SB649",
+   "note": "Q10 2SB649-AC lower driver (complementary-feedback pair with the 2SD845)"
+  },
+  {
+   "ref": "R41_1",
+   "type": "R",
+   "nodes": [
+    "cdl_1",
+    "bol_1"
+   ],
+   "value": "10",
+   "note": "R41 FU 10 1/2 W"
+  },
+  {
+   "ref": "R39_1",
+   "type": "R",
+   "nodes": [
+    "cdl_1",
+    "n37"
+   ],
+   "value": "330",
+   "note": "R39 330 1/2 W"
+  },
+  {
+   "ref": "Q14_1",
+   "type": "npn",
+   "nodes": [
+    "spkL",
+    "bol_1",
+    "eol_1"
+   ],
+   "model": "2SD845",
+   "note": "Q14 2SD845 lower output"
+  },
+  {
+   "ref": "R44_1",
+   "type": "R",
+   "nodes": [
+    "eol_1",
+    "n37"
+   ],
+   "value": "0.33",
+   "note": "R44 .33 5 W"
+  },
+  {
+   "ref": "R49_1",
+   "type": "R",
+   "nodes": [
+    "spkL",
+    "lineout"
+   ],
+   "value": "47k",
+   "note": "R49 47K to the LINE OUT node"
+  },
+  {
+   "ref": "C27_1",
+   "type": "C",
+   "nodes": [
+    "spkL",
+    "z_1"
+   ],
+   "value": "10n",
+   "note": "C27 .01 200 V Zobel"
+  },
+  {
+   "ref": "R50_1",
+   "type": "R",
+   "nodes": [
+    "z_1",
+    "0"
+   ],
+   "value": "27",
+   "note": "R50 27 1/2 W Zobel"
+  },
+  {
+   "ref": "R25_1",
+   "type": "R",
+   "nodes": [
+    "lineout",
+    "0"
+   ],
+   "value": "100",
+   "note": "CH-1 R25 100 at pin 23 = LINE OUT (x 1905, y 255); LINE OUT marked 95 mV"
+  },
+  {
+   "ref": "SPKL",
+   "type": "sub",
+   "nodes": [
+    "spkL",
+    "0"
+   ],
+   "of": "lib:spk-12in-8ohm-american",
+   "label": "Left speaker (CH-1 amp)",
+   "note": "JC-120 speaker 30-103D (Roland, 30 cm, 8 ohm; parts list p.4) on the CH-1 power amp, pin 20 (x 2030, y 260). No published T/S data for the 30-103D: the library 12-inch 8 ohm American class block stands in"
+  },
+  {
+   "ref": "SPKR",
+   "type": "sub",
+   "nodes": [
+    "spkR",
+    "0"
+   ],
+   "of": "lib:spk-12in-8ohm-american",
+   "label": "Right speaker (CH-2 amp)",
+   "note": "second 30-103D on the CH-2 power amp, pin 28 marked 21.5 V (x 2230, y 885); same stand-in block"
+  },
+  {
+   "ref": "C8_1",
+   "type": "C",
+   "nodes": [
+    "0",
+    "c1g3a"
+   ],
+   "value": "82n",
+   "note": "CH-1 C8 .082 from the CH-1 VOLUME wiper, which sits at ground (CH-1 volume at 0: the channel is unused in this unit) (x 670, y 195)"
+  },
+  {
+   "ref": "R16_1",
+   "type": "R",
+   "nodes": [
+    "c1g3a",
+    "c1g3"
+   ],
+   "value": "1k",
+   "note": "CH-1 R16 1K (x 700, y 195)"
+  },
+  {
+   "ref": "R15_1",
+   "type": "R",
+   "nodes": [
+    "c1g3",
+    "c1gb"
+   ],
+   "value": "1M",
+   "note": "CH-1 R15 1M (x 710, y 245)"
+  },
+  {
+   "ref": "R14_1",
+   "type": "R",
+   "nodes": [
+    "v30a",
+    "c1gb"
+   ],
+   "value": "220k",
+   "note": "CH-1 R14 220K (x 655, y 160)"
+  },
+  {
+   "ref": "R13_1",
+   "type": "R",
+   "nodes": [
+    "c1gb",
+    "0"
+   ],
+   "value": "4.7k",
+   "note": "CH-1 R13 4.7K (x 655, y 300)"
+  },
+  {
+   "ref": "Q3_1",
+   "type": "njf",
+   "nodes": [
+    "c1d3",
+    "c1g3",
+    "c1s3"
+   ],
+   "model": "2SK117GR",
+   "note": "CH-1 Q3 2SK117-GR (x 735, y 200); C7 drawn dashed (not fitted)"
+  },
+  {
+   "ref": "R8_1",
+   "type": "R",
+   "nodes": [
+    "v30a",
+    "c1d3"
+   ],
+   "value": "33k",
+   "note": "CH-1 R8 33K (x 740, y 160)"
+  },
+  {
+   "ref": "R17_1",
+   "type": "R",
+   "nodes": [
+    "c1s3",
+    "0"
+   ],
+   "value": "2.2k",
+   "note": "CH-1 R17 2.2K (x 735, y 300)"
+  },
+  {
+   "ref": "C10_1",
+   "type": "C",
+   "nodes": [
+    "c1s3",
+    "c1c10"
+   ],
+   "value": "10u",
+   "note": "CH-1 C10 10/16 (x 765, y 280)"
+  },
+  {
+   "ref": "R18_1",
+   "type": "R",
+   "nodes": [
+    "c1c10",
+    "0"
+   ],
+   "value": "120",
+   "note": "CH-1 R18 120 (x 765, y 310)"
+  },
+  {
+   "ref": "Q2_1",
+   "type": "npn",
+   "nodes": [
+    "v30a",
+    "c1d3",
+    "c1e2"
+   ],
+   "model": "2SC2240GR",
+   "note": "CH-1 Q2 2SC2240-GR emitter follower (x 790, y 185)"
+  },
+  {
+   "ref": "R12_1",
+   "type": "R",
+   "nodes": [
+    "c1e2",
+    "0"
+   ],
+   "value": "12k",
+   "note": "CH-1 R12 12K (x 800, y 300)"
+  },
+  {
+   "ref": "C2_1",
+   "type": "C",
+   "nodes": [
+    "c1e2",
+    "a1"
+   ],
+   "value": "1u",
+   "note": "CH-1 C2 1/50 -> pin 5 (x 815, y 215)"
+  },
+  {
+   "ref": "R11_1",
+   "type": "R",
+   "nodes": [
+    "a1",
+    "m1"
+   ],
+   "value": "47k",
+   "note": "CH-1 R11 47K, pin 7 = its right end (x 860, y 215)"
+  },
+  {
+   "ref": "C9_1",
+   "type": "C",
+   "nodes": [
+    "m1",
+    "c1g5a"
+   ],
+   "value": "82n",
+   "note": "CH-1 C9 .082 (x 925, y 215)"
+  },
+  {
+   "ref": "R21_1",
+   "type": "R",
+   "nodes": [
+    "c1g5a",
+    "c1g5"
+   ],
+   "value": "1k",
+   "note": "CH-1 R21 1K (x 960, y 215)"
+  },
+  {
+   "ref": "R24_1",
+   "type": "R",
+   "nodes": [
+    "c1g5",
+    "c1gb5"
+   ],
+   "value": "1M",
+   "note": "CH-1 R24 1M (x 985, y 270)"
+  },
+  {
+   "ref": "R19_1",
+   "type": "R",
+   "nodes": [
+    "v30a",
+    "c1gb5"
+   ],
+   "value": "220k",
+   "note": "CH-1 R19 220K (x 940, y 165)"
+  },
+  {
+   "ref": "R20_1",
+   "type": "R",
+   "nodes": [
+    "c1gb5",
+    "0"
+   ],
+   "value": "220k",
+   "note": "CH-1 R20 220K (x 940, y 330)"
+  },
+  {
+   "ref": "Q5_1",
+   "type": "njf",
+   "nodes": [
+    "v30a",
+    "c1g5",
+    "c1s5"
+   ],
+   "model": "2SK117GR",
+   "note": "CH-1 Q5 2SK117-GR follower (x 1010, y 215)"
+  },
+  {
+   "ref": "R23_1",
+   "type": "R",
+   "nodes": [
+    "c1s5",
+    "0"
+   ],
+   "value": "12k",
+   "note": "CH-1 R23 12K (x 1015, y 320)"
+  },
+  {
+   "ref": "C12_1",
+   "type": "C",
+   "nodes": [
+    "c1s5",
+    "mi1"
+   ],
+   "value": "1u",
+   "note": "CH-1 C12 1/50 (x 1035, y 290)"
+  },
+  {
+   "ref": "R22_1",
+   "type": "R",
+   "nodes": [
+    "mi1",
+    "0"
+   ],
+   "value": "100k",
+   "note": "CH-1 R22 100K (x 1060, y 320); MAIN IN pins 9 -> 10 through the jack's NC contact"
+  },
+  {
+   "ref": "C15_1",
+   "type": "C",
+   "nodes": [
+    "mi1",
+    "pi1a"
+   ],
+   "value": "82n",
+   "note": "CH-1 C15 .082 (x 1250, y 250)"
+  },
+  {
+   "ref": "R28_1",
+   "type": "R",
+   "nodes": [
+    "pi1a",
+    "pi1"
+   ],
+   "value": "1k",
+   "note": "CH-1 R28 1K (x 1290, y 250)"
+  },
+  {
+   "ref": "R27_1",
+   "type": "R",
+   "nodes": [
+    "pi1",
+    "0"
+   ],
+   "value": "100k",
+   "note": "CH-1 R27 100K (x 1270, y 300)"
+  },
+  {
+   "ref": "C17_1",
+   "type": "C",
+   "nodes": [
+    "pi1",
+    "0"
+   ],
+   "value": "150p",
+   "note": "CH-1 C17 150P (x 1310, y 300)"
+  }
+ ],
+ "cuts": [
+  "vb7",
+  "vsw15",
+  "vsw15b",
+  "vb15r",
+  "p37",
+  "n37",
+  "sar",
+  "sbr",
+  "ledr",
+  "leda",
+  "c2r",
+  "vraw",
+  "zb15",
+  "zb30",
+  "v15",
+  "v30",
+  "v26",
+  "c1r",
+  "v1raw",
+  "zb1",
+  "v30a",
+  {"node": "mi2", "loads": ["C44"]},
+  {"node": "mi1", "loads": ["C15_1"]},
+  {"node": "lineout", "loads": ["R49_1", "R118_2"]},
+  {"node": "spkL", "loads": ["R146"]},
+  {"node": "c15", "loads": ["C42", "C30"]}
+ ],
+ "readouts": {
+  "lfo": {
+   "node": "tri",
+   "minSwing": 1.0
+  }
+ },
+ "probes": [
+  "d1",
+  "s2",
+  "d3",
+  "vtop",
+  "d5",
+  "c15",
+  "pamix",
+  "m1",
+  "ymix",
+  "tri",
+  "q24e",
+  "ic2ao",
+  "spkL",
+  "spkR",
+  "p37",
+  "n37"
+ ],
+ "lte": {
+  "start": "bdf2",
+  "tol": 16
+ },
+ "newton": {
+  "chordGate": 300,
+  "quadPorts": 4,
+  "subPred": 26,
+  "subPredPorts": 4,
+  "groups": {
+   "D10": 3e-5,
+   "Q1": 3e-5,
+   "Q10": 3e-5,
+   "Q29_2": 3e-5,
+   "Q7": 3e-5,
+   "Q14_1": 3e-5
+  }
+ }
+}

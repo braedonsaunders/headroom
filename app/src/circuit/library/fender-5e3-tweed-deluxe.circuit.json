@@ -1,0 +1,917 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "fender-5e3-tweed-deluxe",
+ "version": 1,
+ "name": "Fender '57 Tweed Deluxe (5E3)",
+ "description": "Fender 5E3 tweed Deluxe: 5Y3GT rectifier into a 16/16/16 uF B+ chain (B+1 370 V, B+2 318 V screens, B+3 247 V preamp), two 12AY7 channel input stages (Bright and Normal) with 1 MOhm/68 kOhm input networks, 1.5 kOhm bypassed cathodes and 100 kOhm plate loads, 0.1 uF coupling into the two 1 MOhm audio Volume pots whose wipers are tied together at the second stage grid, the 1 MOhm Tone pot with its two 0.005 uF caps (variable treble cut), a 12AX7 second stage (100 kOhm/1.5 kOhm, 0.02 uF coupling), a cathodyne phase inverter (56 kOhm plate, 1.5 kOhm cathode bias plus 56 kOhm tail, 1 MOhm grid return to the cathode output), 0.1 uF coupling and 1.5 kOhm grid stoppers into a cathode-biased 6V6GT pair (250 Ohm 5 W shared, 25 uF bypass, 220 kOhm grid leaks), an 8 kOhm plate-to-plate output transformer with winding-capacitance loss and a 12-inch 8 Ohm speaker. There is no negative feedback loop. Both channels' Hi inputs are modelled (1 MOhm grid leak, 68 kOhm grid stopper); the Input selector puts the guitar in the Bright Hi jack (default), the Normal Hi jack, or both (jumpered). The Lo jacks' -6 dB divider is not modelled. As on the real amp, the unused channel's Volume still loads the shared second-stage grid: at 0 it shorts it and mutes the amp, so park it around 5-10 (or jumper the channels) rather than turning it off.",
+ "sources": [
+  {
+   "title": "Fender 'Deluxe' Model 5E3 factory schematic (F-EE), redrawn with annotations by Rob Robinette (values: 1M/68k inputs, 100k plate loads, 1.5k/25u cathodes, 0.1u coupling, 1M volumes, 500 pF bright cap, 1M tone pot with 0.005 uF caps, 12AX7 100k/1.5k/0.02u, cathodyne 56k/1.5k/56k/1M, 6V6 220k leaks/1.5k stoppers/250 Ohm 5W/25u, 5Y3GT, 16 uF/450 V x3, 5k and 22k droppers, OT centre tap B+1)",
+   "url": "https://robrobinette.com/How_The_5E3_Deluxe_Works.htm"
+  },
+  {
+   "title": "Fender 5E3 Deluxe schematic, schematicheaven.net clean copy (component values cross-check)",
+   "url": "https://schematicheaven.net/fenderamps/deluxe_5e3_schem.pdf"
+  },
+  {
+   "title": "Rob Robinette, '5E3 Typical Voltages' chart (Weber Rev 01/21/10): B+1 370 V, B+2 318 V, B+3 247 V; 6V6 plates 362 V, screens 317 V, cathodes 20 V; 12AX7B plate 135 V / cathode 1.9 V; 12AY7 plates 138/135 V, cathodes 1.9 V",
+   "url": "https://robrobinette.com/images/Guitar/5E3P_Build/5E3_Voltages.png"
+  },
+  {
+   "title": "Rob Robinette, 'How the 5E3 Works' (no negative feedback; both volumes and the tone control interact; volume pots act as V2A's grid leak; 500 pF bright cap across the Bright volume)",
+   "url": "https://robrobinette.com/How_The_5E3_Deluxe_Works.htm"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "spk",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 20.0
+ },
+ "oversampling": 4,
+ "solver": "auto",
+ "lte": {"start": "bdf2", "tol": 16, "note": "Base 192 kHz (oversampling 4, was 2; docs §10.63): the 3130 Hz gate tone folded about 192 kHz (the 96 kHz base's 2-substep LTE) at -63.8 / -58.6 / -56.6 dB (0.25 / 0.5 / 1.0 FS, own-mains mask), now -78.3 / -68.4 / -67.3 (2900 Hz -78.6 / -68.2 / -65.4 -> -86.0 / -77.8 / -68.5). Events on the 96 kHz base (V1A 16) leave -57.8 dB at 1.0 FS; LTE tol 32 at 192 kHz -61.7. Engine T/16 truth, band-limited, audio band, lead / rock DI: 0.164 / 0.538 -> 0.040 / 0.138 %. 9900X real / driven: 10.1 / 13.7 -> 19.5 / 22.7 % of a core."},
+ "cuts": [
+  "sa1",
+  "sb1",
+  "bpa",
+  "bpb",
+  "bpc"
+ ],
+ "controls": [
+  {
+   "id": "bright",
+   "label": "Bright Volume",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "vb"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "1 MOhm audio Volume for the Bright channel (two jacks); its wiper ties to the second-stage grid, so the two volumes and the tone control interact"
+  },
+  {
+   "id": "normal",
+   "label": "Normal Volume",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "vn"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "1 MOhm audio Volume for the Normal channel. Its wiper is tied to the Bright wiper, so with the guitar in the Bright input this pot is a shunt on the shared grid: loudest around 5-10, a little quieter at 12 (the wiper then sits on the idle V1A plate), and silent at 0 (the wiper grounds the grid). The same holds for the Bright Volume when the guitar is in the Normal input"
+  },
+  {
+   "id": "tone",
+   "label": "Tone",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "t"
+   ],
+   "paramRange": [
+    0.5,
+    1.0
+   ],
+   "group": "Main",
+   "note": "1 MOhm Tone pot (catalogue range 0.5-1.0) with 0.005 uF to the grid and 0.005 uF to ground: variable treble cut"
+  },
+  {
+   "id": "input",
+   "label": "Input",
+   "kind": "selector",
+   "default": 0.0,
+   "options": [
+    "Bright",
+    "Normal",
+    "Both (jumpered)"
+   ],
+   "params": [],
+   "group": "Main",
+   "note": "Which input jack the guitar feeds: Bright Hi (V1B, the 500 pF bright cap across its Volume), Normal Hi (V1A), or both, the classic tweed jumper. The two Volume wipers are tied at V2A's grid in every position, so the unused channel's Volume still sets how hard the used one is loaded (at 0 it mutes the amp)",
+   "face": true
+  },
+  {
+   "id": "pw",
+   "label": "Power",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Pw"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Catalogue Power parameter; no circuit meaning, stored only"
+  },
+  {
+   "id": "variac",
+   "label": "VAC",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Var"
+   ],
+   "group": "Legacy",
+   "note": "Variac: scales the mains (every transformer secondary, including the bias winding) from 75 % at 0 through nominal at 0.5 to 108 % at 1 (90 / 120 / 130 VAC on a 120 V amp)",
+   "mod": true,
+   "modNote": "Not on the original amplifier: a variac on the mains, as players did to run the amp at lower line voltage. Offered as a mod; at full scale the amp sees its rated mains."
+  },
+  {
+   "id": "sag",
+   "label": "Sag",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Sg"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Sag emerges from the 5Y3/16 uF supply; no separate control on the amp, stored only"
+  },
+  {
+   "id": "response",
+   "label": "Response",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Rsp"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "No counterpart; stored only"
+  },
+  {
+   "id": "bias",
+   "label": "Bias",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Bi"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "The 5E3 is cathode biased with a fixed 250 Ohm resistor; no bias control, stored only"
+  },
+  {
+   "id": "power",
+   "label": "On/Off",
+   "kind": "switch",
+   "default": 1.0,
+   "params": [
+    "Pwr"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Host handles bypass"
+  },
+  {
+   "id": "stereo",
+   "label": "Stereo",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "CASSt"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Stored only"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VA",
+   "scale": {
+    "control": "variac",
+    "min": 0.75,
+    "max": 1.0833
+   },
+   "type": "V",
+   "nodes": [
+    "sa",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "487.90",
+    "freq": 60,
+    "phase": 90
+   },
+   "label": "PT HT half (345 Vrms)",
+   "note": "unverified: the 5E3 PT secondary voltage is not published; 345 Vrms per half is fitted so the 5Y3 supply lands on the Robinette chart's B+ rails (338 Vrms gave B+1 370.6 V / B+2 308.5 V / B+3 230.3 V; 345 Vrms gives 379 / 316 / 235 V against the chart's 370 / 318 / 247 V, i.e. within 5 % on seven of the eight chart rails and nodes)"
+  },
+  {
+   "ref": "VB",
+   "scale": {
+    "control": "variac",
+    "min": 0.75,
+    "max": 1.0833
+   },
+   "type": "V",
+   "nodes": [
+    "sb",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "487.90",
+    "freq": 60,
+    "phase": 270
+   },
+   "label": "PT HT half (345 Vrms)",
+   "note": "unverified: the 5E3 PT secondary voltage is not published; 345 Vrms per half is fitted so the 5Y3 supply lands on the Robinette chart's B+ rails (338 Vrms gave B+1 370.6 V / B+2 308.5 V / B+3 230.3 V; 345 Vrms gives 379 / 316 / 235 V against the chart's 370 / 318 / 247 V, i.e. within 5 % on seven of the eight chart rails and nodes)"
+  },
+  {
+   "ref": "RWA",
+   "type": "R",
+   "nodes": [
+    "sa",
+    "sa1"
+   ],
+   "value": "40",
+   "tolerance": 0.1,
+   "label": "HT half-winding DCR",
+   "note": "unverified: 5E3 PT (Weber W025130-class) winding resistance not published; 40 Ohm per half is typical of a 12 W transformer"
+  },
+  {
+   "ref": "RWB",
+   "type": "R",
+   "nodes": [
+    "sb",
+    "sb1"
+   ],
+   "value": "40",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "DA",
+   "type": "D",
+   "nodes": [
+    "sa1",
+    "bpa"
+   ],
+   "model": "5Y3GT",
+   "label": "5Y3GT plate A"
+  },
+  {
+   "ref": "DB",
+   "type": "D",
+   "nodes": [
+    "sb1",
+    "bpa"
+   ],
+   "model": "5Y3GT",
+   "label": "5Y3GT plate B"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "bpa",
+    "0"
+   ],
+   "value": "16u",
+   "tolerance": 0.2,
+   "label": "B+1 filter 16 uF 450 V"
+  },
+  {
+   "ref": "RD1",
+   "type": "R",
+   "nodes": [
+    "bpa",
+    "bpb"
+   ],
+   "value": "5k",
+   "tolerance": 0.1,
+   "label": "Dropping 5k (B+1 to B+2)"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "bpb",
+    "0"
+   ],
+   "value": "16u",
+   "tolerance": 0.2,
+   "label": "B+2 filter (screens)"
+  },
+  {
+   "ref": "RD2",
+   "type": "R",
+   "nodes": [
+    "bpb",
+    "bpc"
+   ],
+   "value": "22k",
+   "tolerance": 0.1,
+   "label": "Dropping 22k (B+2 to B+3)"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "bpc",
+    "0"
+   ],
+   "value": "16u",
+   "tolerance": 0.2,
+   "label": "B+3 filter (preamp)"
+  },
+  {
+   "ref": "SJB",
+   "type": "switch",
+   "nodes": [
+    "in",
+    "inb"
+   ],
+   "control": "input",
+   "positions": [
+    0,
+    2
+   ],
+   "label": "Guitar into the Bright Hi input",
+   "note": "The input selector stands in for which jack the guitar cable goes in; 'both' is the classic jumper (the guitar in one channel, a short cable bridging to the other's input)"
+  },
+  {
+   "ref": "SJN",
+   "type": "switch",
+   "nodes": [
+    "in",
+    "inn"
+   ],
+   "control": "input",
+   "positions": [
+    1,
+    2
+   ],
+   "label": "Guitar into the Normal Hi input"
+  },
+  {
+   "ref": "RIN",
+   "type": "R",
+   "nodes": [
+    "inb",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "Bright Hi input grid leak"
+  },
+  {
+   "ref": "RGB",
+   "type": "R",
+   "nodes": [
+    "inb",
+    "gb"
+   ],
+   "value": "68k",
+   "tolerance": 0.05,
+   "label": "Bright Hi grid stopper"
+  },
+  {
+   "ref": "RINN",
+   "type": "R",
+   "nodes": [
+    "inn",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "Normal Hi input grid leak"
+  },
+  {
+   "ref": "RGN",
+   "type": "R",
+   "nodes": [
+    "inn",
+    "gn"
+   ],
+   "value": "68k",
+   "tolerance": 0.05,
+   "label": "Normal Hi grid stopper"
+  },
+  {
+   "ref": "V1B",
+   "type": "triode",
+   "nodes": [
+    "p1b",
+    "gb",
+    "k1b"
+   ],
+   "model": "12AY7",
+   "label": "V1B Bright first stage"
+  },
+  {
+   "ref": "V1A",
+   "type": "triode",
+   "nodes": [
+    "p1n",
+    "gn",
+    "k1a"
+   ],
+   "model": "12AY7",
+   "label": "V1A Normal first stage"
+  },
+  {
+   "ref": "RK1B",
+   "type": "R",
+   "nodes": [
+    "k1b",
+    "0"
+   ],
+   "value": "1k5",
+   "tolerance": 0.05,
+   "label": "V1B Bright cathode resistor 1.5 kOhm (own bias network, not shared)",
+   "note": "each 12AY7 triode has its own 1.5 kOhm / 25 uF cathode network in the 5E3 (the RobRobinette annotated signal-flow drawing shows two separate Bypass Cap 25-25 / Cathode Resistor 1.5 k pairs, one per channel); sharing one 1.5 k between the two triodes doubles the cathode voltage"
+  },
+  {
+   "ref": "RK1A",
+   "type": "R",
+   "nodes": [
+    "k1a",
+    "0"
+   ],
+   "value": "1k5",
+   "tolerance": 0.05,
+   "label": "V1A Normal cathode resistor 1.5 kOhm (own bias network, not shared)"
+  },
+  {
+   "ref": "CK1B",
+   "type": "C",
+   "nodes": [
+    "k1b",
+    "0"
+   ],
+   "value": "25u",
+   "tolerance": 0.2,
+   "label": "V1B cathode bypass 25 uF 25 V"
+  },
+  {
+   "ref": "CK1A",
+   "type": "C",
+   "nodes": [
+    "k1a",
+    "0"
+   ],
+   "value": "25u",
+   "tolerance": 0.2,
+   "label": "V1A cathode bypass 25 uF 25 V"
+  },
+  {
+   "ref": "RP1B",
+   "type": "R",
+   "nodes": [
+    "bpc",
+    "p1b"
+   ],
+   "value": "100k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "RP1N",
+   "type": "R",
+   "nodes": [
+    "bpc",
+    "p1n"
+   ],
+   "value": "100k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "CC1B",
+   "type": "C",
+   "nodes": [
+    "p1b",
+    "cb"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "Bright coupling 0.1 uF 400 V"
+  },
+  {
+   "ref": "VOLB",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "g2a",
+    "cb"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "bright",
+   "label": "Bright Volume"
+  },
+  {
+   "ref": "CBR",
+   "type": "C",
+   "nodes": [
+    "cb",
+    "g2a"
+   ],
+   "value": "500p",
+   "tolerance": 0.1,
+   "label": "Bright cap 500 pF"
+  },
+  {
+   "ref": "CC1N",
+   "type": "C",
+   "nodes": [
+    "p1n",
+    "cn"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "Normal coupling 0.1 uF 400 V"
+  },
+  {
+   "ref": "VOLN",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "g2a",
+    "cn"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "normal",
+   "label": "Normal Volume"
+  },
+  {
+   "ref": "TONE",
+   "type": "pot",
+   "nodes": [
+    "tcb",
+    "g2a",
+    "tct"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "tone",
+   "label": "Tone"
+  },
+  {
+   "ref": "CT1",
+   "type": "C",
+   "nodes": [
+    "tct",
+    "g2a"
+   ],
+   "value": "5n",
+   "tolerance": 0.1,
+   "label": "Tone cap 0.005 uF (grid side)"
+  },
+  {
+   "ref": "CT2",
+   "type": "C",
+   "nodes": [
+    "tcb",
+    "0"
+   ],
+   "value": "5n",
+   "tolerance": 0.1,
+   "label": "Tone cap 0.005 uF (ground side)"
+  },
+  {
+   "ref": "V2A",
+   "type": "triode",
+   "nodes": [
+    "p2a",
+    "g2a",
+    "k2a"
+   ],
+   "model": "12AX7",
+   "label": "V2A second stage"
+  },
+  {
+   "ref": "RK2A",
+   "type": "R",
+   "nodes": [
+    "k2a",
+    "0"
+   ],
+   "value": "1k5",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "CK2A",
+   "type": "C",
+   "nodes": [
+    "k2a",
+    "0"
+   ],
+   "value": "25u",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "RP2A",
+   "type": "R",
+   "nodes": [
+    "bpc",
+    "p2a"
+   ],
+   "value": "100k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "CC2",
+   "type": "C",
+   "nodes": [
+    "p2a",
+    "g2b"
+   ],
+   "value": "20n",
+   "tolerance": 0.1,
+   "label": "Coupling to the PI 0.02 uF"
+  },
+  {
+   "ref": "V2B",
+   "type": "triode",
+   "nodes": [
+    "p2b",
+    "g2b",
+    "k2b"
+   ],
+   "model": "12AX7",
+   "label": "V2B cathodyne phase inverter"
+  },
+  {
+   "ref": "RP2B",
+   "type": "R",
+   "nodes": [
+    "bpc",
+    "p2b"
+   ],
+   "value": "56k",
+   "tolerance": 0.05,
+   "label": "PI plate load"
+  },
+  {
+   "ref": "RK2B",
+   "type": "R",
+   "nodes": [
+    "k2b",
+    "kout"
+   ],
+   "value": "1k5",
+   "tolerance": 0.05,
+   "label": "PI cathode bias"
+  },
+  {
+   "ref": "RTAIL",
+   "type": "R",
+   "nodes": [
+    "kout",
+    "0"
+   ],
+   "value": "56k",
+   "tolerance": 0.05,
+   "label": "PI tail load"
+  },
+  {
+   "ref": "RG2B",
+   "type": "R",
+   "nodes": [
+    "g2b",
+    "kout"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "PI grid return to the cathode output"
+  },
+  {
+   "ref": "CCA",
+   "type": "C",
+   "nodes": [
+    "p2b",
+    "n3"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "PI inverted-output coupling 0.1 uF 400 V"
+  },
+  {
+   "ref": "RGSA",
+   "type": "R",
+   "nodes": [
+    "n3",
+    "g3"
+   ],
+   "value": "1k5",
+   "tolerance": 0.05,
+   "label": "V3 grid stopper"
+  },
+  {
+   "ref": "RG3",
+   "type": "R",
+   "nodes": [
+    "g3",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "V3 grid leak"
+  },
+  {
+   "ref": "CCB",
+   "type": "C",
+   "nodes": [
+    "kout",
+    "n4"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "PI non-inverted-output coupling 0.1 uF 200 V"
+  },
+  {
+   "ref": "RGSB",
+   "type": "R",
+   "nodes": [
+    "n4",
+    "g4"
+   ],
+   "value": "1k5",
+   "tolerance": 0.05,
+   "label": "V4 grid stopper"
+  },
+  {
+   "ref": "RG4",
+   "type": "R",
+   "nodes": [
+    "g4",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "V4 grid leak"
+  },
+  {
+   "ref": "V3",
+   "type": "pentode",
+   "nodes": [
+    "pa",
+    "s3",
+    "g3",
+    "k3"
+   ],
+   "model": "6V6GT",
+   "label": "V3 6V6GT"
+  },
+  {
+   "ref": "V4",
+   "type": "pentode",
+   "nodes": [
+    "pb",
+    "s4",
+    "g4",
+    "k3"
+   ],
+   "model": "6V6GT",
+   "label": "V4 6V6GT"
+  },
+  {
+   "ref": "RS3",
+   "type": "R",
+   "nodes": [
+    "bpb",
+    "s3"
+   ],
+   "value": "470",
+   "tolerance": 0.05,
+   "label": "Screen feed (no screen resistor on the 5E3 schematic)",
+   "note": "470 Ohm 1 W screen resistor (fitted in essentially every 5E3 build; the bare Fender drawing shows a direct link). Kept as a real resistor: with a 1 Ohm link the screen node is stiff and the bench chord shows Newton failures"
+  },
+  {
+   "ref": "RS4",
+   "type": "R",
+   "nodes": [
+    "bpb",
+    "s4"
+   ],
+   "value": "470",
+   "tolerance": 0.05,
+   "label": "Screen feed",
+   "note": "470 Ohm 1 W screen resistor (fitted in essentially every 5E3 build; the bare Fender drawing shows a direct link). Kept as a real resistor: with a 1 Ohm link the screen node is stiff and the bench chord shows Newton failures"
+  },
+  {
+   "ref": "RK3",
+   "type": "R",
+   "nodes": [
+    "k3",
+    "0"
+   ],
+   "value": "250",
+   "tolerance": 0.05,
+   "label": "6V6 shared cathode resistor 250 Ohm 5 W"
+  },
+  {
+   "ref": "CK3",
+   "type": "C",
+   "nodes": [
+    "k3",
+    "0"
+   ],
+   "value": "25u",
+   "tolerance": 0.2,
+   "label": "6V6 cathode bypass 25 uF 25 V"
+  },
+  {
+   "ref": "OT",
+   "type": "transformer",
+   "nodes": [
+    "pa",
+    "bpa",
+    "bpa",
+    "pb",
+    "spk",
+    "0"
+   ],
+   "turns": [
+    1,
+    1,
+    0.0632
+   ],
+   "r": [
+    160,
+    160,
+    0.3
+   ],
+   "leak": [
+    "5m",
+    "5m",
+    0
+   ],
+   "lm": 5,
+   "lsat": 1.5,
+   "label": "Output transformer (8 kOhm p-p : 8 Ohm)",
+   "note": "8 kOhm plate-to-plate (5E3-class 12 W OT; unverified: the original part number and turns ratio are not published in the Fender drawing). Secondary turns 2/sqrt(8000/8). Half-primary DCR 160 Ohm (unverified, typical of a small 12 W OT); leakage 5 mH per half, lm 5 H, lsat 1.5 V s are typical-class values"
+  },
+  {
+   "ref": "CWA",
+   "type": "C",
+   "nodes": [
+    "pa",
+    "cwa"
+   ],
+   "value": "470p",
+   "label": "OT half-primary capacitance (A)",
+   "note": "winding self-capacitance with its loss, as in the AB763/5F6-A lessons: a bare cap rings with the leakage"
+  },
+  {
+   "ref": "RCWA",
+   "type": "R",
+   "nodes": [
+    "cwa",
+    "bpa"
+   ],
+   "value": "2k2"
+  },
+  {
+   "ref": "CWB",
+   "type": "C",
+   "nodes": [
+    "pb",
+    "cwb"
+   ],
+   "value": "470p"
+  },
+  {
+   "ref": "RCWB",
+   "type": "R",
+   "nodes": [
+    "cwb",
+    "bpa"
+   ],
+   "value": "2k2"
+  },
+  {
+   "ref": "SPK",
+   "type": "sub",
+   "of": "lib:spk-12in-8ohm-american",
+   "nodes": [
+    "spk",
+    "0"
+   ],
+   "label": "12-inch 8 Ohm American speaker (Jensen P12R-class)"
+  }
+ ],
+ "probes": [
+  "gb",
+  "p1b",
+  "k1b",
+  "g2a",
+  "p2a",
+  "p2b",
+  "pa",
+  "bpb",
+  "spk"
+ ],
+ "layout": {}
+}

@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Headroom — logo &amp; splash explorations</title>
+<style>
+  :root {
+    --page: #0a0b0d; --panel: #111215; --panel-2: #16171b; --line: rgba(255,255,255,.07); --line-2: rgba(255,255,255,.12);
+    --text: #ececef; --text-2: #a4a6ae; --text-3: #6c6f78; --acc: #e3a04b;
+    --ui: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Helvetica, Arial, sans-serif;
+    --mono: "SF Mono", ui-monospace, Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--page); color: var(--text); font: 14px/1.5 var(--ui); -webkit-font-smoothing: antialiased; }
+  body { margin: 0; }
+  a { color: inherit; }
+
+  .top { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 18px; padding: 14px 40px;
+         background: rgba(10,11,13,.82); backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
+         border-bottom: 1px solid var(--line); }
+  .top h1 { margin: 0; font-size: 14px; font-weight: 650; letter-spacing: .1px; }
+  .top h1 span { color: var(--text-3); font-weight: 500; }
+  .top .sp { flex: 1; }
+  .seg { display: inline-flex; padding: 3px; gap: 2px; border-radius: 9px; background: var(--panel-2); border: 1px solid var(--line); }
+  .seg button, .btn { appearance: none; border: 0; font: 500 12.5px var(--ui); color: var(--text-2); background: transparent;
+         padding: 6px 12px; border-radius: 7px; cursor: pointer; transition: background .15s, color .15s; }
+  .seg button:hover, .btn:hover { color: var(--text); background: rgba(255,255,255,.05); }
+  .seg button.on { color: #17120a; background: var(--acc); }
+  .btn { border: 1px solid var(--line-2); background: var(--panel-2); }
+  .btn.primary { color: #17120a; background: var(--acc); border-color: transparent; }
+  .btn.primary:hover { background: #f0b562; color: #17120a; }
+
+  .intro { max-width: 1520px; margin: 0 auto; padding: 56px 40px 10px; }
+  .intro .eyebrow { font: 600 11px var(--mono); letter-spacing: 2.4px; text-transform: uppercase; color: var(--acc); }
+  .intro h2 { margin: 10px 0 12px; font-size: 40px; line-height: 1.08; letter-spacing: -1.2px; font-weight: 700; }
+  .intro p { margin: 0; max-width: 780px; color: var(--text-2); font-size: 15px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .chip { font-size: 12px; color: var(--text-2); padding: 4px 10px; border-radius: 99px; border: 1px solid var(--line-2); }
+  .jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+  .jump a { text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: 10px;
+            background: var(--panel); border: 1px solid var(--line); font-size: 13px; color: var(--text-2); }
+  .jump a:hover { color: var(--text); border-color: var(--line-2); }
+  .jump a svg { width: 26px; height: 26px; display: block; }
+
+  main { max-width: 1520px; margin: 0 auto; padding: 24px 40px 120px; display: grid; gap: 40px; }
+  .opt { border: 1px solid var(--line); border-radius: 20px; background: linear-gradient(180deg, var(--panel), #0d0e10); overflow: hidden; scroll-margin-top: 80px; }
+  .opt-head { display: flex; align-items: flex-start; gap: 18px; padding: 24px 28px 20px; border-bottom: 1px solid var(--line); }
+  .opt-letter { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center;
+                font: 700 13px var(--mono); color: var(--acc); background: rgba(227,160,75,.1); border: 1px solid rgba(227,160,75,.25); }
+  .opt-head h3 { margin: 0; font-size: 20px; letter-spacing: -.3px; }
+  .opt-head p { margin: 4px 0 0; color: var(--text-2); max-width: 860px; }
+  .opt-head .why { margin-top: 8px; font-size: 12.5px; color: var(--text-3); }
+  .opt-head .why b { color: var(--text-2); font-weight: 600; }
+  .opt-body { display: grid; grid-template-columns: minmax(0, 1fr) 400px; }
+  @media (max-width: 1100px) { .opt-body { grid-template-columns: 1fr; } }
+
+  .stage-wrap { padding: 22px; border-right: 1px solid var(--line); }
+  .stage { position: relative; aspect-ratio: 16 / 10; border-radius: 14px; overflow: hidden; background: #000;
+           box-shadow: 0 30px 60px -30px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.06); }
+  .stage .splash-slot { position: absolute; inset: 0; }
+  .stage .splash-slot svg { width: 100%; height: 100%; display: block; }
+  .stage .app { position: absolute; inset: 0; display: grid; grid-template-rows: 44px 1fr; background: #0e0f11; }
+  .stage.light .app { background: #e9ebef; }
+  .app .bar { display: flex; align-items: center; gap: 10px; padding: 0 14px; background: #151619; border-bottom: 1px solid rgba(255,255,255,.06); }
+  .stage.light .app .bar { background: #fafafb; border-color: rgba(0,0,0,.08); }
+  .app .bar b { font-size: 13px; font-weight: 650; color: #ececef; }
+  .stage.light .app .bar b { color: #16171a; }
+  .app .rack { padding: 18px; display: grid; gap: 12px; align-content: start; }
+  .app .rack i { display: block; height: 64px; border-radius: 10px; background: linear-gradient(180deg, #1c1d21, #151619); border: 1px solid rgba(255,255,255,.05); }
+  .stage.light .app .rack i { background: linear-gradient(180deg, #fff, #f2f3f6); border-color: rgba(0,0,0,.07); }
+  .app .rack i:nth-child(2) { height: 120px; } .app .rack i:nth-child(3) { width: 70%; }
+  .app .ready { position: absolute; right: 16px; bottom: 14px; font: 500 11px var(--mono); color: #6c6f78; }
+
+  .stage-ctl { display: flex; gap: 8px; margin-top: 14px; align-items: center; flex-wrap: wrap; }
+  .stage-ctl .note { margin-left: auto; font-size: 12px; color: var(--text-3); }
+
+  .side { padding: 22px; display: grid; gap: 22px; align-content: start; }
+  .side h4 { margin: 0 0 10px; font: 600 10.5px var(--mono); letter-spacing: 1.8px; text-transform: uppercase; color: var(--text-3);
+             display: flex; align-items: center; gap: 8px; }
+  .side h4 button { margin-left: auto; font: 500 11px var(--ui); letter-spacing: 0; text-transform: none; color: var(--text-3);
+                    background: none; border: 0; cursor: pointer; padding: 0; }
+  .side h4 button:hover { color: var(--acc); }
+  .icons { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding: 22px 22px 18px; border-radius: 14px;
+           background: radial-gradient(120% 140% at 20% 0%, #3b3f4a 0%, #1d2027 55%, #14161b 100%); }
+  .icons svg { display: block; filter: drop-shadow(0 10px 14px rgba(0,0,0,.45)); }
+  .icons .lab { font: 500 10px var(--mono); color: rgba(255,255,255,.4); text-align: center; margin-top: 6px; }
+  .tb { display: flex; align-items: center; gap: 9px; height: 44px; padding: 0 12px; border-radius: 10px; }
+  .tb.dark { background: #151619; border: 1px solid rgba(255,255,255,.06); }
+  .tb.light { background: #fafafb; border: 1px solid rgba(0,0,0,.08); margin-top: 8px; }
+  .tb .bm { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center;
+            background: linear-gradient(180deg, #2b2c31, #18191c); box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 0 0 1px rgba(0,0,0,.5); }
+  .tb .bm svg { width: 20px; height: 20px; display: block; }
+  .tb b { font-size: 13px; font-weight: 650; }
+  .tb.dark b { color: #ececef; } .tb.light b { color: #16171a; }
+  .tb .ghost { margin-left: 8px; height: 26px; flex: 1; border-radius: 7px; }
+  .tb.dark .ghost { background: #1c1d21; } .tb.light .ghost { background: #eef0f3; }
+  .lockup { border-radius: 12px; padding: 18px 20px; display: flex; align-items: center; }
+  .lockup.l { background: #ffffff; } .lockup.d { background: #0d1117; border: 1px solid var(--line); margin-top: 8px; }
+  .lockup svg { display: block; height: 52px; width: auto; max-width: 100%; }
+  .dl { display: flex; flex-wrap: wrap; gap: 6px; }
+  .dl button { font: 500 11.5px var(--ui); color: var(--text-2); background: var(--panel-2); border: 1px solid var(--line); border-radius: 7px; padding: 5px 9px; cursor: pointer; }
+  .dl button:hover { color: var(--text); border-color: var(--line-2); }
+
+  footer { max-width: 1520px; margin: 0 auto; padding: 0 40px 80px; color: var(--text-3); font-size: 12.5px; }
+  footer code { font-family: var(--mono); color: var(--text-2); }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <h1>Headroom <span>· logo &amp; splash explorations</span></h1>
+  <div class="sp"></div>
+  <div class="seg" id="theme-seg">
+    <button data-theme="dark" class="on">Dark</button>
+    <button data-theme="light">Light</button>
+  </div>
+  <button class="btn" id="replay-all">Replay all</button>
+  <button class="btn primary" id="launch-all">Simulate launch · all</button>
+</div>
+
+<section class="intro">
+  <div class="eyebrow">Brand · 2026-11-08</div>
+  <h2>Seven directions for the Headroom mark</h2>
+  <p>Each option is a mark, a wordmark lockup, an app icon and a full launch splash that keeps animating while the engine loads, then gets out of the way.
+     They follow the same rules as Spoolyard, OpenBooks and Bunkhouse: one self-contained SVG, CSS-only motion, the resting frame is the complete logo
+     (intros use <code>fill-mode: backwards</code>), and <code>prefers-reduced-motion</code> shows it static.</p>
+  <div class="chips">
+    <span class="chip">Amber <code>#e3a04b</code> carried over from the app</span>
+    <span class="chip">Lowercase two-tone wordmark (family convention)</span>
+    <span class="chip">Every mark encodes "room left above the signal"</span>
+    <span class="chip">Click "Simulate launch" to see the in-app loading flow</span>
+  </div>
+  <nav class="jump" id="jump"></nav>
+</section>
+
+<main id="options"></main>
+
+<footer>
+  Source: <code>app/docs/brand/headroom-logo-options.html</code>. Each "SVG" button downloads the exact standalone file, ready for
+  <code>.github/assets/</code>, the toolbar, or <code>app/ui/</code> as the boot splash. Pick one (or mix a mark with another option's wordmark) and it gets wired into the app.
+</footer>
+
+<script>
+/* =====================================================================
+   Shared helpers
+   ===================================================================== */
+const f = (n) => Math.round(n * 100) / 100;
+const rad = (d) => (d * Math.PI) / 180;
+/* angle measured from 12 o'clock, clockwise */
+const pt = (cx, cy, r, a) => [f(cx + r * Math.sin(rad(a))), f(cy - r * Math.cos(rad(a)))];
+const arc = (cx, cy, r, a0, a1) => {
+  const [x0, y0] = pt(cx, cy, r, a0), [x1, y1] = pt(cx, cy, r, a1);
+  return `M${x0} ${y0}A${r} ${r} 0 ${Math.abs(a1 - a0) > 180 ? 1 : 0} 1 ${x1} ${y1}`;
+};
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const A = hex(a), B = hex(b); return "#" + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, "0")).join(""); };
+const mix3 = (a, b, c, t) => (t < 0.5 ? mix(a, b, t * 2) : mix(b, c, (t - 0.5) * 2));
+let UID = 0;
+const uid = () => "h" + (++UID).toString(36);
+
+const THEMES = {
+  dark:  { bg: "#0b0c0e", bg2: "#1a1b20", ink: "#ececef", ink2: "#a4a6ae", ink3: "#5d6068", faint: "rgba(236,236,239,.11)",
+           acc: "#e3a04b", acc2: "#f4be72", hot: "#ff7b2e", cap: "#1b1c20", shade: "rgba(0,0,0,.6)" },
+  light: { bg: "#eceef1", bg2: "#ffffff", ink: "#16171a", ink2: "#565961", ink3: "#9a9da5", faint: "rgba(22,23,26,.1)",
+           acc: "#cf8526", acc2: "#e8a24a", hot: "#ea5f17", cap: "#ffffff", shade: "rgba(255,255,255,.95)" },
+};
+const ICON_VARS = { ...THEMES.dark, hole: "#1b1c21", bg2: "#1b1c21" };
+const vars = (t) => Object.entries(t).map(([k, v]) => `--${k}:${v}`).join(";");
+const FONT = `"SF Pro Display",-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",Roboto,Helvetica,Arial,sans-serif`;
+const MONO = `"SF Mono",ui-monospace,Menlo,monospace`;
+
+const COMMON_CSS = `
+.f-ink{fill:var(--ink)}.f-ink2{fill:var(--ink2)}.f-ink3{fill:var(--ink3)}.f-acc{fill:var(--acc)}.f-acc2{fill:var(--acc2)}.f-hot{fill:var(--hot)}
+.f-faint{fill:var(--faint)}.f-cap{fill:var(--cap)}.f-hole{fill:var(--hole,var(--bg))}.f-shade{fill:var(--shade)}.f-none{fill:none}
+.s-ink{stroke:var(--ink)}.s-ink3{stroke:var(--ink3)}.s-acc{stroke:var(--acc)}.s-acc2{stroke:var(--acc2)}.s-faint{stroke:var(--faint)}
+.sc-bg{stop-color:var(--bg)}.sc-bg2{stop-color:var(--bg2)}.sc-ink{stop-color:var(--ink)}.sc-acc{stop-color:var(--acc)}.sc-acc2{stop-color:var(--acc2)}.sc-hot{stop-color:var(--hot)}
+@keyframes hr-draw{from{stroke-dashoffset:1}}
+@keyframes hr-fade{from{opacity:0}}
+@keyframes hr-rise{from{opacity:0;transform:translateY(12px)}}
+@keyframes hr-pop{0%{opacity:0;transform:scale(.25)}65%{opacity:1;transform:scale(1.14)}100%{transform:scale(1)}}
+@keyframes hr-sweep{from{transform:translateX(-60px)}to{transform:translateX(180px)}}
+.hr-draw{stroke-dasharray:1;animation:hr-draw var(--t,.7s) cubic-bezier(.65,0,.35,1) var(--d,0s) backwards}
+.hr-fade{animation:hr-fade var(--t,.5s) ease-out var(--d,0s) backwards}
+.hr-pop{transform-box:fill-box;transform-origin:center;animation:hr-pop var(--t,.5s) cubic-bezier(.34,1.56,.64,1) var(--d,0s) backwards}
+.hr-rise{animation:hr-rise .8s cubic-bezier(.2,.7,.2,1) var(--d,0s) backwards}
+.hr-loader{animation:hr-fade .6s ease-out 1.8s backwards}
+.hr-ind{animation:hr-sweep 1.5s cubic-bezier(.45,0,.55,1) 1.8s infinite}
+.hr-fill{transform:scaleX(0)}
+.hr-driven .hr-ind{display:none}
+.hr-driven .hr-fill{transform:scaleX(var(--p,0));transition:transform .55s cubic-bezier(.2,.7,.2,1)}
+.hr-splash{transition:opacity .7s ease .25s}
+.hr-content{transition:opacity .55s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.hr-exit{opacity:0}.hr-exit .hr-content{opacity:0;transform:scale(1.05)}
+.hr-static *{animation:none!important}
+@media (prefers-reduced-motion:reduce){.hr-anim *{animation:none!important}}`;
+
+/* stepped opacity keyframes: pts = [[percent, value], ...] */
+const kf = (name, pts) => `@keyframes ${name}{${pts.map(([p, v]) => `${f(p)}%{opacity:${v}}`).join("")}}`;
+
+/* =====================================================================
+   OPTIONS — each draws its mark in a 120×120 box.
+   ===================================================================== */
+const OPTIONS = [];
+
+/* ---------- A · Needle ------------------------------------------------ */
+OPTIONS.push({
+  id: "A", key: "needle", name: "Needle",
+  blurb: "The VU meter, rebuilt properly. The arcs draw in, the needle slams past the amber zone (the peak LED fires), then settles in the gap just short of it: a picture of headroom. While loading, it keeps riding the signal.",
+  why: "<b>Strongest continuity:</b> it's the toolbar mark you already have, redrawn with real VU ballistics. Reads instantly as audio.",
+  word: "two", layout: "stack",
+  css: () => `
+.oA-needle{transform:rotate(22deg);animation:oA-swing 1.7s linear .55s backwards,oA-play 3.6s linear 2.4s infinite}
+@keyframes oA-swing{
+ 0%{transform:rotate(-56deg);animation-timing-function:cubic-bezier(.3,0,.2,1)}
+ 36%{transform:rotate(45deg);animation-timing-function:cubic-bezier(.45,0,.4,1)}
+ 54%{transform:rotate(11deg);animation-timing-function:cubic-bezier(.45,0,.4,1)}
+ 68%{transform:rotate(28deg);animation-timing-function:cubic-bezier(.45,0,.4,1)}
+ 81%{transform:rotate(19deg);animation-timing-function:cubic-bezier(.45,0,.4,1)}
+ 91%{transform:rotate(23deg)}100%{transform:rotate(22deg)}}
+@keyframes oA-play{
+ 0%{transform:rotate(22deg);animation-timing-function:cubic-bezier(.2,0,.4,1)}
+ 9%{transform:rotate(4deg);animation-timing-function:cubic-bezier(.3,0,.3,1)}
+ 17%{transform:rotate(18deg);animation-timing-function:cubic-bezier(.4,0,.6,1)}
+ 27%{transform:rotate(-5deg);animation-timing-function:cubic-bezier(.2,0,.3,1)}
+ 35%{transform:rotate(14deg);animation-timing-function:cubic-bezier(.4,0,.6,1)}
+ 45%{transform:rotate(1deg);animation-timing-function:cubic-bezier(.2,0,.2,1)}
+ 53%{transform:rotate(39deg);animation-timing-function:cubic-bezier(.4,0,.6,1)}
+ 61%{transform:rotate(17deg);animation-timing-function:cubic-bezier(.4,0,.6,1)}
+ 71%{transform:rotate(26deg);animation-timing-function:cubic-bezier(.4,0,.6,1)}
+ 82%{transform:rotate(6deg);animation-timing-function:cubic-bezier(.4,0,.6,1)}
+ 91%{transform:rotate(19deg)}100%{transform:rotate(22deg)}}
+.oA-led{opacity:.32;animation:oA-flash .8s ease-out 1.15s backwards,oA-ledloop 3.6s linear 2.4s infinite}
+.oA-glow{opacity:0;animation:oA-glowin .9s ease-out 1.15s backwards,oA-glowloop 3.6s linear 2.4s infinite}
+@keyframes oA-flash{0%{opacity:.32}8%{opacity:1}100%{opacity:.32}}
+@keyframes oA-glowin{0%{opacity:0}8%{opacity:.85}100%{opacity:0}}
+@keyframes oA-ledloop{0%,51%{opacity:.32}53%{opacity:1}70%,100%{opacity:.32}}
+@keyframes oA-glowloop{0%,51%{opacity:0}53%{opacity:.8}74%,100%{opacity:0}}`,
+  defs: (u) => `<filter id="${u}-soft" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="3.2"/></filter>`,
+  mark(u, { small }) {
+    const cx = 60, cy = 82, R = 47;
+    let s = `<path class="hr-draw s-ink f-none" style="--d:.05s;--t:.8s" pathLength="1" stroke-width="${small ? 7 : 5.5}" stroke-linecap="round" d="${arc(cx, cy, R, -56, 15)}"/>`;
+    s += `<path class="hr-draw s-acc f-none" style="--d:.62s;--t:.4s" pathLength="1" stroke-width="${small ? 7 : 5.5}" stroke-linecap="round" d="${arc(cx, cy, R, 31, 56)}"/>`;
+    if (!small) [-42, -28, -14, 0].forEach((a, i) => {
+      const [x0, y0] = pt(cx, cy, 35.5, a), [x1, y1] = pt(cx, cy, 40, a);
+      s += `<line class="hr-fade s-ink3" style="--d:${0.42 + i * 0.06}s" x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke-width="2" stroke-linecap="round"/>`;
+    });
+    const [px, py] = pt(cx, cy, 59, 47);
+    if (!small) {
+      s += `<circle class="oA-glow f-acc" cx="${px}" cy="${py}" r="7" filter="url(#${u}-soft)"/>`;
+      s += `<circle class="oA-led f-acc" cx="${px}" cy="${py}" r="3.1"/>`;
+    }
+    s += `<g transform="translate(${cx} ${cy})"><g class="oA-needle"><line class="s-ink" x1="0" y1="7" x2="0" y2="-41" stroke-width="${small ? 5 : 3.6}" stroke-linecap="round"/></g>`;
+    s += `<circle class="f-ink hr-pop" style="--d:.45s" r="${small ? 8 : 6.8}"/><circle class="f-hole" r="${small ? 2.8 : 2.3}"/></g>`;
+    return s;
+  },
+  iconScale: 0.7,
+});
+
+/* ---------- B · Ceiling ----------------------------------------------- */
+const waveD = (A, ph, n = 64) => {
+  let d = "";
+  for (let i = 0; i <= n; i++) {
+    const u = i / n, x = 14 + 92 * u, env = Math.pow(Math.sin(Math.PI * u), 0.85);
+    const s = env * Math.sin(2 * Math.PI * 2.25 * u + ph), g = 1.75;
+    d += (i ? "L" : "M") + f(x) + " " + f(66 - (A * Math.tanh(g * s)) / Math.tanh(g));
+  }
+  return d;
+};
+OPTIONS.push({
+  id: "B", key: "ceiling", name: "Ceiling",
+  blurb: "A saturated wave pushes up toward an amber ceiling and never touches it; the crests round off the way a tube soft-clips. While loading, the wave travels and breathes but always leaves the gap.",
+  why: "<b>Most conceptual:</b> \"headroom\" is literally the space between your peaks and the ceiling. Signal-first rather than hardware-first, so it suits the plugin too.",
+  word: "two", layout: "stack",
+  css: () => `
+.oB-room{animation:hr-fade .8s ease-out 1.05s backwards}`,
+  defs: (u) => `
+<linearGradient id="${u}-wv" gradientUnits="userSpaceOnUse" x1="14" y1="0" x2="106" y2="0">
+ <stop offset="0" class="sc-ink" stop-opacity=".15"/><stop offset=".22" class="sc-ink"/><stop offset=".78" class="sc-ink"/><stop offset="1" class="sc-ink" stop-opacity=".15"/></linearGradient>
+<linearGradient id="${u}-rm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="sc-acc" stop-opacity=".34"/><stop offset="1" class="sc-acc" stop-opacity="0"/></linearGradient>`,
+  mark(u, { anim, small }) {
+    const frames = [];
+    for (let k = 0; k <= 12; k++) frames.push(waveD(27 + 5 * Math.cos((2 * Math.PI * k) / 12), (-k * Math.PI) / 6));
+    let s = `<rect class="oB-room" x="14" y="25" width="92" height="12" fill="url(#${u}-rm)"/>`;
+    s += `<path class="hr-draw f-none" style="--d:.05s;--t:1s" pathLength="1" stroke="url(#${u}-wv)" stroke-width="${small ? 7 : 4.6}" stroke-linejoin="round" stroke-linecap="round" d="${frames[0]}">`;
+    if (anim) s += `<animate attributeName="d" dur="2.8s" begin="1.6s" repeatCount="indefinite" values="${frames.join(";")}"/>`;
+    s += `</path>`;
+    const w = small ? 6.5 : 3.6;
+    s += `<path class="hr-draw s-acc f-none" style="--d:.7s;--t:.5s" pathLength="1" stroke-width="${w}" stroke-linecap="round" d="M60 24H106"/>`;
+    s += `<path class="hr-draw s-acc f-none" style="--d:.7s;--t:.5s" pathLength="1" stroke-width="${w}" stroke-linecap="round" d="M60 24H14"/>`;
+    return s;
+  },
+  iconScale: 0.72,
+});
+
+/* ---------- C · Glow --------------------------------------------------- */
+OPTIONS.push({
+  id: "C", key: "glow", name: "Glow",
+  blurb: "A power tube whose plates form an H, with the heater filament as the crossbar. On launch the glass draws in, then the filament warms up slowly from dull red to full amber glow, the way a real amp does. While loading it breathes and flickers faintly.",
+  why: "<b>Most emotional:</b> it's the \"warm tube sound\" promise as an object, and it makes the best app icon of the set because it glows on a dark dock.",
+  word: "two", layout: "stack",
+  css: () => `
+.oC-core{animation:oC-heat 1.4s cubic-bezier(.5,0,.3,1) 1s backwards,oC-flick 3.7s linear 2.5s infinite}
+.oC-bloom{animation:oC-heat 1.6s cubic-bezier(.5,0,.3,1) 1.1s backwards,oC-flick2 4.3s linear 2.7s infinite}
+.oC-amb{animation:hr-fade 1.5s ease-out 1.4s backwards,oC-breathe 5s ease-in-out 2.9s infinite}
+.oC-lit{animation:hr-fade 1.4s ease-out 1.5s backwards}
+@keyframes oC-heat{0%{opacity:0}30%{opacity:.3}46%{opacity:.16}100%{opacity:1}}
+@keyframes oC-flick{0%,100%{opacity:1}12%{opacity:.86}14%{opacity:1}47%{opacity:.94}49%{opacity:.78}52%{opacity:1}80%{opacity:.9}83%{opacity:1}}
+@keyframes oC-flick2{0%,100%{opacity:1}22%{opacity:.8}25%{opacity:1}61%{opacity:.88}66%{opacity:1}}
+@keyframes oC-breathe{0%,100%{opacity:1}50%{opacity:.68}}`,
+  defs: (u) => `
+<filter id="${u}-blur" filterUnits="userSpaceOnUse" x="30" y="36" width="60" height="44"><feGaussianBlur stdDeviation="3.4"/></filter>
+<radialGradient id="${u}-amb" cx=".5" cy=".55" r=".5"><stop offset="0" class="sc-acc2" stop-opacity=".55"/><stop offset=".55" class="sc-acc" stop-opacity=".16"/><stop offset="1" class="sc-acc" stop-opacity="0"/></radialGradient>
+<linearGradient id="${u}-pl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" class="sc-acc" stop-opacity="0"/><stop offset="1" class="sc-acc" stop-opacity=".45"/></linearGradient>
+<linearGradient id="${u}-pr" x1="1" y1="0" x2="0" y2="0"><stop offset="0" class="sc-acc" stop-opacity="0"/><stop offset="1" class="sc-acc" stop-opacity=".45"/></linearGradient>`,
+  mark(u, { small }) {
+    const fil = small ? "M52 58H68" : "M52 58L53.6 54.5L56.8 61.5L60 54.5L63.2 61.5L66.4 54.5L68 58";
+    const sw = small ? 4.4 : 3;
+    let s = `<ellipse class="oC-amb" cx="60" cy="56" rx="30" ry="42" fill="url(#${u}-amb)"/>`;
+    s += `<rect class="oC-lit" x="45" y="33" width="7" height="46" rx="2" fill="url(#${u}-pl)"/><rect class="oC-lit" x="68" y="33" width="7" height="46" rx="2" fill="url(#${u}-pr)"/>`;
+    s += `<rect class="hr-draw s-ink f-none" style="--d:.55s;--t:.5s" pathLength="1" x="45" y="33" width="7" height="46" rx="2" stroke-width="${small ? 3.6 : 2.6}"/>`;
+    s += `<rect class="hr-draw s-ink f-none" style="--d:.65s;--t:.5s" pathLength="1" x="68" y="33" width="7" height="46" rx="2" stroke-width="${small ? 3.6 : 2.6}"/>`;
+    s += `<path class="hr-fade f-none" style="--d:.9s" stroke="#7a2d10" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" d="${fil}"/>`;
+    s += `<path class="oC-bloom f-none" style="stroke:var(--hot)" stroke-width="8" stroke-linecap="round" filter="url(#${u}-blur)" d="M51 58H69"/>`;
+    s += `<path class="oC-core f-none" stroke="#ffd79a" stroke-width="${small ? 3.6 : 2.4}" stroke-linejoin="round" stroke-linecap="round" d="${fil}"/>`;
+    s += `<path class="hr-draw s-ink f-none" style="--d:.05s;--t:.85s" pathLength="1" stroke-width="${sw}" stroke-linejoin="round" stroke-linecap="round" d="M38 92V40C38 22 47.5 12 60 12C72.5 12 82 22 82 40V92"/>`;
+    if (!small) {
+      s += `<path class="hr-draw s-ink f-none" style="--d:.35s;--t:.35s" pathLength="1" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" d="M56.5 12.3V8.6Q60 5.2 63.5 8.6V12.3"/>`;
+      s += `<path class="hr-fade s-ink f-none" style="--d:.8s" opacity=".32" stroke-width="2.2" stroke-linecap="round" d="M43.5 44C43.5 30 48.5 21.5 56 18.5"/>`;
+    }
+    s += `<rect class="hr-fade f-ink" style="--d:.45s" x="33" y="91" width="54" height="12" rx="3.2"/>`;
+    [47, 60, 73].forEach((x, i) => (s += `<line class="hr-fade s-ink" style="--d:${0.55 + i * 0.05}s" opacity=".55" x1="${x}" y1="104" x2="${x}" y2="${small ? 110 : 111.5}" stroke-width="${small ? 3.6 : 2.6}" stroke-linecap="round"/>`));
+    return s;
+  },
+  iconScale: 0.74,
+});
+
+/* ---------- D · Stack (LED ladders) ----------------------------------- */
+const D_L = [6, 7, 6, 5, 5, 7, 8, 7, 6, 5, 4, 5, 6, 7, 6, 6, 5, 7, 7, 6, 5, 5, 6, 7];
+const D_R = [7, 6, 6, 7, 8, 7, 6, 5, 5, 6, 7, 6, 5, 4, 5, 6, 7, 7, 8, 7, 6, 5, 6, 6];
+OPTIONS.push({
+  id: "D", key: "stack", name: "Stack",
+  blurb: "Two stereo LED ladders form an H. The crossbar sits low on purpose, leaving room above. On launch both ladders fire to the top and drop back; the top segment stays an empty amber outline. While loading, L and R keep dancing with real peak and release.",
+  why: "<b>Most \"studio\":</b> a monogram that also works as a live meter. Crisp, pixel-honest geometry; very legible on a dark toolbar.",
+  word: "two", layout: "stack",
+  css: () => {
+    let c = `.oD-bar{animation:oD-barin .45s cubic-bezier(.2,.8,.2,1) .5s backwards}@keyframes oD-barin{from{transform:scaleX(0)}}`;
+    const intro = 1.1, step = 0.11, N = D_L.length;
+    [D_L, D_R].forEach((seq, ci) => {
+      for (let i = 0; i < 8; i++) {
+        const on = (ci ? 0.06 : 0) + 0.1 + 0.055 * i, off = (ci ? 0.06 : 0) + 0.8;
+        const pts = [[0, 0], [(on / intro) * 100, 1]];
+        if (i === 7) pts.push([(off / intro) * 100, 0]);
+        pts.push([100, i === 7 ? 0 : 1]);
+        const lp = seq.map((v, k) => [(k / N) * 100, v > i ? 1 : 0]);
+        lp.push([100, seq[0] > i ? 1 : 0]);
+        c += kf(`oD-i${ci}${i}`, pts) + kf(`oD-l${ci}${i}`, lp);
+        c += `.oD-${ci}${i}{${i === 7 ? "opacity:0;" : ""}animation:oD-i${ci}${i} ${intro}s steps(1,end) backwards,oD-l${ci}${i} ${f(N * step)}s steps(1,end) 1.35s infinite}`;
+      }
+    });
+    return c;
+  },
+  defs: () => "",
+  mark(u, { small }) {
+    let s = `<g transform="translate(60 65)"><rect class="oD-bar f-ink" x="-15" y="-4" width="30" height="8" rx="1"/></g>`;
+    [24, 72].forEach((x, ci) => {
+      for (let i = 0; i < 8; i++) {
+        const y = 94 - i * 11;
+        s += i === 7
+          ? `<rect class="s-acc f-none" opacity=".75" x="${x + 0.7}" y="${y + 0.7}" width="22.6" height="6.6" rx="1.6" stroke-width="${small ? 2.4 : 1.4}"/>`
+          : `<rect class="f-faint" x="${x}" y="${y}" width="24" height="8" rx="2"/>`;
+        s += `<rect class="oD-${ci}${i} ${i < 5 ? "f-ink" : i < 7 ? "f-acc" : "f-hot"}" x="${x}" y="${y}" width="24" height="8" rx="2"/>`;
+      }
+    });
+    return s;
+  },
+  iconScale: 0.66,
+});
+
+/* ---------- E · Dial --------------------------------------------------- */
+OPTIONS.push({
+  id: "E", key: "dial", name: "Dial",
+  blurb: "A knurled control knob turns up and lights each tick as the pointer passes. It stops at 7, the pointer's tick glows amber, and the last three stay amber outlines: room to spare. While loading, the active tick breathes.",
+  why: "<b>Most tactile:</b> \"turn it up\" with restraint built in. It echoes the knobs that fill the rack, so the brand and the UI read as one product.",
+  word: "two", layout: "stack",
+  css: () => `
+.oE-knob{transform:rotate(54deg);animation:oE-turn 1.25s cubic-bezier(.33,1,.68,1) .45s backwards,oE-sway 5s ease-in-out 2.4s infinite}
+@keyframes oE-turn{from{transform:rotate(-135deg)}}
+@keyframes oE-sway{0%,100%{transform:rotate(54deg)}50%{transform:rotate(50deg)}}
+.oE-halo{animation:hr-fade .6s ease-out 1.6s backwards,oE-breathe 2.6s ease-in-out 2.2s infinite}
+@keyframes oE-breathe{0%,100%{opacity:.32}50%{opacity:.12}}`,
+  defs: (u) => `<filter id="${u}-soft" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="2.6"/></filter>`,
+  mark(u, { small }) {
+    let s = "";
+    for (let k = 0; k <= 10; k++) {
+      const [x, y] = pt(60, 60, 51, -135 + 27 * k);
+      const r = small ? 4.2 : 3.1;
+      if (k > 7) { s += `<circle class="s-acc f-none hr-fade" style="--d:.3s" opacity=".8" cx="${x}" cy="${y}" r="${r - 0.5}" stroke-width="${small ? 2.2 : 1.4}"/>`; continue; }
+      s += `<circle class="f-faint" cx="${x}" cy="${y}" r="${r}"/>`;
+      const t = 0.45 + 1.25 * (1 - Math.cbrt(1 - k / 7));
+      if (k === 7) s += `<circle class="oE-halo f-acc" opacity=".32" cx="${x}" cy="${y}" r="7.5" filter="url(#${u}-soft)"/>`;
+      s += `<circle class="hr-pop ${k === 7 ? "f-acc" : "f-ink"}" style="--d:${f(t)}s;--t:.35s" cx="${x}" cy="${y}" r="${r}"/>`;
+    }
+    s += `<g transform="translate(60 60)"><circle class="s-ink f-none hr-fade" style="--d:.15s" opacity=".28" r="38.5" stroke-width="1.4"/>`;
+    s += `<g class="oE-knob">`;
+    if (!small) s += `<circle class="s-ink f-none" opacity=".5" r="33.5" stroke-width="4.5" pathLength="60" stroke-dasharray=".42 .58"/>`;
+    s += `<circle class="f-cap s-ink hr-pop" style="--d:.1s" r="${small ? 31 : 27}" stroke-width="${small ? 4.5 : 3}"/>`;
+    s += `<line class="s-acc" x1="0" y1="-9" x2="0" y2="${small ? -24 : -21}" stroke-width="${small ? 7 : 4.6}" stroke-linecap="round"/></g></g>`;
+    return s;
+  },
+  iconScale: 0.72,
+});
+
+/* ---------- F · Room (geometric H) ----------------------------------- */
+const F_INTRO = [[0, 0], [45, 0.92], [68, 0.55], [84, 0.67], [100, 0.62]];
+const F_RIDE = [[0, 0.62], [14, 0.48], [27, 0.7], [41, 0.55], [55, 0.8], [66, 0.58], [80, 0.68], [90, 0.52], [100, 0.62]];
+const fKF = (name, pts, fn) => `@keyframes ${name}{${pts.map(([p, v]) => `${p}%{transform:${fn(v)}}`).join("")}}`;
+OPTIONS.push({
+  id: "F", key: "room", name: "Room",
+  blurb: "A geometric H with a deliberately low crossbar. The pillars rise, the bar slides in, then the room above fills with amber like a level meter. It overshoots, settles, and while loading it rides up and down without ever reaching the top.",
+  why: "<b>Most iconic and scalable:</b> it's a solid letterform, so it holds up at 16px, as a favicon, embossed on a plugin faceplate, and as a single-colour stamp. The pun works without explanation.",
+  word: "caps", layout: "stack",
+  css: () => {
+    const sy = (v) => `scaleY(${v})`, ty = (v) => `translateY(${f(-60 * v)}px)`;
+    return `
+.oF-p{animation:oF-grow .65s cubic-bezier(.2,.8,.2,1) var(--d) backwards}@keyframes oF-grow{from{transform:scaleY(0)}}
+.oF-bar{animation:oF-barin .5s cubic-bezier(.2,.8,.2,1) .45s backwards}@keyframes oF-barin{from{transform:scaleX(0)}}
+.oF-lvl{transform:scaleY(.62);animation:oF-fill 1.3s ease-in-out .8s backwards,oF-ride 4.4s ease-in-out 2.3s infinite}
+.oF-edge{transform:translateY(-37.2px);animation:oF-fillE 1.3s ease-in-out .8s backwards,oF-rideE 4.4s ease-in-out 2.3s infinite}
+${fKF("oF-fill", F_INTRO, sy)}${fKF("oF-ride", F_RIDE, sy)}${fKF("oF-fillE", F_INTRO, ty)}${fKF("oF-rideE", F_RIDE, ty)}`;
+  },
+  defs: (u) => `<linearGradient id="${u}-lv" x1="0" y1="1" x2="0" y2="0"><stop offset="0" class="sc-acc" stop-opacity=".95"/><stop offset="1" class="sc-acc" stop-opacity=".28"/></linearGradient>`,
+  mark(u) {
+    let s = `<g transform="translate(60 74)"><rect class="oF-lvl" x="-18.5" y="-60" width="37" height="60" fill="url(#${u}-lv)"/><rect class="oF-edge f-acc2" x="-18.5" y="-1.5" width="37" height="3"/></g>`;
+    s += `<g transform="translate(0 106)"><rect class="oF-p f-ink" style="--d:.05s" x="22" y="-92" width="20" height="92" rx="3"/><rect class="oF-p f-ink" style="--d:.17s" x="78" y="-92" width="20" height="92" rx="3"/></g>`;
+    s += `<g transform="translate(60 81)"><rect class="oF-bar f-ink" x="-20" y="-7" width="40" height="14"/></g>`;
+    return s;
+  },
+  iconScale: 0.6,
+});
+
+/* ---------- G · Pilot (jewel lamp) ------------------------------------ */
+function jewel(lit) {
+  const N = 16, rings = [[0, 0], [9.5, 0], [19.5, 11.25], [29, 22.5]];
+  const P = (r, a) => pt(60, 60, r, a);
+  const light = -40;
+  const shade = (pts, flip, ring) => {
+    const cx = pts.reduce((a, p) => a + p[0], 0) / pts.length, cy = pts.reduce((a, p) => a + p[1], 0) / pts.length;
+    const phi = (Math.atan2(cx - 60, -(cy - 60)) * 180) / Math.PI;
+    let b = 0.5 + 0.5 * Math.cos(rad(phi - light));
+    if (flip) b = 0.3 + 0.55 * (1 - b);
+    b = Math.min(1, b + (3 - ring) * 0.07);
+    return lit ? mix3("#9c3300", "#ff7f16", "#ffe0a0", b) : mix3("#170905", "#3e170a", "#6e3418", b);
+  };
+  const poly = (pts, c) => `<polygon points="${pts.map((p) => p.join(",")).join(" ")}" fill="${c}" stroke="${c}" stroke-width=".35" stroke-linejoin="round"/>`;
+  let s = "";
+  for (let j = 0; j < N; j++) {
+    const t = [[60, 60], P(rings[1][0], 22.5 * j), P(rings[1][0], 22.5 * (j + 1))];
+    s += poly(t, shade(t, j % 2, 0));
+  }
+  for (let r = 1; r < 3; r++) {
+    const [ra, oa] = rings[r], [rb, ob] = rings[r + 1];
+    for (let j = 0; j < N; j++) {
+      const A0 = P(ra, oa + 22.5 * j), A1 = P(ra, oa + 22.5 * (j + 1)), B0 = P(rb, ob + 22.5 * j), B1 = P(rb, ob + 22.5 * (j + 1));
+      const t1 = [A0, A1, B0], t2 = [A1, B1, B0];
+      s += poly(t1, shade(t1, false, r)) + poly(t2, shade(t2, true, r));
+    }
+  }
+  return s;
+}
+OPTIONS.push({
+  id: "G", key: "pilot", name: "Pilot",
+  blurb: "The faceted jewel pilot lamp from an amp's faceplate. The chrome bezel lands, the lamp sputters on and settles into a warm glow, then the engraved wordmark appears beside it. While loading the glow breathes, with the odd mains flicker.",
+  why: "<b>Most premium:</b> unapologetically hardware, which matches the rack where every unit looks like its real-world class. The jewel alone is a striking, unique app icon.",
+  word: "engraved", layout: "row",
+  css: () => `
+.oG-on{animation:oG-ignite 1.3s linear .55s backwards,oG-hum 7s linear 2.5s infinite}
+@keyframes oG-ignite{0%{opacity:0}8%{opacity:.75}12%{opacity:.06}21%{opacity:.92}26%{opacity:.3}38%{opacity:1}100%{opacity:1}}
+@keyframes oG-hum{0%,86%{opacity:1}87%{opacity:.74}88.5%{opacity:1}92%{opacity:.86}93%,100%{opacity:1}}
+.oG-halo{animation:hr-fade 1.3s ease-out 1s backwards,oG-breathe 3.6s ease-in-out 2.3s infinite}
+@keyframes oG-breathe{0%,100%{opacity:1}50%{opacity:.62}}`,
+  defs: (u) => `
+<radialGradient id="${u}-chr" cx=".5" cy=".5" r=".5" fx=".36" fy=".28"><stop offset="0" stop-color="#fdfdfe"/><stop offset=".38" stop-color="#c8cbd1"/><stop offset=".7" stop-color="#666a72"/><stop offset=".86" stop-color="#b4b8bf"/><stop offset="1" stop-color="#34363b"/></radialGradient>
+<radialGradient id="${u}-halo" cx=".5" cy=".5" r=".5"><stop offset=".36" stop-color="#ffb35a" stop-opacity=".75"/><stop offset=".6" stop-color="#ff8a2a" stop-opacity=".22"/><stop offset="1" stop-color="#ff8a2a" stop-opacity="0"/></radialGradient>
+<radialGradient id="${u}-dome" cx=".5" cy=".5" r=".5" fx=".3" fy=".25"><stop offset="0" stop-color="#fff" stop-opacity=".38"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".8" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient>`,
+  mark(u) {
+    let s = `<circle class="oG-halo" cx="60" cy="60" r="64" fill="url(#${u}-halo)"/>`;
+    s += `<g class="hr-pop" style="--d:.05s;--t:.55s"><circle cx="60" cy="60" r="41" fill="url(#${u}-chr)"/>`;
+    s += `<circle cx="60" cy="60" r="40.5" fill="none" stroke="#000" stroke-opacity=".5" stroke-width="1"/>`;
+    s += `<circle cx="60" cy="60" r="37" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width=".9"/>`;
+    s += `<g opacity=".18"><circle class="oG-on" cx="60" cy="60" r="41" fill="#ff9a3a"/></g>`;
+    s += `<circle cx="60" cy="60" r="31.2" fill="#0a0a0b"/></g>`;
+    s += `<g class="hr-fade" style="--d:.3s">${jewel(false)}</g>`;
+    s += `<g class="oG-on">${jewel(true)}</g>`;
+    s += `<circle cx="60" cy="60" r="29" fill="url(#${u}-dome)"/>`;
+    s += `<ellipse cx="50" cy="47" rx="7.5" ry="3.4" fill="#fff" opacity=".6" transform="rotate(-38 50 47)"/><circle cx="71" cy="73" r="1.5" fill="#fff" opacity=".35"/>`;
+    return s;
+  },
+  iconScale: 0.8,
+});
+
+/* =====================================================================
+   Composition: splash, lockup, icon, toolbar
+   ===================================================================== */
+function words(style, x, y, size, anchor, cls = "", dly = "") {
+  const st = dly ? ` style="--d:${dly}"` : "";
+  if (style === "two") {
+    return `<text class="${cls}"${st} x="${x}" y="${y}" font-family='${FONT}' font-size="${size}" font-weight="650" letter-spacing="${f(-0.034 * size)}" text-anchor="${anchor}"><tspan class="f-ink">head</tspan><tspan class="f-acc">room</tspan></text>`;
+  }
+  if (style === "caps") {
+    const ls = f(0.2 * size), dx = anchor === "middle" ? f(ls / 2) : 0;
+    return `<text class="f-ink ${cls}"${st} x="${f(x + dx)}" y="${y}" font-family='${FONT}' font-size="${size}" font-weight="640" letter-spacing="${ls}" text-anchor="${anchor}">HEADROOM</text>`;
+  }
+  const ls = f(0.26 * size), dx = anchor === "middle" ? f(ls / 2) : 0;
+  const t = (c, oy) => `<text class="${c}" x="${f(x + dx)}" y="${f(y + oy)}" font-family='${FONT}' font-size="${size}" font-weight="560" letter-spacing="${ls}" text-anchor="${anchor}">HEADROOM</text>`;
+  return `<g class="${cls}"${st}>${t("f-shade", 1.4)}${t("f-ink", 0)}</g>`;
+}
+const wordSize = (style, big) => (style === "two" ? (big ? 66 : 46) : style === "caps" ? (big ? 46 : 31) : big ? 46 : 30);
+
+function nestMark(o, u, x, y, size, opts) {
+  return `<svg x="${f(x)}" y="${f(y)}" width="${f(size)}" height="${f(size)}" viewBox="0 0 120 120" overflow="visible">${o.mark(u, opts)}</svg>`;
+}
+
+function splashSVG(o, theme) {
+  const u = uid(), T = THEMES[theme];
+  const row = o.layout === "row";
+  let body = "";
+  if (!row) {
+    body += nestMark(o, u, 372, 92, 216, { anim: true });
+    body += words(o.word, 480, 398, wordSize(o.word, true), "middle", "hr-rise", "1.05s");
+    body += `<text class="f-ink3 hr-rise" style="--d:1.3s" x="482" y="436" font-family='${FONT}' font-size="12" font-weight="600" letter-spacing="4.4" text-anchor="middle">AMP &amp; EFFECTS STUDIO</text>`;
+  } else {
+    body += `<g data-row="1">` + nestMark(o, u, 0, 186, 170, { anim: true });
+    body += `<g data-word="1">` + words(o.word, 214, 286, wordSize(o.word, true), "start", "hr-rise", "1.25s");
+    body += `<rect class="f-faint hr-fade" style="--d:1.45s" data-rule="1" x="216" y="306" width="300" height="1"/>`;
+    body += `<text class="f-ink3 hr-rise" style="--d:1.5s" x="216" y="334" font-family='${FONT}' font-size="12" font-weight="600" letter-spacing="4.4">AMP &amp; EFFECTS STUDIO</text></g></g>`;
+  }
+  body += `<g class="hr-loader"><rect class="f-faint" x="390" y="492" width="180" height="2" rx="1"/>
+<g clip-path="url(#${u}-trk)"><rect class="hr-ind" x="390" y="492" width="60" height="2" fill="url(#${u}-ind)"/>
+<g transform="translate(390 0)"><rect class="hr-fill f-acc" x="0" y="492" width="180" height="2"/></g></g>
+<text class="hr-status f-ink3" x="480" y="520" font-family='${MONO}' font-size="11" letter-spacing=".3" text-anchor="middle"></text></g>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" class="hr-anim hr-splash" viewBox="0 0 960 600" role="img" aria-label="Headroom" style="${vars(T)}">
+<style>${COMMON_CSS}${o.css()}</style>
+<defs>
+<radialGradient id="${u}-bg" cx=".5" cy=".42" r=".75"><stop offset="0" class="sc-bg2"/><stop offset="1" class="sc-bg"/></radialGradient>
+<linearGradient id="${u}-ind" x1="0" y1="0" x2="1" y2="0"><stop offset="0" class="sc-acc" stop-opacity="0"/><stop offset=".5" class="sc-acc"/><stop offset="1" class="sc-acc" stop-opacity="0"/></linearGradient>
+<clipPath id="${u}-trk"><rect x="390" y="492" width="180" height="2" rx="1"/></clipPath>
+${o.defs(u)}
+</defs>
+<rect width="960" height="600" fill="url(#${u}-bg)"/>
+<g transform="translate(480 300)"><g class="hr-content"><g transform="translate(-480 -300)">${body}</g></g></g>
+</svg>`;
+}
+
+function lockupSVG(o, theme) {
+  const u = uid(), T = { ...THEMES[theme], bg: theme === "light" ? "#ffffff" : "#0d1117" };
+  const size = wordSize(o.word, false), mark = 66;
+  const base = o.word === "two" ? 54 : 52;
+  return `<svg xmlns="http://www.w3.org/2000/svg" class="hr-anim" viewBox="0 0 400 80" role="img" aria-label="Headroom" style="${vars(T)}">
+<style>${COMMON_CSS}${o.css()}</style><defs>${o.defs(u)}</defs>
+${nestMark(o, u, 4, 7, mark, { anim: true })}
+${words(o.word, 86, base, size, "start", "hr-rise", "1.05s")}
+</svg>`;
+}
+
+function iconSVG(o, px) {
+  const u = uid(), s = 824 * o.iconScale, off = 512 - s / 2;
+  return `<svg xmlns="http://www.w3.org/2000/svg" class="hr-static" width="${px}" height="${px}" viewBox="0 0 1024 1024" role="img" aria-label="Headroom" style="${vars(ICON_VARS)}">
+<style>${COMMON_CSS}${o.css()}</style>
+<defs><linearGradient id="${u}-tile" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2d2e34"/><stop offset="1" stop-color="#101114"/></linearGradient>
+<radialGradient id="${u}-sheen" cx=".5" cy="0" r=".9"><stop offset="0" stop-color="#fff" stop-opacity=".09"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>${o.defs(u)}</defs>
+<rect x="100" y="100" width="824" height="824" rx="185" fill="url(#${u}-tile)"/>
+<rect x="100" y="100" width="824" height="824" rx="185" fill="url(#${u}-sheen)"/>
+<rect x="102" y="102" width="820" height="820" rx="183" fill="none" stroke="#fff" stroke-opacity=".08" stroke-width="4"/>
+${nestMark(o, u, off, off, s, { anim: false, small: px <= 48 })}
+</svg>`;
+}
+
+function markOnlySVG(o, opts = {}) {
+  const u = uid();
+  return `<svg xmlns="http://www.w3.org/2000/svg" class="${opts.anim ? "hr-anim" : "hr-static"}" viewBox="0 0 120 120" style="${vars({ ...THEMES.dark, hole: "#202126", bg2: "#202126" })}">
+<style>${COMMON_CSS}${o.css()}</style><defs>${o.defs(u)}</defs>${o.mark(u, { anim: !!opts.anim, small: !!opts.small })}</svg>`;
+}
+
+/* lay out text-measured pieces once an SVG is in the DOM */
+function fitRow(svg) {
+  const row = svg.querySelector("[data-row]");
+  if (!row) return;
+  const word = row.querySelector("[data-word] text:last-of-type") || row.querySelector("[data-word] text");
+  const w = word.getComputedTextLength();
+  const rule = row.querySelector("[data-rule]");
+  rule.setAttribute("width", f(w - 12));
+  const total = 214 + w;
+  row.setAttribute("transform", `translate(${f(480 - total / 2)} -18)`);
+}
+function fitLockup(svg) {
+  const t = svg.querySelector("text:last-of-type");
+  const w = t.getBBox().width;
+  svg.setAttribute("viewBox", `0 0 ${Math.ceil(86 + w + 6)} 80`);
+}
+
+/* =====================================================================
+   Page
+   ===================================================================== */
+let THEME = "dark";
+const STATUS = ["Starting audio engine", "Loading 26 amp models", "Indexing 477 cabinet IRs", "Scanning presets", "Ready"];
+const timers = new Map();
+
+function mountSplash(o, launch) {
+  const stage = document.getElementById(`stage-${o.id}`);
+  (timers.get(o.id) || []).forEach(clearTimeout);
+  timers.set(o.id, []);
+  stage.classList.toggle("light", THEME === "light");
+  stage.querySelector(".splash-slot").innerHTML = splashSVG(o, THEME);
+  const svg = stage.querySelector(".splash-slot svg");
+  fitRow(svg);
+  if (!launch) return;
+  svg.classList.add("hr-driven");
+  const status = svg.querySelector(".hr-status");
+  const T = timers.get(o.id);
+  const plan = [[1900, 0.12, 0], [2500, 0.38, 1], [3200, 0.66, 2], [3900, 0.88, 3], [4500, 1, 4]];
+  plan.forEach(([ms, p, si]) => T.push(setTimeout(() => { svg.style.setProperty("--p", p); status.textContent = STATUS[si] + (si < 4 ? "…" : ""); }, ms)));
+  T.push(setTimeout(() => svg.classList.add("hr-exit"), 5150));
+}
+
+function mountLockups(o) {
+  ["l", "d"].forEach((k) => {
+    const el = document.getElementById(`lock-${o.id}-${k}`);
+    el.innerHTML = lockupSVG(o, k === "l" ? "light" : "dark");
+    fitLockup(el.querySelector("svg"));
+  });
+}
+
+function download(name, svgEl) {
+  const clone = svgEl.cloneNode(true);
+  clone.classList.remove("hr-driven", "hr-exit");
+  clone.style.removeProperty("--p");
+  clone.querySelectorAll(".hr-status").forEach((t) => (t.textContent = ""));
+  if (!clone.getAttribute("width")) {
+    const vb = clone.getAttribute("viewBox").split(" ");
+    clone.setAttribute("width", vb[2]); clone.setAttribute("height", vb[3]);
+  }
+  const blob = new Blob(['<?xml version="1.0" encoding="UTF-8"?>\n' + clone.outerHTML], { type: "image/svg+xml" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+
+function build() {
+  const main = document.getElementById("options"), jump = document.getElementById("jump");
+  OPTIONS.forEach((o) => {
+    jump.insertAdjacentHTML("beforeend", `<a href="#opt-${o.id}">${iconSVG(o, 26)}<span>${o.id} · ${o.name}</span></a>`);
+    main.insertAdjacentHTML("beforeend", `
+<section class="opt" id="opt-${o.id}">
+  <div class="opt-head">
+    <div class="opt-letter">${o.id}</div>
+    <div><h3>${o.name}</h3><p>${o.blurb}</p><div class="why">${o.why}</div></div>
+  </div>
+  <div class="opt-body">
+    <div class="stage-wrap">
+      <div class="stage" id="stage-${o.id}">
+        <div class="app"><div class="bar"><span class="tb-bm"></span><b>Headroom</b></div><div class="rack"><i></i><i></i><i></i></div><div class="ready">engine ready · 48 kHz · 64 smp</div></div>
+        <div class="splash-slot"></div>
+      </div>
+      <div class="stage-ctl">
+        <button class="btn" data-act="replay">↻ Replay intro</button>
+        <button class="btn primary" data-act="launch">▶ Simulate launch</button>
+        <span class="note">Intro, then a loading loop that runs until the engine is ready, then fades to the app</span>
+      </div>
+    </div>
+    <aside class="side">
+      <div>
+        <h4>App icon</h4>
+        <div class="icons">
+          <div>${iconSVG(o, 128)}<div class="lab">128</div></div>
+          <div>${iconSVG(o, 64)}<div class="lab">64</div></div>
+          <div>${iconSVG(o, 32)}<div class="lab">32</div></div>
+          <div>${iconSVG(o, 16)}<div class="lab">16</div></div>
+        </div>
+      </div>
+      <div>
+        <h4>Toolbar · actual size</h4>
+        <div class="tb dark"><span class="bm">${markOnlySVG(o, { small: true })}</span><b>Headroom</b><span class="ghost"></span></div>
+        <div class="tb light"><span class="bm">${markOnlySVG(o, { small: true })}</span><b>Headroom</b><span class="ghost"></span></div>
+      </div>
+      <div>
+        <h4>README lockup <button data-act="lockups">↻ replay</button></h4>
+        <div class="lockup l" id="lock-${o.id}-l"></div>
+        <div class="lockup d" id="lock-${o.id}-d"></div>
+      </div>
+      <div>
+        <h4>Download</h4>
+        <div class="dl">
+          <button data-dl="splash">Splash SVG</button>
+          <button data-dl="lockup-l">Lockup (light)</button>
+          <button data-dl="lockup-d">Lockup (dark)</button>
+          <button data-dl="icon">App icon SVG</button>
+          <button data-dl="mark">Mark SVG</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>`);
+    const sec = document.getElementById(`opt-${o.id}`);
+    sec.querySelector(".tb-bm").outerHTML = `<span class="tb bm-wrap" style="all:unset"><span class="bm" style="width:26px;height:26px;border-radius:7px;display:grid;place-items:center;background:linear-gradient(180deg,#2b2c31,#18191c);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 0 0 1px rgba(0,0,0,.5)">${markOnlySVG(o, { small: true })}</span></span>`;
+    sec.querySelector('[data-act="replay"]').onclick = () => mountSplash(o, false);
+    sec.querySelector('[data-act="launch"]').onclick = () => mountSplash(o, true);
+    sec.querySelector('[data-act="lockups"]').onclick = () => mountLockups(o);
+    sec.querySelectorAll("[data-dl]").forEach((b) => (b.onclick = () => {
+      const k = b.dataset.dl, n = `headroom-${o.key}`;
+      if (k === "splash") download(`${n}-splash.svg`, sec.querySelector(".splash-slot svg"));
+      if (k === "lockup-l") download(`${n}-lockup.svg`, sec.querySelector(`#lock-${o.id}-l svg`));
+      if (k === "lockup-d") download(`${n}-lockup-dark.svg`, sec.querySelector(`#lock-${o.id}-d svg`));
+      if (k === "icon") { const t = document.createElement("div"); t.innerHTML = iconSVG(o, 1024); download(`${n}-app-icon.svg`, t.firstElementChild); }
+      if (k === "mark") { const t = document.createElement("div"); t.innerHTML = markOnlySVG(o, { anim: true }); download(`${n}-mark.svg`, t.firstElementChild); }
+    }));
+    mountSplash(o, false);
+    mountLockups(o);
+  });
+  document.querySelectorAll(".app .bm svg").forEach((s) => { s.style.width = "20px"; s.style.height = "20px"; });
+}
+
+document.querySelectorAll("#theme-seg button").forEach((b) => (b.onclick = () => {
+  THEME = b.dataset.theme;
+  document.querySelectorAll("#theme-seg button").forEach((x) => x.classList.toggle("on", x === b));
+  OPTIONS.forEach((o) => mountSplash(o, false));
+}));
+document.getElementById("replay-all").onclick = () => OPTIONS.forEach((o) => { mountSplash(o, false); mountLockups(o); });
+document.getElementById("launch-all").onclick = () => OPTIONS.forEach((o) => mountSplash(o, true));
+
+build();
+</script>
+</body>
+</html>

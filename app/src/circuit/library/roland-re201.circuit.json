@@ -1,0 +1,2826 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "roland-re201",
+  "version": 1,
+  "name": "Roland RE-201 Space Echo (S/N 587250 and later: OP-13 / OP-14B / FL-7, PS-15D)",
+  "description": "Roland RE-201 from the instrument jack to the output jack, per the July 1978 service notes. Instrument input (8.2k || 1 nF, VR3) and SW3 Echo/Normal. Echo path: R3 47k into the OP-13 mic amplifier (Q1 / Q12 / Q2, 120k overall feedback), node 11 (J), R35 27k into the record sum (node 12) where the Intensity pot VR5 returns the playback, Q3 recording pre-amp, VR11 recording level, Q4 recording amp with the C35 .068 emitter pre-emphasis, C36 / R48 6.8k constant-current feed and the L21 14 mH || 470 pF bias trap into the record head of the tape block (bias and erase oscillator not simulated). Three playback heads switched by the 12-position mode selector (SW1b-d) to the OP-14B playback preamp Q5 / Q13 / Q6 whose C59 .0068 feedback is the playback integration EQ; node 18 feeds the Echo pot VR6 and, through VR12 / R73 / C61, the Intensity pot. Echo: Q7 follower and the active Baxandall Bass / Treble around Q8; R86 22k into the Q9 output buffer. Direct: J4's switch passes the mic-amp output (node 11) through C6 / R10; Q11 amplifies the Normal instrument signal and the reverb return; both sum with the echo at Q9's base; FL-7 filter and the H/M/L output divider. Reverb: node 11 through R50 / R51 into IC1 TA-7200P (42 dB, R54 / R53), R59 10 Ohm into the Z-3F 3-spring tank, Q10 recovery, VR10, SW1a (modes 5-12), R11 and VR9. Supply: power transformer RED winding, bridge, R111 82 Ohm, C110 1000 uF, Q21 capacitance-multiplier pass transistor and R109 180 Ohm to the 17 V rail (pin 40), R34 / R72 820 Ohm to the mic and playback rails.",
+  "sources": [
+    {
+      "title": "Roland RE-201/101 Echo Chamber Service Notes, 2nd edition (30 Jul 1978): specifications, OP-13/OP-14B/FL-7 circuit diagram with DC voltages and signal levels, mode selector vs activated playback head table, PS-15D circuit diagram, electrical adjustment (trap coil, bias/recording current, intensity), reference data (bias 50-60 V rms across the erase head, tape speed 12-40 cm/s approx, treble +10 dB at 5 kHz, bass +10 dB at 100 Hz), parts list",
+      "url": "https://archive.org/details/Roland_RE-101_RE-201_Service_Manual"
+    },
+    {
+      "title": "Universal Audio, Roland RE-201 Space Echo plug-in manual: head delay ranges 69-177 / 131-337 / 189-489 ms over Repeat Rate (describes the emulation)",
+      "url": "https://help.uaudio.com/hc/en-us/articles/33538271334164-Roland-RE-201-Space-Echo-Manual"
+    },
+    {
+      "title": "J. Chowdhury, 'Real-time physical modelling for analog tape machines', DAFx-19 (tape Ms, a, alpha; head-loss formulas)",
+      "url": "https://www.dafx.de/paper-archive/2019/DAFx2019_paper_3.pdf"
+    },
+    {
+      "title": "Kaloinen, MSc thesis (Aalto), tape-delay modelling, citing DAFX 2nd ed. ch. 12: Space Echo flutter peaks 3.5 Hz (pinch wheel) and 22 Hz (capstan), head 1 measured 60-160 ms",
+      "url": "https://aaltodoc.aalto.fi/items/b5cb4792-8df2-4510-97d8-afe88f23f4ed"
+    },
+    {
+      "title": "freestompboxes.org RE-201 thread (search excerpt): discrete 2SC1000GR / 2SA493GR electronics",
+      "url": "https://www.freestompboxes.org/viewtopic.php?t=29048"
+    },
+    {
+      "title": "Amplified Parts, Accutronics 8AB2D1A (usual RE-201 replacement tank): short 3-spring, medium decay, 10 Ohm in / 2575 Ohm out",
+      "url": "https://www.amplifiedparts.com/products/reverb-tank-accutronics-8ab2d1a-medium-decay-3-spring"
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 1.0,
+    "note": "Instrument jack in; output at the H tap (-15 dBm = 0.14 V rms nominal for -24 dBm in). Calibration left to the engine owner"
+  },
+  "oversampling": 1,
+  "models": {
+    "2SC1000GR": {
+      "kind": "npn",
+      "is": 2e-14,
+      "bf": 300,
+      "br": 3,
+      "vaf": 100,
+      "note": "unverified: Toshiba 2SC1000-GR (hFE 200-400 GR rank); no vendor SPICE card found: IS/BR/VAF generic small-signal. Transistor type per freestompboxes RE-201 notes (2SC1000GR / 2SA493GR)",
+      "cje": 8e-12,
+      "cjc": 4e-12
+    },
+    "2SA493GR": {
+      "kind": "pnp",
+      "is": 2e-14,
+      "bf": 300,
+      "br": 3,
+      "vaf": 80,
+      "note": "unverified: Toshiba 2SA493-GR (PS-15D parts list: '2SA733 P or 2SA493 GR'); generic parameters",
+      "cje": 1e-11,
+      "cjc": 5e-12
+    },
+    "2SD571": {
+      "kind": "npn",
+      "is": 1e-13,
+      "bf": 150,
+      "br": 3,
+      "note": "unverified: NEC 2SD571 L (PS-15D parts list); generic medium-power parameters"
+    },
+    "TA7200P": {
+      "kind": "opamp",
+      "level": 1,
+      "a0": 10000.0,
+      "gbw": 2000000.0,
+      "slew": 2000000.0,
+      "swing_hi": 1.5,
+      "swing_lo": 1.0,
+      "rout": 1.0,
+      "note": "unverified: Toshiba TA-7200P audio power-amp IC: no data sheet found; macro values assumed"
+    },
+    "RE201_SM": {
+      "kind": "tape",
+      "d1": 0.069,
+      "d2": 0.131,
+      "d3": 0.189,
+      "range": 2.57,
+      "ms": 350000.0,
+      "a": 22000.0,
+      "alpha": 0.0016,
+      "drive": 400000000.0,
+      "gain": 2e-06,
+      "v0": 0.4,
+      "gap": 5,
+      "spacing": 3,
+      "thickness": 10,
+      "wow": 0.001,
+      "flutter": 0.0005,
+      "servo": 0.25,
+      "rrec": 100,
+      "lrec": 0.01,
+      "rpb": 300,
+      "lpb": 0.1,
+      "note": "Library RE201 with v0 = 0.40 m/s: the service notes give 'Tape Speed 12 cm - 40 cm/sec (approx)'. Delays 69/131/189 ms and range 2.57 from the UA RE-201 manual (the service-note speed range 40/12 = 3.3 disagrees: unverified which is right). Ms/a/alpha Chowdhury DAFx-19. gain 2e-06 calibrated 2026-11-12 to the service notes' own procedure (2-3 / 2-4, p.22-23): at one input level and VR11 = 0.5 the echo-only output (Echo Volume max, Intensity min, FROM PA blanked) is +3 dB over the direct output (-12 vs -15 dBm). Measured 1 kHz, 49 mV, head 1: echo 125 mV vs direct 86 mV (+3.2 dB); node 17 4.2 mV and Q13 collector 373 mV at a Q4 emitter of 176 mV (p.6 level chart: 5 mV / 550 mV at 240 mV). The shipped 5e-07 put the echo 12 dB under that (inaudible at the default patch). unverified: drive, head R/L, gap/spacing/thickness, wow/flutter amplitudes, servo"
+    },
+    "1N4001_PAIR": {
+      "kind": "diode",
+      "is": 1.411e-08,
+      "n": 3.968,
+      "rs": 0.06778,
+      "note": "Two series 1N4001 bridge legs (MI-152 + return leg) collapsed to eliminate floating midpoint between zero-capacitance reverse-biased diodes: N = 2*1.984, RS = 2*0.03389"
+    }
+  },
+  "cuts": [
+    "b17",
+    "b11",
+    "micr",
+    "b15",
+    {"node": "n11", "loads": ["R35", "R50"]},
+    {"node": "n34", "loads": ["VR10"]},
+    {"node": "q8c", "loads": ["R86"]}
+  ],
+  "controls": [
+    {
+      "id": "repeat_rate",
+      "label": "Repeat Rate",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "s"
+      ],
+      "group": "Main",
+      "note": "VR4 1KB in the PS-15D DC brushless motor servo: sets tape speed (0 = slowest). The servo electronics are not simulated; the tape block takes the position"
+    },
+    {
+      "id": "intensity",
+      "label": "Intensity",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "f"
+      ],
+      "group": "Main",
+      "note": "VR5 20KB linear. Legacy raw max 0.8705; full rotation self-oscillates as on the hardware"
+    },
+    {
+      "id": "echo",
+      "label": "Echo Volume",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "ev"
+      ],
+      "group": "Main",
+      "note": "VR6 20KB linear"
+    },
+    {
+      "id": "reverb",
+      "label": "Reverb Volume",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "rv"
+      ],
+      "group": "Main",
+      "note": "VR9 50KB linear"
+    },
+    {
+      "id": "bass",
+      "label": "Bass",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "tb"
+      ],
+      "group": "Main",
+      "note": "VR7 100KB, echo path only (+10 dB at 100 Hz)"
+    },
+    {
+      "id": "treble",
+      "label": "Treble",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "tt"
+      ],
+      "group": "Main",
+      "note": "VR8 100KB, echo path only (+10 dB at 5 kHz)"
+    },
+    {
+      "id": "mode",
+      "label": "Mode Selector",
+      "kind": "selector",
+      "options": [
+        "1 Repeat (head 1)",
+        "2 Repeat (head 2)",
+        "3 Repeat (head 3)",
+        "4 Repeat (heads 2+3)",
+        "5 Reverb + head 1",
+        "6 Reverb + head 2",
+        "7 Reverb + head 3",
+        "8 Reverb + heads 1+2",
+        "9 Reverb + heads 2+3",
+        "10 Reverb + heads 1+3",
+        "11 Reverb + heads 1+2+3",
+        "12 Reverb only"
+      ],
+      "default": 0.909091,
+      "params": [],
+      "group": "Main",
+      "note": "12-position rotary SW1a-d. Position value = index/11 (0 = mode 1 ... 1 = mode 12). Switch parts carry 0-based positions where closed. Default mode 11 (all heads + reverb)",
+      "face": true
+    },
+    {
+      "id": "instrument_volume",
+      "label": "Instrument Volume",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Input",
+      "note": "VR3 10KB"
+    },
+    {
+      "id": "echo_normal",
+      "label": "Echo / Normal",
+      "kind": "switch",
+      "default": 1.0,
+      "params": [],
+      "group": "Input",
+      "note": "SW3: 1 = Echo (instrument to the record path), 0 = Normal (direct amp only)",
+      "face": true,
+      "options": [
+        "Normal",
+        "Echo"
+      ]
+    },
+    {
+      "id": "mic1",
+      "label": "Mic 1 Volume",
+      "kind": "continuous",
+      "default": 0.0,
+      "params": [],
+      "group": "Input",
+      "note": "VR1 1KB, jack unplugged"
+    },
+    {
+      "id": "mic2",
+      "label": "Mic 2 Volume",
+      "kind": "continuous",
+      "default": 0.0,
+      "params": [],
+      "group": "Input",
+      "note": "VR2 1KB, jack unplugged"
+    },
+    {
+      "id": "dry_cut",
+      "label": "FROM PA plug (dry cut)",
+      "kind": "switch",
+      "default": 0.0,
+      "params": [
+        "dm"
+      ],
+      "group": "Input",
+      "note": "J4 FROM PA jack switch: 1 = plug inserted, the direct signal of the echo path is cut (inferred function). Legacy 'Dry Mute'"
+    },
+    {
+      "id": "rec_level",
+      "label": "Recording level adj (VR11)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Internal",
+      "note": "unverified factory trim: -12 dBm output at -50 dB input"
+    },
+    {
+      "id": "intensity_adj",
+      "label": "Intensity adj (VR12)",
+      "kind": "continuous",
+      "default": 0.78,
+      "params": [],
+      "group": "Internal",
+      "note": "Factory trim set by the service notes' procedure 2-7 (p.24): VR12 is adjusted so that runaway repetition starts with Intensity at the drawn position, about 0.75 of its travel. 0.78 puts the onset there (head 1, Repeat Rate noon, 600 Hz: -0.15 dB/repeat at 0.70, +0.3 dB at 0.75 with 0.80)"
+    },
+    {
+      "id": "reverb_adj",
+      "label": "Reverb vol. adj (VR10)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Internal",
+      "note": "unverified factory trim"
+    },
+    {
+      "id": "legacy_ts",
+      "label": "Sync",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "ts"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: no tempo sync on a free-running tape machine; stored only"
+    },
+    {
+      "id": "legacy_h1",
+      "label": "Head A",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "h1"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: the legacy model's two 0-4 head selectors have no one-to-one map onto the 12-position mode selector (control 'mode'); stored only"
+    },
+    {
+      "id": "legacy_h2",
+      "label": "Head B",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "h2"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: see Head A; stored only"
+    },
+    {
+      "id": "legacy_tp",
+      "label": "Tap Tempo",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "tp"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: no tap tempo; stored only"
+    },
+    {
+      "id": "legacy_im",
+      "label": "Input Mute",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "im"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: no input mute; stored only"
+    },
+    {
+      "id": "legacy_L",
+      "label": "Lamp",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "L"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: peak LED / meter lamp: indicator only; stored only"
+    },
+    {
+      "id": "legacy_b",
+      "label": "Rev Bass",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "b"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: the reverb return has no tone control (Bass/Treble act on the echo path; mapped from tb/tt); stored only"
+    },
+    {
+      "id": "legacy_t",
+      "label": "Rev Treble",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "t"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: see Rev Bass; stored only"
+    },
+    {
+      "id": "legacy_dr",
+      "label": "Dropouts",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "dr"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: tape dropouts: not a control; stored only"
+    },
+    {
+      "id": "legacy_n",
+      "label": "Noise",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "n"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: noise: not a control; stored only"
+    },
+    {
+      "id": "legacy_w",
+      "label": "Warble",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "w"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: wow/flutter is a tape-model parameter, not a panel control; stored only"
+    },
+    {
+      "id": "legacy_h",
+      "label": "Headroom",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "h"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: no control; stored only"
+    },
+    {
+      "id": "legacy_a",
+      "label": "Acceleration",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "a"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: motor acceleration: servo not simulated; stored only"
+    },
+    {
+      "id": "legacy_hm",
+      "label": "Head Mix",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "hm"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: heads mix by the mode selector only; stored only"
+    },
+    {
+      "id": "legacy_st",
+      "label": "Stereo",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "st"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: mono unit; stored only"
+    },
+    {
+      "id": "legacy_rt",
+      "label": "Rev Time",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "rt"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: fixed 3-spring tank; stored only"
+    },
+    {
+      "id": "legacy_sl",
+      "label": "Spring Length",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "sl"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: fixed tank; stored only"
+    },
+    {
+      "id": "legacy_tmA",
+      "label": "TimeA",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "tmA"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: no control; stored only"
+    },
+    {
+      "id": "legacy_tmB",
+      "label": "TimeB",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "tmB"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No RE-201 circuit meaning: no control; stored only"
+    },
+    {"id": "power", "label": "On/Off", "kind": "switch", "default": 1.0, "params": ["Pwr"], "legacyOnly": true, "group": "Legacy", "note": "Host handles bypass; stored only"}
+  ],
+  "parts": [
+    {
+      "ref": "VSA",
+      "type": "V",
+      "nodes": [
+        "sa0",
+        "0"
+      ],
+      "value": "0",
+      "ac": {
+        "amplitude": "26.86",
+        "freq": 60,
+        "phase": 90
+      },
+      "label": "Power transformer RED secondary leg A (19 Vrms = 26.86 Vpk)",
+      "note": "Equivalent secondary half-cycle model (0.158 x 170 Vpk = 26.86 Vpk; phase 90 starts at crest for .op/.ac)"
+    },
+    {
+      "ref": "VSB",
+      "type": "V",
+      "nodes": [
+        "sb0",
+        "0"
+      ],
+      "value": "0",
+      "ac": {
+        "amplitude": "26.86",
+        "freq": 60,
+        "phase": 270
+      },
+      "label": "Power transformer RED secondary leg B (anti-phase)"
+    },
+    {
+      "ref": "RSA",
+      "type": "R",
+      "nodes": [
+        "sa0",
+        "sa"
+      ],
+      "value": "1.824",
+      "label": "Secondary + reflected primary DCR (1.2 + 0.158^2 * 25 Ohm)"
+    },
+    {
+      "ref": "RSB",
+      "type": "R",
+      "nodes": [
+        "sb0",
+        "sb"
+      ],
+      "value": "1.824",
+      "label": "Secondary + reflected primary DCR (leg B)"
+    },
+    {
+      "ref": "D11",
+      "type": "D",
+      "nodes": [
+        "sa",
+        "bp0"
+      ],
+      "model": "1N4001_PAIR",
+      "label": "Bridge MI-152 positive diode (leg A)"
+    },
+    {
+      "ref": "D14",
+      "type": "D",
+      "nodes": [
+        "sb",
+        "bp0"
+      ],
+      "model": "1N4001_PAIR",
+      "label": "Bridge MI-152R positive diode (leg B)"
+    },
+    {
+      "ref": "R111",
+      "type": "R",
+      "nodes": [
+        "bp0",
+        "raw"
+      ],
+      "value": "82",
+      "label": "R111 82 Ohm 1/2 W",
+      "note": "Roland RE-201/101 Service Notes, p.6 PS-15D circuit diagram"
+    },
+    {
+      "ref": "C110",
+      "type": "C",
+      "nodes": [
+        "raw",
+        "0"
+      ],
+      "value": "1000u",
+      "label": "C110 1000 uF/25 V reservoir",
+      "note": "Roland RE-201/101 Service Notes, p.6 PS-15D circuit diagram"
+    },
+    {
+      "ref": "R110",
+      "type": "R",
+      "nodes": [
+        "raw",
+        "qb21"
+      ],
+      "value": "2k2",
+      "label": "R110 2.2k (Q21 base feed)",
+      "note": "Roland RE-201/101 Service Notes, p.6 PS-15D circuit diagram"
+    },
+    {
+      "ref": "C109",
+      "type": "C",
+      "nodes": [
+        "qb21",
+        "0"
+      ],
+      "value": "10u",
+      "label": "C109 10 uF/25 V (base filter: capacitance multiplier)",
+      "note": "Roland RE-201/101 Service Notes, p.6 PS-15D circuit diagram"
+    },
+    {
+      "ref": "Q21",
+      "type": "npn",
+      "nodes": [
+        "raw",
+        "qb21",
+        "e21"
+      ],
+      "model": "2SD571",
+      "label": "Q21 2SD571 L series pass (ripple filter)",
+      "note": "Roland RE-201/101 Service Notes, p.6 PS-15D circuit diagram"
+    },
+    {
+      "ref": "R109",
+      "type": "R",
+      "nodes": [
+        "e21",
+        "b17"
+      ],
+      "value": "180",
+      "label": "R109 180 Ohm 1/2 W",
+      "note": "Roland RE-201/101 Service Notes, p.6 PS-15D circuit diagram"
+    },
+    {
+      "ref": "C108",
+      "type": "C",
+      "nodes": [
+        "b17",
+        "0"
+      ],
+      "value": "1000u",
+      "label": "C108 1000 uF/25 V (17 V rail, PS pin 40)",
+      "note": "Roland RE-201/101 Service Notes, p.6 PS-15D circuit diagram"
+    },
+    {
+      "ref": "C71",
+      "type": "C",
+      "nodes": [
+        "b17",
+        "0"
+      ],
+      "value": "100u",
+      "label": "C71 100 uF/25 V (OP-14B pin 16)",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "VSG",
+      "type": "V",
+      "nodes": [
+        "sg0",
+        "0"
+      ],
+      "value": "0",
+      "ac": {
+        "amplitude": "12.3",
+        "freq": 60,
+        "phase": 90
+      },
+      "label": "Power transformer GRY secondary leg A (11 V reverb-driver rail)",
+      "note": "unverified: the GRY winding voltage is not given; 12.3 Vpk (8.7 Vrms) is fitted so that the rail sits at the 11 V marked at PS pin 39 with the driver idle. Same half-cycle equivalent as VSA. PS-15D circuit diagram, Roland RE-201/101 Service Notes 2nd ed. p.9 (OP-14B 38 -> PS 39 'GRY' supply); '11V' at pin 39 on the p.5 circuit diagram"
+    },
+    {
+      "ref": "VSGB",
+      "type": "V",
+      "nodes": [
+        "sgb0",
+        "0"
+      ],
+      "value": "0",
+      "ac": {
+        "amplitude": "12.3",
+        "freq": 60,
+        "phase": 270
+      },
+      "label": "Power transformer GRY secondary leg B (anti-phase)"
+    },
+    {
+      "ref": "RSG",
+      "type": "R",
+      "nodes": [
+        "sg0",
+        "sg"
+      ],
+      "value": "1.5",
+      "label": "GRY secondary DCR (leg A)",
+      "note": "unverified: winding resistance assumed"
+    },
+    {
+      "ref": "RSGB",
+      "type": "R",
+      "nodes": [
+        "sgb0",
+        "sgb"
+      ],
+      "value": "1.5",
+      "label": "GRY secondary DCR (leg B)"
+    },
+    {
+      "ref": "D12",
+      "type": "D",
+      "nodes": [
+        "sg",
+        "bg0"
+      ],
+      "model": "1N4001_PAIR",
+      "label": "Bridge D12/D15 (GRY), collapsed series pair as D11/D14 (leg A)"
+    },
+    {
+      "ref": "D15",
+      "type": "D",
+      "nodes": [
+        "sgb",
+        "bg0"
+      ],
+      "model": "1N4001_PAIR",
+      "label": "Bridge D12/D15 (GRY), leg B"
+    },
+    {
+      "ref": "R114",
+      "type": "R",
+      "nodes": [
+        "bg0",
+        "g12"
+      ],
+      "value": "33",
+      "label": "R114 33 Ohm 1/2 W",
+      "note": "PS-15D circuit diagram, Roland RE-201/101 Service Notes 2nd ed. p.9 (OP-14B 38 -> PS 39 'GRY' supply); '11V' at pin 39 on the p.5 circuit diagram"
+    },
+    {
+      "ref": "C112",
+      "type": "C",
+      "nodes": [
+        "g12",
+        "0"
+      ],
+      "value": "1000u",
+      "label": "C112 1000 uF/16 V"
+    },
+    {
+      "ref": "R113",
+      "type": "R",
+      "nodes": [
+        "g12",
+        "b11"
+      ],
+      "value": "33",
+      "label": "R113 33 Ohm 1/2 W"
+    },
+    {
+      "ref": "C111",
+      "type": "C",
+      "nodes": [
+        "b11",
+        "0"
+      ],
+      "value": "220u",
+      "label": "C111 220 uF/16 V (PS pin 39: 11 V, OP-14B terminal 38 = IC1 pin 4)"
+    },
+    {
+      "ref": "R93",
+      "type": "R",
+      "nodes": [
+        "in",
+        "vr3t"
+      ],
+      "value": "8k2",
+      "label": "R93 8.2k input series (drawn 'R43' in the scan)",
+      "note": "unverified: designator legible only as 'R?3' next to C91; value 8.2k legible"
+    },
+    {
+      "ref": "C91",
+      "type": "C",
+      "nodes": [
+        "in",
+        "vr3t"
+      ],
+      "value": "1n",
+      "label": "C91 .001 uF across the input resistor",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "VR3",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "w3",
+        "vr3t"
+      ],
+      "value": "10k",
+      "taper": "B",
+      "control": "instrument_volume",
+      "label": "VR3 10KB Instrument volume",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "SW3E",
+      "type": "switch",
+      "nodes": [
+        "w3",
+        "s3e"
+      ],
+      "control": "echo_normal",
+      "label": "SW3 Echo position",
+      "note": "SW3 ECHO/NORMAL: Echo routes the instrument to the mic amplifier (record path) via R3; Normal routes it to the direct amplifier Q11 only"
+    },
+    {
+      "ref": "SW3N",
+      "type": "switch",
+      "nodes": [
+        "w3",
+        "s3n"
+      ],
+      "control": "echo_normal",
+      "invert": true,
+      "label": "SW3 Normal position"
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "s3e",
+        "n6"
+      ],
+      "value": "47k",
+      "label": "R3 47k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "n6",
+        "m1w"
+      ],
+      "value": "4k7",
+      "label": "R1 4.7k (Mic 1)",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "VR1",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "m1w",
+        "m1t"
+      ],
+      "value": "1k",
+      "taper": "B",
+      "control": "mic1",
+      "label": "VR1 1KB Mic 1 volume (jack unplugged)",
+      "note": "Mic jacks unplugged: the pot's top floats, so the wiper loads the mixing node through R1 and the lower track section"
+    },
+    {
+      "ref": "R2",
+      "type": "R",
+      "nodes": [
+        "n6",
+        "m2w"
+      ],
+      "value": "4k7",
+      "label": "R2 4.7k (Mic 2)",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "VR2",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "m2w",
+        "m2t"
+      ],
+      "value": "1k",
+      "taper": "B",
+      "control": "mic2",
+      "label": "VR2 1KB Mic 2 volume (jack unplugged)"
+    },
+    {
+      "ref": "C22",
+      "type": "C",
+      "nodes": [
+        "n6",
+        "q1x"
+      ],
+      "value": "1u",
+      "label": "C22 1 uF/35 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R21",
+      "type": "R",
+      "nodes": [
+        "q1x",
+        "q1b"
+      ],
+      "value": "1k",
+      "label": "R21 1k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R34",
+      "type": "R",
+      "nodes": [
+        "b17",
+        "micr"
+      ],
+      "value": "820",
+      "label": "R34 820 (mic-amp rail)",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C29",
+      "type": "C",
+      "nodes": [
+        "micr",
+        "0"
+      ],
+      "value": "100u",
+      "label": "C29 100 uF/25 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R25",
+      "type": "R",
+      "nodes": [
+        "micr",
+        "n125a"
+      ],
+      "value": "15k",
+      "label": "R25 15k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C23",
+      "type": "C",
+      "nodes": [
+        "n125a",
+        "0"
+      ],
+      "value": "100u",
+      "label": "C23 100 uF/25 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R22",
+      "type": "R",
+      "nodes": [
+        "n125a",
+        "bA"
+      ],
+      "value": "82k",
+      "label": "R22 82k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R23",
+      "type": "R",
+      "nodes": [
+        "bA",
+        "0"
+      ],
+      "value": "56k",
+      "label": "R23 56k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R24",
+      "type": "R",
+      "nodes": [
+        "bA",
+        "q1b"
+      ],
+      "value": "47k",
+      "label": "R24 47k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "CBT1",
+      "type": "C",
+      "nodes": [
+        "bA",
+        "q1e"
+      ],
+      "value": "47u",
+      "label": "Q1 bias bootstrap",
+      "note": "unverified: the OP-13 scan shows only one electrolytic at Q1's emitter (C25 100/6.3); the bootstrap from the R22/R23 node to the emitter is taken from the identical OP-14B stage (C54 47/6.3)"
+    },
+    {
+      "ref": "R26",
+      "type": "R",
+      "nodes": [
+        "q1e",
+        "0"
+      ],
+      "value": "39k",
+      "label": "R26 39k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C25",
+      "type": "C",
+      "nodes": [
+        "q1e",
+        "f1"
+      ],
+      "value": "100u",
+      "label": "C25 100 uF/6.3 V",
+      "note": "unverified: placement read as the emitter-to-feedback coupling cap (role of C55 in the OP-14B copy of this stage)"
+    },
+    {
+      "ref": "R28",
+      "type": "R",
+      "nodes": [
+        "f1",
+        "0"
+      ],
+      "value": "270",
+      "label": "R28 270",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R33",
+      "type": "R",
+      "nodes": [
+        "q2e",
+        "f1"
+      ],
+      "value": "120k",
+      "label": "R33 120k overall feedback (flat: mic amp)",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R27",
+      "type": "R",
+      "nodes": [
+        "micr",
+        "q1c"
+      ],
+      "value": "15k",
+      "label": "R27 15k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C24",
+      "type": "C",
+      "nodes": [
+        "q1c",
+        "q1b"
+      ],
+      "value": "100p",
+      "label": "C24 100 pF",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "Q1",
+      "type": "npn",
+      "nodes": [
+        "q1c",
+        "q1b",
+        "q1e"
+      ],
+      "model": "2SC1000GR",
+      "label": "Q1",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "Q12",
+      "type": "pnp",
+      "nodes": [
+        "q12c",
+        "q1c",
+        "q12e"
+      ],
+      "model": "2SA493GR",
+      "label": "Q12",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R30",
+      "type": "R",
+      "nodes": [
+        "q12e",
+        "q12x"
+      ],
+      "value": "180",
+      "label": "R30 180",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R29",
+      "type": "R",
+      "nodes": [
+        "q12x",
+        "micr"
+      ],
+      "value": "1k5",
+      "label": "R29 1.5k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C27",
+      "type": "C",
+      "nodes": [
+        "q12x",
+        "micr"
+      ],
+      "value": "100u",
+      "label": "C27 100 uF/6.3 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R31",
+      "type": "R",
+      "nodes": [
+        "q12c",
+        "0"
+      ],
+      "value": "10k",
+      "label": "R31 10k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C28",
+      "type": "C",
+      "nodes": [
+        "q12c",
+        "0"
+      ],
+      "value": "470p",
+      "label": "C28 470 pF",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C26",
+      "type": "C",
+      "nodes": [
+        "q12c",
+        "q1c"
+      ],
+      "value": "47p",
+      "label": "C26 47 pF (was 100 pF before S/N 587250)",
+      "note": "unverified: connection read as Q12 collector-to-base compensation"
+    },
+    {
+      "ref": "Q2",
+      "type": "npn",
+      "nodes": [
+        "micr",
+        "q12c",
+        "q2e"
+      ],
+      "model": "2SC1000GR",
+      "label": "Q2 emitter follower",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R32",
+      "type": "R",
+      "nodes": [
+        "q2e",
+        "0"
+      ],
+      "value": "5k6",
+      "label": "R32 5.6k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C30",
+      "type": "C",
+      "nodes": [
+        "q2e",
+        "n11"
+      ],
+      "value": "10u",
+      "label": "C30 10 uF/25 V (node 11 'J')",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "SDRY",
+      "type": "switch",
+      "nodes": [
+        "n11",
+        "n5"
+      ],
+      "control": "dry_cut",
+      "invert": true,
+      "label": "J4 FROM PA jack switch (closed with no plug)",
+      "note": "Inferred: with a plug in FROM PA the jack's switch contact opens and the direct (pre-echo) signal from the mic amp no longer reaches the output, the usual PA-send use. The dashed shielded run from node 11 to the jack's 'SWITCH' lug and on to node 5 is legible; the function is our reading"
+    },
+    {
+      "ref": "C6",
+      "type": "C",
+      "nodes": [
+        "n5",
+        "c6n"
+      ],
+      "value": "330n",
+      "label": "C6 0.33 uF/35 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R10",
+      "type": "R",
+      "nodes": [
+        "c6n",
+        "n7"
+      ],
+      "value": "15k",
+      "label": "R10 15k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R35",
+      "type": "R",
+      "nodes": [
+        "n11",
+        "n12"
+      ],
+      "value": "27k",
+      "label": "R35 27k (input to record sum, node 12)",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "VR5",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "n19",
+        "n12"
+      ],
+      "value": "20k",
+      "taper": "B",
+      "control": "intensity",
+      "label": "VR5 20KB Intensity",
+      "note": "Pin 3 to node 12 (record sum), wiper to node 19 (attenuated playback), pin 1 to ground: clockwise injects more of the playback into the record amplifier"
+    },
+    {
+      "ref": "C31",
+      "type": "C",
+      "nodes": [
+        "n12",
+        "q3x"
+      ],
+      "value": "1u",
+      "label": "C31 1 uF/50 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R36",
+      "type": "R",
+      "nodes": [
+        "q3x",
+        "q3b"
+      ],
+      "value": "1k",
+      "label": "R36 1k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R37",
+      "type": "R",
+      "nodes": [
+        "q3b",
+        "0"
+      ],
+      "value": "470k",
+      "label": "R37 470k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R38",
+      "type": "R",
+      "nodes": [
+        "q3c",
+        "q3b"
+      ],
+      "value": "1M",
+      "label": "R38 1M",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C32",
+      "type": "C",
+      "nodes": [
+        "q3c",
+        "q3b"
+      ],
+      "value": "100p",
+      "label": "C32 100 pF",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R39",
+      "type": "R",
+      "nodes": [
+        "b17",
+        "q3c"
+      ],
+      "value": "10k",
+      "label": "R39 10k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R40",
+      "type": "R",
+      "nodes": [
+        "q3e",
+        "0"
+      ],
+      "value": "1k",
+      "label": "R40 1k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "Q3",
+      "type": "npn",
+      "nodes": [
+        "q3c",
+        "q3b",
+        "q3e"
+      ],
+      "model": "2SC1000GR",
+      "label": "Q3 recording pre-amp",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C33",
+      "type": "C",
+      "nodes": [
+        "q3c",
+        "vr11t"
+      ],
+      "value": "10u",
+      "label": "C33 10 uF/25 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "VR11",
+      "type": "pot",
+      "nodes": [
+        "n13",
+        "vr11w",
+        "vr11t"
+      ],
+      "value": "20k",
+      "taper": "B",
+      "control": "rec_level",
+      "label": "VR11 20KB Recording level adj (internal)",
+      "note": "Service notes 2-3(b): set for -12 dBm output with a -50 dB input; node 13 (bottom) feeds the level-meter amp Q16/Q17 (not modelled)"
+    },
+    {
+      "ref": "R41",
+      "type": "R",
+      "nodes": [
+        "n13",
+        "0"
+      ],
+      "value": "22k",
+      "label": "R41 22k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R42",
+      "type": "R",
+      "nodes": [
+        "vr11w",
+        "q4x"
+      ],
+      "value": "27k",
+      "label": "R42 27k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C34",
+      "type": "C",
+      "nodes": [
+        "q4x",
+        "q4b"
+      ],
+      "value": "1u",
+      "label": "C34 1 uF/50 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R43",
+      "type": "R",
+      "nodes": [
+        "b17",
+        "q4b"
+      ],
+      "value": "150k",
+      "label": "R43 150k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R44",
+      "type": "R",
+      "nodes": [
+        "q4b",
+        "0"
+      ],
+      "value": "22k",
+      "label": "R44 22k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R45",
+      "type": "R",
+      "nodes": [
+        "b17",
+        "q4c"
+      ],
+      "value": "4k7",
+      "label": "R45 4.7k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "Q4",
+      "type": "npn",
+      "nodes": [
+        "q4c",
+        "q4b",
+        "q4e"
+      ],
+      "model": "2SC1000GR",
+      "label": "Q4 recording amp",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R47",
+      "type": "R",
+      "nodes": [
+        "q4e",
+        "0"
+      ],
+      "value": "1k",
+      "label": "R47 1k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C35",
+      "type": "C",
+      "nodes": [
+        "q4e",
+        "0"
+      ],
+      "value": "68n",
+      "label": "C35 .068 uF: record pre-emphasis (zero at 2.3 kHz)",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C36",
+      "type": "C",
+      "nodes": [
+        "q4c",
+        "q4o"
+      ],
+      "value": "1u",
+      "label": "C36 1 uF/50 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R48",
+      "type": "R",
+      "nodes": [
+        "q4o",
+        "trp"
+      ],
+      "value": "6k8",
+      "label": "R48 6.8k (constant-current feed, test point A)",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "L21",
+      "type": "L",
+      "nodes": [
+        "trp",
+        "n14"
+      ],
+      "value": "14m",
+      "label": "L21 14 mH trap coil (MC-128)",
+      "note": "Bias trap: L21 || C37 resonates at 62 kHz (bias oscillator 60 kHz per PS-15D)"
+    },
+    {
+      "ref": "C37",
+      "type": "C",
+      "nodes": [
+        "trp",
+        "n14"
+      ],
+      "value": "470p",
+      "label": "C37 470 pF",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "TAPE",
+      "type": "tape",
+      "nodes": [
+        "n14",
+        "0",
+        "ph1",
+        "ph2",
+        "ph3"
+      ],
+      "model": "RE201_SM",
+      "control": "repeat_rate",
+      "label": "Tape loop: record head R-280MR, playback heads R-280MP x3",
+      "note": "Record head from node 14 to ground. Bias (60 kHz, VR21 50KB, C101 330 pF into node 14) and erase (50-60 V rms, AE-28) are not simulated: the block assumes correct bias. Head R/L unsourced (model)"
+    },
+    {
+      "ref": "SW1B",
+      "type": "switch",
+      "nodes": [
+        "ph1",
+        "n17"
+      ],
+      "control": "mode",
+      "positions": [
+        0,
+        4,
+        7,
+        9,
+        10
+      ],
+      "label": "Mode selector 1B: head 1",
+      "note": "Closed in modes 1, 5, 8, 10, 11 (service notes 'Mode selector position vs activated PB head' table)"
+    },
+    {
+      "ref": "SW1C",
+      "type": "switch",
+      "nodes": [
+        "ph2",
+        "n17"
+      ],
+      "control": "mode",
+      "positions": [
+        1,
+        3,
+        5,
+        7,
+        8,
+        10
+      ],
+      "label": "Mode selector 1C: head 2",
+      "note": "Closed in modes 2, 4, 6, 8, 9, 11 (service notes 'Mode selector position vs activated PB head' table)"
+    },
+    {
+      "ref": "SW1D",
+      "type": "switch",
+      "nodes": [
+        "ph3",
+        "n17"
+      ],
+      "control": "mode",
+      "positions": [
+        2,
+        3,
+        6,
+        8,
+        9,
+        10
+      ],
+      "label": "Mode selector 1D: head 3",
+      "note": "Closed in modes 3, 4, 7, 9, 10, 11 (service notes 'Mode selector position vs activated PB head' table)"
+    },
+    {
+      "ref": "C51",
+      "type": "C",
+      "nodes": [
+        "n17",
+        "q5x"
+      ],
+      "value": "1u",
+      "label": "C51 1 uF/50 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R60",
+      "type": "R",
+      "nodes": [
+        "q5x",
+        "q5b"
+      ],
+      "value": "1k",
+      "label": "R60 1k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R72",
+      "type": "R",
+      "nodes": [
+        "b17",
+        "b15"
+      ],
+      "value": "820",
+      "label": "R72 820 (playback rail '15V')",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C60",
+      "type": "C",
+      "nodes": [
+        "b15",
+        "0"
+      ],
+      "value": "100u",
+      "label": "C60 100 uF/25 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R63",
+      "type": "R",
+      "nodes": [
+        "b15",
+        "n125b"
+      ],
+      "value": "15k",
+      "label": "R63 15k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C52",
+      "type": "C",
+      "nodes": [
+        "n125b",
+        "0"
+      ],
+      "value": "100u",
+      "label": "C52 100 uF/25 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R61",
+      "type": "R",
+      "nodes": [
+        "n125b",
+        "bB"
+      ],
+      "value": "82k",
+      "label": "R61 82k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R62",
+      "type": "R",
+      "nodes": [
+        "bB",
+        "0"
+      ],
+      "value": "56k",
+      "label": "R62 56k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R64",
+      "type": "R",
+      "nodes": [
+        "bB",
+        "q5b"
+      ],
+      "value": "47k",
+      "label": "R64 47k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C54",
+      "type": "C",
+      "nodes": [
+        "bB",
+        "q5e"
+      ],
+      "value": "47u",
+      "label": "C54 47 uF/6.3 V bootstrap",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R65",
+      "type": "R",
+      "nodes": [
+        "q5e",
+        "0"
+      ],
+      "value": "39k",
+      "label": "R65 39k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C55",
+      "type": "C",
+      "nodes": [
+        "q5e",
+        "f5"
+      ],
+      "value": "22u",
+      "label": "C55 22 uF/16 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R67",
+      "type": "R",
+      "nodes": [
+        "f5",
+        "0"
+      ],
+      "value": "270",
+      "label": "R67 270",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C59",
+      "type": "C",
+      "nodes": [
+        "q6e",
+        "f5"
+      ],
+      "value": "6n8",
+      "label": "C59 .0068 uF playback EQ feedback (integrator, 6 dB/oct)",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R66",
+      "type": "R",
+      "nodes": [
+        "b15",
+        "q5c"
+      ],
+      "value": "15k",
+      "label": "R66 15k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C53",
+      "type": "C",
+      "nodes": [
+        "q5c",
+        "q5b"
+      ],
+      "value": "100p",
+      "label": "C53 100 pF",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "Q5",
+      "type": "npn",
+      "nodes": [
+        "q5c",
+        "q5b",
+        "q5e"
+      ],
+      "model": "2SC1000GR",
+      "label": "Q5 playback preamp",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "Q13",
+      "type": "pnp",
+      "nodes": [
+        "q13c",
+        "q5c",
+        "q13e"
+      ],
+      "model": "2SA493GR",
+      "label": "Q13",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R69",
+      "type": "R",
+      "nodes": [
+        "q13e",
+        "q13x"
+      ],
+      "value": "180",
+      "label": "R69 180",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R68",
+      "type": "R",
+      "nodes": [
+        "q13x",
+        "b15"
+      ],
+      "value": "1k5",
+      "label": "R68 1.5k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C56",
+      "type": "C",
+      "nodes": [
+        "q13x",
+        "b15"
+      ],
+      "value": "100u",
+      "label": "C56 100 uF/6.3 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R70",
+      "type": "R",
+      "nodes": [
+        "q13c",
+        "0"
+      ],
+      "value": "10k",
+      "label": "R70 10k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C57",
+      "type": "C",
+      "nodes": [
+        "q13c",
+        "0"
+      ],
+      "value": "470p",
+      "label": "C57 470 pF",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "Q6",
+      "type": "npn",
+      "nodes": [
+        "b15",
+        "q13c",
+        "q6e"
+      ],
+      "model": "2SC1000GR",
+      "label": "Q6 emitter follower",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R71",
+      "type": "R",
+      "nodes": [
+        "q6e",
+        "0"
+      ],
+      "value": "5k6",
+      "label": "R71 5.6k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C58",
+      "type": "C",
+      "nodes": [
+        "q6e",
+        "n18"
+      ],
+      "value": "100n",
+      "label": "C58 0.1 uF (node 18)",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "VR12",
+      "type": "pot",
+      "nodes": [
+        "n18",
+        "n18",
+        "vr12x"
+      ],
+      "value": "50k",
+      "taper": "B",
+      "control": "intensity_adj",
+      "label": "VR12 50KB Intensity adj (internal)",
+      "note": "Service notes 2-7: trimmed so repeats run away at the marked Intensity setting"
+    },
+    {
+      "ref": "R73",
+      "type": "R",
+      "nodes": [
+        "vr12x",
+        "n19"
+      ],
+      "value": "10k",
+      "label": "R73 10k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C61",
+      "type": "C",
+      "nodes": [
+        "n19",
+        "0"
+      ],
+      "value": "2n2",
+      "label": "C61 .0022 uF",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "VR6",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "n20",
+        "n18"
+      ],
+      "value": "20k",
+      "taper": "B",
+      "control": "echo",
+      "label": "VR6 20KB Echo volume",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R74",
+      "type": "R",
+      "nodes": [
+        "n20",
+        "q7x"
+      ],
+      "value": "1k",
+      "label": "R74 1k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C62",
+      "type": "C",
+      "nodes": [
+        "q7x",
+        "q7b"
+      ],
+      "value": "470n",
+      "label": "C62 0.47 uF/50 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C63",
+      "type": "C",
+      "nodes": [
+        "b17",
+        "q7b"
+      ],
+      "value": "4n7",
+      "label": "C63 .0047 uF",
+      "note": "unverified: drawn between the 17 V line and Q7's base node; read as an HF roll-off to AC ground"
+    },
+    {
+      "ref": "R75",
+      "type": "R",
+      "nodes": [
+        "b17",
+        "q7b"
+      ],
+      "value": "47k",
+      "label": "R75 47k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R76",
+      "type": "R",
+      "nodes": [
+        "q7b",
+        "0"
+      ],
+      "value": "100k",
+      "label": "R76 100k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "Q7",
+      "type": "npn",
+      "nodes": [
+        "b17",
+        "q7b",
+        "q7e"
+      ],
+      "model": "2SC1000GR",
+      "label": "Q7 emitter follower",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R77",
+      "type": "R",
+      "nodes": [
+        "q7e",
+        "0"
+      ],
+      "value": "39k",
+      "label": "R77 39k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C64",
+      "type": "C",
+      "nodes": [
+        "q7e",
+        "ta"
+      ],
+      "value": "1u",
+      "label": "C64 1 uF/50 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R79",
+      "type": "R",
+      "nodes": [
+        "ta",
+        "0"
+      ],
+      "value": "1M",
+      "label": "R79 1M",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R78",
+      "type": "R",
+      "nodes": [
+        "ta",
+        "n24"
+      ],
+      "value": "10k",
+      "label": "R78 10k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "VR7",
+      "type": "pot",
+      "nodes": [
+        "n26",
+        "n25",
+        "n24"
+      ],
+      "value": "100k",
+      "taper": "B",
+      "control": "bass",
+      "label": "VR7 100KB Bass",
+      "note": "Service notes: Bass +10 dB at 100 Hz (reference data). Pin 3 on the input side: clockwise = boost"
+    },
+    {
+      "ref": "C65",
+      "type": "C",
+      "nodes": [
+        "n24",
+        "n25"
+      ],
+      "value": "39n",
+      "label": "C65 .039 uF",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C66",
+      "type": "C",
+      "nodes": [
+        "n25",
+        "n26"
+      ],
+      "value": "39n",
+      "label": "C66 .039 uF",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R80",
+      "type": "R",
+      "nodes": [
+        "n25",
+        "ts"
+      ],
+      "value": "10k",
+      "label": "R80 10k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R82",
+      "type": "R",
+      "nodes": [
+        "n26",
+        "tb"
+      ],
+      "value": "10k",
+      "label": "R82 10k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "VR8",
+      "type": "pot",
+      "nodes": [
+        "tb",
+        "n28",
+        "ta"
+      ],
+      "value": "100k",
+      "taper": "B",
+      "control": "treble",
+      "label": "VR8 100KB Treble",
+      "note": "Service notes: Treble +10 dB at 5 kHz. Pin 3 (node 27) on the input side"
+    },
+    {
+      "ref": "C67",
+      "type": "C",
+      "nodes": [
+        "n28",
+        "c67n"
+      ],
+      "value": "3n9",
+      "label": "C67 .0039 uF",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R81",
+      "type": "R",
+      "nodes": [
+        "c67n",
+        "ts"
+      ],
+      "value": "4k7",
+      "label": "R81 4.7k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C68",
+      "type": "C",
+      "nodes": [
+        "ts",
+        "q8b"
+      ],
+      "value": "4u7",
+      "label": "C68 4.7 uF/25 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R84",
+      "type": "R",
+      "nodes": [
+        "b17",
+        "q8b"
+      ],
+      "value": "68k",
+      "label": "R84 68k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R83",
+      "type": "R",
+      "nodes": [
+        "q8b",
+        "0"
+      ],
+      "value": "27k",
+      "label": "R83 27k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "Q8",
+      "type": "npn",
+      "nodes": [
+        "q8c",
+        "q8b",
+        "q8e"
+      ],
+      "model": "2SC1000GR",
+      "label": "Q8 tone amplifier",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R87",
+      "type": "R",
+      "nodes": [
+        "q8e",
+        "0"
+      ],
+      "value": "2k2",
+      "label": "R87 2.2k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C70",
+      "type": "C",
+      "nodes": [
+        "q8e",
+        "0"
+      ],
+      "value": "47u",
+      "label": "C70 47 uF/6.3 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R85",
+      "type": "R",
+      "nodes": [
+        "b17",
+        "q8c"
+      ],
+      "value": "3k9",
+      "label": "R85 3.9k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C69",
+      "type": "C",
+      "nodes": [
+        "q8c",
+        "tb"
+      ],
+      "value": "4u7",
+      "label": "C69 4.7 uF/25 V (tone feedback)",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R86",
+      "type": "R",
+      "nodes": [
+        "q8c",
+        "n7"
+      ],
+      "value": "22k",
+      "label": "R86 22k (echo into the output mix)",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "n9in",
+        "q11b"
+      ],
+      "value": "1u",
+      "label": "C1 1 uF/35 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R5",
+      "type": "R",
+      "nodes": [
+        "q11c",
+        "q11b"
+      ],
+      "value": "220k",
+      "label": "R5 220k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "q11c",
+        "q11b"
+      ],
+      "value": "47p",
+      "label": "C2 47 pF",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "q11b",
+        "0"
+      ],
+      "value": "47k",
+      "label": "R6 47k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "Q11",
+      "type": "npn",
+      "nodes": [
+        "q11c",
+        "q11b",
+        "q11e"
+      ],
+      "model": "2SC1000GR",
+      "label": "Q11 direct / reverb-return amplifier",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "q11e",
+        "0"
+      ],
+      "value": "560",
+      "label": "R7 560",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "q11e",
+        "0"
+      ],
+      "value": "10u",
+      "label": "C4 10 uF/16 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "b17",
+        "q11c"
+      ],
+      "value": "27k",
+      "label": "R8 27k (from 17 V via OP-13 pin 8)",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C3",
+      "type": "C",
+      "nodes": [
+        "q11c",
+        "c3n"
+      ],
+      "value": "470n",
+      "label": "C3 0.47 uF/35 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R9",
+      "type": "R",
+      "nodes": [
+        "c3n",
+        "n7"
+      ],
+      "value": "27k",
+      "label": "R9 27k (node 7, 155 mV, to OP-14B pin 21)",
+      "note": "C5 470 pF from this node omitted from S/N 587250 (service-note change *2)"
+    },
+    {
+      "ref": "Q9",
+      "type": "npn",
+      "nodes": [
+        "b17",
+        "n7",
+        "q9e"
+      ],
+      "model": "2SC1000GR",
+      "label": "Q9 output buffer",
+      "note": "Base = node 21: the echo (R86) and direct (R9, R10) signals sum here"
+    },
+    {
+      "ref": "R88",
+      "type": "R",
+      "nodes": [
+        "q9e",
+        "0"
+      ],
+      "value": "4k7",
+      "label": "R88 4.7k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C72",
+      "type": "C",
+      "nodes": [
+        "q9e",
+        "n23"
+      ],
+      "value": "10u",
+      "label": "C72 10 uF/25 V",
+      "note": "R89 1.5k omitted from S/N 587250 (change *3), when the FL-7 filter board was added"
+    },
+    {
+      "ref": "C300",
+      "type": "C",
+      "nodes": [
+        "n23",
+        "flc"
+      ],
+      "value": "2n2",
+      "label": "C300 .0022 uF",
+      "note": "FL-7 filter board (S/N 587250 on), C300-C303 .0022 uF"
+    },
+    {
+      "ref": "C301",
+      "type": "C",
+      "nodes": [
+        "flc",
+        "out"
+      ],
+      "value": "2n2",
+      "label": "C301 .0022 uF"
+    },
+    {
+      "ref": "R301",
+      "type": "R",
+      "nodes": [
+        "flc",
+        "0"
+      ],
+      "value": "470",
+      "label": "R301 470",
+      "note": "FL-7 Twin-T shunt leg (470 Ohm to ground bus 2-5; C302/C303 shunt the R300/R302 midpoint)"
+    },
+    {
+      "ref": "R300",
+      "type": "R",
+      "nodes": [
+        "n23",
+        "flm"
+      ],
+      "value": "1k",
+      "label": "R300 1k"
+    },
+    {
+      "ref": "R302",
+      "type": "R",
+      "nodes": [
+        "out",
+        "flm"
+      ],
+      "value": "1k",
+      "label": "R302 1k"
+    },
+    {
+      "ref": "C302",
+      "type": "C",
+      "nodes": [
+        "flm",
+        "0"
+      ],
+      "value": "2n2",
+      "label": "C302 .0022 uF"
+    },
+    {
+      "ref": "C303",
+      "type": "C",
+      "nodes": [
+        "flm",
+        "0"
+      ],
+      "value": "2n2",
+      "label": "C303 .0022 uF"
+    },
+    {
+      "ref": "R92",
+      "type": "R",
+      "nodes": [
+        "out",
+        "outm"
+      ],
+      "value": "3k3",
+      "label": "R92 3.3k (H -> M)",
+      "note": "Output level switch SW4 at H (-15 dBm, 1.4 kOhm): output taken at the H tap"
+    },
+    {
+      "ref": "R91",
+      "type": "R",
+      "nodes": [
+        "outm",
+        "outl"
+      ],
+      "value": "1k5",
+      "label": "R91 1.5k (M -> L)"
+    },
+    {
+      "ref": "R90",
+      "type": "R",
+      "nodes": [
+        "outl",
+        "0"
+      ],
+      "value": "560",
+      "label": "R90 560"
+    },
+    {
+      "ref": "R50",
+      "type": "R",
+      "nodes": [
+        "n11",
+        "rd1"
+      ],
+      "value": "330k",
+      "label": "R50 330k (reverb send from node 11)",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R51",
+      "type": "R",
+      "nodes": [
+        "rd1",
+        "0"
+      ],
+      "value": "22k",
+      "label": "R51 22k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C40",
+      "type": "C",
+      "nodes": [
+        "rd1",
+        "icp"
+      ],
+      "value": "2n2",
+      "label": "C40 .0022 uF (added S/N 587250, change *5)",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R52",
+      "type": "R",
+      "nodes": [
+        "icp",
+        "vref9"
+      ],
+      "value": "100k",
+      "label": "R52 100k to IC1 pin 9 (5 V)",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "VREF9",
+      "type": "V",
+      "nodes": [
+        "vref9",
+        "0"
+      ],
+      "value": "5",
+      "label": "IC1 pin 9 internal 5 V reference",
+      "note": "unverified: pin 9 is an internal bias output of the TA-7200P (5 V marked); modelled as an ideal 5 V source, C41 47 uF across it"
+    },
+    {
+      "ref": "C41",
+      "type": "C",
+      "nodes": [
+        "vref9",
+        "0"
+      ],
+      "value": "47u",
+      "label": "C41 47 uF/16 V"
+    },
+    {
+      "ref": "IC1",
+      "type": "opamp",
+      "nodes": [
+        "icp",
+        "icn",
+        "ico",
+        "b11",
+        "0"
+      ],
+      "model": "TA7200P",
+      "label": "IC1 TA-7200P reverb drive amplifier",
+      "note": "Internal power-amp IC as a macro op-amp: + = pin 10, - = pin 8, out = pin 2. Supply: pin 4 -> OP-14B terminal 38 -> PS-15D pin 39, the separate 11 V GRY-winding rail (b11), not the 17 V rail (service notes p.5 circuit diagram: terminal 38 wiring and the '11V' label at pin 39; p.9 PS-15D diagram: OP-14B 38 -> 39 <- R113/C111 <- R114/C112 <- D12/D15 bridge <- GRY). On the 17 V rail the 42 dB driver's tank current (up to ~0.2 A) collapsed b17 behind R109 180 Ohm (12-13 V with a nominal input). C44 .001 (pins 3/4), C46 100 pF (pin 5), C45 47 uF bootstrap (pin 6) and C43 47 uF ripple filter (pin 7, 4 V) are internal-compensation parts of the IC and are folded into the macro"
+    },
+    {
+      "ref": "R53",
+      "type": "R",
+      "nodes": [
+        "icn",
+        "c42n"
+      ],
+      "value": "820",
+      "label": "R53 820",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C42",
+      "type": "C",
+      "nodes": [
+        "c42n",
+        "0"
+      ],
+      "value": "4u7",
+      "label": "C42 4.7 uF/25 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R54",
+      "type": "R",
+      "nodes": [
+        "ico",
+        "icn"
+      ],
+      "value": "100k",
+      "label": "R54 100k feedback (added S/N 587250, change *4): gain 1 + 100k/820 = 42 dB",
+      "note": "unverified: R54 read as output-to-pin-8 feedback; the IC's internal feedback resistor is not modelled"
+    },
+    {
+      "ref": "C47",
+      "type": "C",
+      "nodes": [
+        "ico",
+        "rv1"
+      ],
+      "value": "47u",
+      "label": "C47 47 uF/16 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R59",
+      "type": "R",
+      "nodes": [
+        "rv1",
+        "n32"
+      ],
+      "value": "10",
+      "label": "R59 10 Ohm",
+      "note": "Tank drive ~7 V p-p at pin 32 (scope trace on the diagram)"
+    },
+    {
+      "ref": "TANK",
+      "type": "spring",
+      "nodes": [
+        "n32",
+        "0",
+        "n33",
+        "0"
+      ],
+      "model": "RE201_SPRING",
+      "label": "Reverberation unit Z-3F (040-001)",
+      "note": "RE-201 spec: 3-spring reverb unit"
+    },
+    {
+      "ref": "C48",
+      "type": "C",
+      "nodes": [
+        "n33",
+        "q10b"
+      ],
+      "value": "470n",
+      "label": "C48 0.47 uF/35 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R56",
+      "type": "R",
+      "nodes": [
+        "q10c",
+        "q10b"
+      ],
+      "value": "390k",
+      "label": "R56 390k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R55",
+      "type": "R",
+      "nodes": [
+        "q10b",
+        "0"
+      ],
+      "value": "120k",
+      "label": "R55 120k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "Q10",
+      "type": "npn",
+      "nodes": [
+        "q10c",
+        "q10b",
+        "q10e"
+      ],
+      "model": "2SC1000GR",
+      "label": "Q10 reverb recovery",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R57",
+      "type": "R",
+      "nodes": [
+        "q10e",
+        "0"
+      ],
+      "value": "1k",
+      "label": "R57 1k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C49",
+      "type": "C",
+      "nodes": [
+        "q10e",
+        "0"
+      ],
+      "value": "47u",
+      "label": "C49 47 uF/25 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "R58",
+      "type": "R",
+      "nodes": [
+        "b17",
+        "q10c"
+      ],
+      "value": "10k",
+      "label": "R58 10k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C50",
+      "type": "C",
+      "nodes": [
+        "q10c",
+        "n34"
+      ],
+      "value": "4u7",
+      "label": "C50 4.7 uF/25 V",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "VR10",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "vr10w",
+        "n34"
+      ],
+      "value": "50k",
+      "taper": "B",
+      "control": "reverb_adj",
+      "label": "VR10 50KB Reverb vol. adj (internal)",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "C92",
+      "type": "C",
+      "nodes": [
+        "vr10w",
+        "0"
+      ],
+      "value": "4n7",
+      "label": "C92 .0047 uF",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "SW1A",
+      "type": "switch",
+      "nodes": [
+        "vr10w",
+        "n36"
+      ],
+      "control": "mode",
+      "positions": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "label": "Mode selector SW1a: reverb",
+      "note": "Closed in modes 5-12"
+    },
+    {
+      "ref": "R11",
+      "type": "R",
+      "nodes": [
+        "n36",
+        "n35"
+      ],
+      "value": "100k",
+      "label": "R11 100k",
+      "note": "Roland RE-201/101 Service Notes, 2nd ed. (30 Jul 1978), p.4 circuit diagram OP-13/OP-14B/FL-7"
+    },
+    {
+      "ref": "VR9",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "n9in",
+        "n35"
+      ],
+      "value": "50k",
+      "taper": "B",
+      "control": "reverb",
+      "label": "VR9 50KB Reverb volume",
+      "note": "unverified: the VR9 lugs and the two shielded runs are drawn ambiguously; wired as the block diagram shows: return (via SW1a, R11) to the top, bottom to ground, wiper to Q11's input"
+    },
+    {
+      "ref": "SW3NW",
+      "type": "R",
+      "nodes": [
+        "s3n",
+        "n9in"
+      ],
+      "value": "1",
+      "label": "SW3 Normal run to Q11 input",
+      "note": "Wire (1 Ohm) from SW3's Normal throw to C1"
+    }
+  ],
+  "probes": [
+    "q2e",
+    "n12",
+    "q4c",
+    "n14",
+    "n17",
+    "q6e",
+    "n18",
+    "q8c",
+    "n33",
+    "q10c",
+    "out",
+    "b17"
+  ]
+}

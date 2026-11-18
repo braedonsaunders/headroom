@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Shoegaze Organ Wall</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Shoegaze Organ Wall" preset-author="Headroom" preset-comment="Fuzz into a cranked blackface, smeared by a drawbar organ and an endless cosmic reverb."/>
+<rack>
+<non-fix-components>
+  <component id="7000">
+    <component-audio version="1">
+      <parameters num-parameters="1">
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="43000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V" value="0.45"/>
+        <parameter id="S" value="0.7"/>
+        <parameter id="T" value="0.50516"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="B" value="0.29492"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="30000">
+    <component-audio version="1">
+      <parameters num-parameters="19">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.6"/>
+        <parameter id="Br" value="1"/>
+        <parameter id="Bs" value="0.42734"/>
+        <parameter id="Md" value="0.46316"/>
+        <parameter id="Tr" value="0.59644"/>
+        <parameter id="Vr" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0"/>
+        <parameter id="Bia" value="1"/>
+        <parameter id="Hz" value="0"/>
+        <parameter id="RvL" value="0.04811"/>
+        <parameter id="RvOn" value="1"/>
+        <parameter id="RvTm" value="0.303125"/>
+        <parameter id="RvSz" value="0.352344"/>
+        <parameter id="ViInt" value="0.58948"/>
+        <parameter id="ViSpd" value="0.43684"/>
+        <parameter id="ViOn" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.5755"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="13"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="28000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Sy" value="0"/>
+        <parameter id="Mode" value="0"/>
+        <parameter id="Rt" value="0.5"/>
+        <parameter id="Int" value="0.35"/>
+        <parameter id="Wd" value="0.5"/>
+        <parameter id="St" value="0"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="8000">
+    <component-audio version="1">
+      <parameters num-parameters="1">
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="900001">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="mode" value="0"/>
+        <parameter id="sens" value="0.55"/>
+        <parameter id="bend" value="2"/>
+        <parameter id="low" value="40"/>
+        <parameter id="high" value="88"/>
+        <parameter id="vel" value="0.5"/>
+        <parameter id="thru" value="1"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="900003">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="tone" value="0.5"/>
+        <parameter id="attack" value="0.5"/>
+        <parameter id="release" value="0.5"/>
+        <parameter id="vibrato" value="0"/>
+        <parameter id="follow" value="0.3"/>
+        <parameter id="level" value="0.5953"/>
+        <parameter id="mix" value="1"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="sound" value="8"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="31000">
+    <component-audio version="1">
+      <parameters num-parameters="15">
+        <parameter id="SF" value="1"/>
+        <parameter id="B" value="0.5"/>
+        <parameter id="P" value="0.5"/>
+        <parameter id="D" value="0.5"/>
+        <parameter id="TS" value="0.5"/>
+        <parameter id="TF" value="0.5"/>
+        <parameter id="TA" value="0.5"/>
+        <parameter id="TSp" value="0.5"/>
+        <parameter id="BS" value="0.5"/>
+        <parameter id="BF" value="0.5"/>
+        <parameter id="BA" value="0.5"/>
+        <parameter id="BSp" value="0.5"/>
+        <parameter id="CTn" value="1"/>
+        <parameter id="Wt" value="1"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="9000">
+    <component-audio version="1">
+      <parameters num-parameters="6">
+        <parameter id="PanA" value="0.5"/>
+        <parameter id="PanB" value="0.5"/>
+        <parameter id="XFade" value="0.5"/>
+        <parameter id="DM" value="0.5"/>
+        <parameter id="iP" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="148000">
+    <component-audio version="1">
+      <parameters num-parameters="20">
+        <parameter id="mode" value="1"/>
+        <parameter id="densityMode" value="0"/>
+        <parameter id="freeze" value="0"/>
+        <parameter id="preDSync" value="0"/>
+        <parameter id="preDNumerator" value="0"/>
+        <parameter id="preDDenominator" value="2"/>
+        <parameter id="preDMode" value="0"/>
+        <parameter id="preD" value="0"/>
+        <parameter id="preDFeedback" value="0"/>
+        <parameter id="highCut" value="1"/>
+        <parameter id="lowShelf" value="0"/>
+        <parameter id="size" value="0.5"/>
+        <parameter id="diff" value="0.25"/>
+        <parameter id="revTime" value="0.8"/>
+        <parameter id="damp" value="0.25"/>
+        <parameter id="mod" value="0.25"/>
+        <parameter id="mix" value="0.42"/>
+        <parameter id="modFreq" value="0.25"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="reverbMix" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="9000" target-number="1" target-name="XFade" min-value="0.15" max-value="0.85" controller-name="Guitar ↔ Organ"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="43000" target-number="1" target-name="S" min-value="0.3" max-value="1" controller-name="Fuzz"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="148000" target-number="1" target-name="mix" min-value="0" max-value="0.8" controller-name="Wash"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="148000" target-number="1" target-name="freeze" min-value="0" max-value="1" controller-name="Freeze"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+</headroom-preset>

@@ -1,0 +1,1608 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "fender-ab763-deluxe-reverb",
+ "version": 1,
+ "name": "Fender AB763 Deluxe Reverb (vibrato channel, complete)",
+ "description": "1965 blackface Deluxe Reverb (22 W, 2 x 6V6GT, GZ34, 1 x 12), vibrato channel from the input jack to the speaker. Input 1 (two 68 kOhm, 1 MOhm), V2A (100 kOhm, 1.5 kOhm / 25 uF), the AB763 treble/bass stack with the fixed 6.8 kOhm middle resistor (250 pF, 100 kOhm, 0.1 uF, 0.047 uF; 250 kOhm treble and bass), 1 MOhm volume with the permanently wired 47 pF bright cap, V2B sharing its 820 Ohm / 25 uF cathode with the idle normal-channel V1B (whose 0.047 uF / 220 kOhm mixer also loads the phase-inverter input), the 0.02 uF V2B coupling into the 3.3 MOhm || 10 pF dry path and the 500 pF reverb send, the paralleled 12AT7 reverb driver (2.2 kOhm / 25 uF) with the 125A20B reverb transformer into a 4AB3C1B tank, V4A recovery (220 kOhm grid leak, 100 kOhm plate, 0.003 uF) and the 100 kOhm linear Reverb pot through 470 kOhm into the V4B grid (220 kOhm grid leak; V4A and V4B share an 820 Ohm / 25 uF cathode), V4B with 0.1 uF coupling to the vibrato mixing node, where the 50 kOhm reverse-audio Intensity pot hangs to ground with the roach LDR from its wiper to ground; the 12AX7 phase-shift tremolo oscillator (220 kOhm plate, 2.7 kOhm / 25 uF, 0.02/0.01/0.01 uF ladder, 3 MOhm reverse-audio Speed rheostat + 100 kOhm, two 1 MOhm legs, 2.2 MOhm 'jump start' return to the -55 V bias supply, footswitch to ground) and the V5B neon driver (100 kOhm / 25 uF cathode, neon + 100 kOhm plate load from B+, 10 MOhm bleed); the 12AT7 long-tail-pair phase inverter (0.001 uF in, 82 kOhm / 100 kOhm plates, 470 Ohm + 22 kOhm tail, 1 MOhm grid returns, 0.1 uF from the inverting grid to the feedback node) with 820 Ohm / 47 Ohm negative feedback from the speaker, two 6V6GT in fixed bias (0.1 uF, 220 kOhm grid leaks to the -35 V bias, 1.5 kOhm stoppers, 470 Ohm screens), the 125A1A 6.6 kOhm : 8 Ohm output transformer and a 12-inch 8 Ohm speaker. Supply: 330-0-330 VAC into a GZ34, 2 x 16 uF reservoir (node A, 420 V: OT centre tap), 4 H choke to node B (415 V: screens, reverb driver, tremolo), 10 kOhm to node C (325 V: phase inverter), 10 kOhm to node D (280 V: preamp and recovery triodes), each 16 uF. Normal channel omitted except V1B (its volume is at zero; it shares V2B's cathode and loads the mixer). Signal cuts (one-sample current coupling) sit only after the V2B, V1B and V4B coupling caps, where the downstream load is small against the node's own conductance: at the V2B 'dry' node only the 3.3 MOhm || 10 pF dry path is a cut load; the 500 pF reverb send stays in the V2B solve (as a cut load its 2C/T admittance is about 7x the node's own conductance and the one-sample coupling diverges), so the reverb driver shares the V2A/V2B/V1B group. The NFB loop (phase inverter + power stage + OT + speaker) stays in one solve.",
+ "sources": [
+  {
+   "title": "Fender 'Deluxe Reverb-Amp AB763' factory schematic (second copy): the roach driver's grid on the junction of the two 0.01 uF caps and the 1 MOhm leg, as on the Twin Reverb AB763 drawing",
+   "url": "https://schematicheaven.net/fenderamps/deluxe_reverb_ab763_schem.pdf"
+  },
+  {
+   "title": "Fender Electric Instrument Co., 'Deluxe Reverb-Amp AB763' schematic (factory drawing with voltage chart: 420/415 V power stage, +325 V PI, -35 V grids, 12AT7 reverb driver +410 V / +8.7 V, V5A +270 V / +2.1 V, V5B +345 V / +17 V, PI +170/+180 V plates, +77 V cathodes; transformer list TR1 125P23B, TR2 125C3A, TR3 125A1A, TR4 125A20B)",
+   "url": "https://cdn.shopify.com/s/files/1/2325/2729/files/Deluxe-Reverb-AB763-schematic.pdf"
+  },
+  {
+   "title": "Rob Robinette, 'How the AB763 Deluxe Reverb Works' (330-0-330 V, GZ34, 16 uF caps, choke, 10 kOhm droppers, 420/415/325/280 V nodes, -55 V bias used as the oscillator jump start, 470 Ohm screens, 1.5 kOhm stoppers, 220 kOhm grid leaks, 820 Ohm NFB into the inverting grid and the tail base, 220 kOhm mixers, 820 Ohm / 25 uF shared cathode, 47 pF bright cap, 3.3 MOhm || 10 pF, 470 kOhm, 220 kOhm, 500 pF)",
+   "url": "https://robrobinette.com/How_The_AB763_Deluxe_Reverb_Works.htm"
+  },
+  {
+   "title": "Rob Robinette, AB763 Deluxe Reverb annotated schematic (redrawn Fender schematic with function labels: V4A/V4B shared 820 Ohm cathode 'E', 0.003 uF recovery coupling, 100k-L Reverb pot, 470 kOhm attenuation, 220 kOhm V4B grid leak, 0.1 uF V4B coupling, '<- TREMOLO' line from the vibrato mixer to the 50k-RA Intensity pot, 10 MOhm 'buffer', 100 kOhm bulb load, V5B 100 kOhm / 25 uF cathode, 10k-L bias pot + 10 kOhm, 25 uF / 50 V bias filter, 470 Ohm bias feed, 22 kOhm tail, 470 Ohm cathode, 0.1 uF 'AC shunt', 47 Ohm NFB)",
+   "url": "https://robrobinette.com/images/Guitar/Deluxe_Models/AB763_Deluxe_Reverb_Annotated_Schematic.jpg"
+  },
+  {
+   "title": "Rob Robinette, AB763 reverb circuit and tremolo circuit diagrams (reverb pedal 'open = on' on the recovery grid; vibrato pedal 'closed = on'; 2.2 MOhm jump start to -55 V)",
+   "url": "https://robrobinette.com/images/Guitar/Deluxe_Models/AB763_Reverb_Circuit.gif"
+  },
+  {
+   "title": "Music Electronics Forum, 'Fender AB763 style optocoupled tremolo circuit question' (V5B 100 kOhm cathode resistor; 10 MOhm keeps the neon able to extinguish)",
+   "url": "https://music-electronics-forum.com/forum/amplification/guitar-amps/theory-design/16590-fender-ab763-style-optocoupled-tremolo-circuit-question"
+  },
+  {
+   "title": "Hammond 1760H (replacement for Fender 125A1A): 6.6 kOhm CT primary, 8 Ohm secondary, primary DCR 347.8 Ohm, 8 Ohm-class secondary DCR ~0.8 Ohm (DigiKey listing)",
+   "url": "https://www.digikey.com/en/products/detail/hammond-manufacturing/1760H/2358165"
+  },
+  {
+   "title": "Hammond 194A / Amplified Parts P-TGC-001 (replacement for Fender 125C3A / 022707 choke): 4 H at 50 mA, 167-170 Ohm",
+   "url": "https://www.amplifiedparts.com/products/choke-4h-50ma-fender-6v6-amps-125c3a-replacement"
+  },
+  {
+   "title": "Hammond 1750A / Amplified Parts (replacement for Fender 125A20B / 022921 reverb driver transformer): 22.8-25 kOhm : 8 Ohm, 3.5 W",
+   "url": "https://www.amplifiedparts.com/products/transformer-reverb-driver-fender-125a20b-replacement"
+  },
+  {
+   "title": "Amplified Parts, Fender-replacement power transformer for 125P23B: 330-0-330 VAC @ 120 mA, 50 V bias tap; original 125P23B HT DCR 220.4 Ohm red-red (el34world forum measurement)",
+   "url": "https://www.amplifiedparts.com/products/transformer-fender-replacement-power-330-0-330-v-120-ma"
+  },
+  {
+   "title": "D. T. Yeh, J. O. Smith, 'Discretization of the 59 Fender Bassman tone stack', DAFx 2006 (TMB topology)"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "spk",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 110.44,
+  "note": "outputVoltsPerFS calibrated (2026-11-09) to the mean RMS match gain (-13.4 dB) of the circuit_ab settings against the legacy model, so the A/B sits at the legacy loudness on average across clean and driven settings; final level is a listening-review decision. 94 -> 110.44 (2026-11-10): the roach-driver fix (V5B grid on om, not ot) took the idle lamp glow off the LDR, which had been shunting the vibrato channel with the vibrato off; DI riff +2.00 dB clean (0.05 V peak) / +0.80 dB driven (0.5 V peak) at the same scale, retuned to +0.60 / -0.60 dB"
+ },
+ "oversampling": 2,
+ "minRate": 176400,
+ "solver": "auto",
+ "cuts": [
+  "hra",
+  "hrb",
+  "bpa",
+  "ch",
+  "bpb",
+  "bpc",
+  "bpd"
+ ],
+ "controls": [
+  {
+   "id": "volume",
+   "label": "Volume",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "volume"
+   ],
+   "group": "Vibrato channel",
+   "note": "1 MOhm audio taper (VOLUME), 47 pF permanently across top-to-wiper"
+  },
+  {
+   "id": "bright",
+   "label": "Bright",
+   "kind": "switch",
+   "default": 0.0,
+   "params": [
+    "bright"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "The AB763 Deluxe Reverb has no bright switch: the 47 pF bright cap (CBR) is always wired across the vibrato volume. Stored for presets only; no circuit meaning"
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "treble"
+   ],
+   "group": "Vibrato channel",
+   "note": "250 kOhm audio taper, wiper = stack output"
+  },
+  {
+   "id": "bass",
+   "label": "Bass",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "bass"
+   ],
+   "group": "Vibrato channel",
+   "note": "250 kOhm audio taper as a rheostat; the middle is a fixed 6.8 kOhm (no Middle knob on the Deluxe Reverb)"
+  },
+  {
+   "id": "reverb",
+   "label": "Reverb",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "reverb intensity"
+   ],
+   "group": "Reverb",
+   "note": "100 kOhm linear pot after the 0.003 uF recovery coupling; wiper feeds the V4B grid through 470 kOhm"
+  },
+  {
+   "id": "reverb_off",
+   "label": "Reverb footswitch",
+   "kind": "switch",
+   "default": 0.0,
+   "params": [
+    "reverb on"
+   ],
+   "paramRange": [
+    1,
+    0
+   ],
+   "group": "Reverb",
+   "note": "Reverb footswitch: 0 = open (reverb on, as with no pedal plugged in), 1 = closed (SRV shorts the tank return at the V4A grid). The legacy 'reverb on' maps inverted, as on the Twin (30000). 2026-11-12: this was 'reverb_on' (1 = on) bound straight to the catalogue parameter, whose default 0.5 the unit reads as switch-off, so a fresh unit had the tank return shorted and the Reverb knob did nothing (VERIFY_BATCH_3 172000 #1)"
+  },
+  {
+   "id": "speed",
+   "label": "Speed",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "speed"
+   ],
+   "group": "Vibrato",
+   "note": "3 MOhm reverse-audio rheostat in series with 100 kOhm in the first shunt leg of the phase-shift ladder; clockwise = faster"
+  },
+  {
+   "id": "intensity",
+   "label": "Intensity",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "intensity"
+   ],
+   "group": "Vibrato",
+   "note": "50 kOhm reverse-audio pot from the vibrato mixing node to ground; the roach LDR shunts its wiper to ground"
+  },
+  {
+   "id": "tremolo_on",
+   "label": "Vibrato on",
+   "kind": "switch",
+   "default": 0.0,
+   "params": [
+    "tremolo on"
+   ],
+   "group": "Vibrato",
+   "note": "Vibrato footswitch (closed = on): grounds the oscillator grid return so it oscillates. Open, the grid returns to -55 V through 2.2 MOhm and the oscillator is cut off (no pedal plugged in = vibrato off)"
+  },
+  {
+   "id": "reverb_mode",
+   "label": "Reverb Mode",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "reverb mode"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "No such control on the Deluxe Reverb (one tank, one reverb circuit). Stored for presets only"
+  },
+  {
+   "id": "tremolo_sag",
+   "label": "Tremolo Sag",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "tremolo sag"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "No such control: the tremolo's interaction with B+ (oscillator and driver on node B) emerges from the supply circuit. Stored for presets only"
+  },
+  {
+   "id": "tempo_sync",
+   "label": "Tempo Sync",
+   "kind": "switch",
+   "default": 0.0,
+   "params": [
+    "tempo sync"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "No such control: the oscillator is a free-running RC phase-shift oscillator. Stored for presets only"
+  },
+  {"id": "stereo", "label": "Stereo", "kind": "continuous", "default": 0.5, "params": ["CASSt"], "legacyOnly": true, "group": "Legacy", "note": "Catalogue stereo parameter; the circuit is mono, stored only"},
+  {"id": "power", "label": "On/Off", "kind": "switch", "default": 1.0, "params": ["Pwr"], "legacyOnly": true, "group": "Legacy", "note": "Host handles bypass; stored only"}
+ ],
+ "parts": [
+  {
+   "ref": "VHA",
+   "type": "V",
+   "nodes": [
+    "ha",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "467",
+    "freq": 60,
+    "phase": 90
+   },
+   "label": "HT secondary (half)",
+   "note": "125P23B: 330-0-330 VAC (467 V peak per half)"
+  },
+  {
+   "ref": "VHB",
+   "type": "V",
+   "nodes": [
+    "hb",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "467",
+    "freq": 60,
+    "phase": 270
+   },
+   "label": "HT secondary (half)"
+  },
+  {
+   "ref": "RPTA",
+   "type": "R",
+   "nodes": [
+    "ha",
+    "hra"
+   ],
+   "value": "110",
+   "label": "HT winding resistance (half)",
+   "note": "half of the 220.4 Ohm red-red DCR measured on an original 125P23B; reflected primary resistance not included"
+  },
+  {
+   "ref": "RPTB",
+   "type": "R",
+   "nodes": [
+    "hb",
+    "hrb"
+   ],
+   "value": "110",
+   "label": "HT winding resistance (half)"
+  },
+  {
+   "ref": "DRA",
+   "type": "D",
+   "nodes": [
+    "hra",
+    "bpa"
+   ],
+   "model": "GZ34",
+   "label": "GZ34 (plate 1)"
+  },
+  {
+   "ref": "DRB",
+   "type": "D",
+   "nodes": [
+    "hrb",
+    "bpa"
+   ],
+   "model": "GZ34",
+   "label": "GZ34 (plate 2)"
+  },
+  {
+   "ref": "C1A",
+   "type": "C",
+   "nodes": [
+    "bpa",
+    "0"
+   ],
+   "value": "16u",
+   "tolerance": 0.2,
+   "label": "Reservoir 16 uF 450 V",
+   "note": "Two 16 uF in parallel ahead of the standby switch (standby modelled closed: node A)"
+  },
+  {
+   "ref": "C1B",
+   "type": "C",
+   "nodes": [
+    "bpa",
+    "0"
+   ],
+   "value": "16u",
+   "tolerance": 0.2,
+   "label": "Reservoir 16 uF 450 V"
+  },
+  {
+   "ref": "RCH",
+   "type": "R",
+   "nodes": [
+    "bpa",
+    "ch"
+   ],
+   "value": "167",
+   "label": "Choke DCR",
+   "note": "Hammond 194A (125C3A replacement) 167 Ohm; original Fender part not measured in a source"
+  },
+  {
+   "ref": "LCH",
+   "type": "L",
+   "nodes": [
+    "ch",
+    "bpb"
+   ],
+   "value": "4",
+   "label": "Choke 125C3A 4 H"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "bpb",
+    "0"
+   ],
+   "value": "16u",
+   "tolerance": 0.2,
+   "label": "Node B filter (screens, reverb driver, tremolo)"
+  },
+  {
+   "ref": "RD1",
+   "type": "R",
+   "nodes": [
+    "bpb",
+    "bpc"
+   ],
+   "value": "10k",
+   "tolerance": 0.1,
+   "label": "Dropping (node C)"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "bpc",
+    "0"
+   ],
+   "value": "16u",
+   "tolerance": 0.2,
+   "label": "Node C filter (phase inverter)"
+  },
+  {
+   "ref": "RD2",
+   "type": "R",
+   "nodes": [
+    "bpc",
+    "bpd"
+   ],
+   "value": "10k",
+   "tolerance": 0.1,
+   "label": "Dropping (node D)"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "bpd",
+    "0"
+   ],
+   "value": "16u",
+   "tolerance": 0.2,
+   "label": "Node D filter (preamp, recovery)"
+  },
+  {
+   "ref": "VBIAS",
+   "type": "V",
+   "nodes": [
+    "bsup",
+    "0"
+   ],
+   "value": "-55",
+   "label": "Bias supply (filter node)",
+   "note": "Real: 50 VAC bias tap of the 125P23B, 470 Ohm 1 W, rectifier diode, 25 uF / 50 V filter; modelled as the -55 V filter node Robinette gives. unverified: the exact loaded value depends on mains and tap voltage"
+  },
+  {
+   "ref": "RBPU",
+   "type": "R",
+   "nodes": [
+    "bsup",
+    "bias"
+   ],
+   "value": "7k3",
+   "label": "Bias pot (10k-L), supply side",
+   "note": "unverified: the 10 kOhm linear bias trimmer at a fixed setting (7.3 kOhm / 2.7 kOhm) chosen so the grids sit at the -35 V of the Fender voltage chart"
+  },
+  {
+   "ref": "RBPL",
+   "type": "R",
+   "nodes": [
+    "bias",
+    "bpl"
+   ],
+   "value": "2k7",
+   "label": "Bias pot (10k-L), ground side",
+   "note": "unverified: see RBPU"
+  },
+  {
+   "ref": "RB10",
+   "type": "R",
+   "nodes": [
+    "bpl",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.1,
+   "label": "Bias divider 10 kOhm"
+  },
+  {
+   "ref": "RIN",
+   "type": "R",
+   "nodes": [
+    "in",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.1,
+   "label": "Input 1 MOhm"
+  },
+  {
+   "ref": "R1A",
+   "type": "R",
+   "nodes": [
+    "in",
+    "g2a"
+   ],
+   "value": "68k",
+   "tolerance": 0.1,
+   "label": "Grid stopper 68 kOhm"
+  },
+  {
+   "ref": "R1B",
+   "type": "R",
+   "nodes": [
+    "in",
+    "g2a"
+   ],
+   "value": "68k",
+   "tolerance": 0.1,
+   "label": "Grid stopper 68 kOhm",
+   "note": "Input 1 (high): both 68 kOhm in parallel (34 kOhm)"
+  },
+  {
+   "ref": "V2A",
+   "type": "triode",
+   "nodes": [
+    "p2a",
+    "g2a",
+    "k2a"
+   ],
+   "model": "12AX7",
+   "label": "V2A vibrato preamp 1 (7025)"
+  },
+  {
+   "ref": "RK2A",
+   "type": "R",
+   "nodes": [
+    "k2a",
+    "0"
+   ],
+   "value": "1k5",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "CK2A",
+   "type": "C",
+   "nodes": [
+    "k2a",
+    "0"
+   ],
+   "value": "25u",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "RP2A",
+   "type": "R",
+   "nodes": [
+    "bpd",
+    "p2a"
+   ],
+   "value": "100k",
+   "tolerance": 0.1,
+   "label": "V2A plate load"
+  },
+  {
+   "ref": "CT",
+   "type": "C",
+   "nodes": [
+    "p2a",
+    "tt"
+   ],
+   "value": "250p",
+   "tolerance": 0.1,
+   "label": "Treble cap"
+  },
+  {
+   "ref": "RS",
+   "type": "R",
+   "nodes": [
+    "p2a",
+    "ns"
+   ],
+   "value": "100k",
+   "tolerance": 0.1,
+   "label": "Slope resistor"
+  },
+  {
+   "ref": "CB",
+   "type": "C",
+   "nodes": [
+    "ns",
+    "tb"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "Bass cap"
+  },
+  {
+   "ref": "CM",
+   "type": "C",
+   "nodes": [
+    "ns",
+    "nm"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "Mid cap"
+  },
+  {
+   "ref": "TREBLE",
+   "type": "pot",
+   "nodes": [
+    "tb",
+    "tw",
+    "tt"
+   ],
+   "value": "250k",
+   "taper": "A",
+   "control": "treble",
+   "label": "Treble 250k-A"
+  },
+  {
+   "ref": "BASS",
+   "type": "pot",
+   "nodes": [
+    "nm",
+    "tb",
+    "tb"
+   ],
+   "value": "250k",
+   "taper": "A",
+   "control": "bass",
+   "label": "Bass 250k-A"
+  },
+  {
+   "ref": "RMID",
+   "type": "R",
+   "nodes": [
+    "nm",
+    "0"
+   ],
+   "value": "6k8",
+   "tolerance": 0.1,
+   "label": "Fixed middle 6.8 kOhm"
+  },
+  {
+   "ref": "VOLUME",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "vw",
+    "tw"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "volume",
+   "label": "Volume 1M-A"
+  },
+  {
+   "ref": "CBR",
+   "type": "C",
+   "nodes": [
+    "tw",
+    "vw"
+   ],
+   "value": "47p",
+   "tolerance": 0.1,
+   "label": "Bright cap 47 pF (always in)"
+  },
+  {
+   "ref": "V2B",
+   "type": "triode",
+   "nodes": [
+    "p2b",
+    "vw",
+    "k12"
+   ],
+   "model": "12AX7",
+   "label": "V2B vibrato preamp 2"
+  },
+  {
+   "ref": "RP2B",
+   "type": "R",
+   "nodes": [
+    "bpd",
+    "p2b"
+   ],
+   "value": "100k",
+   "tolerance": 0.1,
+   "label": "V2B plate load"
+  },
+  {
+   "ref": "V1B",
+   "type": "triode",
+   "nodes": [
+    "p1b",
+    "g1b",
+    "k12"
+   ],
+   "model": "12AX7",
+   "label": "V1B (normal channel, idle)",
+   "note": "Normal channel's second stage, kept because it shares V2B's cathode resistor/bypass and its mixer resistor loads the PI input"
+  },
+  {
+   "ref": "RG1B",
+   "type": "R",
+   "nodes": [
+    "g1b",
+    "0"
+   ],
+   "value": "1k",
+   "label": "Normal volume at zero",
+   "note": "Normal-channel Volume at 0: the V1B grid sits at the pot's grounded end. The rest of the normal channel (V1A, its stack and bright cap) is omitted"
+  },
+  {
+   "ref": "RP1B",
+   "type": "R",
+   "nodes": [
+    "bpd",
+    "p1b"
+   ],
+   "value": "100k",
+   "tolerance": 0.1,
+   "label": "V1B plate load"
+  },
+  {
+   "ref": "RK12",
+   "type": "R",
+   "nodes": [
+    "k12",
+    "0"
+   ],
+   "value": "820",
+   "tolerance": 0.1,
+   "label": "V1B/V2B shared cathode 820 Ohm"
+  },
+  {
+   "ref": "CK12",
+   "type": "C",
+   "nodes": [
+    "k12",
+    "0"
+   ],
+   "value": "25u",
+   "tolerance": 0.2,
+   "label": "Shared cathode bypass 25 uF"
+  },
+  {
+   "ref": "CC1B",
+   "type": "C",
+   "nodes": [
+    "p1b",
+    "n1"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "Normal coupling 0.047 uF"
+  },
+  {
+   "ref": "RMIX1",
+   "type": "R",
+   "nodes": [
+    "n1",
+    "mix"
+   ],
+   "value": "220k",
+   "tolerance": 0.1,
+   "label": "Normal channel mixer 220 kOhm"
+  },
+  {
+   "ref": "CC2B",
+   "type": "C",
+   "nodes": [
+    "p2b",
+    "dry"
+   ],
+   "value": "20n",
+   "tolerance": 0.1,
+   "label": "V2B coupling 0.02 uF"
+  },
+  {
+   "ref": "RDRY",
+   "type": "R",
+   "nodes": [
+    "dry",
+    "g4b"
+   ],
+   "value": "3.3M",
+   "tolerance": 0.1,
+   "label": "Reverb mix (dry) 3.3 MOhm"
+  },
+  {
+   "ref": "CDRY",
+   "type": "C",
+   "nodes": [
+    "dry",
+    "g4b"
+   ],
+   "value": "10p",
+   "tolerance": 0.1,
+   "label": "Dry-path bright cap 10 pF"
+  },
+  {
+   "ref": "CRS",
+   "type": "C",
+   "nodes": [
+    "dry",
+    "g3"
+   ],
+   "value": "500p",
+   "tolerance": 0.1,
+   "label": "Reverb send filter 500 pF"
+  },
+  {
+   "ref": "RG3",
+   "type": "R",
+   "nodes": [
+    "g3",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.1,
+   "label": "Reverb driver grid leak"
+  },
+  {
+   "ref": "V3",
+   "type": "triode",
+   "nodes": [
+    "p3",
+    "g3",
+    "k3"
+   ],
+   "model": "12AT7",
+   "parallel": 2,
+   "label": "V3 reverb driver (both 12AT7 halves in parallel)"
+  },
+  {
+   "ref": "RK3",
+   "type": "R",
+   "nodes": [
+    "k3",
+    "0"
+   ],
+   "value": "2k2",
+   "tolerance": 0.1,
+   "label": "Reverb driver cathode 2.2 kOhm"
+  },
+  {
+   "ref": "CK3",
+   "type": "C",
+   "nodes": [
+    "k3",
+    "0"
+   ],
+   "value": "25u",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "RT",
+   "type": "transformer",
+   "nodes": [
+    "p3",
+    "bpb",
+    "ti",
+    "0"
+   ],
+   "turns": [
+    1,
+    0.0179
+   ],
+   "r": [
+    600,
+    0.5
+   ],
+   "leak": [
+    "50m",
+    0
+   ],
+   "lm": 8,
+   "lsat": 0.4,
+   "label": "Reverb transformer 125A20B (~25k : 8)",
+   "note": "unverified: turns from the 25 kOhm : 8 Ohm replacement rating (sources give 22.8-29 kOhm); primary DCR 600 Ohm, 50 mH leakage, 8 H primary inductance and 0.4 V*s saturation flux are assumptions (the chart's 415 V -> 410 V at ~4 mA suggests a DCR near 1 kOhm, within the chart's +/-20 %)"
+  },
+  {
+   "ref": "TANK",
+   "type": "spring",
+   "nodes": [
+    "ti",
+    "0",
+    "ro",
+    "0"
+   ],
+   "model": "4AB3C1B",
+   "label": "Reverb tank 4AB3C1B (input grounded)"
+  },
+  {
+   "ref": "SRV",
+   "type": "switch",
+   "nodes": [
+    "ro",
+    "0"
+   ],
+   "control": "reverb_off",
+   "ron": "1",
+   "label": "Reverb footswitch (closed = reverb off)",
+   "note": "Shorts the tank return / V4A grid to ground when the footswitch is closed"
+  },
+  {
+   "ref": "RG4A",
+   "type": "R",
+   "nodes": [
+    "ro",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.1,
+   "label": "V4A grid leak 220 kOhm"
+  },
+  {
+   "ref": "V4A",
+   "type": "triode",
+   "nodes": [
+    "p4a",
+    "ro",
+    "k4"
+   ],
+   "model": "12AX7",
+   "label": "V4A reverb recovery"
+  },
+  {
+   "ref": "RP4A",
+   "type": "R",
+   "nodes": [
+    "bpd",
+    "p4a"
+   ],
+   "value": "100k",
+   "tolerance": 0.1,
+   "label": "V4A plate load"
+  },
+  {
+   "ref": "V4B",
+   "type": "triode",
+   "nodes": [
+    "p4b",
+    "g4b",
+    "k4"
+   ],
+   "model": "12AX7",
+   "label": "V4B vibrato preamp 3 (reverb mixer)"
+  },
+  {
+   "ref": "RP4B",
+   "type": "R",
+   "nodes": [
+    "bpd",
+    "p4b"
+   ],
+   "value": "100k",
+   "tolerance": 0.1,
+   "label": "V4B plate load"
+  },
+  {
+   "ref": "RK4",
+   "type": "R",
+   "nodes": [
+    "k4",
+    "0"
+   ],
+   "value": "820",
+   "tolerance": 0.1,
+   "label": "V4A/V4B shared cathode 820 Ohm",
+   "note": "Both V4 cathodes go to node 'E' on the Fender schematic; Robinette's annotated drawing labels the resistor 820 Ohm"
+  },
+  {
+   "ref": "CK4",
+   "type": "C",
+   "nodes": [
+    "k4",
+    "0"
+   ],
+   "value": "25u",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "CC4A",
+   "type": "C",
+   "nodes": [
+    "p4a",
+    "rvt"
+   ],
+   "value": "3n",
+   "tolerance": 0.1,
+   "label": "Recovery coupling 0.003 uF"
+  },
+  {
+   "ref": "REVERB",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "rvw",
+    "rvt"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "reverb",
+   "label": "Reverb 100k-L"
+  },
+  {
+   "ref": "RWET",
+   "type": "R",
+   "nodes": [
+    "rvw",
+    "g4b"
+   ],
+   "value": "470k",
+   "tolerance": 0.1,
+   "label": "Reverb attenuation 470 kOhm"
+  },
+  {
+   "ref": "RG4B",
+   "type": "R",
+   "nodes": [
+    "g4b",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.1,
+   "label": "V4B grid leak 220 kOhm"
+  },
+  {
+   "ref": "CC4B",
+   "type": "C",
+   "nodes": [
+    "p4b",
+    "vib"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "V4B coupling 0.1 uF"
+  },
+  {
+   "ref": "INTENSITY",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "iw",
+    "vib"
+   ],
+   "value": "50k",
+   "taper": "C",
+   "control": "intensity",
+   "label": "Intensity 50k-RA",
+   "note": "Ends: vibrato mixing node and ground; wiper to the LDR. unverified: which end the reverse-audio track's steep part sits at (wired so clockwise moves the wiper toward the signal = deeper)"
+  },
+  {
+   "ref": "ROACH",
+   "type": "ldr",
+   "nodes": [
+    "iw",
+    "0",
+    "nl",
+    "p5b"
+   ],
+   "model": "FENDER_ROACH",
+   "label": "Roach (neon + LDR)",
+   "note": "LDR from the intensity wiper to ground; neon in V5B's plate circuit, in series with the 100 kOhm load from node B"
+  },
+  {
+   "ref": "RMIX2",
+   "type": "R",
+   "nodes": [
+    "vib",
+    "mix"
+   ],
+   "value": "220k",
+   "tolerance": 0.1,
+   "label": "Vibrato channel mixer 220 kOhm"
+  },
+  {
+   "ref": "V5A",
+   "type": "triode",
+   "nodes": [
+    "p5a",
+    "g5a",
+    "k5a"
+   ],
+   "model": "12AX7",
+   "label": "V5A tremolo oscillator"
+  },
+  {
+   "ref": "RP5A",
+   "type": "R",
+   "nodes": [
+    "bpb",
+    "p5a"
+   ],
+   "value": "220k",
+   "tolerance": 0.1,
+   "label": "Oscillator plate load 220 kOhm"
+  },
+  {
+   "ref": "RK5A",
+   "type": "R",
+   "nodes": [
+    "k5a",
+    "0"
+   ],
+   "value": "2k7",
+   "tolerance": 0.1,
+   "label": "Oscillator cathode 2.7 kOhm"
+  },
+  {
+   "ref": "CK5A",
+   "type": "C",
+   "nodes": [
+    "k5a",
+    "0"
+   ],
+   "value": "25u",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "CO3",
+   "type": "C",
+   "nodes": [
+    "p5a",
+    "ot"
+   ],
+   "value": "20n",
+   "tolerance": 0.1,
+   "label": "Phase-shift cap 0.02 uF (plate side)"
+  },
+  {
+   "ref": "SPEED",
+   "type": "pot",
+   "nodes": [
+    "os",
+    "os",
+    "ot"
+   ],
+   "value": "3M",
+   "taper": "C",
+   "control": "speed",
+   "label": "Speed 3M-RA (rheostat)",
+   "note": "Resistance ot-os = 3 MOhm x (1 - taper): clockwise lowers it (faster). unverified: rotation sense of the reverse-audio track as fitted"
+  },
+  {
+   "ref": "RSPD",
+   "type": "R",
+   "nodes": [
+    "os",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.1,
+   "label": "Max-speed resistor 100 kOhm"
+  },
+  {
+   "ref": "CO2",
+   "type": "C",
+   "nodes": [
+    "ot",
+    "om"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "Phase-shift cap 0.01 uF"
+  },
+  {
+   "ref": "RO2",
+   "type": "R",
+   "nodes": [
+    "om",
+    "oj"
+   ],
+   "value": "1M",
+   "tolerance": 0.1,
+   "label": "Phase-shift leg 1 MOhm"
+  },
+  {
+   "ref": "CO1",
+   "type": "C",
+   "nodes": [
+    "om",
+    "g5a"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "Phase-shift cap 0.01 uF (grid side)"
+  },
+  {
+   "ref": "RG5A",
+   "type": "R",
+   "nodes": [
+    "g5a",
+    "oj"
+   ],
+   "value": "1M",
+   "tolerance": 0.1,
+   "label": "Oscillator grid leak 1 MOhm"
+  },
+  {
+   "ref": "RJS",
+   "type": "R",
+   "nodes": [
+    "oj",
+    "bsup"
+   ],
+   "value": "2.2M",
+   "tolerance": 0.1,
+   "label": "Jump start 2.2 MOhm to -55 V"
+  },
+  {
+   "ref": "STREM",
+   "type": "switch",
+   "nodes": [
+    "oj",
+    "0"
+   ],
+   "control": "tremolo_on",
+   "ron": "1",
+   "label": "Vibrato footswitch (closed = on)"
+  },
+  {
+   "ref": "VKICK",
+   "type": "V",
+   "nodes": [
+    "kick",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "1m",
+    "freq": 6,
+    "phase": 0
+   },
+   "label": "Oscillator start-up kick",
+   "note": "Not in the amp: 1 mV at 6 Hz through 10 MOhm stands in for noise / switching transients so the oscillator starts from the DC operating point"
+  },
+  {
+   "ref": "RKICK",
+   "type": "R",
+   "nodes": [
+    "kick",
+    "g5a"
+   ],
+   "value": "10M",
+   "label": "Kick injection 10 MOhm"
+  },
+  {
+   "ref": "V5B",
+   "type": "triode",
+   "nodes": [
+    "p5b",
+    "om",
+    "k5b"
+   ],
+   "model": "12AX7",
+   "label": "V5B tremolo (neon) driver",
+   "note": "Grid on the ladder's middle node om (the junction of the two 0.01 uF caps and the 1 MOhm leg), DC return through that 1 MOhm to the footswitch node oj, as drawn on the Fender Deluxe Reverb AB763 and Twin Reverb AB763 schematics. Footswitch open, oj sits at the bias supply through 2.2 MOhm, so the driver is cut off with the oscillator and the lamp is dark. (Fixed 2026-11-10: the grid was on ot, the 0.02 uF / speed-rheostat node, whose DC return is ground: the driver idled lit, and supply ripple through the 0.02 uF cap swung the lamp with the playing signal while the vibrato was off.)"
+  },
+  {
+   "ref": "RK5B",
+   "type": "R",
+   "nodes": [
+    "k5b",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.1,
+   "label": "Driver cathode 100 kOhm"
+  },
+  {
+   "ref": "CK5B",
+   "type": "C",
+   "nodes": [
+    "k5b",
+    "0"
+   ],
+   "value": "25u",
+   "tolerance": 0.2,
+   "label": "Driver cathode bypass 25 uF"
+  },
+  {
+   "ref": "RBL",
+   "type": "R",
+   "nodes": [
+    "bpb",
+    "nl"
+   ],
+   "value": "100k",
+   "tolerance": 0.1,
+   "label": "Bulb load 100 kOhm"
+  },
+  {
+   "ref": "R10M",
+   "type": "R",
+   "nodes": [
+    "bpb",
+    "p5b"
+   ],
+   "value": "10M",
+   "tolerance": 0.1,
+   "label": "Driver plate bleed 10 MOhm"
+  },
+  {
+   "ref": "CPI",
+   "type": "C",
+   "nodes": [
+    "mix",
+    "g6a"
+   ],
+   "value": "1n",
+   "tolerance": 0.1,
+   "label": "PI coupling 0.001 uF"
+  },
+  {
+   "ref": "V6A",
+   "type": "triode",
+   "nodes": [
+    "p6a",
+    "g6a",
+    "k6"
+   ],
+   "model": "12AT7",
+   "label": "V6A long-tail pair"
+  },
+  {
+   "ref": "V6B",
+   "type": "triode",
+   "nodes": [
+    "p6b",
+    "g6b",
+    "k6"
+   ],
+   "model": "12AT7",
+   "label": "V6B long-tail pair"
+  },
+  {
+   "ref": "RL6A",
+   "type": "R",
+   "nodes": [
+    "bpc",
+    "p6a"
+   ],
+   "value": "82k",
+   "tolerance": 0.05,
+   "label": "PI plate load 82 kOhm 5 %"
+  },
+  {
+   "ref": "RL6B",
+   "type": "R",
+   "nodes": [
+    "bpc",
+    "p6b"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "PI plate load 100 kOhm 5 %"
+  },
+  {
+   "ref": "RK6",
+   "type": "R",
+   "nodes": [
+    "k6",
+    "tj"
+   ],
+   "value": "470",
+   "tolerance": 0.1,
+   "label": "PI cathode 470 Ohm"
+  },
+  {
+   "ref": "RTAIL",
+   "type": "R",
+   "nodes": [
+    "tj",
+    "fbt"
+   ],
+   "value": "22k",
+   "tolerance": 0.1,
+   "label": "PI tail 22 kOhm"
+  },
+  {
+   "ref": "RG6A",
+   "type": "R",
+   "nodes": [
+    "g6a",
+    "tj"
+   ],
+   "value": "1M",
+   "tolerance": 0.1,
+   "label": "PI grid return 1 MOhm"
+  },
+  {
+   "ref": "RG6B",
+   "type": "R",
+   "nodes": [
+    "g6b",
+    "tj"
+   ],
+   "value": "1M",
+   "tolerance": 0.1,
+   "label": "PI grid return 1 MOhm"
+  },
+  {
+   "ref": "CSH",
+   "type": "C",
+   "nodes": [
+    "g6b",
+    "fbt"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "AC shunt 0.1 uF (inverting grid to NFB node)",
+   "note": "Fender schematic and Robinette: NFB enters both the inverting grid (through this cap) and the tail base"
+  },
+  {
+   "ref": "RNFB",
+   "type": "R",
+   "nodes": [
+    "spk",
+    "fbt"
+   ],
+   "value": "820",
+   "tolerance": 0.1,
+   "label": "NFB 820 Ohm"
+  },
+  {
+   "ref": "RNFT",
+   "type": "R",
+   "nodes": [
+    "fbt",
+    "0"
+   ],
+   "value": "47",
+   "tolerance": 0.1,
+   "label": "NFB shunt 47 Ohm"
+  },
+  {
+   "ref": "CPA",
+   "type": "C",
+   "nodes": [
+    "p6a",
+    "ga"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "PI output coupling 0.1 uF"
+  },
+  {
+   "ref": "CPB",
+   "type": "C",
+   "nodes": [
+    "p6b",
+    "gb"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "PI output coupling 0.1 uF"
+  },
+  {
+   "ref": "RBA",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "bias"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "Grid leak / bias feed 220 kOhm"
+  },
+  {
+   "ref": "RBB",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "bias"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "Grid leak / bias feed 220 kOhm"
+  },
+  {
+   "ref": "RSA",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "g1a"
+   ],
+   "value": "1k5",
+   "tolerance": 0.1,
+   "label": "Grid stopper 1.5 kOhm"
+  },
+  {
+   "ref": "RSB",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "g1b2"
+   ],
+   "value": "1k5",
+   "tolerance": 0.1,
+   "label": "Grid stopper 1.5 kOhm"
+  },
+  {
+   "ref": "VPA",
+   "type": "pentode",
+   "nodes": [
+    "pa",
+    "sa",
+    "g1a",
+    "0"
+   ],
+   "model": "6V6GT",
+   "label": "V7 6V6GT"
+  },
+  {
+   "ref": "VPB",
+   "type": "pentode",
+   "nodes": [
+    "pb",
+    "sb",
+    "g1b2",
+    "0"
+   ],
+   "model": "6V6GT",
+   "label": "V8 6V6GT"
+  },
+  {
+   "ref": "RSCA",
+   "type": "R",
+   "nodes": [
+    "bpb",
+    "sa"
+   ],
+   "value": "470",
+   "tolerance": 0.1,
+   "label": "Screen resistor 470 Ohm 1 W"
+  },
+  {
+   "ref": "RSCB",
+   "type": "R",
+   "nodes": [
+    "bpb",
+    "sb"
+   ],
+   "value": "470",
+   "tolerance": 0.1,
+   "label": "Screen resistor 470 Ohm 1 W"
+  },
+  {
+   "ref": "CWA",
+   "type": "C",
+   "nodes": [
+    "pa",
+    "wa"
+   ],
+   "value": "470p",
+   "label": "OT half-primary capacitance (A)",
+   "note": "unverified: half-primary self-capacitance with its loss as a lumped 470 pF + 2.2 kOhm from the plate to the centre tap (engine lesson from the AB763 Twin: a lossless lumped capacitance rings with the leakage and the NFB turns it into an oscillation; no capacitance gives kilovolt flyback spikes)"
+  },
+  {
+   "ref": "RWA",
+   "type": "R",
+   "nodes": [
+    "wa",
+    "bpa"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (A)",
+   "note": "see CWA"
+  },
+  {
+   "ref": "CWB",
+   "type": "C",
+   "nodes": [
+    "pb",
+    "wb"
+   ],
+   "value": "470p",
+   "label": "OT half-primary capacitance (B)",
+   "note": "see CWA"
+  },
+  {
+   "ref": "RWB",
+   "type": "R",
+   "nodes": [
+    "wb",
+    "bpa"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (B)",
+   "note": "see CWA"
+  },
+  {
+   "ref": "OT",
+   "type": "transformer",
+   "nodes": [
+    "pa",
+    "bpa",
+    "bpa",
+    "pb",
+    "spk",
+    "0"
+   ],
+   "turns": [
+    1,
+    1,
+    0.0696
+   ],
+   "r": [
+    174,
+    174,
+    0.8
+   ],
+   "leak": [
+    "10m",
+    "10m",
+    0
+   ],
+   "lm": 3.5,
+   "lsat": 1.0,
+   "label": "Output transformer 125A1A (6.6k : 8)",
+   "note": "Turns from 6.6 kOhm : 8 Ohm (2/sqrt(825)); DCR from the Hammond 1760H replacement (347.8 Ohm primary, ~0.8 Ohm secondary). unverified: 10 mH leakage per half, 14 H plate-to-plate primary inductance (lm 3.5) and 1.0 V*s saturation flux are assumptions for a 20 W OT. Secondary phased so the speaker is in phase with plate A's tube (V7 driven from V6A) = in phase with the V6A grid, which makes the 820 Ohm feedback into the V6B grid negative"
+  },
+  {
+   "ref": "SPK",
+   "type": "sub",
+   "of": "lib:spk-12in-8ohm-american",
+   "nodes": [
+    "spk",
+    "0"
+   ],
+   "label": "12-inch 8 Ohm speaker (Jensen C12N class)"
+  }
+ ],
+ "readouts": {
+  "lfo": {"node": "ROACH#light", "minSwing": 0.05}
+ },
+ "probes": [
+  "p2a",
+  "vw",
+  "p2b",
+  "g4b",
+  "vib",
+  "p6a",
+  "p6b",
+  "pa",
+  "spk",
+  "bpa",
+  "ROACH#light"
+ ],
+ "layout": {},
+ "multirate": {
+  "oversampled": [
+   "VPA"
+  ],
+  "slow": {
+   "rate": 12000,
+   "nodes": [
+    "p5a"
+   ]
+  }
+ }
+}

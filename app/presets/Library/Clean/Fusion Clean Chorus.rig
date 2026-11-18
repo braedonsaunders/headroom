@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Fusion Clean Chorus</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Fusion Clean Chorus" preset-author="Headroom" preset-comment="Wide 80s fusion polish for extended chords and legato lines: light compression into a warm big blackface, a pitch-detune chorus spread across the stereo field, a stereo ping-pong echo around 400 ms and a vintage digital hall. Neck or middle pickup; let chords ring and the repeats bloom." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="48000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="V" value="1"/>
+        <parameter id="S" value="0.5"/>
+        <parameter id="A" value="0.5"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="T" value="0.6"/>
+        <parameter id="C" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="30000">
+    <component-audio version="1">
+      <parameters num-parameters="19">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.42"/>
+        <parameter id="Br" value="0"/>
+        <parameter id="Bs" value="0.36"/>
+        <parameter id="Md" value="0.6"/>
+        <parameter id="Tr" value="0.7"/>
+        <parameter id="Vr" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bia" value="0.5"/>
+        <parameter id="Hz" value="0.5"/>
+        <parameter id="RvL" value="0.5"/>
+        <parameter id="RvOn" value="0"/>
+        <parameter id="RvTm" value="0.5"/>
+        <parameter id="RvSz" value="0.5"/>
+        <parameter id="ViInt" value="0.5"/>
+        <parameter id="ViSpd" value="0.5"/>
+        <parameter id="ViOn" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.8871"/>
+        <parameter id="c" value="0.35"/>
+        <parameter id="Cab" value="13"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="132000">
+    <component-audio version="1">
+      <parameters num-parameters="5">
+        <parameter id="M0" value="0.38"/>
+        <parameter id="D1" value="0.5"/>
+        <parameter id="S2" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="S3" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="98000">
+    <component-audio version="1">
+      <parameters num-parameters="16">
+        <parameter id="s" value="0"/>
+        <parameter id="p" value="0.5"/>
+        <parameter id="tl" value="0.52"/>
+        <parameter id="tr" value="0.6"/>
+        <parameter id="ll" value="0.5"/>
+        <parameter id="lr" value="0.5"/>
+        <parameter id="fl" value="0.4"/>
+        <parameter id="fr" value="0.4"/>
+        <parameter id="pl" value="0.5"/>
+        <parameter id="pr" value="0.5"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="w" value="0.5"/>
+        <parameter id="m" value="0.28"/>
+        <parameter id="tp" value="0.5"/>
+        <parameter id="mu" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="154000">
+    <component-audio version="1">
+      <parameters num-parameters="22">
+        <parameter id="P0" value="0.6"/>
+        <parameter id="D1" value="0.5"/>
+        <parameter id="I2" value="0.5"/>
+        <parameter id="M3" value="1"/>
+        <parameter id="B4" value="0.5"/>
+        <parameter id="M5" value="0.5"/>
+        <parameter id="C6" value="0.5"/>
+        <parameter id="H7" value="0.5"/>
+        <parameter id="T8" value="0"/>
+        <parameter id="C9" value="0.5"/>
+        <parameter id="M10" value="0.5"/>
+        <parameter id="D11" value="0.2"/>
+        <parameter id="I21" value="0.5"/>
+        <parameter id="O22" value="0.5"/>
+        <parameter id="I12" value="0"/>
+        <parameter id="I13" value="0"/>
+        <parameter id="O14" value="0"/>
+        <parameter id="O15" value="0"/>
+        <parameter id="P16" value="0"/>
+        <parameter id="P17" value="0"/>
+        <parameter id="Q25" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="132000" target-number="1" target-name="M0" min-value="0" max-value="0.65" controller-name="Detune Chorus"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="98000" target-number="1" target-name="m" min-value="0" max-value="0.45" controller-name="Delay Mix"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="98000" target-number="1" target-name="fl" min-value="0.1" max-value="0.7" controller-name="Repeats"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="154000" target-number="1" target-name="D11" min-value="0" max-value="0.4" controller-name="Hall"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="30000" target-number="1" target-name="Tr" min-value="0.3" max-value="0.7" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="5" component-id="48000" target-number="1" target-name="S" min-value="0.3" max-value="0.9" controller-name="Squeeze"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-tempo bpm="100.000"/>
+<headroom-library version="1" id="clean-fusion-chorus" category="Clean" order="80" instrument="guitar" style="Jazz Fusion">
+  <description>Wide 80s fusion polish for extended chords and legato lines: light compression into a warm big blackface, a pitch-detune chorus spread across the stereo field, a stereo ping-pong echo around 400 ms and a vintage digital hall. Neck or middle pickup; let chords ring and the repeats bloom.</description>
+  <tags><tag>Clean</tag><tag>Jazz Fusion</tag><tag>Chorus</tag><tag>Stereo</tag><tag>Delay</tag><tag>Hall Reverb</tag></tags>
+  <sources>
+    <source url="https://forum.seymourduncan.com/threads/does-anyone-know-mike-sterns-rig-on-this.6201380/" title="Seymour Duncan forum: Mike Stern's rig (SPX90 pitch chorus, stereo amps)"/>
+    <source url="https://gearspace.com/threads/help-im-recording-mike-stern-and-ive-got-some-questions.128255/" title="Gearspace: recording Mike Stern"/>
+    <source url="https://www.jazzguitar.be/blog/jazz-guitarists-guitar-gear/" title="jazzguitar.be: famous jazz guitarists and their gear"/>
+    <source url="https://www.jazzguitar.be/forum/guitar-amps-gizmos/61859-chorus-effect-jazz.html" title="jazzguitar.be forum: chorus effect in jazz"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

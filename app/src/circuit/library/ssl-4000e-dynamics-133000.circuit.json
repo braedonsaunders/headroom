@@ -1,0 +1,1933 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "ssl-4000e-dynamics-133000",
+  "version": 1,
+  "name": "SSL 4000 E channel dynamics (82E10, T82010.71 Rev 15a) - feed-forward compressor + gate/expander",
+  "description": "Card 82E10 DYNAMICS SECTION, drawing T82010.71 **Rev 15a** (24 May 1990) as printed in the SL4000G Console Service Manual v1.1 page 35 - the uncut, full-width sheet at native resolution, the source of record (the Rev-12a 2-sheet scan is the cross-check). Compressor and gate/expander share the one DBX2151, exactly as drawn. COMPRESSOR: feed-forward, side chain from the dynamics input via card pin 25, AD536AJ dB converter, the 32.9x law amp, the attack/release integrator (T2C with D2, and R13 1M + D3: its output charges the timing node through D3 and R21 10K, or R21 // R19 300R with FAST ATTACK; it releases through R21 -> R23 10K and C5/C6 -> R22 10K into the 250K LOG RELEASE rheostat; D7 clamps the timing node; batch 7 re-wired this block to the Rev 15a drawing, the old 10K 'attack pot' between T2C and the timing node is not on the card), the COMPRESS RATIO pot into the send servo (T4-3 + TR1, R20 8K2 + D20/R55/R56/R88 on node C). TR1's emitter reaches the CONTROL RAIL n_link (the card's '10dB = 2V5' net, card pin 8 'Dynamics Return Link') through D18; n_link is held by R107 470K to -15 V and read by D27 AAZ17 -> R94 -> the shaper T4-2 -> R87 39K2 -> T8 -> the 2151's control port. GATE/EXPANDER (notes \u00a716d-\u00a716h, corrected in \u00a717): TP2's demand, the EXPAND THRESHOLD wiper (R29 36K) and VR3 SET GATE (R31 510K) sum into node A; T3-1 with D8/D9/R30 is a precision half-wave rectifier, so node P = 0.1 V per dB below threshold and 0 above it. EXPAND: T3-2 inverts node P onto pin 33. GATE: T3-3 compares node P with the R40/R41 0 V/-5 V reference through R39 15K, hysteresis R38 120K from the clamped node C (R35 4K7, D11 6V8, D10 to pin 35). The EXPAND/GATE changeover puts pin 33 or pin 35 on pin 34 = T3-4's + input; T3-4 + TR4 BC212 with the R105/R43/R42 divider and D6/D12/D13 pull the timing node (C9 6u8, pin 48) down to the demand through R44 1R0 (FAST) or R45 100R (SLOW), and the ganged RANGE 25K LIN / RELEASE 250K LOG chain charges it up from node G (+5.5 V: R108 27K, D28 to +5 V) through R47 10K. T4-4 + TR3 BC184 scale the timing node by 1 + R46/R50 (8K2/5K1, with R52 100K from the meter leg D15) onto TR3's emitter n_gx, and THE JOIN is D16: anode n_gx, cathode on n_link - a diode-OR with the compressor's D18 onto the one rail the VCA reads (Rev 15a: D16's bar at (3923,1481), plain crossing at x 3997, corner at x 4094 up to the D18/R107 dot (4094,905) and the D27/pin-8 row y 418; Rev 12a identical). Measured: EXPAND = 2:1 downward expansion, GATE = shut/open with depth set by RANGE, 0 -> 48.5 dB over the travel (40 dB at 0.78). gateRange defaults to 0 (no expansion). Not netlisted: the LED bargraphs (T5-T7; D15's n_gy and the D20/R55 node feed only comparator inputs), the 611E link switch SW2 (pin 8 is left as the local rail = link off), the lead from pin 47 to '82E08 PIN 11 OUT' (the Dynamics Switch card, whose drawing is in neither source - left open), and the page-2 78L15/79L15 supplies (ideal rails).",
+  "sources": [
+    {
+      "title": "Solid State Logic SL4000G Console Service Manual v1.1, page 35: card 82E10 DYNAMICS SECTION, drawing T82010.71 Rev 15a (24-5-90) - uncut, full width, native resolution. SOURCE OF RECORD; its revision table is on the same page.",
+      "url": "https://funkwerkes.com/web/wp-content/techdocs/MixedProAudio/SSL-4000G-Console-Service-Manual-v1_1.pdf"
+    },
+    {
+      "title": "Same manual, pages 33/34: the 82E10 edge-connector list (To 611E/V Mother Board) - pins 27/28/31/33/34/35/44/45/47/48 named, which is what fixes every gate control terminal as a panel net.",
+      "url": "https://funkwerkes.com/web/wp-content/techdocs/MixedProAudio/SSL-4000G-Console-Service-Manual-v1_1.pdf"
+    },
+    {
+      "title": "SSL drawing T82010.71 Rev 12 (10/84, REDRAWN), 2 sheets - the K&A Electronics SSL library scan, used as the cross-check on every value in this file",
+      "url": "http://www.ka-electronics.com/images/SSL/ssl_82E10.pdf"
+    },
+    {
+      "title": "Same manual, 'Component Pin Out' sheet drawing T500A: the DBX2151 VCA symbol, pins IN, VC+, VC-, SYM, V-, GND, V+, OUT",
+      "url": "https://funkwerkes.com/web/wp-content/techdocs/MixedProAudio/SSL-4000G-Console-Service-Manual-v1_1.pdf"
+    },
+    {
+      "title": "Analog Devices AD536A rms-to-DC converter datasheet rev. G: dB output 3 mV/dB, Fig. 6/7 connections",
+      "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/AD536A.pdf"
+    },
+    {
+      "title": "RCA/Harris CA324E quad op-amp datasheet: AVD 100 dB, 1 MHz unity-gain bandwidth, 0.5 V/us slew, +/-13 V output swing on +/-15 V, common-mode range including V-",
+      "url": ""
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 1.0
+  },
+  "oversampling": 2,
+  "solver": "auto",
+  "models": {
+    "NE5534": {
+      "kind": "opamp",
+      "level": 1,
+      "a0": 100000.0,
+      "gbw": 10000000.0,
+      "slew": 13000000.0,
+      "swing_hi": 1.0,
+      "swing_lo": 1.0,
+      "vhi": 14.0,
+      "vlo": -14.0,
+      "note": "TI NE5534 datasheet: AVD 100 V/mV, GBW 10 MHz, slew 13 V/us. The library has no 5534 card; the 22 pF compensation (CT on 82E13, C21 here) is not representable on the 5-node opamp card, its effect is carried by gbw/slew."
+    },
+    "ZENER_1V4": {
+      "kind": "diode",
+      "is": 1e-14,
+      "n": 1.0,
+      "rs": 0.0,
+      "bv": 1.4,
+      "ibv": 0.005,
+      "nbv": 2.0,
+      "note": "1 V4 5% zener (D1), the card's side-chain reference. No published datasheet for a 1.4 V zener: bv 1.4 V at 5 mA with nbv 2 to keep the breakdown knee outside the forward region (CIRCUIT_ENGINE 10.15). At the card's ~0.6 mA it sits near 1.34 V."
+    },
+    "CA3130": {
+      "kind": "opamp",
+      "level": 1,
+      "a0": 100000.0,
+      "gbw": 15000000.0,
+      "slew": 10000000.0,
+      "swing_hi": 0.06,
+      "swing_lo": 0.06,
+      "vhi": 14.0,
+      "vlo": -14.0,
+      "note": "CA3130/CA3130A BiMOS op-amp (Harris/Intersil datasheet): AVD 100 dB, unity-gain bandwidth 15 MHz, slew 10 V/us, CMOS input stage with the common-mode range including the NEGATIVE rail, and a CMOS output that swings to within ~60 mV of the rails (swing_hi/swing_lo 0.06). Declared inline and disclosed, as the NE5534 is. NOT used by the compressor half: T3 and T4 are quads (their sections are 7/6/5, 9/10/8 and 13/12/14), so the CA3130 can only be the bargraph comparators T5/T6/T7, which are display only. OPEN: the CA3130's total supply rating is 16 V while this card runs +-15 V - either SSL ran it over rating or the part is a CA3140 (36 V, 4.5 MHz, 9 V/us); the comparator behaviour is the same either way, but a lower rail would move the clamp voltages."
+    },
+    "AAZ17": {
+      "kind": "diode",
+      "is": 2e-09,
+      "n": 1.6,
+      "rs": 4.0,
+      "bv": 60.0,
+      "note": "AAZ17 germanium signal diode (Philips). No datasheet curve is published for the part; is/n/rs are set for 0.30 V at 1 mA and 0.42 V at 10 mA. The knee position and the compression slope both depend on it, so it is disclosed."
+    },
+    "1S44": {
+      "kind": "diode",
+      "is": 2.52e-09,
+      "n": 1.752,
+      "rs": 0.568,
+      "note": "1S44 = the card's standard small-signal silicon diode (the sheet's note: 'ALL DIODES 1S44 UNLESS STATED'). No 1S44 SPICE card is published; this is the library's 1N914-class fit (is 2.52n, n 1.752, rs 0.568)."
+    },
+    "CA324": {
+      "kind": "opamp",
+      "level": 1,
+      "a0": 100000.0,
+      "gbw": 1000000.0,
+      "slew": 500000.0,
+      "swing_hi": 2.0,
+      "swing_lo": 2.0,
+      "vhi": 15.0,
+      "vlo": -15.0,
+      "note": "CA324E quad op-amp (RCA/Harris CA324 datasheet): AVD 100 dB, unity-gain bandwidth 1 MHz, slew 0.5 V/us, output swing +/-13 V on +/-15 V rails (hence swing 2.0 V), and a common-mode range that includes the negative rail. The Rev-12 sheet's own note reads 'ALL ICs 1/4 CA324 UNLESS STATED', so T2, T3, T4, T5, T6 and T7 are this part; only T1 (AD536AJ), T8/T9 (5534) and T10 (DBX2151) are stated."
+    },
+    "BC184L": {
+      "kind": "npn",
+      "is": 1.4e-14,
+      "bf": 320.0,
+      "br": 3.0,
+      "note": "BC184L (Philips small-signal low-noise NPN): hFE 200-450 (group B/C), so BF 320. IS and BR are approximate, no vendor SPICE card is published."
+    },
+    "BC212": {
+      "kind": "pnp",
+      "is": 1.4e-14,
+      "bf": 250.0,
+      "br": 3.0,
+      "note": "BC212L (Philips small-signal PNP, the complement of the card's BC184L): hFE 200-450 so BF 250. IS and BR are approximate, no vendor SPICE card is published - the same disclosure as BC184L."
+    },
+    "ZENER_6V8": {
+      "kind": "diode",
+      "is": 1e-14,
+      "n": 1.0,
+      "rs": 0.0,
+      "bv": 6.8,
+      "ibv": 0.005,
+      "nbv": 2.0,
+      "note": "D11 6V8 zener, the clamp on the gate's control node (\u00a79d). No published curve for the part: bv 6.8 V at 5 mA, nbv 2 to keep the knee out of the forward region (CIRCUIT_ENGINE 10.15)."
+    }
+  },
+  "controls": [
+    {
+      "id": "ratio",
+      "label": "Ratio",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "C1"
+      ],
+      "group": "Compressor",
+      "note": "COMPRESS RATIO 10K LIN, section A: a plain divider of the demand, its wiper being T4-3's + reference for the send servo. MEASURED (feed-forward): 1:1 at every level at 0; incremental ratio 1.7:1 at 0.25, 2.9:1 at 0.5, 4.8:1 at 0.75 and 22:1 over the +14..+18 dBu span at 1.0 (the ratio rises with level because the send servo's gain does), i.e. 1:1 to infinity:1."
+    },
+    {
+      "id": "threshold",
+      "label": "Threshold",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "C3"
+      ],
+      "group": "Compressor",
+      "note": "COMPRESS THRESHOLD 10K LIN. DUAL (section A): top to +5 V, bottom through R16 4K7 to 0 V, wiper on card pin 15 into R15 1M2 at the attack/release integrator's summing node."
+    },
+    {
+      "id": "release",
+      "label": "Release",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "C6"
+      ],
+      "group": "Compressor",
+      "note": "RELEASE 250K LOG (card pin 20 = ACW end, pin 23 '0V RELEASE' = the wiper, returned to 0 V): a rheostat from pin 20 to 0 V. Pin 20 carries R22 10K from the C5/C6 junction and R23 10K from the D3/R13 junction. LOG taper; CW = longer."
+    },
+    {
+      "id": "reltype",
+      "label": "Release type (FAST/AUTO)",
+      "kind": "switch",
+      "default": 1,
+      "params": [
+        "C4"
+      ],
+      "group": "Compressor",
+      "note": "No release-type switch exists on the 82E10 Rev 15a: pin 22 'AUTO' is hard-linked to pin 21 (the timing node) and the only switch in the block is the FAST ATTACK contact 19-21 on the release knob's push-pull (control 'attackfast'). Stored only. (Until batch 7 this selected R19/R21 into the release node - a mis-wiring.)",
+      "legacyOnly": true
+    },
+    {
+      "id": "attackfast",
+      "label": "Fast attack",
+      "kind": "switch",
+      "default": 0,
+      "params": [
+        "C5"
+      ],
+      "group": "Compressor",
+      "note": "The panel FAST ATTACK switch (the push-pull on the COMPRESS RELEASE knob, 4000G front-panel spares list): closes card pin 19 to pin 21, putting R19 300R in parallel with R21 10K between the D3/R13 junction and the timing node. 0 = program-dependent (R21 10K into C5 + C6), 1 = FAST."
+    },
+    {
+      "id": "sym",
+      "label": "VCA symmetry (VR4)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Trims",
+      "note": "VR4 50K ADJUST SYM across +-15 V, wiper through R74 33K to the 2151 SYM pin, with R25 51R from SYM to 0 V."
+    },
+    {
+      "id": "setgain",
+      "label": "dB law set (VR1 200R)",
+      "kind": "continuous",
+      "default": 1.0,
+      "params": [],
+      "group": "Trims",
+      "note": "VR1 200R SET GAIN, a rheostat in series with R6 910R: 3 mV/dB x 36K5/(910+VR1) = 100 mV/dB at VR1 = 185 ohm, the card's printed 10 dB = 1 V at TP1. Default = full 200 ohm (1.11k), the value the AD536 validation circuit uses."
+    },
+    {
+      "id": "set0dbm",
+      "label": "0 dBm set (VR2 5K0)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Trims",
+      "note": "VR2 5K0 SET 0dBm, a rheostat from R9 8K2 (fed by the D1 1V4 reference through R5 2K2) into T2B's summing node: the DC (0 dB) level at TP2."
+    },
+    {
+      "id": "knee",
+      "label": "Knee",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "C2"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "no knee control exists on either card: the knee is fixed by D27 AAZ17 + R94 30K1 (the shaper's level-sensing branch) together with the send network's D14/D19 + R88 56K + R56 5K1 on the unresolved node C. D27/R94 are netlisted; the rest is not. Stored only."
+    },
+    {
+      "id": "output",
+      "label": "Output",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "D15"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "the card has no output-level control: AUDIO OUT (pin 61) leaves through R84 10R, and the channel level is the fader on 82E13. Stored only."
+    },
+    {
+      "id": "link",
+      "label": "Link",
+      "kind": "switch",
+      "default": 0,
+      "params": [
+        "L12"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "SW2B LINK couples this channel's shaping node (Z, the D27/R55/D20 junction) into the inter-channel bus through C1 0.1 uF; the bus side is the Total-Recall/multiplex interface (MPX, SW2A, R23 'ON 611', the +11 V rail), which is console housekeeping and not netlisted. A single channel runs with the link open, which is what this netlist models."
+    },
+    {
+      "id": "sidechain",
+      "label": "Side-chain source",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "S13"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "The side chain is fed from the dynamics section's own input (card pin 25 on the 611E), so the compressor is feed-forward - not from the output. The external side-chain input jack shares that pin. Stored only: the netlist models the internal tap (LB611)."
+    },
+    {
+      "id": "wet",
+      "label": "Wet",
+      "kind": "continuous",
+      "default": 1.0,
+      "params": [
+        "W14"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "a console channel card has no wet/dry mix. Stored only."
+    },
+    {
+      "id": "cmpmeter",
+      "label": "Compressor meter",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "CM"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "the card's LED bargraph (T5/T6/T7 CA3130 comparators with LED pairs 58/59, 56/57, 54/55, 52/53, 50/51 marked 3/6/10/14/20 dB and 3K0 droppers) is display only, not audio. Stored only."
+    },
+    {
+      "id": "gatemeter",
+      "label": "Gate meter",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "GM"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "as the compressor meter: display only."
+    },
+    {
+      "id": "gateRange",
+      "label": "Gate range",
+      "kind": "continuous",
+      "default": 0.0,
+      "params": [
+        "G7"
+      ],
+      "group": "Gate / expander",
+      "note": "EXPAND RANGE 25K LIN (card pin 31 = CW end, 0 V = CCW end, wiper commoned with the RELEASE wiper): one shaft with the release, so it is a series chain node G -> RANGE track -> wipers -> RELEASE track -> pin 47 -> R47 10K -> the timing node C9. It sets the attack/release charge path's resistance against the +5.6 V reference on node G. Default 0 = fully anticlockwise = no expansion; measured depth vs travel in notes \u00a717e."
+    },
+    {
+      "id": "gateThreshold",
+      "label": "Gate threshold",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "G8"
+      ],
+      "group": "Gate / expander",
+      "note": "EXPAND THRESHOLD 25K LIN (card pin 27 = CCW end through R28 6K8 to 0 V, +5 V = CW end, wiper = pin 28): injects through R29 36K into node A, i.e. the expander's threshold level. 0 = 0 V = gate closed hardest, 1 = +5 V."
+    },
+    {
+      "id": "gateMode",
+      "label": "Gate mode",
+      "kind": "switch",
+      "default": 0,
+      "params": [
+        "G9"
+      ],
+      "group": "Gate / expander",
+      "note": "the panel's EXPAND/GATE switch: pin 34 (the pole, into T3 \u00a74's + input) connects to pin 33 (the expander's demand buffer) in EXPAND and to pin 35 (the gate comparator's control) in GATE. 0 = EXPAND, 1 = GATE."
+    },
+    {
+      "id": "gateAttack",
+      "label": "Gate fast attack",
+      "kind": "switch",
+      "default": 1,
+      "params": [
+        "G10"
+      ],
+      "group": "Gate / expander",
+      "note": "the panel's fast-attack switch: the timing node (pin 48) connects to pin 44 (FAST, through R44 1R0 from node S) or pin 45 (SLOW, through R45 100R). 0 = FAST, 1 = SLOW; the drawing's blade is on SLOW, so that is the default."
+    },
+    {
+      "id": "gateRelease",
+      "label": "Gate release",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "G11"
+      ],
+      "group": "Gate / expander",
+      "note": "EXPAND RELEASE 250K LOG (card pin 47 = ACW end, wiper commoned with the RANGE wiper): the release leg of the same ganged chain - it sets the timing node's discharge time constant against the +5.6 V reference."
+    },
+    {
+      "id": "boost",
+      "label": "Boost",
+      "kind": "continuous",
+      "default": 0.0,
+      "params": [
+        "B16"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "not on either card. Stored only."
+    },
+    {
+      "id": "pwr",
+      "label": "On/Off",
+      "kind": "continuous",
+      "default": 1.0,
+      "params": [
+        "Pwr"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "console-driven. Stored only."
+    },
+    {
+      "id": "gateSetGate",
+      "label": "Set gate (VR3)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Gate / expander",
+      "note": "VR3 SET GATE 100K trim: a divider of +15 V / -5 V whose wiper injects into node A through R31 51K, i.e. it sets the expander's threshold. Default 0.5 = mid travel."
+    },
+    {
+      "id": "stereo",
+      "label": "Stereo",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "CASSt"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Stored only"
+    }
+  ],
+  "parts": [
+    {
+      "ref": "V15",
+      "type": "V",
+      "nodes": [
+        "v15",
+        "0"
+      ],
+      "value": "15",
+      "note": "card +15 V from TR5 78L15 (82E10 supply block, read at label level: R101 10R from +18 V, C19 10 uF 35 V, C3 100 uF 25 V)"
+    },
+    {
+      "ref": "V15N",
+      "type": "V",
+      "nodes": [
+        "v15n",
+        "0"
+      ],
+      "value": "-15",
+      "note": "card -15 V from TR6 79L15 (R103 10R, C17 10 uF)"
+    },
+    {
+      "ref": "V18N",
+      "type": "V",
+      "nodes": [
+        "v18n",
+        "0"
+      ],
+      "value": "-18",
+      "note": "console -18 V: the AD536AJ's -VS is drawn on a -18V rail flag"
+    },
+    {
+      "ref": "V5",
+      "type": "V",
+      "nodes": [
+        "v5",
+        "0"
+      ],
+      "value": "5",
+      "note": "card +5 V (D25/D26 5V0 in the supply block)"
+    },
+    {
+      "ref": "R78",
+      "type": "R",
+      "nodes": [
+        "in",
+        "0"
+      ],
+      "value": "100k",
+      "note": "AUDIO IN (card pin 60) load to 0 V"
+    },
+    {
+      "ref": "C10",
+      "type": "C",
+      "nodes": [
+        "in",
+        "n_ain"
+      ],
+      "value": "2u2"
+    },
+    {
+      "ref": "R79",
+      "type": "R",
+      "nodes": [
+        "n_ain",
+        "vca_in"
+      ],
+      "value": "20k0",
+      "note": "Rin; asterisked on the card (selected 1%)"
+    },
+    {
+      "ref": "R80",
+      "type": "R",
+      "nodes": [
+        "n_hf",
+        "vca_in"
+      ],
+      "value": "20k",
+      "note": "as drawn: R80 from the VCA's IN pin (a virtual ground) to a node that C11 returns to 0 V, so it carries no current - recorded, not omitted. If C11 is instead meant across R80 the stage gets a +6 dB shelf above 8 kHz"
+    },
+    {
+      "ref": "C11",
+      "type": "C",
+      "nodes": [
+        "n_hf",
+        "0"
+      ],
+      "value": "1n0"
+    },
+    {
+      "ref": "U1",
+      "type": "vca",
+      "nodes": [
+        "vca_in",
+        "0",
+        "n_cv",
+        "n_sym",
+        "n_vm",
+        "0",
+        "v15",
+        "vca_out"
+      ],
+      "model": "DBX2151",
+      "note": "T10 dbx 2151. Pins per the manual's own T500A pin-out sheet: IN, VC+ 2, VC- 3, SYM 4, V- 5, GND 6, V+ 7, OUT 8. VC+ and GND are one bracket on the card's 0 V tick; R75 10K from VC- to pin 5 is AN103's 'DC offset nulling' (pin 5 sits ~4 junction drops below GND); R76 4K3 is the ISET resistor to -15 V."
+    },
+    {
+      "ref": "R76",
+      "type": "R",
+      "nodes": [
+        "n_vm",
+        "v15n"
+      ],
+      "value": "4k3"
+    },
+    {
+      "ref": "R75",
+      "type": "R",
+      "nodes": [
+        "n_vm",
+        "n_cv"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "R25",
+      "type": "R",
+      "nodes": [
+        "n_sym",
+        "0"
+      ],
+      "value": "51r"
+    },
+    {
+      "ref": "R74",
+      "type": "R",
+      "nodes": [
+        "n_sym",
+        "vr4_w"
+      ],
+      "value": "33k"
+    },
+    {
+      "ref": "VR4",
+      "type": "pot",
+      "nodes": [
+        "v15n",
+        "vr4_w",
+        "v15"
+      ],
+      "value": "50k",
+      "taper": "B",
+      "control": "sym"
+    },
+    {
+      "ref": "U2",
+      "type": "opamp",
+      "nodes": [
+        "n_ivp",
+        "vca_out",
+        "n_iv",
+        "v15",
+        "v15n"
+      ],
+      "model": "NE5534",
+      "note": "T9 5534 I/V converter"
+    },
+    {
+      "ref": "R77",
+      "type": "R",
+      "nodes": [
+        "n_ivp",
+        "0"
+      ],
+      "value": "20k0"
+    },
+    {
+      "ref": "R81",
+      "type": "R",
+      "nodes": [
+        "vca_out",
+        "n_iv"
+      ],
+      "value": "20k0",
+      "note": "Rout; asterisked. 20K0 in / 20K0 out = 0 dB stage"
+    },
+    {
+      "ref": "C12",
+      "type": "C",
+      "nodes": [
+        "vca_out",
+        "n_iv"
+      ],
+      "value": "100p"
+    },
+    {
+      "ref": "C13",
+      "type": "C",
+      "nodes": [
+        "n_iv",
+        "n_mid"
+      ],
+      "value": "220u",
+      "note": "220 uF 25 V"
+    },
+    {
+      "ref": "R82",
+      "type": "R",
+      "nodes": [
+        "n_iv",
+        "n_mid"
+      ],
+      "value": "100k"
+    },
+    {
+      "ref": "R83",
+      "type": "R",
+      "nodes": [
+        "v15",
+        "n_mid"
+      ],
+      "value": "1M"
+    },
+    {
+      "ref": "C14",
+      "type": "C",
+      "nodes": [
+        "n_mid",
+        "out"
+      ],
+      "value": "220u",
+      "note": "220 uF 25 V"
+    },
+    {
+      "ref": "R84",
+      "type": "R",
+      "nodes": [
+        "out",
+        "n_aout"
+      ],
+      "value": "10r",
+      "note": "to AUDIO OUT, card pin 61"
+    },
+    {
+      "ref": "R85",
+      "type": "R",
+      "nodes": [
+        "out",
+        "0"
+      ],
+      "value": "10k",
+      "note": "R85 10K: TP3/the output node to 0 V - a 10 k output load. Rev-12 crop s/r85x.png: the box's right lead ends in the same bare slash R1 100K's top lead and R77 20K0's far end use, which is this drawing's 0 V mark. It is NOT a side-chain tap: the side chain is fed from card pin 25 (the 611E mother board), see LB611."
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "n_sc",
+        "0"
+      ],
+      "value": "100k",
+      "note": "SIDE CHAIN INPUT (card pin 25) load"
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "n_sc",
+        "n_sc_c"
+      ],
+      "value": "10u",
+      "note": "10 uF 35 V"
+    },
+    {
+      "ref": "R2",
+      "type": "R",
+      "nodes": [
+        "n_sc_c",
+        "n_vin"
+      ],
+      "value": "6k2"
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "n_vin",
+        "0"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "T1",
+      "type": "ad536",
+      "nodes": [
+        "n_vin",
+        "nc2",
+        "v18n",
+        "cav",
+        "db",
+        "bo",
+        "bi",
+        "iout",
+        "0",
+        "0",
+        "nc11",
+        "nc12",
+        "nc13",
+        "v15"
+      ],
+      "model": "AD536AJ",
+      "note": "T1 AD 536J = AD536AJ. Pins 7 (BUF OUT) and 6 (BUF IN) are bracketed together on the drawing; they are left on stub nodes here (the buffer is unused either way, as in library/test-ad536). Pin 8 IOUT open, pins 9 RL and 10 COM on the card's 0 V ticks, pins 11-13 no-connect."
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "cav",
+        "v15"
+      ],
+      "value": "3n3",
+      "note": "CAV to +15 V as drawn (25 ms/uF x 3n3 = 82.5 us)"
+    },
+    {
+      "ref": "VR1",
+      "type": "pot",
+      "nodes": [
+        "db",
+        "vr1_w",
+        "vr1_w"
+      ],
+      "value": "200r",
+      "taper": "B",
+      "control": "setgain",
+      "note": "200R SET GAIN rheostat in series with R6"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "vr1_w",
+        "n_t2a"
+      ],
+      "value": "910r"
+    },
+    {
+      "ref": "U3",
+      "type": "opamp",
+      "nodes": [
+        "0",
+        "n_t2a",
+        "tp1",
+        "v15",
+        "v15n"
+      ],
+      "model": "CA324",
+      "note": "T2A (TL074 section 13/12/14; TL072 is the same amplifier)"
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "n_t2a",
+        "tp1"
+      ],
+      "value": "36k5",
+      "note": "asterisked; 36K5/1.11k x 3 mV/dB = 98.6 mV/dB, 100 mV/dB at 185 ohm"
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "tp1",
+        "n_t2b"
+      ],
+      "value": "36k5",
+      "note": "asterisked"
+    },
+    {
+      "ref": "U4",
+      "type": "opamp",
+      "nodes": [
+        "n_t2bp",
+        "n_t2b",
+        "tp2",
+        "v15",
+        "v15n"
+      ],
+      "model": "CA324",
+      "note": "T2B (9/10/8)"
+    },
+    {
+      "ref": "R11",
+      "type": "R",
+      "nodes": [
+        "n_t2b",
+        "tp2"
+      ],
+      "value": "36k5",
+      "note": "asterisked"
+    },
+    {
+      "ref": "R10",
+      "type": "R",
+      "nodes": [
+        "n_t2bp",
+        "0"
+      ],
+      "value": "7k5"
+    },
+    {
+      "ref": "R5",
+      "type": "R",
+      "nodes": [
+        "v5",
+        "n_ref"
+      ],
+      "value": "2k2"
+    },
+    {
+      "ref": "D1",
+      "type": "D",
+      "nodes": [
+        "0",
+        "n_ref"
+      ],
+      "model": "ZENER_1V4",
+      "note": "1 V4 5 %: anode to 0 V, cathode to the R5 node; the card prints MARKED POLARITY OF 1V5 ZENERS MAY DIFFER"
+    },
+    {
+      "ref": "R9",
+      "type": "R",
+      "nodes": [
+        "n_ref",
+        "vr2_a"
+      ],
+      "value": "8k2"
+    },
+    {
+      "ref": "VR2",
+      "type": "pot",
+      "nodes": [
+        "vr2_a",
+        "n_t2b",
+        "n_t2b"
+      ],
+      "value": "5k0",
+      "taper": "B",
+      "control": "set0dbm",
+      "note": "VR2 5K0 SET 0dBm as the card draws it: a rheostat, the wiper tied back to R9's side (R9 8K2 -> the T2B summing node). The WIP had the wiper on an unconnected node, so the pot's whole 5 k was in circuit and the trim did nothing."
+    },
+    {
+      "ref": "R12",
+      "type": "R",
+      "nodes": [
+        "tp2",
+        "n_ar"
+      ],
+      "value": "1M"
+    },
+    {
+      "ref": "U5",
+      "type": "opamp",
+      "nodes": [
+        "n_arc",
+        "n_ar",
+        "n_t2c",
+        "v15",
+        "v15n"
+      ],
+      "model": "CA324",
+      "note": "T2C (6/5/7) attack-release integrator"
+    },
+    {
+      "ref": "R57",
+      "type": "R",
+      "nodes": [
+        "n_arc",
+        "0"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "D2",
+      "type": "D",
+      "nodes": [
+        "n_ar",
+        "n_t2c"
+      ],
+      "model": "1N4148",
+      "note": "anode at the summing node, cathode at the output: the fast direction"
+    },
+    {
+      "ref": "R13",
+      "type": "R",
+      "nodes": [
+        "n_ar",
+        "d3a"
+      ],
+      "value": "1M"
+    },
+    {
+      "ref": "D3",
+      "type": "D",
+      "nodes": [
+        "n_t2c",
+        "d3a"
+      ],
+      "model": "1N4148",
+      "note": "antiparallel with D2 through R13 1M: the slow direction"
+    },
+    {
+      "ref": "R15",
+      "type": "R",
+      "nodes": [
+        "thr_w",
+        "n_ar"
+      ],
+      "value": "1M2",
+      "note": "1M2 (1.2 MOhm): the threshold pot's wiper into the integrator's summing node. NOTE the units trap: the netlist value parser reads a lowercase 'm' as milli, so a mega-ohm value must be written '1M2'/'1M' - '1m2' is 1.2 mOhm and shorts the threshold to the summing node."
+    },
+    {
+      "ref": "R16",
+      "type": "R",
+      "nodes": [
+        "n_thrb",
+        "0"
+      ],
+      "value": "4k7"
+    },
+    {
+      "ref": "THR",
+      "type": "pot",
+      "nodes": [
+        "n_thrb",
+        "thr_w",
+        "v5"
+      ],
+      "value": "10k",
+      "taper": "B",
+      "control": "threshold",
+      "note": "COMPRESS THRESHOLD 10K LIN DUAL section A: +5 V at the clockwise end, R16 4K7 at the other, wiper = card pin 15"
+    },
+    {
+      "ref": "C5",
+      "type": "C",
+      "nodes": [
+        "n_cva",
+        "n_m"
+      ],
+      "value": "3u3",
+      "note": "3 u3 50 V, the attack capacitor"
+    },
+    {
+      "ref": "C6",
+      "type": "C",
+      "nodes": [
+        "n_m",
+        "0"
+      ],
+      "value": "22u",
+      "note": "22 uF 25 V, the release capacitor"
+    },
+    {
+      "ref": "R22",
+      "type": "R",
+      "nodes": [
+        "n_m",
+        "pot20"
+      ],
+      "value": "10k",
+      "note": "R22 10K, C5/C6 junction -> pin 20. Rev 15a prints 10K (x 2200-3500, y 960-1300); the Rev-12 K&A/archive.org redraw prints R22 1M in the same place - a revision change, and the netlist follows Rev 15a throughout"
+    },
+    {
+      "ref": "R19",
+      "type": "R",
+      "nodes": [
+        "d3a",
+        "s19a"
+      ],
+      "value": "300r",
+      "note": "FAST attack resistor: from the D3/R13 junction (the bottom rail of the attack/release block) to card pin 19 'FAST' = the panel fast-attack switch's pole. SL4000G Console Service Manual v1.1 p35 (T82010.71 Rev 15a), native 3507x4941 image rotated 270 deg (4941x3507; the vertical axis is 2x compressed, so crops were viewed at 2x height) x 2200-3500, y 960-1300; the bottom rail runs from the R13/D3 dot up, right and down to the R19/R21/R23 feet (x 1850-2400, y 980-1290). Batch-7 fix: was wired from the C5/C6 junction to pin 20"
+    },
+    {
+      "ref": "R21",
+      "type": "R",
+      "nodes": [
+        "d3a",
+        "n_cva"
+      ],
+      "value": "10k",
+      "note": "AUTO (program-dependent) attack resistor: D3/R13 junction -> card pin 22 'AUTO', which is linked to pin 21 'ATTACK' (the timing node: T2D pin 3, C5, D7) - drawn as a wire from 21 to 22 on Rev 15a (x 2480-2700, y 1020-1200, 4x) and listed '22 Linked to 21 on motherboard' in the 4000G manual's 82E10 edge-connector table. Rev 12 draws the same part as R2 10K on a '22 SLOW' throw. Batch-7 fix: was a switched path from the C5/C6 junction to pin 20"
+    },
+    {
+      "ref": "R23",
+      "type": "R",
+      "nodes": [
+        "d3a",
+        "pot20"
+      ],
+      "value": "10k",
+      "note": "R23 10K from the attack/release bottom rail (D3/R13 junction) to card pin 20 (the RELEASE pot's ACW end); no ground symbol on its foot (SL4000G Console Service Manual v1.1 p35 (T82010.71 Rev 15a), native 3507x4941 image rotated 270 deg (4941x3507; the vertical axis is 2x compressed, so crops were viewed at 2x height) x 2950-3400, y 1150-1300 at 2x/4x). Batch-7 fix: was pin 20 to 0 V"
+    },
+    {
+      "ref": "REL",
+      "type": "pot",
+      "nodes": [
+        "pot20",
+        "0",
+        "0"
+      ],
+      "value": "250k",
+      "taper": "A",
+      "control": "release",
+      "note": "RELEASE 250K LOG: one end on card pin 20 (edge table: 'Compress release pot ACW'), the wiper on pin 23 '0V RELEASE' (Rev 15a prints the 0 V tick; the 4000G edge table lists pin 23 as -5 V - the drawing is followed), the other end an open stub - a rheostat. The panel knob is a push-pull: its switch is the FAST attack contact (SFA)"
+    },
+    {
+      "ref": "U6",
+      "type": "opamp",
+      "nodes": [
+        "n_cva",
+        "n_dem",
+        "n_dem",
+        "v15",
+        "v15n"
+      ],
+      "model": "CA324",
+      "note": "T2D (2/3/1), a unity-gain buffer: + input on the timing node, - input tied to its own output"
+    },
+    {
+      "ref": "R26",
+      "type": "R",
+      "nodes": [
+        "n_dem",
+        "n_pot11"
+      ],
+      "value": "100r",
+      "note": "R26 100R: T2-1's output (pin 1) to the RATIO pot's CW end (pin 11). Rev-12 sheet, crop M1x: R26's right lead lands on pin 1's dot at (1213,1537); its left lead is the same node as pin 11's circle and R27's left end."
+    },
+    {
+      "ref": "R27",
+      "type": "R",
+      "nodes": [
+        "n_rw",
+        "n_pot11"
+      ],
+      "value": "2k7",
+      "note": "R27 2K7 as drawn: between the RATIO pot's wiper (pin 10) and its CW end (pin 11) - the end-stop/fault resistor SSL fits across the top of the track. It makes the wiper a divider with a defined maximum, not an open circuit at the top of the travel."
+    },
+    {
+      "ref": "RATIO",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "n_rw",
+        "n_pot11"
+      ],
+      "value": "10k",
+      "taper": "B",
+      "control": "ratio",
+      "note": "COMPRESS RATIO 10K LIN, section A (Rev-12 sheet: pin 11 = CW end, pin 10 = wiper, the third terminal on the panel's 0 V). It is a plain divider of the demand: the wiper is T4-3's + input, which is the reference of the send servo. 0 = 0 V = no send = 1:1; 1 = the full demand = the send servo's maximum = infinity:1."
+    },
+    {
+      "ref": "U9",
+      "type": "opamp",
+      "nodes": [
+        "0",
+        "n_t8m",
+        "n_cv",
+        "v15",
+        "v15n"
+      ],
+      "model": "NE5534",
+      "note": "T8 5534, the CV loop amplifier: its output IS the VCA control node; the - row carries R86 1K0 || C30 1n0 || C21 22p to the output and R87 39K2 from the shaper T4-2's output; the + input returns to the 0 V reference (notes 12b). Its own lead ends in the card's bare panel-slash, so the reference is the one connection here that is inferred, not read."
+    },
+    {
+      "ref": "R86",
+      "type": "R",
+      "nodes": [
+        "n_cv",
+        "n_t8m"
+      ],
+      "value": "1k0"
+    },
+    {
+      "ref": "C30",
+      "type": "C",
+      "nodes": [
+        "n_t8m",
+        "n_cv"
+      ],
+      "value": "1n0"
+    },
+    {
+      "ref": "C21",
+      "type": "C",
+      "nodes": [
+        "n_t8m",
+        "n_cv"
+      ],
+      "value": "22p"
+    },
+    {
+      "ref": "R87",
+      "type": "R",
+      "nodes": [
+        "n_t8m",
+        "n_shp"
+      ],
+      "value": "39k2",
+      "note": "R87 39K2*. Near end on T8's - row (the dot at 2455,468). Far end on T4 section 2's OUTPUT, pin 7 - proven by segment geometry (notes 12k): the y-379/381 row x 2750..2880 is R24's left lead, the x-2749..2752 vertical runs y 379..553 into the apex row y 550..553 x 2750..2845, and R87's lead terminates on that vertical at y 492..495. V(cv) = -V(n_shp)/39.2."
+    },
+    {
+      "ref": "U10",
+      "type": "opamp",
+      "nodes": [
+        "0",
+        "n_shp_m",
+        "n_shp",
+        "v15",
+        "v15n"
+      ],
+      "model": "CA324",
+      "note": "T4 section 2 (pin 7 out, 6 -, 5 +) - a TL074 section, not a CA3130: 7/6/5 and 13/12/14 are a quad's pin triples and the CA3130 is an 8-pin single. T2 is a TL074 by the card's own note, T4 is its twin. With D27 off the stage is a unity follower (R24 is the only part on the - node), which is what the measurement shows. MEASURED: with D27 off it is a unity follower and R87 therefore hands T8 a copy of the ratio demand; with D27 conducting the - input is pulled positive and the output goes negative, which is the only polarity that commands gain reduction on this card. Its + input is a bare panel lead on the card (crop g2/e5x.png: the same slash T8's + lead carries), returned to the 0 V reference - inferred and disclosed."
+    },
+    {
+      "ref": "R24",
+      "type": "R",
+      "nodes": [
+        "n_shp",
+        "n_shp_m"
+      ],
+      "value": "30k1",
+      "note": "R24 30K1*, T4-2's feedback: the output apex (pin 7) to the - input (pin 6)."
+    },
+    {
+      "ref": "R94",
+      "type": "R",
+      "nodes": [
+        "n_shp_m",
+        "n_d27c"
+      ],
+      "value": "30k1",
+      "note": "R94 30K1*, T4-2's - input to D27's cathode. Its far end is D27's cathode, so the stage only becomes an amplifier above the diode's knee: that is the card's fixed soft knee, and it is what makes the ratio level dependent."
+    },
+    {
+      "ref": "D27",
+      "type": "D",
+      "nodes": [
+        "n_link",
+        "n_d27c"
+      ],
+      "model": "AAZ17",
+      "note": "D27 AAZ17 (germanium, stated on the sheet): cathode up to R94, ANODE on the control rail n_link (row y 418 on Rev 15a: D27's anode, the pin-8 dot (3552,415), then right to the x-4094 corner and down to D18's and D16's cathodes). So the shaper reads the diode-OR of the compressor's send and the gate, which is how one 2151 serves both (notes \u00a717a)."
+    },
+    {
+      "ref": "U11",
+      "type": "opamp",
+      "nodes": [
+        "n_rw",
+        "n_c",
+        "n_ta",
+        "v15",
+        "v15n"
+      ],
+      "model": "CA324",
+      "note": "T4 section 3 (Rev-12 sheet: pin 8 out, pin 9 -, pin 10 +). + = the RATIO pot's wiper; - = node C; out = TR1's base. With R20 8K2 to the send rail and R56 5K1 to node D the stage is the card's demand-to-send amplifier."
+    },
+    {
+      "ref": "R20",
+      "type": "R",
+      "nodes": [
+        "n_send",
+        "n_c"
+      ],
+      "value": "8k2",
+      "note": "R20 8K2, the send servo's feedback: send rail -> node C."
+    },
+    {
+      "ref": "R55",
+      "type": "R",
+      "nodes": [
+        "n_d20c",
+        "n_c"
+      ],
+      "value": "100k",
+      "note": "R55 100K: D20's cathode -> node C (a second, diode-gated feedback path)."
+    },
+    {
+      "ref": "D20",
+      "type": "D",
+      "nodes": [
+        "n_send",
+        "n_d20c"
+      ],
+      "model": "1S44",
+      "note": "D20: anode on the send rail, cathode down to R55 (crop W1x / pixel map x 730..880 y 840..1010: the bar is below the triangle, so it conducts from the rail down). It is off at rest and conducting above the knee, so the send's slope falls at high level - the card's soft knee."
+    },
+    {
+      "ref": "R56",
+      "type": "R",
+      "nodes": [
+        "n_c",
+        "n_d"
+      ],
+      "value": "5k1",
+      "note": "R56 5K1: node C -> node D. With R20 8K2 it sets the servo's gain, 1 + 8.2/5.1 = 2.61 - the card's printed 10dB = 2V5."
+    },
+    {
+      "ref": "D14",
+      "type": "D",
+      "nodes": [
+        "n_d",
+        "n_d1"
+      ],
+      "model": "1S44",
+      "note": "D14 + D1 in series from node D to 0 V (both cathode down), clamping node D at two junctions."
+    },
+    {
+      "ref": "D1S",
+      "type": "D",
+      "nodes": [
+        "n_d1",
+        "0"
+      ],
+      "model": "1S44",
+      "note": "D1 (the second of the D14/D1 pair; ref D1 is taken by the 1V4 reference on the side chain)."
+    },
+    {
+      "ref": "R88",
+      "type": "R",
+      "nodes": [
+        "n_d",
+        "0"
+      ],
+      "value": "56k",
+      "note": "R88 56K from node D to 0 V."
+    },
+    {
+      "ref": "TR1",
+      "type": "npn",
+      "nodes": [
+        "n_tr1c",
+        "n_ta",
+        "n_send"
+      ],
+      "model": "BC184L",
+      "note": "TR1 BC184L, the send servo's output device: base = T4-3's output (pin 8), collector = +15 V through R53 100R, emitter = the send rail (crop tr1_4x: the arrow is on the right-hand diagonal, so that is the emitter, and it goes up to the rail)."
+    },
+    {
+      "ref": "R53",
+      "type": "R",
+      "nodes": [
+        "v15",
+        "n_tr1c"
+      ],
+      "value": "100r",
+      "note": "R53 100R: TR1's collector load to +15 V (the rail flag reads +15V)."
+    },
+    {
+      "ref": "R54",
+      "type": "R",
+      "nodes": [
+        "n_send",
+        "v15n"
+      ],
+      "value": "10k",
+      "note": "R54 10K, the send rail's emitter load to -15 V."
+    },
+    {
+      "ref": "D18",
+      "type": "D",
+      "nodes": [
+        "n_send",
+        "n_link"
+      ],
+      "model": "1S44",
+      "note": "D18 1S44: anode on the send (TR1's emitter, the dot (3595,768) on Rev 15a), cathode (bar at the bottom) on the control rail n_link via the dot (3595,905) and the row y 907 to the x-4094 vertical. It is the compressor's leg of the diode-OR onto the 10dB = 2V5 rail; D16 is the gate's leg (notes \u00a717a). WIP5 had its cathode on a dead-end R107 node - corrected."
+    },
+    {
+      "ref": "R107",
+      "type": "R",
+      "nodes": [
+        "n_link",
+        "v15n"
+      ],
+      "value": "470k",
+      "note": "R107 470K: the control rail n_link to -15 V - the diode-OR's common pull-down, which keeps D18/D16 forward-biased and lets the rail fall when neither the compressor nor the gate drives it."
+    },
+    {
+      "ref": "LB611",
+      "type": "R",
+      "nodes": [
+        "in",
+        "n_sc"
+      ],
+      "value": "0r1",
+      "note": "611E mother-board routing, disclosed: card pin 25 (SIDE CHAIN INPUT) is fed from the dynamics section's own input, i.e. card pin 60, so the compressor is FEED-FORWARD. Sources: SSL's Channel Strip Guide (https://solidstatelogic.com/channel-strip-guide) - the E moved from the B-series feedback topology to feed-forward - and the Revival 4000 manual, which follows the E circuit: the side chain comes from the signal feeding the dynamics section or from the external side-chain input. 0.1 ohm = a board link, not a part."
+    },
+    {
+      "ref": "V5N",
+      "type": "V",
+      "nodes": [
+        "v5n",
+        "0"
+      ],
+      "value": "-5",
+      "note": "card -5 V (edge pin 23 '-5v'). Drawn as a rail tick on Rev 15a at VR3's cold end (crop GA1) and at R41 10K (crop HL1); modelled as an ideal rail, exactly as v15/v15n/v5 already are."
+    },
+    {
+      "ref": "VR3",
+      "type": "pot",
+      "nodes": [
+        "v5n",
+        "vr3_w",
+        "v15"
+      ],
+      "value": "100k",
+      "note": "VR3 SET GATE 100K trim, crops GA1: track between the +15 V tick (top) and the -5 V tick (bottom), wiper -> R31 510K. Rev 15a prints -5 V as the cold end; \u00a79d's '+-15 V' was the Rev-12 reading.",
+      "control": "gateSetGate",
+      "taper": "B"
+    },
+    {
+      "ref": "R31",
+      "type": "R",
+      "nodes": [
+        "vr3_w",
+        "n_ga"
+      ],
+      "value": "510k",
+      "note": "R31 510K, VR3's wiper into node A (its right lead rises diagonally into the x-679 vertical). Rev 15a prints '510K' (6x crop, body x 455-565 y 1593-1620, legend under it); WIP6 had 51K, a dropped digit. Rev 12a printed 1M and the revision table's 12c amends R31, so 510K is the Rev-15a value (notes \u00a717c)."
+    },
+    {
+      "ref": "THRG",
+      "type": "pot",
+      "nodes": [
+        "p27",
+        "p28",
+        "v5"
+      ],
+      "value": "25k",
+      "note": "EXPAND THRESHOLD 25K LIN (crops GA1, J2): CW end on the +5 V tick, CCW end -> card pin 27 -> R28 6K8 -> 0 V, wiper = card pin 28. So the wiper runs 0..+5 V and injects through R29 36K into node A (\u00a716c).",
+      "control": "gateThreshold",
+      "taper": "B"
+    },
+    {
+      "ref": "R28",
+      "type": "R",
+      "nodes": [
+        "p27",
+        "0"
+      ],
+      "value": "6k8",
+      "note": "R28 6K8, card pin 27 to a bare slash = 0 V (crop J2, \u00a716c)."
+    },
+    {
+      "ref": "R29",
+      "type": "R",
+      "nodes": [
+        "p28",
+        "n_ga"
+      ],
+      "value": "36k",
+      "note": "R29 36K, card pin 28 (the threshold wiper) into node A (crop J2 / \u00a716b: it lands on T3 \u00a71's inverting input)."
+    },
+    {
+      "ref": "R34",
+      "type": "R",
+      "nodes": [
+        "tp2",
+        "n_ga"
+      ],
+      "value": "36k",
+      "note": "R34 36K, the gate's demand: from TP2 (the compressor's demand test point, crop HQ1: test-point oval at (1655,1120)) down into node A (crop HO1: body x 660-715 y 1500-1560, top lead jogs at y 1467 to the x-1655 vertical). TP2 is U4's output, so this tap loads an op-amp output and cannot move the compressor's demand."
+    },
+    {
+      "ref": "R30",
+      "type": "R",
+      "nodes": [
+        "n_ga",
+        "n_gp"
+      ],
+      "value": "36k",
+      "note": "R30 36K, node A to node P (crop HE1/HF1: the body sits at y 1595-1618 and its right lead ends on D9's anode at x 1009)."
+    },
+    {
+      "ref": "U_T3A",
+      "type": "opamp",
+      "nodes": [
+        "0",
+        "n_ga",
+        "n_gm2",
+        "v15",
+        "v15n"
+      ],
+      "model": "CA324",
+      "note": "T3 section 1 (pins 1/2/3, crop GA1): - (2) = node A, + (3) = a bare slash = 0 V (dot (679,1731) -> the y-1727 row -> the slash at (675,1811)), out (1) = the D8/D9 midpoint. No feedback element is drawn, so it is a comparator, not a linear stage."
+    },
+    {
+      "ref": "D8",
+      "type": "D",
+      "nodes": [
+        "n_gm2",
+        "n_ga"
+      ],
+      "model": "1S44",
+      "note": "D8 1S44 (crops HE1, HF1): ANODE at T3\u00a71's output (the D8/D9 junction, the x-1117 vertical), CATHODE at node A (bar at x 885 on the y-1669 row). So T3\u00a71 can charge node A upward."
+    },
+    {
+      "ref": "D9",
+      "type": "D",
+      "nodes": [
+        "n_gp",
+        "n_gm2"
+      ],
+      "model": "1S44",
+      "note": "D9 1S44 (crops HG1, GW1): ANODE at node P (bar at x 1050 = cathode right, and the x-951 vertical ties the anode row to the y-1564 top row = node P), CATHODE at T3\u00a71's output. So T3\u00a71 can pull node P down. Re-verified at 5x on Rev 15a (pass 22): the wiring is right, but the function is a PRECISION HALF-WAVE RECTIFIER, not a charge pump - D9 + R30 36K close the inverting loop when node A's input current is positive (node P = -36K x I), D8 clamps node A at 0 V when it is negative (node P = 0). So node P = -max(0, tp2 + p28 + 0.0706 vr3_w): 0.1 V per dB below the expander threshold, zero above it (notes \u00a717c)."
+    },
+    {
+      "ref": "R32",
+      "type": "R",
+      "nodes": [
+        "n_gp",
+        "n_gb"
+      ],
+      "value": "10k",
+      "note": "R32 10K, node P into T3 \u00a72's - input (crop GB1)."
+    },
+    {
+      "ref": "U_T3B",
+      "type": "opamp",
+      "nodes": [
+        "0",
+        "n_gb",
+        "n_gex",
+        "v15",
+        "v15n"
+      ],
+      "model": "CA324",
+      "note": "T3 section 2 (pins 5/6/7, crop GB1): - (6) = the R32/R33 node, + (5) = a bare slash = 0 V, out (7) -> R36 100R. An inverting buffer of the clamped demand."
+    },
+    {
+      "ref": "R33",
+      "type": "R",
+      "nodes": [
+        "n_gb",
+        "n_gex"
+      ],
+      "value": "10k",
+      "note": "R33 10K feedback, T3 \u00a72 pin 6 to pin 7 (crop GB1)."
+    },
+    {
+      "ref": "R36",
+      "type": "R",
+      "nodes": [
+        "n_gex",
+        "p33"
+      ],
+      "value": "100r",
+      "note": "R36 100R, T3 \u00a72's output to card pin 33 (crop HH1: the run labelled EXPAND GATE ends on the pin-33 oval at (1955,1665))."
+    },
+    {
+      "ref": "U_T3C",
+      "type": "opamp",
+      "nodes": [
+        "n_geh",
+        "n_gp",
+        "n_gc",
+        "v15",
+        "v15n"
+      ],
+      "model": "CA324",
+      "note": "T3 section 3 (pins 9/10/8, crops HL1, HM1): - (9) = node P, + (10) = the R39/R38 node, out (8) = node C."
+    },
+    {
+      "ref": "R40",
+      "type": "R",
+      "nodes": [
+        "n_ge",
+        "0"
+      ],
+      "value": "3k3",
+      "note": "R40 3K3, node E to a bare slash = 0 V (crop NAV1: the slash at the left of its body)."
+    },
+    {
+      "ref": "R41",
+      "type": "R",
+      "nodes": [
+        "n_ge",
+        "v5n"
+      ],
+      "value": "10k",
+      "note": "R41 10K, node E to the -5 V tick (crops NAV1, HL1). With R40 this is the gate comparator's 0 V/-5 V reference."
+    },
+    {
+      "ref": "R39",
+      "type": "R",
+      "nodes": [
+        "n_ge",
+        "n_geh"
+      ],
+      "value": "15k",
+      "note": "R39 15K, node E into T3 \u00a73's + input (crop HL1)."
+    },
+    {
+      "ref": "R38",
+      "type": "R",
+      "nodes": [
+        "n_geh",
+        "n_gctl"
+      ],
+      "value": "120k",
+      "note": "R38 120K hysteresis, from node C (the CLAMPED control node: R35's right end, D10's anode, D11's cathode) back to T3 \u00a73's + input. Rev 15a, readable page: pin 10's dot (1309,1882) drops to the row y 1953, R38's body x 1597-1714, and its right end joins the x-1780 vertical that runs from the R35/D10 dot (1780,1850) down to D11's cathode at (1780,1953). WIP6 had it on the op-amp's output (n_gc), which made the + input sit at +0.61 V with the gate shut so it could never reopen (notes \u00a717b). From node C the trip points are n_gp = -1.16 V (close) and -0.22 V (reopen)."
+    },
+    {
+      "ref": "R35",
+      "type": "R",
+      "nodes": [
+        "n_gc",
+        "n_gctl"
+      ],
+      "value": "4k7",
+      "note": "R35 4K7, T3 \u00a73's output to node C (the gate's control node, crop HM1)."
+    },
+    {
+      "ref": "D10",
+      "type": "D",
+      "nodes": [
+        "n_gctl",
+        "p35"
+      ],
+      "model": "1S44",
+      "note": "D10 1S44 (crop HJ1 region, and \u00a79d from the 4000G transcription): anode on node C, cathode on card pin 35 = the edge-list's 'Expand/Gate Switch gate wiper'. So the gate's control can only source into pin 35."
+    },
+    {
+      "ref": "D11",
+      "type": "D",
+      "nodes": [
+        "0",
+        "n_gctl"
+      ],
+      "model": "ZENER_6V8",
+      "note": "D11 6V8 zener, cathode on node C, anode on 0 V: the clamp that stops the gate's control node above +6.8 V (\u00a79d)."
+    },
+    {
+      "ref": "U_T3D",
+      "type": "opamp",
+      "nodes": [
+        "p34",
+        "n_gd",
+        "n_gt4b",
+        "v15",
+        "v15n"
+      ],
+      "model": "CA324",
+      "note": "T3 section 4 (pins 13/12/14, crops HJ1, HI1): - (13) = node D, + (12) = card pin 34 (+ R37 10K to 0 V), out (14) -> TR4's base."
+    },
+    {
+      "ref": "R42",
+      "type": "R",
+      "nodes": [
+        "0",
+        "n_gd"
+      ],
+      "value": "100k",
+      "note": "R42 100K, node D to a bare slash = 0 V (crop HK1: left lead jogs down at x 1935 to the slash at (1925,1595))."
+    },
+    {
+      "ref": "R43",
+      "type": "R",
+      "nodes": [
+        "n_gd",
+        "n_gr"
+      ],
+      "value": "10k",
+      "note": "R43 10K, node D to node R (crop IA1/HJ1: the R42/R43 junction carries the x-2185 drop into pin 13)."
+    },
+    {
+      "ref": "R105",
+      "type": "R",
+      "nodes": [
+        "v15",
+        "n_gr"
+      ],
+      "value": "100k",
+      "note": "R105 100K, +15 V (crop IA1: the +15 V tick at (2150,1455)) to node R, in series with R43/R42: the expander's bias divider."
+    },
+    {
+      "ref": "R37",
+      "type": "R",
+      "nodes": [
+        "p34",
+        "0"
+      ],
+      "value": "10k",
+      "note": "R37 10K, T3 \u00a74's + input (card pin 34) to 0 V - the mode switch's reference (\u00a79d). Its far end was seen at 6x as a bare pill at (2265,1790) only; 0 V is the only rail consistent with the input's role, and it is flagged in \u00a716h."
+    },
+    {
+      "ref": "D6",
+      "type": "D",
+      "nodes": [
+        "n_gr",
+        "n_gd6"
+      ],
+      "model": "1S44",
+      "note": "D6 1S44 (crops GV1, GW1): anode on node R, cathode (bar right, x 2500) toward D12."
+    },
+    {
+      "ref": "D12",
+      "type": "D",
+      "nodes": [
+        "n_gd6",
+        "n_gm"
+      ],
+      "model": "1S44",
+      "note": "D12 1S44 (crop GW1): anode at x 2610, cathode (bar right, x 2642) on node M. D6 and D12 are in series, same direction."
+    },
+    {
+      "ref": "D13",
+      "type": "D",
+      "nodes": [
+        "n_gs",
+        "n_gm"
+      ],
+      "model": "1S44",
+      "note": "D13 1S44 (crop GX1 at 7x): CATHODE on node M (bar at x 2843), anode toward R44/R45. Reversed relative to D6/D12, so both cathodes meet on node M - the anti-saturation string's real order is D6, D12, D13 (\u00a716f)."
+    },
+    {
+      "ref": "TR4",
+      "type": "pnp",
+      "nodes": [
+        "v15n",
+        "n_gt4b",
+        "n_gm"
+      ],
+      "model": "BC212",
+      "note": "TR4 BC212 PNP (crops HA1, HZ1): base <- T3 \u00a74 pin 14, emitter (arrow, upper diagonal) on node M = the D12/D13 cathodes, collector down x 2750 to the -15 V tick at (2750,1785)."
+    },
+    {
+      "ref": "R44",
+      "type": "R",
+      "nodes": [
+        "n_gs",
+        "p44"
+      ],
+      "value": "1r0",
+      "note": "R44 1R0, node S to card pin 44 ('Expand fast attack switch pole', edge-list; label FAST on the sheet, crop GU1)."
+    },
+    {
+      "ref": "R45",
+      "type": "R",
+      "nodes": [
+        "n_gs",
+        "p45"
+      ],
+      "value": "100r",
+      "note": "R45 100R, node S to card pin 45 (label SLOW; edge-list 'Linked to 44 on motherboard', crop GU1). This is the 100R the Rev-12 read attributed to TR3's collector; on 15a that part is R48."
+    },
+    {
+      "ref": "SE33",
+      "type": "switch",
+      "nodes": [
+        "p34",
+        "p33"
+      ],
+      "note": "EXPAND/GATE switch, EXPAND throw (closed at gateMode 0): card pin 33 (T3 \u00a72's output through R36) to the pole on pin 34 (crop HH1: pole oval (1955,1720), blade to the contact at (2085,1738) on the pin-34 run). 'invert' makes the pair a true changeover with SE35 - WIP6 left both throws on the same sense, so both closed together.",
+      "control": "gateMode",
+      "invert": true
+    },
+    {
+      "ref": "SE35",
+      "type": "switch",
+      "nodes": [
+        "p34",
+        "p35"
+      ],
+      "note": "EXPAND/GATE switch, GATE throw (closed at gateMode 1): card pin 35 (the gate comparator's control via D10, clamped by D11) to the pole on pin 34. Edge-list: 35 = 'Expand/Gate Switch gate wiper', 33 = 'Expand/Gate SW', 34 = 'pole'.",
+      "control": "gateMode"
+    },
+    {
+      "ref": "S44",
+      "type": "switch",
+      "nodes": [
+        "n_gt",
+        "p44"
+      ],
+      "note": "Expand attack switch, FAST contact (closed at gateAttack 0): card pin 44 to the pole on pin 48 (the timing node). Changeover with S45. Note: the 4000G edge-list says '45 Linked to 44 on motherboard', which on a 4000G motherboard would parallel R44/R45; the drawing draws a FAST/SLOW changeover, and that is what is netlisted (notes \u00a717d).",
+      "control": "gateAttack",
+      "invert": true
+    },
+    {
+      "ref": "S45",
+      "type": "switch",
+      "nodes": [
+        "n_gt",
+        "p45"
+      ],
+      "note": "Expand attack switch, SLOW contact (closed at gateAttack 1): card pin 45 to the pole on pin 48. The drawing's blade is drawn on this contact (crop HB1: blade from the oval under pin 45 to the pole at (3010,1815)).",
+      "control": "gateAttack"
+    },
+    {
+      "ref": "C9",
+      "type": "C",
+      "nodes": [
+        "n_gt",
+        "0"
+      ],
+      "value": "6u8",
+      "note": "C9 6u8 35 V (crops GR1, HB1): top plate on the timing node at card pin 48, bottom plate to a bare slash = 0 V at (3010,1985). The gate's timing capacitor."
+    },
+    {
+      "ref": "R47",
+      "type": "R",
+      "nodes": [
+        "n_gt",
+        "p47"
+      ],
+      "value": "10k",
+      "note": "R47 10K (crop GK1): top on the timing node (the dot at (3199,1815) on the x-3200 vertical), bottom to card pin 47 ('Expand Release pot ACW')."
+    },
+    {
+      "ref": "R50",
+      "type": "R",
+      "nodes": [
+        "n_grf",
+        "0"
+      ],
+      "value": "5k1",
+      "note": "R50 5K1 (crop GS1): the timing comparator's reference to a bare slash = 0 V at (2870,1480)."
+    },
+    {
+      "ref": "R52",
+      "type": "R",
+      "nodes": [
+        "n_grf",
+        "n_gy"
+      ],
+      "value": "100k",
+      "note": "R52 100K (crops GE1, FF1, HC1): from the x-3200 pin-13 vertical to node Y (the row y 1418, x 3558..3999), in parallel with the D15/D16 pair."
+    },
+    {
+      "ref": "R46",
+      "type": "R",
+      "nodes": [
+        "n_grf",
+        "n_gx"
+      ],
+      "value": "8k2",
+      "note": "R46 8K2 (crops GE1, GF1, GG1): from the same pin-13 vertical (the dot (3195,1546)) to the clamp node n_gx (the dot (3780,1540)). On Rev 15a the 8K2 is R46 and the 100R collector load is R48, which settles \u00a715e.3 the other way round from \u00a79a."
+    },
+    {
+      "ref": "U_T4D",
+      "type": "opamp",
+      "nodes": [
+        "n_gt",
+        "n_grf",
+        "n_t4",
+        "v15",
+        "v15n"
+      ],
+      "model": "CA324",
+      "note": "T4 section 4 (pins 13/12/14, crop IB1): - (13) = node n_grf (R50 5K1 / R52 100K / R46 8K2), + (12) = the timing node (C9, pin 48, R47) - the x-3200 lower vertical; out (14) -> TR3's base."
+    },
+    {
+      "ref": "TR3",
+      "type": "npn",
+      "nodes": [
+        "n_tr3c",
+        "n_t4",
+        "n_gx"
+      ],
+      "model": "BC184L",
+      "note": "TR3 BC184 (crop GH1 at 6x): base bar at x 3600, base <- T4 \u00a74 pin 14, COLLECTOR (no arrow) up to R48 100R and the +15 V tick, EMITTER (arrow) right on the y-1750 row to the clamp node n_gx. \u00a714m had the collector on the clamp node; at 6x the arrow is unambiguous (\u00a716e)."
+    },
+    {
+      "ref": "R48",
+      "type": "R",
+      "nodes": [
+        "v15",
+        "n_tr3c"
+      ],
+      "value": "100r",
+      "note": "R48 100R, TR3's collector load to the +15 V tick at (3700,1470) (crops GE1, GF1)."
+    },
+    {
+      "ref": "R49",
+      "type": "R",
+      "nodes": [
+        "n_gx",
+        "v15n"
+      ],
+      "value": "10k",
+      "note": "R49 10K, the clamp node to the -15 V tick at (3790,1940) (crop HT1): the emitter load that gives node n_gx its standing current."
+    },
+    {
+      "ref": "D15",
+      "type": "D",
+      "nodes": [
+        "n_gx",
+        "n_gy"
+      ],
+      "model": "1S44",
+      "note": "D15 1S44: anode on n_gx (the dot (3789,1482)), cathode (bar at x 3640, triangle opening right) on n_gy - R52's right end, the dot (3561,1477), which rises to the row y 1418 and down the x-3997 vertical to the EXPAND bargraph's input row y 2148 (comparator inputs only, not netlisted). The gate's meter leg."
+    },
+    {
+      "ref": "D16",
+      "type": "D",
+      "nodes": [
+        "n_gx",
+        "n_link"
+      ],
+      "model": "1S44",
+      "note": "D16 1S44 - THE GATE'S JOIN TO THE VCA (notes \u00a717a). Rev 15a, 6x: anode on n_gx (the dot (3789,1482)), triangle opening left, BAR at x 3923 = CATHODE on the right; the cathode row y 1481 crosses the x-3997 vertical with NO dot (15x15 black count 90 vs 135-153 at the drawn dots) and turns up at x 4094 onto the control rail n_link (D18's cathode, R107, D27's anode, pin 8). Rev 12a draws the same (D16 bar at readable (2755,2117), plain crossing at x 2808, corner at x 2876). WIP6 had the pair antiparallel to n_gy and the gate unjoined. TR3's emitter is therefore diode-ORed with the compressor's send onto the one rail the shaper/T8/2151 read."
+    },
+    {
+      "ref": "R108",
+      "type": "R",
+      "nodes": [
+        "v15",
+        "n_gg"
+      ],
+      "value": "27k",
+      "note": "R108 27K, the +15 V tick at (3500,1800) down to node G (crop HR1)."
+    },
+    {
+      "ref": "D28",
+      "type": "D",
+      "nodes": [
+        "n_gg",
+        "v5"
+      ],
+      "model": "1S44",
+      "note": "D28 1S44 (crop HS1 at 9x): ANODE on node G, CATHODE on the +5 V tick - so it clamps node G at +5.6 V, which is what makes node G a reference and not a control voltage (\u00a716h)."
+    },
+    {
+      "ref": "RANGEG",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "n_gw",
+        "n_gg"
+      ],
+      "value": "25k",
+      "note": "EXPAND RANGE 25K LIN (crop HU1): track top = card pin 31 / node G, track bottom = a bare slash = 0 V, wiper = the common wiper node shared with the RELEASE pot. Edge-list: pin 31 = 'Expand range pot CW'.",
+      "control": "gateRange",
+      "taper": "B"
+    },
+    {
+      "ref": "RELG",
+      "type": "pot",
+      "nodes": [
+        "p47",
+        "n_gw",
+        "n_gw"
+      ],
+      "value": "250k",
+      "note": "EXPAND RELEASE 250K LOG (crops HV1, HX1): ACW end = card pin 47, wiper = the common wiper node; the wiper row is solid from the RELEASE arrow to the RANGE arrow and the ganging stem x 3496 is the dashed shaft mark. Its CCW end is drawn UNTERMINATED (11x crop HY1: the lead stops 14 px above the dashed line, no slash) - a rheostat's spare end carries no current either way, so WIP6 ties that node to the wiper to keep no node floating (\u00a716h caveat 1).",
+      "control": "gateRelease",
+      "taper": "A"
+    },
+    {
+      "ref": "SFA",
+      "type": "switch",
+      "nodes": [
+        "s19a",
+        "n_cva"
+      ],
+      "control": "attackfast",
+      "note": "the FAST ATTACK contact: card pin 19 (pole) to pin 21 (wiper, = the timing node), drawn open and ganged (dashed) to the RELEASE pot - the 4000G front-panel list's 'COMPRESS RELEASE PUSH PULL SWITCH 250K LOG'. Closed = R19 300R in parallel with R21 10K. SL4000G Console Service Manual v1.1 p35 (T82010.71 Rev 15a), native 3507x4941 image rotated 270 deg (4941x3507; the vertical axis is 2x compressed, so crops were viewed at 2x height) x 2480-2700, y 1020-1200 (4x)"
+    },
+    {
+      "ref": "D7",
+      "type": "D",
+      "nodes": [
+        "0",
+        "n_cva"
+      ],
+      "model": "1S44",
+      "note": "D7 1S44: cathode on the timing node (pin 21 / C5 / T2D +), anode to a 0 V slash - stops the timing node going below -0.6 V. SL4000G Console Service Manual v1.1 p35 (T82010.71 Rev 15a), native 3507x4941 image rotated 270 deg (4941x3507; the vertical axis is 2x compressed, so crops were viewed at 2x height) x 3220-3480, y 960-1080 (4x/8x). Batch-7: was missing"
+    }
+  ],
+  "readouts": {
+    "gr": {
+      "law": "vca",
+      "part": "U1",
+      "note": "Gain reduction of the dbx 2151 itself from its control pins and card (Ec- minus Ec+ over 6.1 mV/dB): compressor and expander/gate act on the one VCA, so both face ladders read the total."
+    }
+  },
+  "probes": [
+    "db",
+    "in",
+    "n_2v5",
+    "n_ar",
+    "n_c",
+    "n_cv",
+    "n_cva",
+    "n_d",
+    "n_d20c",
+    "n_d27c",
+    "n_dem",
+    "n_ga",
+    "n_gc",
+    "n_gctl",
+    "n_ge",
+    "n_gg",
+    "n_gm2",
+    "n_gp",
+    "n_gt",
+    "n_gx",
+    "n_gy",
+    "n_iv",
+    "n_knee",
+    "n_link",
+    "n_m",
+    "n_q",
+    "n_rw",
+    "n_sc",
+    "n_send",
+    "n_shp",
+    "n_shp_m",
+    "n_t2c",
+    "n_t8m",
+    "n_ta",
+    "n_tr1c",
+    "n_vin",
+    "n_vm",
+    "out",
+    "p34",
+    "p35",
+    "tp1",
+    "tp2",
+    "vca_in"
+  ]
+}

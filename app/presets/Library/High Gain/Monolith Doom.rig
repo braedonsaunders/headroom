@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Monolith Doom</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Monolith Doom" preset-author="Headroom" preset-comment="Slow, massive doom: a woolly sustaining fuzz into a big British valve head with the bass high and the treble rolled back, through a closed 4x12 in a large room. Thick, dark and crushing; tune to C or lower, hit a chord and let it ring and feed back." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="43000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V" value="0.6"/>
+        <parameter id="S" value="0.75"/>
+        <parameter id="T" value="0.3"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="B" value="0.5"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="80000">
+    <component-audio version="1">
+      <parameters num-parameters="14">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="f" value="0.5"/>
+        <parameter id="b" value="0.75"/>
+        <parameter id="t" value="0.45"/>
+        <parameter id="p" value="0.45"/>
+        <parameter id="g" value="0.6"/>
+        <parameter id="m" value="0.5"/>
+        <parameter id="Pw" value="0"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0"/>
+        <parameter id="Bi" value="1"/>
+        <parameter id="Br" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.0604"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="11"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.25"/>
+        <parameter id="Tm" value="0.5"/>
+        <parameter id="Sz" value="0.8"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Chr" value="0.5"/>
+        <parameter id="iM" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="43000" target-number="1" target-name="S" min-value="0.4" max-value="1" controller-name="Fuzz"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="43000" target-number="1" target-name="T" min-value="0.2" max-value="0.7" controller-name="Fuzz Tone"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="80000" target-number="1" target-name="g" min-value="0.35" max-value="0.85" controller-name="Amp Gain"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="80000" target-number="1" target-name="b" min-value="0.4" max-value="0.9" controller-name="Bass"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.5" controller-name="Room"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="hg-monolith-doom" category="High Gain" order="120" instrument="guitar" style="Doom">
+  <description>Slow, massive doom: a woolly sustaining fuzz into a big British valve head with the bass high and the treble rolled back, through a closed 4x12 in a large room. Thick, dark and crushing; tune to C or lower, hit a chord and let it ring and feed back.</description>
+  <tags><tag>High Gain</tag><tag>Doom</tag><tag>Fuzz</tag><tag>Rhythm</tag><tag>Downtuned</tag><tag>Slow</tag><tag>Room</tag></tags>
+  <sources>
+    <source url="https://equipboard.com/pros/jus-oborn" title="Equipboard: Jus Oborn"/>
+    <source url="https://en.wikipedia.org/wiki/Jerusalem_and_Dopesmoker" title="Jerusalem and Dopesmoker (Wikipedia)"/>
+    <source url="https://www.premierguitar.com/artists/matt-pike-chug-punch-and-sustain" title="Premier Guitar: Matt Pike, chug, punch and sustain"/>
+    <source url="https://forum.bareknucklepickups.co.uk/index.php?topic=5687.0" title="Bare Knuckle forum: Electric Wizard tone (forum)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

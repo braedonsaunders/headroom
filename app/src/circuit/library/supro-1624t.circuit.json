@@ -1,0 +1,1215 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "supro-1624t-dual-tone",
+  "version": 1,
+  "name": "Supro 1624T Dual-Tone",
+  "description": "Supro 1624T (Valco, c. 1962) as drawn by ClassicTubeAmps (Ryan), cross-checked against the factory Supro S6424 sheet (same 6973 power amp, paraphase and tremolo, with its voltage chart). Channel 1: .005 uF into a 12AX7 half with a 470K grid leak (and jack 2's 100K), 2200 unbypassed cathode, 270K plate load with 100K/.05 uF decoupling, .005 uF to a 500 kA Volume with a 500 pF bright cap across top-to-wiper, 270K mixer. Channel 2 (the input): .005 uF, 470K and jack 4's 100K, 2200 grid stopper, 1500 || 35 uF cathode shared with the tremolo cathode follower, 270K/100K/.05 uF plate, .005 uF, 270K to ground, .005 uF to its 500 kA Volume (500 pF bright cap), 270K mixer. The mixing node (V2 pin 2) carries 500 pF to ground and the 500 kL Tone (track to ground, wiper to .005 uF). Paraphase: V2A 270K plate, 2200 || .05 uF cathode; .01 uF to the upper 6973, whose 270K grid leak returns through the 12K tap that drives V2B (3900 cathode, 270K plate, .01 uF to the lower 6973 with 470K). Two 6973 beam pentodes in class A: plates on the OT centre tap at the rectifier node, screens on the 1K node, shared 250 Ohm 7 W || 35 uF cathode. Tremolo: third 12AX7, phase-shift oscillator (270K plate, .03/.02/.01 uF ladder with 100K + 500 kL Speed, 1M, 1.5M, 2200 grid stopper, 1000 cathode), .05 uF / 1M / .02 uF, the Speed-pot switch, 2.2M into the 500 kL Intensity rheostat with .05 uF, and a cathode follower whose cathode is channel 2's V1B cathode: the tremolo modulates channel 2's bias. Supply: 5Y3 into 20 uF, 1 kOhm 1 W, 10 uF, 15 kOhm, 10 uF. Re-converted 2026-11-12 (VERIFY_BATCH_3 and the control audit): the previous netlist had no tremolo, a 12k screen dropper (the drawing's 12K is the paraphase tap), the tone on channel 2's volume, the bright caps across the mixers and 100k plate loads.",
+  "sources": [
+    {
+      "title": "ClassicTubeAmps traced Supro 1624T schematic (Ryan): all values and the channel/paraphase topology",
+      "url": "https://el34world.com/charts/Schematics/Files/Supro/Supro_1624t_schematic_263.pdf"
+    },
+    {
+      "title": "Sluckey Supro 1624T layout (cross-check of topology and pot wiring)",
+      "url": "http://sluckeyamps.com/supro/supro.pdf"
+    },
+    {
+      "title": "Supro 1624T Dual-Tone reissue manual (what the reissue's bright and mod controls do; used only to decide which catalogue controls are real)",
+      "url": "https://www.suprousa.com/uploads/supro/2020/11/1624T_Dual-Tone_Manual.pdf"
+    },
+    {
+      "title": "Amp Garage thread on original 1624T vs 6424 Dual Tone (grid-leak vs cathode bias, different tone network, split-cathode paraphase)",
+      "url": "https://ampgarage.com/forum/viewtopic.php?t=29511"
+    },
+    {
+      "title": "Factory Supro Model S6424 schematic with voltage chart (page 5 of the Sluckey S-6424 document): cross-check of every preamp, PI, power and tremolo value",
+      "url": "http://sluckeyamps.com/supro/supro.pdf"
+    }
+  ],
+  "io": {
+    "input": "in2",
+    "output": "spk",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 40.264,
+    "note": "outputVoltsPerFS 16.964 -> 40.264 (2026-11-12 re-conversion): the drawn preamp (270K plate loads, no 470K input pad) has 7.5 dB more gain at the catalogue defaults; the scale keeps the shipped DI level (6 s Clean Strumming excerpt, --table 152000) at the previous release's 2.376 V-equivalent. Dimed peak speaker voltage 13.86 V (1 V/220 Hz, volume and tone 1): the 1.5x rule would give 20.8; the level policy keeps the shipped loudness instead."
+  },
+  "oversampling": 2,
+  "lte": {"start": "bdf2", "note": "LTE substeps start on BDF2 (docs §10.61). Engine 8x fine-step truth, audio band, lead / rock DI: 0.099 / 0.454 % -> 0.098 / 0.265 %; aliasing -76.1 -> -80.2 dB at 0.5 FS. CPU equal (9900X)"},
+  "minRate": 176400,
+  "solver": "auto",
+  "cuts": [
+    "sa1",
+    "sb1",
+    "bpa",
+    "bpb"
+  ],
+  "controls": [
+    {
+      "id": "gain",
+      "label": "Volume",
+      "kind": "continuous",
+      "default": 0.35,
+      "params": [
+        "gain"
+      ],
+      "group": "Main",
+      "note": "Channel 2 Volume (500 kA, 500 pF bright cap top-to-wiper); the guitar plays into channel 2"
+    },
+    {
+      "id": "tone",
+      "label": "Tone",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "tone"
+      ],
+      "group": "Main",
+      "note": "500 kL Tone on the V2 grid mixing node (treble bleed through .005 uF); clockwise = brighter"
+    },
+    {
+      "id": "bright",
+      "label": "Bright",
+      "kind": "switch",
+      "default": 0.0,
+      "params": [
+        "bright"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "reissue control: the vintage 1624T has no bright switch, only the fixed 500 p caps; stored only"
+    },
+    {
+      "id": "speed",
+      "label": "Speed",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Main",
+      "note": "Tremolo Speed 500 kL rheostat with 100K in series; clockwise = faster. No catalogue parameter"
+    },
+    {
+      "id": "tremolo",
+      "label": "Tremolo",
+      "kind": "switch",
+      "default": 0.0,
+      "params": [],
+      "group": "Main",
+      "face": true,
+      "options": [
+        "Off",
+        "On"
+      ],
+      "note": "The switch on the Speed control (and the footswitch): Off opens the oscillator's path to the intensity network. Default Off: the shipped default patch stays untremoloed (the catalogue's mod default is 0.5, which would otherwise start a deep tremolo)"
+    },
+    {
+      "id": "mod",
+      "label": "Intensity",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "mod"
+      ],
+      "group": "Main",
+      "note": "Tremolo Intensity 500 kL rheostat (the reissue manual's Depth); 0 = no tremolo"
+    },
+    {
+      "id": "stereo",
+      "label": "Stereo",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "CASSt"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy"
+    },
+    {
+      "id": "power",
+      "label": "On/Off",
+      "kind": "switch",
+      "default": 1.0,
+      "params": [
+        "Pwr"
+      ],
+      "group": "Main",
+      "note": "mains switch"
+    },
+    {
+      "id": "volume1",
+      "label": "Channel 1 Volume",
+      "default": 0.0,
+      "params": [],
+      "group": "Channel 1",
+      "note": "Channel 1 is unused (the guitar goes into channel 2, which has the tone control); its volume is down, as a player leaves the unused channel"
+    }
+  ],
+  "parts": [
+    {
+      "ref": "VA",
+      "type": "V",
+      "nodes": [
+        "sa",
+        "0"
+      ],
+      "value": "0",
+      "ac": {
+        "amplitude": "480.83",
+        "freq": 60,
+        "phase": 90
+      },
+      "label": "PT HT half (300 Vrms)",
+      "note": "unverified: the traced schematic gives no PT voltage; 340 Vrms per half fitted so the 5Y3 reservoir reaches the drawing's 400 V class and the pair biases in class A"
+    },
+    {
+      "ref": "VB",
+      "type": "V",
+      "nodes": [
+        "sb",
+        "0"
+      ],
+      "value": "0",
+      "ac": {
+        "amplitude": "480.83",
+        "freq": 60,
+        "phase": 270
+      },
+      "label": "PT HT half",
+      "note": "unverified: the traced schematic gives no PT voltage; 340 Vrms per half fitted so the 5Y3 reservoir reaches the drawing's 400 V class and the pair biases in class A"
+    },
+    {
+      "ref": "RWA",
+      "type": "R",
+      "nodes": [
+        "sa",
+        "sa1"
+      ],
+      "value": "60",
+      "tolerance": 0.1,
+      "label": "HT half DCR",
+      "note": "unverified: not on the drawing"
+    },
+    {
+      "ref": "RWB",
+      "type": "R",
+      "nodes": [
+        "sb",
+        "sb1"
+      ],
+      "value": "60",
+      "tolerance": 0.1,
+      "label": "HT half DCR"
+    },
+    {
+      "ref": "DA",
+      "type": "D",
+      "nodes": [
+        "sa1",
+        "bpa"
+      ],
+      "model": "5Y3GT",
+      "label": "5Y3 plate A"
+    },
+    {
+      "ref": "DB",
+      "type": "D",
+      "nodes": [
+        "sb1",
+        "bpa"
+      ],
+      "model": "5Y3GT",
+      "label": "5Y3 plate B"
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "bpa",
+        "0"
+      ],
+      "value": "20u",
+      "tolerance": 0.1,
+      "label": "reservoir 20 uF/450 V"
+    },
+    {
+      "ref": "RD1",
+      "type": "R",
+      "nodes": [
+        "bpa",
+        "bpb"
+      ],
+      "value": "1k",
+      "tolerance": 0.05,
+      "label": "1 kOhm 1 W dropper (rectifier -> screens)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi supply (2291,1527,4091,2509)"
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "bpb",
+        "0"
+      ],
+      "value": "10u",
+      "tolerance": 0.2,
+      "label": "10 uF/450 V (screen node)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi supply (2291,1527,4091,2509)"
+    },
+    {
+      "ref": "RD2",
+      "type": "R",
+      "nodes": [
+        "bpb",
+        "bpc"
+      ],
+      "value": "15k",
+      "tolerance": 0.05,
+      "label": "15 kOhm dropper (screens -> preamp / PI / tremolo B+)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi supply (2291,1527,4091,2509)"
+    },
+    {
+      "ref": "C3",
+      "type": "C",
+      "nodes": [
+        "bpc",
+        "0"
+      ],
+      "value": "10u",
+      "tolerance": 0.2,
+      "label": "10 uF/450 V (preamp node)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi supply (2291,1527,4091,2509)"
+    },
+    {
+      "ref": "CIN1",
+      "type": "C",
+      "nodes": [
+        "in1",
+        "g1a"
+      ],
+      "value": "5n",
+      "tolerance": 0.1,
+      "label": "channel 1 input .005 uF (jack 1)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi inputs (0,464,1227,2455)"
+    },
+    {
+      "ref": "RG1",
+      "type": "R",
+      "nodes": [
+        "g1a",
+        "0"
+      ],
+      "value": "470k",
+      "tolerance": 0.1,
+      "label": "channel 1 grid leak 470K",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi inputs (0,464,1227,2455)"
+    },
+    {
+      "ref": "RJ2",
+      "type": "R",
+      "nodes": [
+        "g1a",
+        "0"
+      ],
+      "value": "100k",
+      "tolerance": 0.1,
+      "label": "100K to jack 2's tip, grounded by its shorting contact (jack 2 empty)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi inputs (0,464,1227,2455)"
+    },
+    {
+      "ref": "V1A",
+      "type": "triode",
+      "nodes": [
+        "p1a",
+        "g1a",
+        "k1a"
+      ],
+      "model": "12AX7",
+      "label": "V1A channel 1 (pins 6/7/8)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi V1 (545,491,1745,1418)"
+    },
+    {
+      "ref": "RK1",
+      "type": "R",
+      "nodes": [
+        "k1a",
+        "0"
+      ],
+      "value": "2.2k",
+      "tolerance": 0.1,
+      "label": "V1A cathode 2200, unbypassed (factory: R4 2200, 1.2 V)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi V1 (545,491,1745,1418)"
+    },
+    {
+      "ref": "RP1",
+      "type": "R",
+      "nodes": [
+        "d1a",
+        "p1a"
+      ],
+      "value": "270k",
+      "tolerance": 0.1,
+      "label": "V1A plate load 270K (factory R5)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi V1 (545,491,1745,1418)"
+    },
+    {
+      "ref": "RDC1",
+      "type": "R",
+      "nodes": [
+        "bpc",
+        "d1a"
+      ],
+      "value": "100k",
+      "tolerance": 0.1,
+      "label": "V1A decoupling 100K (factory R6)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi V1 (545,491,1745,1418)"
+    },
+    {
+      "ref": "CDC1",
+      "type": "C",
+      "nodes": [
+        "d1a",
+        "0"
+      ],
+      "value": "50n",
+      "tolerance": 0.2,
+      "label": "V1A decoupling .05 uF (factory C2)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi V1 (545,491,1745,1418)"
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "p1a",
+        "va1"
+      ],
+      "value": "5n",
+      "tolerance": 0.1,
+      "label": "channel 1 coupling .005 uF (factory C11)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi mixer/tone (1418,273,2782,1418)"
+    },
+    {
+      "ref": "VOL1",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "vw1",
+        "va1"
+      ],
+      "value": "500k",
+      "taper": "A",
+      "control": "volume1",
+      "label": "Channel 1 Volume 500 kA",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi mixer/tone (1418,273,2782,1418): top lug on the .005 uF, bottom lug to ground, wiper to the 270K mixer"
+    },
+    {
+      "ref": "CB1",
+      "type": "C",
+      "nodes": [
+        "va1",
+        "vw1"
+      ],
+      "value": "500p",
+      "tolerance": 0.1,
+      "label": "channel 1 bright cap 500 pF, pot top to wiper",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi mixer/tone (1418,273,2782,1418)"
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "vw1",
+        "g2a"
+      ],
+      "value": "270k",
+      "tolerance": 0.1,
+      "label": "channel 1 mixer 270K",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi mixer/tone (1418,273,2782,1418)"
+    },
+    {
+      "ref": "CIN2",
+      "type": "C",
+      "nodes": [
+        "in2",
+        "ip2"
+      ],
+      "value": "5n",
+      "tolerance": 0.1,
+      "label": "channel 2 input .005 uF (jack 3; factory C5)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi inputs (0,464,1227,2455)"
+    },
+    {
+      "ref": "RG2",
+      "type": "R",
+      "nodes": [
+        "ip2",
+        "0"
+      ],
+      "value": "470k",
+      "tolerance": 0.1,
+      "label": "channel 2 grid leak 470K (factory R11)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi inputs (0,464,1227,2455)"
+    },
+    {
+      "ref": "RJ4",
+      "type": "R",
+      "nodes": [
+        "ip2",
+        "0"
+      ],
+      "value": "100k",
+      "tolerance": 0.1,
+      "label": "100K to jack 4's tip, grounded by its shorting contact (jack 4 empty; factory R12)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi inputs (0,464,1227,2455)"
+    },
+    {
+      "ref": "RST2",
+      "type": "R",
+      "nodes": [
+        "ip2",
+        "g1b"
+      ],
+      "value": "2.2k",
+      "tolerance": 0.1,
+      "label": "channel 2 grid stopper 2200 (factory R10)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi inputs (0,464,1227,2455)"
+    },
+    {
+      "ref": "V1B",
+      "type": "triode",
+      "nodes": [
+        "p1b",
+        "g1b",
+        "k1b"
+      ],
+      "model": "12AX7",
+      "label": "V1B channel 2 (pins 1/2/3)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi V1 (545,491,1745,1418)"
+    },
+    {
+      "ref": "RK2",
+      "type": "R",
+      "nodes": [
+        "k1b",
+        "0"
+      ],
+      "value": "1.5k",
+      "tolerance": 0.1,
+      "label": "V1B cathode 1500 (factory R9; 2.4 V), shared with the tremolo cathode follower ('C')",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi V1 (545,491,1745,1418)"
+    },
+    {
+      "ref": "CK2",
+      "type": "C",
+      "nodes": [
+        "k1b",
+        "0"
+      ],
+      "value": "35u",
+      "tolerance": 0.2,
+      "label": "V1B cathode bypass 35 uF/50 V (factory C4)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi V1 (545,491,1745,1418)"
+    },
+    {
+      "ref": "RP2",
+      "type": "R",
+      "nodes": [
+        "d1b",
+        "p1b"
+      ],
+      "value": "270k",
+      "tolerance": 0.1,
+      "label": "V1B plate load 270K (factory R7)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi V1 (545,491,1745,1418)"
+    },
+    {
+      "ref": "RDC2",
+      "type": "R",
+      "nodes": [
+        "bpc",
+        "d1b"
+      ],
+      "value": "100k",
+      "tolerance": 0.1,
+      "label": "V1B decoupling 100K (factory R8)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi V1 (545,491,1745,1418)"
+    },
+    {
+      "ref": "CDC2",
+      "type": "C",
+      "nodes": [
+        "d1b",
+        "0"
+      ],
+      "value": "50n",
+      "tolerance": 0.2,
+      "label": "V1B decoupling .05 uF (factory C3)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi V1 (545,491,1745,1418)"
+    },
+    {
+      "ref": "C5",
+      "type": "C",
+      "nodes": [
+        "p1b",
+        "c2m"
+      ],
+      "value": "5n",
+      "tolerance": 0.1,
+      "label": "channel 2 coupling .005 uF (factory C13)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi mixer/tone (1418,273,2782,1418)"
+    },
+    {
+      "ref": "RC2",
+      "type": "R",
+      "nodes": [
+        "c2m",
+        "0"
+      ],
+      "value": "270k",
+      "tolerance": 0.1,
+      "label": "270K to ground between the two .005 uF (factory R24)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi mixer/tone (1418,273,2782,1418)"
+    },
+    {
+      "ref": "C6",
+      "type": "C",
+      "nodes": [
+        "c2m",
+        "va2"
+      ],
+      "value": "5n",
+      "tolerance": 0.1,
+      "label": "second .005 uF (factory C14)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi mixer/tone (1418,273,2782,1418)"
+    },
+    {
+      "ref": "VOL2",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "vw2",
+        "va2"
+      ],
+      "value": "500k",
+      "taper": "A",
+      "control": "gain",
+      "label": "Channel 2 Volume 500 kA",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi mixer/tone (1418,273,2782,1418): top lug on the .005 uF, bottom lug to ground, wiper to the 270K mixer"
+    },
+    {
+      "ref": "CB2",
+      "type": "C",
+      "nodes": [
+        "va2",
+        "vw2"
+      ],
+      "value": "500p",
+      "tolerance": 0.1,
+      "label": "channel 2 bright cap 500 pF, pot top to wiper",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi mixer/tone (1418,273,2782,1418)"
+    },
+    {
+      "ref": "R2",
+      "type": "R",
+      "nodes": [
+        "vw2",
+        "g2a"
+      ],
+      "value": "270k",
+      "tolerance": 0.1,
+      "label": "channel 2 mixer 270K",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi mixer/tone (1418,273,2782,1418)"
+    },
+    {
+      "ref": "CMIX",
+      "type": "C",
+      "nodes": [
+        "g2a",
+        "0"
+      ],
+      "value": "500p",
+      "tolerance": 0.1,
+      "label": "500 pF from the mixing node (V2 pin 2) to ground (factory C17 .0005)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi mixer/tone (1418,273,2782,1418)"
+    },
+    {
+      "ref": "TONE",
+      "type": "pot",
+      "nodes": [
+        "g2a",
+        "tw",
+        "0"
+      ],
+      "value": "500k",
+      "taper": "B",
+      "control": "tone",
+      "label": "Tone 500 kL",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi mixer/tone (1418,273,2782,1418): the track runs from the V2 grid mixing node to ground and the wiper carries a .005 uF to ground (treble bleed). Clockwise brings the wiper to the ground end and shorts the cap out (2026-11-11 control audit: cw = brighter)"
+    },
+    {
+      "ref": "CT1",
+      "type": "C",
+      "nodes": [
+        "tw",
+        "0"
+      ],
+      "value": "5n",
+      "tolerance": 0.1,
+      "label": "tone cap .005 uF, wiper to ground",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi mixer/tone (1418,273,2782,1418)"
+    },
+    {
+      "ref": "V2A",
+      "type": "triode",
+      "nodes": [
+        "p2a",
+        "g2a",
+        "k2a"
+      ],
+      "model": "12AX7",
+      "label": "V2A paraphase input half (pins 1/2/3)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi PI/power grids (2291,382,4145,1473)"
+    },
+    {
+      "ref": "RK3",
+      "type": "R",
+      "nodes": [
+        "k2a",
+        "0"
+      ],
+      "value": "2.2k",
+      "tolerance": 0.1,
+      "label": "V2A cathode 2200 (factory R31)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi PI/power grids (2291,382,4145,1473)"
+    },
+    {
+      "ref": "CK3",
+      "type": "C",
+      "nodes": [
+        "k2a",
+        "0"
+      ],
+      "value": "50n",
+      "tolerance": 0.2,
+      "label": "V2A cathode .05 uF (factory C18)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi PI/power grids (2291,382,4145,1473)"
+    },
+    {
+      "ref": "RP3",
+      "type": "R",
+      "nodes": [
+        "bpc",
+        "p2a"
+      ],
+      "value": "270k",
+      "tolerance": 0.1,
+      "label": "V2A plate load 270K (factory R33)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi PI/power grids (2291,382,4145,1473)"
+    },
+    {
+      "ref": "V2B",
+      "type": "triode",
+      "nodes": [
+        "p2b",
+        "g2b",
+        "k2b"
+      ],
+      "model": "12AX7",
+      "label": "V2B paraphase inverter half (pins 6/7/8)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi PI/power grids (2291,382,4145,1473)"
+    },
+    {
+      "ref": "RK4",
+      "type": "R",
+      "nodes": [
+        "k2b",
+        "0"
+      ],
+      "value": "3.9k",
+      "tolerance": 0.1,
+      "label": "V2B cathode 3900, unbypassed (factory R32)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi PI/power grids (2291,382,4145,1473)"
+    },
+    {
+      "ref": "RP4",
+      "type": "R",
+      "nodes": [
+        "bpc",
+        "p2b"
+      ],
+      "value": "270k",
+      "tolerance": 0.1,
+      "label": "V2B plate load 270K (factory R34)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi PI/power grids (2291,382,4145,1473)"
+    },
+    {
+      "ref": "CO1",
+      "type": "C",
+      "nodes": [
+        "p2a",
+        "g3a"
+      ],
+      "value": "10n",
+      "tolerance": 0.2,
+      "label": "V2A plate -> upper 6973 grid .01 uF (factory C19)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi PI/power grids (2291,382,4145,1473)"
+    },
+    {
+      "ref": "RDIV1",
+      "type": "R",
+      "nodes": [
+        "g3a",
+        "g2b"
+      ],
+      "value": "270k",
+      "tolerance": 0.1,
+      "label": "upper 6973 grid leak 270K into the inverter grid (factory R35)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi PI/power grids (2291,382,4145,1473)"
+    },
+    {
+      "ref": "RDIV2",
+      "type": "R",
+      "nodes": [
+        "g2b",
+        "0"
+      ],
+      "value": "12k",
+      "tolerance": 0.1,
+      "label": "12K from the inverter grid to ground (factory R36): the paraphase tap",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi PI/power grids (2291,382,4145,1473)"
+    },
+    {
+      "ref": "CO2",
+      "type": "C",
+      "nodes": [
+        "p2b",
+        "g3b"
+      ],
+      "value": "10n",
+      "tolerance": 0.2,
+      "label": "V2B plate -> lower 6973 grid .01 uF (factory C20)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi PI/power grids (2291,382,4145,1473)"
+    },
+    {
+      "ref": "RG4",
+      "type": "R",
+      "nodes": [
+        "g3b",
+        "0"
+      ],
+      "value": "470k",
+      "tolerance": 0.1,
+      "label": "lower 6973 grid leak 470K (factory R37)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi PI/power grids (2291,382,4145,1473)"
+    },
+    {
+      "ref": "V3",
+      "type": "pentode",
+      "nodes": [
+        "pa",
+        "bpb",
+        "g3a",
+        "kk"
+      ],
+      "model": "6973",
+      "label": "V3 6973 (upper)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi output (3491,109,4909,1527): pin 9 plate, pins 1,8 screen straight on the 1K node (factory: plates and screens both 350 V), pins 3,6 grid, pin 7 cathode"
+    },
+    {
+      "ref": "V4",
+      "type": "pentode",
+      "nodes": [
+        "pb",
+        "bpb",
+        "g3b",
+        "kk"
+      ],
+      "model": "6973",
+      "label": "V4 6973 (lower)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi output (3491,109,4909,1527)"
+    },
+    {
+      "ref": "RKBIG",
+      "type": "R",
+      "nodes": [
+        "kk",
+        "0"
+      ],
+      "value": "250",
+      "tolerance": 0.05,
+      "label": "250 Ohm 7 W shared cathode (drawing '250K 7W' is the 250 Ohm 7 W of factory R38)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi output (3491,109,4909,1527)"
+    },
+    {
+      "ref": "CKK",
+      "type": "C",
+      "nodes": [
+        "kk",
+        "0"
+      ],
+      "value": "35u",
+      "tolerance": 0.2,
+      "label": "35 uF/50 V across the cathode resistor (factory C21)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi output (3491,109,4909,1527)"
+    },
+    {
+      "ref": "OT",
+      "type": "transformer",
+      "nodes": [
+        "pa",
+        "bpa",
+        "bpa",
+        "pb",
+        "spk",
+        "0"
+      ],
+      "turns": [
+        1,
+        1,
+        0.0498
+      ],
+      "r": [
+        200,
+        200,
+        0.4
+      ],
+      "leak": [
+        "5m",
+        "5m",
+        0
+      ],
+      "lm": 6,
+      "lsat": 1.5,
+      "label": "output transformer (class-A 6973 pair : 8 Ohm)",
+      "note": "unverified: the traced schematic gives no turns ratio; 0.0498 secondary turns is sqrt(8/3200) for a 3.2 kOhm plate-to-plate class-A load Centre tap on the rectifier node (before the 1K): Supro_1624t_schematic_263.pdf p1 @300dpi B+ wiring (1036,1418,4418,1964)."
+    },
+    {
+      "ref": "CWA",
+      "type": "C",
+      "nodes": [
+        "pa",
+        "cwa"
+      ],
+      "value": "470p",
+      "label": "OT half-primary capacitance (A)",
+      "note": "Winding self-capacitance with its loss (2026-11-09), the same network as the 5E3/AB763/5F6-A/Plexi output transformers. Without it the ideal transformer's leakage rings and the engine and ngspice resolve the edges differently at large signal (supro_drive was 13.5 %)."
+    },
+    {
+      "ref": "CWB",
+      "type": "C",
+      "nodes": [
+        "pb",
+        "cwb"
+      ],
+      "value": "470p",
+      "label": "OT half-primary capacitance (B)"
+    },
+    {
+      "ref": "RCWA",
+      "type": "R",
+      "nodes": [
+        "cwa",
+        "bpa"
+      ],
+      "value": "2k2"
+    },
+    {
+      "ref": "RCWB",
+      "type": "R",
+      "nodes": [
+        "cwb",
+        "bpa"
+      ],
+      "value": "2k2"
+    },
+    {
+      "ref": "SPK",
+      "type": "sub",
+      "of": "lib:spk-12in-8ohm-american",
+      "nodes": [
+        "spk",
+        "0"
+      ],
+      "label": "12-inch 8 Ohm speaker"
+    },
+    {
+      "ref": "V5A",
+      "type": "triode",
+      "nodes": [
+        "tp",
+        "tg",
+        "tk"
+      ],
+      "model": "12AX7",
+      "label": "V5A tremolo phase-shift oscillator (pins 6/7/8)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809)"
+    },
+    {
+      "ref": "RT1",
+      "type": "R",
+      "nodes": [
+        "bpc",
+        "tp"
+      ],
+      "value": "270k",
+      "tolerance": 0.1,
+      "label": "oscillator plate load 270K (factory R19; 140 V)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809)"
+    },
+    {
+      "ref": "RT2",
+      "type": "R",
+      "nodes": [
+        "tk",
+        "0"
+      ],
+      "value": "1k",
+      "tolerance": 0.1,
+      "label": "oscillator cathode 1000 (factory R18; 0.6 V)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809)"
+    },
+    {
+      "ref": "CT2",
+      "type": "C",
+      "nodes": [
+        "tp",
+        "ta"
+      ],
+      "value": "30n",
+      "tolerance": 0.2,
+      "label": "phase-shift .03 uF (factory C6)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809)"
+    },
+    {
+      "ref": "RT3",
+      "type": "R",
+      "nodes": [
+        "ta",
+        "ts"
+      ],
+      "value": "100k",
+      "tolerance": 0.1,
+      "label": "100K in series with the Speed rheostat (factory R13)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809)"
+    },
+    {
+      "ref": "SPEED",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "0",
+        "ts"
+      ],
+      "value": "500k",
+      "taper": "B",
+      "control": "speed",
+      "label": "Speed 500 kL (rheostat)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809): wiper tied to the grounded end (factory R14 500K). Wired so clockwise removes resistance: faster"
+    },
+    {
+      "ref": "CT3",
+      "type": "C",
+      "nodes": [
+        "ta",
+        "tb"
+      ],
+      "value": "20n",
+      "tolerance": 0.2,
+      "label": "phase-shift .02 uF (factory C7)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809)"
+    },
+    {
+      "ref": "RT4",
+      "type": "R",
+      "nodes": [
+        "tb",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.1,
+      "label": "phase-shift 1M (factory R15)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809)"
+    },
+    {
+      "ref": "CT4",
+      "type": "C",
+      "nodes": [
+        "tb",
+        "tc"
+      ],
+      "value": "10n",
+      "tolerance": 0.2,
+      "label": "phase-shift .01 uF (factory C8)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809)"
+    },
+    {
+      "ref": "RT5",
+      "type": "R",
+      "nodes": [
+        "tc",
+        "0"
+      ],
+      "value": "1.5M",
+      "tolerance": 0.1,
+      "label": "phase-shift 1.5M (factory R17)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809)"
+    },
+    {
+      "ref": "RT6",
+      "type": "R",
+      "nodes": [
+        "tc",
+        "tg"
+      ],
+      "value": "2.2k",
+      "tolerance": 0.1,
+      "label": "oscillator grid stopper 2200 (factory R16)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809)"
+    },
+    {
+      "ref": "CT5",
+      "type": "C",
+      "nodes": [
+        "tp",
+        "tq"
+      ],
+      "value": "50n",
+      "tolerance": 0.2,
+      "label": "oscillator output .05 uF (factory C9 prints .005: the 1624T drawing's .05 is used)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809)"
+    },
+    {
+      "ref": "RT7",
+      "type": "R",
+      "nodes": [
+        "tq",
+        "tf"
+      ],
+      "value": "1M",
+      "tolerance": 0.1,
+      "label": "1M (factory R20)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809)"
+    },
+    {
+      "ref": "CT6",
+      "type": "C",
+      "nodes": [
+        "tf",
+        "0"
+      ],
+      "value": "20n",
+      "tolerance": 0.2,
+      "label": "smoothing .02 uF to ground (factory C24)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809)"
+    },
+    {
+      "ref": "SWT",
+      "type": "switch",
+      "nodes": [
+        "tf",
+        "tf2"
+      ],
+      "control": "tremolo",
+      "label": "tremolo on/off (switch on the Speed control / footswitch)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809): the switch on the Speed pot in series with the 2.2M (the drawn insulated footswitch jack has both lugs on the same node, so it is not modelled)"
+    },
+    {
+      "ref": "RT8",
+      "type": "R",
+      "nodes": [
+        "tf2",
+        "td"
+      ],
+      "value": "2.2M",
+      "tolerance": 0.1,
+      "label": "2.2M (factory R23)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809)"
+    },
+    {
+      "ref": "CT7",
+      "type": "C",
+      "nodes": [
+        "td",
+        "0"
+      ],
+      "value": "50n",
+      "tolerance": 0.2,
+      "label": ".05 uF on the intensity node (factory C10)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809)"
+    },
+    {
+      "ref": "INTENSITY",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "td",
+        "td"
+      ],
+      "value": "500k",
+      "taper": "B",
+      "control": "mod",
+      "label": "Intensity 500 kL (rheostat)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809): the wiper is on the drive node and the track's far end on ground (factory R22 500K), so clockwise adds resistance to ground: deeper"
+    },
+    {
+      "ref": "RT9",
+      "type": "R",
+      "nodes": [
+        "td",
+        "tg2"
+      ],
+      "value": "2.2k",
+      "tolerance": 0.1,
+      "label": "follower grid stopper 2200 (factory R21)",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809)"
+    },
+    {
+      "ref": "V5B",
+      "type": "triode",
+      "nodes": [
+        "bpc",
+        "tg2",
+        "k1b"
+      ],
+      "model": "12AX7",
+      "label": "V5B tremolo cathode follower (pins 1/2/3): plate on B+, cathode 'C' on V1B's cathode",
+      "note": "Supro_1624t_schematic_263.pdf p1 @300dpi tremolo (409,1800,2264,2809)"
+    }
+  ],
+  "probes": [
+    "g1b",
+    "p1b",
+    "k1b",
+    "p2a",
+    "p2b",
+    "g3a",
+    "pa",
+    "kk",
+    "bpc",
+    "tp",
+    "td",
+    "spk"
+  ],
+  "layout": {},
+  "models": {
+    "6973": {
+      "kind": "pentode",
+      "mu": 10.944,
+      "ex": 1.1758,
+      "kg1": 904.51,
+      "kg2": 5700.4,
+      "kp": 43.799,
+      "kvb": 9.7487,
+      "cg1k": 9e-12,
+      "cg1p": 7e-13,
+      "cpk": 7e-12,
+      "gscale": 0.001,
+      "gknee": 0.08,
+      "note": "6973 beam pentode fitted (Headroom 2026, tools/circuit/tube_fit.py) to the RCA 6973 plate families (Ec2 = 250 V, Ec1 0..-20 V with Ig2, 92CM-9389; Ec1 = 0 at Ec2 100..300 V, 92CM-9380; 1957; frank.pocnet.net sheet 049/6/6973.pdf) anchored on the class-A1 point Va = Vg2 = 250 V, Vg1 = -15 V -> Ia 46 mA, Ig2 3.5 mA (card: 45.6 / 3.5): RMS error, % of 173 mA, plate 2.7 -> 1.9, knee 29 -> 22, screen 0.7 -> 1.4 against the previous point-fitted card"
+    }
+  },
+  "readouts": {
+    "lfo": {
+      "node": "td",
+      "minSwing": 0.5
+    }
+  }
+}

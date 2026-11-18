@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Harmonic Minor Lead</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Harmonic Minor Lead" preset-author="Headroom" preset-comment="Neo-classical shred lead: an overdrive pushing a British 100-watt head with the bass low and the mids and treble high, for a vocal, violin-like tone that keeps fast scalar runs and sweeps clear. A modest echo and hall add size without smearing the notes." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="15000">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.75"/>
+        <parameter id="Tn" value="0.6"/>
+        <parameter id="Dr" value="0.55"/>
+        <parameter id="Lmp" value="0.5"/>
+        <parameter id="Bs" value="0.5"/>
+        <parameter id="Cl" value="0.5"/>
+        <parameter id="Br" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="56000">
+    <component-audio version="1">
+      <parameters num-parameters="15">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V1" value="0.8"/>
+        <parameter id="V2" value="0.48"/>
+        <parameter id="B" value="0.3"/>
+        <parameter id="M" value="0.85"/>
+        <parameter id="T" value="0.75"/>
+        <parameter id="Pr" value="0.5"/>
+        <parameter id="Pw" value="0.5"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bi" value="0.5"/>
+        <parameter id="Hg" value="1"/>
+        <parameter id="G4M" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.8448"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="9"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="158000">
+    <component-audio version="1">
+      <parameters num-parameters="38">
+        <parameter id="mix" value="0.2"/>
+        <parameter id="input" value="0.7224"/>
+        <parameter id="output" value="0.7224"/>
+        <parameter id="pandry" value="0.5"/>
+        <parameter id="panwet" value="0.5"/>
+        <parameter id="stereowidth" value="0.5"/>
+        <parameter id="stereomode" value="0.5"/>
+        <parameter id="timemode" value="0"/>
+        <parameter id="time" value="0.4839"/>
+        <parameter id="feedback" value="0.4"/>
+        <parameter id="style" value="0"/>
+        <parameter id="ana_bbdtype" value="0"/>
+        <parameter id="modern_sat" value="0.5"/>
+        <parameter id="modern_depth" value="0"/>
+        <parameter id="modern_rate" value="0.5"/>
+        <parameter id="modern_stereo" value="0.5"/>
+        <parameter id="diff_amount" value="0.5"/>
+        <parameter id="diff_size" value="0.5"/>
+        <parameter id="diff_movement" value="0.5"/>
+        <parameter id="diff_dense" value="0.5"/>
+        <parameter id="ana_depth" value="0.5"/>
+        <parameter id="ana_rate" value="0.5"/>
+        <parameter id="ana_stereo" value="0.5"/>
+        <parameter id="tape_sat" value="0.5"/>
+        <parameter id="tape_age" value="0.5"/>
+        <parameter id="tape_wowflut" value="0.5"/>
+        <parameter id="tape_noise" value="0.5"/>
+        <parameter id="vd_quality" value="0"/>
+        <parameter id="vd_depth" value="0.5"/>
+        <parameter id="vd_rate" value="0.5"/>
+        <parameter id="vd_stereo" value="0.5"/>
+        <parameter id="locut" value="0.5"/>
+        <parameter id="hicut" value="0.5"/>
+        <parameter id="duckingamount" value="0"/>
+        <parameter id="duckingsensitivity" value="0.5"/>
+        <parameter id="duckingrelease" value="0.5"/>
+        <parameter id="duckingmeter" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="154000">
+    <component-audio version="1">
+      <parameters num-parameters="22">
+        <parameter id="P0" value="0.6"/>
+        <parameter id="D1" value="0.5"/>
+        <parameter id="I2" value="0.5"/>
+        <parameter id="M3" value="0"/>
+        <parameter id="B4" value="0.5"/>
+        <parameter id="M5" value="0.5"/>
+        <parameter id="C6" value="0.5"/>
+        <parameter id="H7" value="0.5"/>
+        <parameter id="T8" value="0"/>
+        <parameter id="C9" value="0.5"/>
+        <parameter id="M10" value="0.5"/>
+        <parameter id="D11" value="0.18"/>
+        <parameter id="I21" value="0.5"/>
+        <parameter id="O22" value="0.4845"/>
+        <parameter id="I12" value="0"/>
+        <parameter id="I13" value="0"/>
+        <parameter id="O14" value="0"/>
+        <parameter id="O15" value="0"/>
+        <parameter id="P16" value="0"/>
+        <parameter id="P17" value="0"/>
+        <parameter id="Q25" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="56000" target-number="1" target-name="V1" min-value="0.55" max-value="0.95" controller-name="Gain"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="15000" target-number="1" target-name="Dr" min-value="0.2" max-value="0.9" controller-name="Boost Drive"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="56000" target-number="1" target-name="M" min-value="0.5" max-value="1" controller-name="Mids"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="158000" target-number="1" target-name="mix" min-value="0" max-value="0.4" controller-name="Delay Mix"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="154000" target-number="1" target-name="D11" min-value="0" max-value="0.4" controller-name="Hall"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="hg-harmonic-minor-lead" category="High Gain" order="30" instrument="guitar" style="Shred">
+  <description>Neo-classical shred lead: an overdrive pushing a British 100-watt head with the bass low and the mids and treble high, for a vocal, violin-like tone that keeps fast scalar runs and sweeps clear. A modest echo and hall add size without smearing the notes.</description>
+  <tags><tag>High Gain</tag><tag>Shred</tag><tag>Neo-Classical</tag><tag>Lead</tag><tag>Boosted</tag><tag>Delay</tag><tag>Hall</tag></tags>
+  <sources>
+    <source url="https://www.vintageguitar.com/2988/yngwie-malmsteen/" title="Vintage Guitar: Yngwie Malmsteen (April 2004)"/>
+    <source url="https://www.guitarplayer.com/gear/yngwie-mxr-overdrive" title="Guitar Player: Yngwie Malmsteen on his overdrive"/>
+    <source url="https://jasobrecht.substack.com/p/yngwie-malmsteen-the-complete-1989-10a" title="Jas Obrecht: Yngwie Malmsteen, the complete 1989 interview"/>
+    <source url="https://www.premierguitar.com/artists/interview-yngwie-malmsteen-on-his-new-album-guitar" title="Premier Guitar: Yngwie Malmsteen interview"/>
+    <source url="https://forum.metropoulos.net/viewtopic.php?t=16626&amp;start=375" title="Metropoulos forum: Yngwie Malmsteen thread, p. 26 (forum)"/>
+    <source url="https://www.ultimate-guitar.com/forum/showthread.php?t=375064" title="Ultimate Guitar forum: Yngwie amp settings (forum)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

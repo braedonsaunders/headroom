@@ -1,0 +1,710 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "4ms-tremulus-lune-13000",
+ "version": 1,
+ "name": "4ms Tremulus Lune optical tremolo (catalogue 13000)",
+ "description": "4ms Tremulus Lune as built on Aion FX's 'Luna' board, line level. Supply: +9 V through D1 1N5817 onto VA (C11 100 nF, C9 100 uF), with VB = VA/2 from R18/R19 100 k each (C10 47 uF) as the audio bias rail. Input buffer (the Luna's addition): RPD 2M2 pulldown, R1 1k, C1 47 nF onto the Q1 2N5457 gate (R2 1M leak), a common-drain follower with its drain on VA and R3 1k in the source, coupling through C2 1 uF and R4 47 k into IC1A, an inverting TL072 stage with R5 47 k feedback and its + input on VB. IC1A's output goes through C3 2.2 uF into the VTL5C3 photocell, which is IN SERIES with the following gain stage's input: the cell's far side is IC1B's - input, and IC1B's feedback is R6 1 k plus the VOLUME 50 kA pot, with C4 330 pF across it. So the cell is the input resistor of the second gain stage (1 MOhm dark -> gain 0.05, ~1 kOhm lit -> gain ~50) and C3 with the cell forms the high-pass the build notes warn about. Output: C5 1 uF with R7 1M to ground. LFO: IC2A (TL022) is a single-op-amp triangle oscillator - the + input is a Schmitt threshold from the output via R10 220 k, its level set by the SPACING 500k pot between R8 220 k to VA and R9 150 k to ground; the - input integrates through C6 10 nF and R11 220 k to node Y, which is the far end of the RATE 100kC pot from the op-amp output. D2/D3 1N914 in antiparallel across the SYMMETRY 500k pot (wiper on node Y) clip that feedback with a DC offset, skewing the rise and fall; R12 2k7 into C7 10 uF and C8 33 n forms the anti-tick filter (5.9 Hz and 4.8 Hz poles), and the SMOOTH 500k pot taps it into IC2B, which drives the DEPTH 1kB network that sets the LED's minimum current (VA through R13 330 R, the pot, R15 1k, the emitter, R14 1k to ground; the panel rate LED hangs off the same node through R17 1k).",
+ "sources": [
+  {
+   "title": "Aion FX, 'LUNA - Tremulus Lune optical tremolo', document version 1.0.4 (2024-08-08): complete parts list with values and pot tapers, full schematic, and build notes. Read at 500-1200 dpi. This is the primary source for every value here",
+   "url": "https://aionfx.com/app/files/docs/luna_documentation.pdf"
+  },
+  {
+   "title": "Provenance: Aion state the Luna is 'a modified version of the 4ms Tremulus Lune' and document each deviation (added input buffer, added anti-tick filtering, Symmetry and an external gain adjustment standardised). The 4ms original is NOT in hand - 4mspedals.com redirects to 4mscompany.com (the kit is discontinued) and serves no Tremulus Lune schematic - so this unit carries the single-source caveat, as the Butler Tube Driver does",
+   "url": "https://4mscompany.com/"
+  },
+  {
+   "title": "Readings settled from the documentation itself: (a) the photocell is the SERIES element into IC1B's - input, not a shunt - the build note 'the resistance (500 ohms to 1k) is so low that the gain ratio will be thrown off balance in the following gain stage ... the combined high-pass filter with C3 will cut the bass' only makes sense that way, and the 1200 dpi read of the C3/VACTROL_B/IC1B node confirms it; (b) RX1, drawn 'OMIT', is the BJT-buffer option's collector resistor ('to use a BJT, omit R2 and use 470k for RX1'), so with the JFET it is a wire; (c) VTL5C3 class cell, per the build notes",
+   "url": "https://aionfx.com/app/files/docs/luna_documentation.pdf"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "out",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 1.0
+ },
+ "oversampling": 1,
+ "solver": "auto",
+ "parts": [
+  {
+   "ref": "VKICK",
+   "type": "V",
+   "nodes": [
+    "kick",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "0.001",
+    "freq": 3,
+    "phase": 0
+   },
+   "label": "Oscillator start-up kick",
+   "note": "not a part of the pedal: 1 mV at 3 Hz through 10 MOhm stands in for noise so the LFO starts from the DC operating point (the same device the ab763 vibrato channel uses)"
+  },
+  {
+   "ref": "RKICK",
+   "type": "R",
+   "nodes": [
+    "kick",
+    "lfo_p"
+   ],
+   "value": "10M"
+  },
+  {
+   "ref": "VA",
+   "type": "V",
+   "nodes": [
+    "va",
+    "0"
+   ],
+   "value": "8.75",
+   "label": "+9 V through D1 1N5817 (the Schottky drop folded in): the rail C11 100 nF / C9 100 uF sits on, and the TL072s' V+ pin"
+  },
+  {
+   "ref": "VB",
+   "type": "V",
+   "nodes": [
+    "vb",
+    "0"
+   ],
+   "value": "4.375",
+   "label": "Half rail from R18/R19 100 k each, filtered by C10 47 uF: the audio bias rail. Modelled as the fixed rail it produces (see notes)"
+  },
+  {
+   "ref": "RPD",
+   "type": "R",
+   "nodes": [
+    "in",
+    "0"
+   ],
+   "value": "2M2",
+   "tolerance": 0.05,
+   "label": "Input pulldown"
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "in",
+    "g1"
+   ],
+   "value": "1k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "g1",
+    "qg"
+   ],
+   "value": "47n"
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "qg",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "JFET gate leak (omitted in the BJT option)"
+  },
+  {
+   "ref": "Q1",
+   "type": "njf",
+   "nodes": [
+    "va",
+    "qg",
+    "qs"
+   ],
+   "model": "2N5457",
+   "label": "Q1 2N5457 input buffer (common drain)"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "qs",
+    "0"
+   ],
+   "value": "1k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "qs",
+    "ia"
+   ],
+   "value": "1u"
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "ia",
+    "imn"
+   ],
+   "value": "47k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "IC1A",
+   "type": "opamp",
+   "nodes": [
+    "vb",
+    "imn",
+    "iao",
+    "va",
+    "0"
+   ],
+   "model": "TL072",
+   "label": "IC1A inverting stage (pins 3/2/1)"
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "imn",
+    "iao"
+   ],
+   "value": "47k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "iao",
+    "cell_a"
+   ],
+   "value": "2u2",
+   "label": "Series high-pass with the cell"
+  },
+  {
+   "ref": "VACT",
+   "type": "cds",
+   "nodes": [
+    "cell_a",
+    "ibn"
+   ],
+   "light": "L1",
+   "model": "VTL5C3_CELL",
+   "label": "VACTROL_B photocell - the series input resistor of IC1B"
+  },
+  {
+   "ref": "IC1B",
+   "type": "opamp",
+   "nodes": [
+    "vb",
+    "ibn",
+    "ibo",
+    "va",
+    "0"
+   ],
+   "model": "TL072",
+   "label": "IC1B output stage (pins 5/6/7)"
+  },
+  {
+   "ref": "R6",
+   "type": "R",
+   "nodes": [
+    "ibn",
+    "vol1"
+   ],
+   "value": "1k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "VOLUME",
+   "type": "pot",
+   "nodes": [
+    "vol1",
+    "ibo",
+    "ibo"
+   ],
+   "value": "50k",
+   "taper": "A",
+   "control": "volume",
+   "label": "VOLUME 50 kOhm audio (external gain adjustment)"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "ibn",
+    "ibo"
+   ],
+   "value": "330p"
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "ibo",
+    "out"
+   ],
+   "value": "1u"
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "out",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "va",
+    "spt"
+   ],
+   "value": "220k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "SPACING",
+   "type": "pot",
+   "nodes": [
+    "spb",
+    "lfo_p",
+    "spt"
+   ],
+   "value": "500k",
+   "taper": "B",
+   "control": "spacing",
+   "label": "SPACING 500 kOhm"
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "spb",
+    "0"
+   ],
+   "value": "150k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "IC2A",
+   "type": "opamp",
+   "nodes": [
+    "lfo_p",
+    "lfo_m",
+    "lfo_o",
+    "va",
+    "0"
+   ],
+   "model": "TL072",
+   "label": "IC2A LFO (pins 3/2/1)"
+  },
+  {
+   "ref": "R10",
+   "type": "R",
+   "nodes": [
+    "lfo_o",
+    "lfo_p"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "Schmitt hysteresis"
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "lfo_m",
+    "lfo_o"
+   ],
+   "value": "10n"
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "lfo_m",
+    "nz"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "note": "R11 220k from IC2A's - input to node Z (the far end of R12, top of C7), as drawn (luna_documentation.pdf p.6 schematic (4ms Luna v1.0.3), rendered @400 dpi, crop (400,1500)-(3000,2700)); was on node Y, which stopped the LFO with RATE near 0 ohm"
+  },
+  {
+   "ref": "RATE",
+   "type": "pot",
+   "nodes": [
+    "ny",
+    "ny",
+    "lfo_o"
+   ],
+   "value": "100k",
+   "taper": "C",
+   "control": "rate",
+   "label": "RATE 100 kOhm reverse log",
+   "note": "RATE 100 kOhm C: lug 3 on IC2A's output (pin 1), lug 1 and the wiper on node Y, as drawn (luna_documentation.pdf p.6 schematic (4ms Luna v1.0.3), rendered @400 dpi, crop (400,1500)-(3000,2700)). The rheostat is the wiper-to-lug-3 segment, (1 - C(x)) x 100k: 100k at 0 (slowest), 0 at 1 (fastest, R12 2k7 left). Fixed 2026-11-12: the lugs were swapped (lfo_o on lug 1), which ran the knob backwards and stopped the LFO at 0"
+  },
+  {
+   "ref": "D2",
+   "type": "D",
+   "nodes": [
+    "symt",
+    "lfo_o"
+   ],
+   "model": "1N914",
+   "label": "Symmetry shaper, upper"
+  },
+  {
+   "ref": "D3",
+   "type": "D",
+   "nodes": [
+    "lfo_o",
+    "symb"
+   ],
+   "model": "1N914",
+   "label": "Symmetry shaper, lower"
+  },
+  {
+   "ref": "SYMMETRY",
+   "type": "pot",
+   "nodes": [
+    "symb",
+    "ny",
+    "symt"
+   ],
+   "value": "500k",
+   "taper": "B",
+   "control": "symmetry",
+   "label": "SYMMETRY 500 kOhm"
+  },
+  {
+   "ref": "R12",
+   "type": "R",
+   "nodes": [
+    "ny",
+    "nz"
+   ],
+   "value": "2k7",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C7",
+   "type": "C",
+   "nodes": [
+    "nz",
+    "0"
+   ],
+   "value": "10u",
+   "label": "Anti-tick filter"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "nz",
+    "lfo_p"
+   ],
+   "value": "33n",
+   "note": "C8 33n from node Z to IC2A's + input (the SPACING wiper / R10 node): the bottom line of the drawing ties C8 and SMOOTH lug 1 to the pin-3 net (luna_documentation.pdf p.6 schematic (4ms Luna v1.0.3), rendered @400 dpi, crop (400,1500)-(3000,2700)); was to VB"
+  },
+  {
+   "ref": "SMOOTH",
+   "type": "pot",
+   "nodes": [
+    "lfo_p",
+    "ic2bp",
+    "nz"
+   ],
+   "value": "500k",
+   "taper": "B",
+   "control": "smooth",
+   "label": "SMOOTH 500 kOhm",
+   "note": "SMOOTH 500 kOhm B between IC2A's + input (lug 1, the Schmitt node: a square) and node Z (lug 3, the R12/C7-filtered wave), wiper to IC2B +: the documented triangle/sine -> square morph (luna_documentation.pdf p.6 schematic (4ms Luna v1.0.3), rendered @400 dpi, crop (400,1500)-(3000,2700)); lug 1 was on VB"
+  },
+  {
+   "ref": "IC2B",
+   "type": "opamp",
+   "nodes": [
+    "ic2bp",
+    "ic2bo",
+    "ic2bo",
+    "va",
+    "0"
+   ],
+   "model": "TL072",
+   "label": "IC2B LED driver (pins 5/6/7)",
+   "note": "IC2B is a unity follower: pin 6 is wired to pin 7 (luna_documentation.pdf p.6 schematic (4ms Luna v1.0.3), rendered @400 dpi, crop (400,1500)-(3000,2700), IC2B at (1950,1950)-(2600,2600)); it was an open-loop comparator with - on VB"
+  },
+  {
+   "ref": "R13",
+   "type": "R",
+   "nodes": [
+    "va",
+    "dep1"
+   ],
+   "value": "330",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "DEPTH",
+   "type": "pot",
+   "nodes": [
+    "dep1",
+    "depw",
+    "ic2bo"
+   ],
+   "value": "1k",
+   "taper": "B",
+   "control": "depth",
+   "label": "DEPTH 1 kOhm (pin 3 on IC2B's output)"
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "depw",
+    "led_a"
+   ],
+   "value": "1k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "LED",
+   "type": "led",
+   "nodes": [
+    "led_a",
+    "led_k"
+   ],
+   "light": "L1",
+   "model": "VTL5C3_LED",
+   "label": "Vactrol LED"
+  },
+  {
+   "ref": "R14",
+   "type": "R",
+   "nodes": [
+    "led_k",
+    "0"
+   ],
+   "value": "1k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R17",
+   "type": "R",
+   "nodes": [
+    "led_a",
+    "rl_a"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "Panel rate LED feed (R16 1k in parallel is a brightness trim on the board)"
+  },
+  {
+   "ref": "RATELED",
+   "type": "led",
+   "nodes": [
+    "rl_a",
+    "rl_k"
+   ],
+   "light": "L2",
+   "model": "PANEL_LED",
+   "label": "Panel rate LED"
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "rl_k",
+    "0"
+   ],
+   "value": "1k",
+   "tolerance": 0.05
+  }
+ ],
+ "controls": [
+  {
+   "id": "rate",
+   "label": "Rate",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Rt"
+   ],
+   "group": "Main",
+   "note": "RATE 100 kOhm reverse-log ('C') rheostat from IC2A's output (lug 3) to node Y (lug 1 + wiper): 0 = slowest (0.64 Hz), 1 = fastest (10.6 Hz)"
+  },
+  {
+   "id": "depth",
+   "label": "Depth",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Int"
+   ],
+   "group": "Main",
+   "note": "DEPTH 1 kOhm between VA's 330 Ohm and IC2B's output: sets how far the LFO pulls the LED current down, i.e. the level at the bottom of the cycle; fully up = no modulation (clean)"
+  },
+  {
+   "id": "symmetry",
+   "label": "Symmetry",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Main",
+   "note": "SYMMETRY 500 kOhm across the antiparallel D2/D3: offsets the clipping of the integrator's feedback, skewing rise and fall"
+  },
+  {
+   "id": "smooth",
+   "label": "Smooth",
+   "kind": "continuous",
+   "default": 1.0,
+   "params": [],
+   "group": "Main",
+   "note": "SMOOTH 500 kOhm: IC2B's + taps between the Schmitt node (0: square) and the R12/C7/C8-filtered node Z (1: sine), as drawn; IC2B is a follower"
+  },
+  {
+   "id": "spacing",
+   "label": "Spacing",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Main",
+   "note": "SPACING 500 kOhm sets the LFO's Schmitt threshold between R8 to VA and R9 to ground, which moves the duty cycle while the pulse width stays"
+  },
+  {
+   "id": "volume",
+   "label": "Volume",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Main",
+   "note": "VOLUME 50 kOhm audio in IC1B's feedback with R6 1 kOhm, so the gain is (1k + Rp)/Rcell: the 'external gain adjustment' the documentation describes. 0 = 1k/1M, 1 = 51k/1k"
+  },
+  {
+   "id": "lamp",
+   "label": "Lamp",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "Lmp"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "a pedal has no lamp on/off; the LED is driven by the LFO; stored only"
+  },
+  {
+   "id": "shape",
+   "label": "Shape",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "Ts"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "no shape selector: the LFO shape is set by the Smooth/Symmetry pots; stored only"
+  },
+  {
+   "id": "width",
+   "label": "Width",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "Wdt"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "no width control on the hardware; stored only"
+  },
+  {
+   "id": "pan",
+   "label": "Pan",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "Pan"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "the pedal is mono; stored only"
+  },
+  {
+   "id": "down",
+   "label": "Down",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "Dn"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "no sweep-direction control on this unit; stored only"
+  },
+  {
+   "id": "up",
+   "label": "Up",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "Up"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "no sweep-direction control on this unit; stored only"
+  },
+  {
+   "id": "power",
+   "label": "On/Off",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Pwr"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Host bypass; the pedal's 3PDT is panel hardware, not in the audio path"
+  }
+ ],
+ "probes": [
+  "in",
+  "qg",
+  "qs",
+  "iao",
+  "cell_a",
+  "ibn",
+  "ibo",
+  "out",
+  "lfo_o",
+  "ny",
+  "nz",
+  "ic2bp",
+  "ic2bo",
+  "led_k",
+  "L1",
+  "VACT#n"
+ ],
+ "readouts": {
+  "lfo": "lfo_o",
+  "light": "L1"
+ },
+ "models": {
+  "PANEL_LED": {
+   "kind": "led",
+   "is": 1e-19,
+   "n": 1.6,
+   "rs": 5.0,
+   "iref": 0.01,
+   "tau_light": 0.0001,
+   "note": "the panel rate LED (a generic 5 mm red diffused); its light is not read by anything, it is the pedal's speed indicator, so only its current matters"
+  }
+ }
+}

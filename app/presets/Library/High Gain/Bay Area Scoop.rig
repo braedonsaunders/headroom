@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Bay Area Scoop</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Bay Area Scoop" preset-author="Headroom" preset-comment="Mid-80s Bay Area thrash rhythm: a saturated boutique lead channel, then a graphic EQ in a hard V (lows and highs up, low mids cut deep), into a 4x12 with 25-watt speakers. Tight, chunky and aggressive for downpicked palm mutes and gallops; the gate keeps the stops dead." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="19000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="T" value="0.5"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="A" value="0.5"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="G" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="122000">
+    <component-audio version="1">
+      <parameters num-parameters="17">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="P0" value="0.5"/>
+        <parameter id="P1" value="0.8"/>
+        <parameter id="O2" value="1"/>
+        <parameter id="B3" value="0.55"/>
+        <parameter id="M4" value="0.4"/>
+        <parameter id="T5" value="0.7"/>
+        <parameter id="M6" value="0.5"/>
+        <parameter id="P7" value="0.6"/>
+        <parameter id="D8" value="0.55"/>
+        <parameter id="P9" value="0"/>
+        <parameter id="V10" value="0.5"/>
+        <parameter id="S11" value="0.5"/>
+        <parameter id="R12" value="0.5"/>
+        <parameter id="B13" value="0.5"/>
+        <parameter id="L14" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="32000">
+    <component-audio version="1">
+      <parameters num-parameters="13">
+        <parameter id="V" value="0.5"/>
+        <parameter id="mi" value="0.5"/>
+        <parameter id="ma" value="0.5"/>
+        <parameter id="r" value="0.5"/>
+        <parameter id="b1" value="0.75"/>
+        <parameter id="b2" value="0.5"/>
+        <parameter id="b3" value="0.15"/>
+        <parameter id="b4" value="0.5"/>
+        <parameter id="b5" value="0.62"/>
+        <parameter id="b6" value="0.5"/>
+        <parameter id="b7" value="0.62"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="b8" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.6306"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="9"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="122000" target-number="1" target-name="P1" min-value="0.5" max-value="0.95" controller-name="Gain"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="32000" target-number="1" target-name="b3" min-value="0" max-value="0.5" controller-name="Scoop"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="32000" target-number="1" target-name="b1" min-value="0.4" max-value="0.95" controller-name="Low End"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="122000" target-number="1" target-name="T5" min-value="0.45" max-value="0.9" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="19000" target-number="1" target-name="T" min-value="0.2" max-value="0.75" controller-name="Gate"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="hg-bay-area-scoop" category="High Gain" order="50" instrument="guitar" style="Thrash">
+  <description>Mid-80s Bay Area thrash rhythm: a saturated boutique lead channel, then a graphic EQ in a hard V (lows and highs up, low mids cut deep), into a 4x12 with 25-watt speakers. Tight, chunky and aggressive for downpicked palm mutes and gallops; the gate keeps the stops dead.</description>
+  <tags><tag>High Gain</tag><tag>Thrash</tag><tag>80s</tag><tag>Rhythm</tag><tag>Scooped</tag><tag>Gate</tag><tag>Downpicking</tag></tags>
+  <sources>
+    <source url="https://www.boostguitarpedals.co.uk/blogs/gear-of-the-gods/james-hetfields-gear-on-master-of-puppets-1986" title="Boost Guitar Pedals: James Hetfield's gear on Master of Puppets"/>
+    <source url="https://en.wikipedia.org/wiki/Mesa/Boogie_Mark_IIC%2B" title="Mesa/Boogie Mark IIC+ (Wikipedia)"/>
+    <source url="https://blog.zzounds.com/2017/05/20/legends-tone-slayer/" title="zZounds: Legends of tone, Slayer"/>
+    <source url="https://equipboard.com/albums/testament-the-new-order" title="Equipboard: Testament, The New Order"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

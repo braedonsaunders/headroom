@@ -1,0 +1,252 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "dallas-fuzz-face-si",
+ "version": 1,
+ "name": "Dallas Arbiter Fuzz Face (silicon, BC108C, c. 1969-70)",
+ "description": "Dallas Arbiter Fuzz Face, NPN silicon version (BC108C; BC109C, BC183L, BC209C were also fitted), negative ground, +9 V battery. Two direct-coupled common-emitter stages with shunt-series feedback: C1 2.2 µF into the Q1 base (no pull-down, no input buffer: the guitar sees the 5-8 kΩ input impedance of the stage), Q1 emitter grounded, 33 kΩ Q1 collector load, Q1 collector driving the Q2 base; Q2 collector through 8.2 kΩ to a node that goes to +9 V through 330 Ω (the germanium version's 470 Ω) and out through 0.01 µF to the 500 kΩ audio Volume pot; Q2 emitter to ground through the 1 kΩ linear Fuzz pot, whose wiper is bypassed by 20 µF; 100 kΩ from the Q2 emitter back to the Q1 base. Effect-on (DPDT true-bypass) state.",
+ "sources": [
+  {
+   "title": "Fuzz Central, 'Arbiter Fuzz Face' (original NPN silicon schematic 'fuzzfacenpnschematic.gif': 2.2 µF, 33K, 8K2, 330 Ω, 100K, 0.01 µF, Volume 500KA, Fuzz 1KB, 20 µF; transistors BC108C, BC109, BC109C, BC183L, BC209C; 'the 470-ohm resistor was replaced with a 330-ohm'; negative ground +9 V)",
+   "url": "https://fuzzcentral.ssguitar.com/fuzzface.php"
+  },
+  {
+   "title": "Experimentalists Anonymous, Fuzz Face schematic PDF (NPN silicon BC108C version: the 470 Ω becomes 330 Ω, battery and electrolytics reversed)",
+   "url": "https://experimentalistsanonymous.com/diy/Schematics/Fuzz%20and%20Fuzzy%20Noisemakers/Fuzzface.pdf"
+  },
+  {
+   "title": "ElectroSmash, 'Fuzz Face Analysis' (topology, shunt-series feedback, input impedance 5.2-8.4 kΩ, bias targets, output divider). Archived copy used",
+   "url": "https://www.electrosmash.com/fuzz-face"
+  },
+  {
+   "title": "BC107/BC108/BC109 datasheet (Philips/NXP, hFE group C 420-800) for the BC108C stand-in model"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "out",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 1.0
+ },
+ "oversampling": 2,
+ "lte": {"start": "bdf2", "note": "LTE substeps start on BDF2 and continue in trapezoid (docs §10.61): a backward-Euler restart on every continued sample was this unit's largest integration error. Engine 8x fine-step truth, audio band, lead / rock DI: 0.023 / 0.064 % -> 0.0055 / 0.014 %; ngspice ffsi_lead_d32 out 0.026 -> 0.012 %. CPU equal (9900X)"},
+ "minRate": 705600,
+ "multirate": {"rates": {"C1": 64}, "events": true, "note": "Event-local oversampling (docs §10.48, §10.62): the circuit runs at 768 kHz and every LTE event takes 4 substeps (3.07 MHz) into the band-limited output stream. The near-square edges carry content up to MHz: at a fixed 768 kHz they fold (aliasing gate, every bin, 0.25 / 0.5 / 1.0 FS: -57.6 / -55.9 / -50.1 dB), and even a fixed 1.536 MHz or 2-substep events leave -57.5 to -61.5 dB at 1.0 FS. Now -83.1 / -76.0 / -69.6 dB. Engine 8x fine-step truth (band-limited), audio band, lead / rock DI: 0.030 / 0.026 -> 0.030 / 0.009 %"},
+ "solver": "auto",
+ "models": {
+  "BC108C": {
+   "kind": "npn",
+   "is": 2e-14,
+   "bf": 520.0,
+   "br": 5.0,
+   "note": "unverified: no vendor SPICE card found. BF 520 is inside the BC108C hFE group C range (420-800); IS 20 fA and BR 5 are assumed small-signal silicon values. Real units vary widely; builders often pick lower gain CJE 9p / CJC 4.5p from the BC108 datasheet typical Cib / Cob (assumed for the C grade).",
+   "cje": 9e-12,
+   "cjc": 4.5e-12
+  }
+ },
+ "controls": [
+  {
+   "id": "volume",
+   "label": "Volume",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "V"
+   ],
+   "group": "Main",
+   "note": "500 kΩ audio-taper pot after the 0.01 µF output cap; wiper is the output"
+  },
+  {
+   "id": "fuzz",
+   "label": "Fuzz",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "F"
+   ],
+   "group": "Main",
+   "note": "1 kΩ linear pot from the Q2 emitter (pin 3) to ground (pin 1), wiper bypassed by 20 µF: clockwise bypasses more of the emitter resistance (more gain, less feedback)"
+  },
+  {
+   "id": "bass",
+   "label": "Bass",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "B"
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Legacy 'Bass' parameter. The Fuzz Face has only Volume and Fuzz; no circuit meaning, stored only"
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "T"
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Legacy 'Treble' parameter; no such knob; no circuit meaning, stored only"
+  },
+  {
+   "id": "lamp",
+   "label": "Lamp",
+   "kind": "switch",
+   "default": 0.0,
+   "params": [
+    "L"
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Legacy indicator lamp. The original has no LED; stored only"
+  },
+  {"id": "stereo", "label": "Stereo", "kind": "continuous", "default": 0.5, "params": ["CASSt"], "legacyOnly": true, "group": "Legacy", "note": "Catalogue stereo parameter; the circuit is mono, stored only"},
+  {"id": "power", "label": "On/Off", "kind": "switch", "default": 1.0, "params": ["Pwr"], "legacyOnly": true, "group": "Legacy", "note": "Host handles bypass; stored only"}
+ ],
+ "parts": [
+  {
+   "ref": "VBAT",
+   "type": "V",
+   "nodes": [
+    "vcc",
+    "0"
+   ],
+   "value": "9",
+   "label": "9 V battery (negative ground)",
+   "note": "Ideal source. ElectroSmash notes the battery's internal resistance adds to the 330/470 Ω and changes the output level; a fresh PP3 is about 1-2 Ω (not modelled)"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "in",
+    "b1"
+   ],
+   "value": "2.2u",
+   "tolerance": 0.2,
+   "label": "Input cap"
+  },
+  {
+   "ref": "Q1",
+   "type": "npn",
+   "nodes": [
+    "c1",
+    "b1",
+    "0"
+   ],
+   "model": "BC108C",
+   "label": "Q1 (low-gain pick)"
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "vcc",
+    "c1"
+   ],
+   "value": "33k",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "Q2",
+   "type": "npn",
+   "nodes": [
+    "c2",
+    "c1",
+    "e2"
+   ],
+   "model": "BC108C",
+   "label": "Q2"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "x",
+    "c2"
+   ],
+   "value": "8.2k",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "vcc",
+    "x"
+   ],
+   "value": "330",
+   "tolerance": 0.1,
+   "label": "Collector top resistor (330 Ω in the silicon version)"
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "e2",
+    "b1"
+   ],
+   "value": "100k",
+   "tolerance": 0.1,
+   "label": "Feedback"
+  },
+  {
+   "ref": "FUZZ",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "fw",
+    "e2"
+   ],
+   "value": "1k",
+   "taper": "B",
+   "control": "fuzz",
+   "label": "Fuzz"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "fw",
+    "0"
+   ],
+   "value": "20u",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "x",
+    "v3"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "Output cap"
+  },
+  {
+   "ref": "VOLUME",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "out",
+    "v3"
+   ],
+   "value": "500k",
+   "taper": "A",
+   "control": "volume",
+   "label": "Volume"
+  }
+ ],
+ "probes": [
+  "b1",
+  "c1",
+  "e2",
+  "c2",
+  "x",
+  "out"
+ ],
+ "layout": {}
+}

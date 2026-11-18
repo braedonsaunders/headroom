@@ -1,0 +1,18 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "test-diode-clipper",
+  "version": 1,
+  "name": "RC diode clipper (validation circuit)",
+  "description": "Classic first-order diode clipper (Yeh 2008; Werner et al. 2015): series 2.2 kΩ, 10 nF to ground in parallel with an antiparallel 1N914 pair. Exercises the WDF solver (R-type core, Wright-omega root).",
+  "sources": [ { "title": "D. T. Yeh, J. S. Abel, J. O. Smith, 'Simulation of the diode limiter in guitar distortion circuits by numerical solution of ordinary differential equations', DAFx 2007" } ],
+  "io": { "input": "in", "output": "out" },
+  "oversampling": 2,
+  "controls": [ { "id": "drive", "label": "Series R", "default": 0.5 } ],
+  "parts": [
+    { "ref": "R1", "type": "R", "nodes": ["in", "out"], "value": { "nominal": "2k2", "control": "drive", "min": "1k", "max": "4k84", "law": "log" } },
+    { "ref": "C1", "type": "C", "nodes": ["out", "0"], "value": "10n" },
+    { "ref": "D1", "type": "D", "nodes": ["out", "0"], "model": "1N914" },
+    { "ref": "D2", "type": "D", "nodes": ["0", "out"], "model": "1N914" }
+  ],
+  "probes": ["out"]
+}

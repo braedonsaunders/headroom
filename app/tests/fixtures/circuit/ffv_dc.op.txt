@@ -1,0 +1,11 @@
+# ngspice .op reference: fuzz-face-vintage-ge v1 (node voltage)
+in  0.000000e+00
+vee  -9.00000e+00
+b1  -2.10694e-01
+c1  -8.16410e-01
+c2  -2.45093e+00
+e2  -5.96896e-01
+x  -8.40463e+00
+fw  -2.98448e-01
+v3  0.000000e+00
+out  0.000000e+00

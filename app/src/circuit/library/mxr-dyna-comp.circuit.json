@@ -1,0 +1,568 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "mxr-dyna-comp",
+  "version": 1,
+  "name": "MXR M102 Dyna Comp (CA3080, script era)",
+  "description": "MXR Dyna Comp, original CA3080 circuit on a 9 V battery (no supply or bias decoupling caps, as on the original board). Vb ≈ 2.9 V from a 56 kΩ / 27 kΩ divider. Input: C1 10 nF, R1 10 kΩ into the Q1 2N3904 emitter follower (R2 1 MΩ from Vb, R3 10 kΩ emitter), C2 1 µF to the OTA inverting input (R4 1 MΩ to ground). The non-inverting input is fed from the inverting one through the 2 kΩ balance trimmer, whose wiper takes the OTA input bias from +9 V through R5 470 kΩ; R6 1 MΩ to ground and the R7 15 kΩ ∥ C4 10 nF + C3 1 µF leg make the + input a frequency-dependent fraction of the − input, so the OTA amplifies a small, treble-weighted difference (pre-emphasis). CA3080 output into R8 150 kΩ ∥ C5 1 nF to Vb, driving the Q2 phase splitter (R9 / R10 10 kΩ). Both phases are coupled through C6 / C7 10 nF onto R11 / R12 1 MΩ with D1 / D2 1N914 clamps at the bases of Q3 / Q4, which discharge C8 10 µF against R13 150 kΩ from +9 V. Q5 follows C8 and feeds the OTA's IABC pin through the 500 kΩ Sensitivity rheostat and R17 27 kΩ: the gain-control loop runs entirely in the circuit. Output from Q2's emitter through C9 50 nF, R14 10 kΩ and the 50 kΩ Output pot.",
+  "sources": [
+    {
+      "title": "ElectroSmash, 'MXR Dyna Comp Analysis' (archive mirror): schematic and BOM (C1 0.01µF; C2, C3 1µF; C4, C6, C7 10nF; C5 1nF; C8 10µF; C9 50nF; Q1-Q5 2N3904; D1, D2 1N914; RV1 500K; RV2 50K; trimmer 2K; R1, R3, R9, R10, R14 10K; R2, R4, R6, R11, R12 1M; R5 470K; R7 15K; R8, R13 150K; R17 27K; R15 56K; R16 22K; U1 CA3080), 'the original design did not include decoupling caps in the power supply', D3 reverse-polarity diode, input / OTA / envelope / output analysis",
+      "url": "https://electrosmash.mas-effects.com/mxr-dyna-comp-analysis.html"
+    },
+    {
+      "title": "R. G. Keen, 'D-Comp and R-Comp Compressors' (GeoFex, 1999-2001): Dyna Comp workalike schematic and parts list; Vb divider 56K / 27K, OTA load 150K ∥ 0.01µF, Sustain 500K lin, Level 50K log; supply and Vb caps marked 'not in the original'; circuit description of the rectifier, Q5 and the gain loop",
+      "url": "http://www.geofex.com/pcb_layouts/layouts/d&rpub.pdf"
+    },
+    {
+      "title": "O. Kröning, K. Dempwolf, U. Zölzer, 'Analysis and simulation of an analog guitar compressor', DAFx-11: component table (R9 56k / R10 27k supply divider, Vbias = 2.93 V, OTA roll-off R8 150k / C4 1 nF, P 2 kΩ, RS 470 kΩ sensitivity, RV 47 kΩ volume), IABC law (eq. 22), measured static curves (Fig. 6) and dynamic envelopes (Fig. 5)",
+      "url": "https://www.dafx.de/paper-archive/2011/Papers/22_e.pdf"
+    },
+    {
+      "title": "Intersil CA3080/CA3080A datasheet FN475.5: pinout (2 −, 3 +, 4 V−, 5 IABC, 6 output, 7 V+), gm 9.6 mS at IABC 500 µA, amplifier bias voltage 0.71 V, input resistance 26 kΩ, input bias current 2 µA",
+      "url": "https://www.experimentalistsanonymous.com/diy/Datasheets/CA3080.pdf"
+    },
+    {
+      "title": "Intersil application note AN6668 (Wittlinger): gm = 19.2·IABC (mS, mA)",
+      "url": "https://www.experimentalistsanonymous.com/diy/Datasheets/AN6668.pdf"
+    },
+    {
+      "title": "Freestompboxes, 'MXR Dyna Comp' thread: redrawn 1977-78 factory schematic, version notes (some units with MPSA14 / LM13700 and 470 kΩ C-taper sensitivity / 10 kΩ A-taper volume pots)",
+      "url": "https://www.freestompboxes.org/viewtopic.php?t=10580"
+    }
+  ],
+  "minRate": 352800,
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 1.0
+  },
+  "oversampling": 1,
+  "newton": {"groups": {"Q1": 3e-05}},
+  "solver": "auto",
+  "models": {},
+  "controls": [
+    {
+      "id": "output",
+      "label": "Output",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "V"
+      ],
+      "group": "Main",
+      "note": "RV2 50 kΩ audio-taper output pot (Keen: 50K log; K11's unit 47 kΩ; some later units 10 kΩ A)"
+    },
+    {
+      "id": "sensitivity",
+      "label": "Sensitivity",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "S"
+      ],
+      "group": "Main",
+      "note": "RV1 500 kΩ rheostat in series with R17 27 kΩ between Q5's emitter and the CA3080 IABC pin: clockwise = less resistance = more IABC = more gain and sustain. Legacy 'Sustain'"
+    },
+    {
+      "id": "attack",
+      "label": "Attack",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "A"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No attack control on the Dyna Comp: attack is set by Q3/Q4 discharging C8 10 µF (fast). The known 'attack mod' changes R13 150 kΩ; not modelled as a control. Stored only"
+    },
+    {
+      "id": "release",
+      "label": "Release",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "R"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No release control: C8 10 µF recharges through R13 150 kΩ (τ = 1.5 s). Stored only"
+    },
+    {
+      "id": "threshold",
+      "label": "Threshold",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "T"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No threshold control (the loop has no threshold: the Sensitivity rheostat sets the maximum IABC). Stored only"
+    },
+    {
+      "id": "sidechain",
+      "label": "Sidechain",
+      "kind": "continuous",
+      "default": 0.0,
+      "params": [
+        "C"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No external sidechain input. Stored only"
+    },
+    {
+      "id": "balance",
+      "label": "Balance trim (internal)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Internal",
+      "note": "2 kΩ trimmer between the OTA inputs; its wiper takes the bias current from R5 470 kΩ. ElectroSmash: 'adjusted to the middle position'. Sets the control-feedthrough null"
+    }
+  ],
+  "cuts": [
+    "vcc"
+  ],
+  "parts": [
+    {
+      "ref": "VBAT",
+      "type": "V",
+      "nodes": [
+        "vbat",
+        "0"
+      ],
+      "value": "9",
+      "label": "9 V battery",
+      "note": "D3 1N4148 reverse-polarity diode across the battery (ElectroSmash) is reverse biased in normal use and omitted. No DC jack on the script-era unit"
+    },
+    {
+      "ref": "RBAT",
+      "type": "R",
+      "nodes": [
+        "vbat",
+        "vcc"
+      ],
+      "value": "2",
+      "label": "Battery internal resistance",
+      "note": "unverified: not a schematic part (typical fresh 9 V carbon-zinc). The original has no supply reservoir (Keen marks the 10 µF as 'not in the original'; ElectroSmash agrees)"
+    },
+    {
+      "ref": "R15",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "vb"
+      ],
+      "value": "56k",
+      "tolerance": 0.05,
+      "label": "Vb divider (top)"
+    },
+    {
+      "ref": "R16",
+      "type": "R",
+      "nodes": [
+        "vb",
+        "0"
+      ],
+      "value": "27k",
+      "tolerance": 0.05,
+      "label": "Vb divider (bottom)",
+      "note": "unverified: 27 kΩ per Keen's D-Comp and Kröning et al. (Vbias 2.93 V); ElectroSmash's BOM gives 22 kΩ (2.54 V). No bypass cap on the original (Keen), so Vb also carries the R8 signal current"
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "in",
+        "i1"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": "Input cap"
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "i1",
+        "q1b"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "Input series resistor"
+    },
+    {
+      "ref": "R2",
+      "type": "R",
+      "nodes": [
+        "vb",
+        "q1b"
+      ],
+      "value": "1M",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "Q1",
+      "type": "npn",
+      "nodes": [
+        "vcc",
+        "q1b",
+        "q1e"
+      ],
+      "model": "2N3904",
+      "label": "Q1 input follower",
+      "note": "2N3904 per ElectroSmash and Kröning; Keen: original type unknown (2N5088 in his build); some units MPSA14"
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "q1e",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "q1e",
+        "pm"
+      ],
+      "value": "1u",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "R4",
+      "type": "R",
+      "nodes": [
+        "pm",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "TRIM",
+      "type": "pot",
+      "nodes": [
+        "pm",
+        "tw",
+        "pp"
+      ],
+      "value": "2k",
+      "taper": "B",
+      "control": "balance",
+      "label": "Balance trimmer 2 kΩ"
+    },
+    {
+      "ref": "R5",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "tw"
+      ],
+      "value": "470k",
+      "tolerance": 0.05,
+      "label": "OTA input bias"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "pp",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "pp",
+        "c3t"
+      ],
+      "value": "15k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "pp",
+        "c3t"
+      ],
+      "value": "10n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "C3",
+      "type": "C",
+      "nodes": [
+        "c3t",
+        "0"
+      ],
+      "value": "1u",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "U1",
+      "type": "ota",
+      "nodes": [
+        "ob",
+        "pp",
+        "pm",
+        "abc",
+        "0",
+        "vcc"
+      ],
+      "model": "CA3080",
+      "label": "U1 CA3080",
+      "note": "Pins: out 6, + 3, − 2, IABC 5, V− 4 (ground), V+ 7 (+9 V)"
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "ob",
+        "vb"
+      ],
+      "value": "150k",
+      "tolerance": 0.05,
+      "label": "OTA load"
+    },
+    {
+      "ref": "C5",
+      "type": "C",
+      "nodes": [
+        "ob",
+        "vb"
+      ],
+      "value": "1n",
+      "tolerance": 0.1,
+      "label": "OTA load roll-off",
+      "note": "unverified: 1 nF per ElectroSmash and Kröning et al.; Keen's D-Comp list gives 0.01 µF. A common mod lowers or removes it"
+    },
+    {
+      "ref": "Q2",
+      "type": "npn",
+      "nodes": [
+        "q2c",
+        "ob",
+        "q2e"
+      ],
+      "model": "2N3904",
+      "label": "Q2 phase splitter"
+    },
+    {
+      "ref": "R9",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "q2c"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R10",
+      "type": "R",
+      "nodes": [
+        "q2e",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C6",
+      "type": "C",
+      "nodes": [
+        "q2c",
+        "d3b"
+      ],
+      "value": "10n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R11",
+      "type": "R",
+      "nodes": [
+        "d3b",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "D1",
+      "type": "D",
+      "nodes": [
+        "0",
+        "d3b"
+      ],
+      "model": "1N914",
+      "label": "D1 clamp"
+    },
+    {
+      "ref": "Q3",
+      "type": "npn",
+      "nodes": [
+        "env",
+        "d3b",
+        "0"
+      ],
+      "model": "2N3904",
+      "label": "Q3 detector (collector phase)"
+    },
+    {
+      "ref": "C7",
+      "type": "C",
+      "nodes": [
+        "q2e",
+        "d4b"
+      ],
+      "value": "10n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R12",
+      "type": "R",
+      "nodes": [
+        "d4b",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "D2",
+      "type": "D",
+      "nodes": [
+        "0",
+        "d4b"
+      ],
+      "model": "1N914",
+      "label": "D2 clamp"
+    },
+    {
+      "ref": "Q4",
+      "type": "npn",
+      "nodes": [
+        "env",
+        "d4b",
+        "0"
+      ],
+      "model": "2N3904",
+      "label": "Q4 detector (emitter phase)"
+    },
+    {
+      "ref": "R13",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "env"
+      ],
+      "value": "150k",
+      "tolerance": 0.05,
+      "label": "Envelope pull-up (release)"
+    },
+    {
+      "ref": "C8",
+      "type": "C",
+      "nodes": [
+        "env",
+        "0"
+      ],
+      "value": "10u",
+      "tolerance": 0.2,
+      "label": "Envelope cap"
+    },
+    {
+      "ref": "Q5",
+      "type": "npn",
+      "nodes": [
+        "vcc",
+        "env",
+        "q5e"
+      ],
+      "model": "2N3904",
+      "label": "Q5 envelope follower"
+    },
+    {
+      "ref": "RV1",
+      "type": "pot",
+      "nodes": [
+        "q5e",
+        "q5e",
+        "sx"
+      ],
+      "value": "500k",
+      "taper": "B",
+      "control": "sensitivity",
+      "label": "Sensitivity",
+      "note": "unverified taper: linear per Keen ('500K lin'); some units carry a 470 kΩ C-taper (freestompboxes). Rheostat on the wiper-to-pin-3 segment: R = 500k·(1 − t(x))"
+    },
+    {
+      "ref": "R17",
+      "type": "R",
+      "nodes": [
+        "sx",
+        "abc"
+      ],
+      "value": "27k",
+      "tolerance": 0.05,
+      "label": "IABC limit resistor"
+    },
+    {
+      "ref": "C9",
+      "type": "C",
+      "nodes": [
+        "q2e",
+        "o1"
+      ],
+      "value": "50n",
+      "tolerance": 0.1,
+      "label": "Output cap"
+    },
+    {
+      "ref": "R14",
+      "type": "R",
+      "nodes": [
+        "o1",
+        "lv"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "RV2",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "out",
+        "lv"
+      ],
+      "value": "50k",
+      "taper": "A",
+      "control": "output",
+      "label": "Output"
+    }
+  ],
+  "probes": [
+    "q1e",
+    "pm",
+    "pp",
+    "ob",
+    "q2e",
+    "env",
+    "q5e",
+    "abc",
+    "out"
+  ],
+  "layout": {}
+}

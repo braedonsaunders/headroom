@@ -1,0 +1,1278 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "marshall-jcm800-2203",
+ "version": 1,
+ "name": "Marshall JCM800 2203 Lead Series 100 W Master Volume (1981, 4 x EL34)",
+ "description": "Marshall JCM800 2203 100 W master-volume head as drawn on the Marshall 'JCM 800 Lead Series 50W & 100W Preamp / Power Circuit Diagram - Standard & Master Volume' sheets (24-4-81) and cross-checked against the Marshall '2203 STD' preamp and output-stage drawings (issue 4-6, 1988), from the input jacks to a 1960 4x12. Inputs: High jack (1 MΩ to ground, 68 kΩ stopper) into the first ECC83 triode (100 kΩ plate, 2.7 kΩ / 0.68 µF cathode), 0.022 µF through the Low jack's switching contact; the Low jack enters after the first stage (a High/Low switch models which jack is used). 470 kΩ ∥ 470 pF into the 1 MΩ log Pre-amp Volume with 0.001 µF from its top to the wiper; the wiper drives the second triode directly (100 kΩ plate, 10 kΩ unbypassed cathode: the cold clipper). 0.022 µF into a 470 kΩ ∥ 470 pF / 470 kΩ divider onto V2a (100 kΩ plate, 820 Ω unbypassed cathode), DC-coupled into the V2b cathode follower (100 kΩ cathode resistor, plate on the V2 rail) driving the Marshall stack (470 pF, 33 kΩ slope, 0.022 µF bass and middle caps, 220 kΩ lin treble, 1 MΩ log bass rheostat, 22 kΩ lin middle with the middle cap on its wiper). Treble wiper into the 1 MΩ log Master Volume, 0.022 µF into the 12AX7 long-tail pair (82 kΩ / 100 kΩ plates, 47 pF between them, 470 Ω shared cathode, 1 MΩ grid returns, 10 kΩ tail, 0.1 µF from the second grid to the feedback node). Global feedback: 100 kΩ from the output transformer's 4 Ω tap into the bottom of the tail, 4.7 kΩ to ground there, and the 22 kΩ lin Presence rheostat in series with 0.1 µF across it. 0.022 µF / 220 kΩ into 4 x EL34 (5.6 kΩ stoppers, 1 kΩ 5 W screen resistors, solved as two matched parallel pairs) at fixed bias (about -42 V), Dagnall C2668 1.7 kΩ output transformer, 16 Ω tap into four 16 Ω 12-inch speakers wired series-parallel (16 Ω). Supply: 4 x 1N4007 bridge (modelled as the equivalent two-diode full-wave) into 2 x 100 µF in series (470 V), choke to the screen node (2 x 100 µF in series, 2 x 56 kΩ), 2 x 10 kΩ 1 W to the phase-inverter node A' (100 µF), 10 kΩ to the V2 node (50 µF), 10 kΩ to the V1 node (50 µF). Standby and power switches closed. Signal cut: the V2b cathode-follower output feeds the tone stack through a one-sample current coupling, as in the 1959 netlist, so the preamp and the tone stack + PI + power stage + NFB loop solve separately.",
+ "sources": [
+  {
+   "title": "Marshall, 'JCM 800 Lead Series 50W & 100W Preamp Circuit Diagram - Standard & Master Volume', issue 1, 24-4-81 (master-volume preamp used on 2103/2203/2104/2204; phase splitter 'all models'; average-voltage table nodes 1-17 for 50 W/100 W standard/MV), as hosted by Dr Tube",
+   "url": "https://www.drtube.com/schematics/marshall/jcm800pr.gif"
+  },
+  {
+   "title": "Marshall, 'JCM 800 Lead Series 50W & 100W Power Circuit Diagram - Standard & Master Volume', issue 1, 24-4-81 (100 W output stage used on 1959/2103/2203: 470 V bridge output, 468 V plates, -42 V EL34 bias, 2 x 10 kΩ 1 W to A', 56 kΩ 2 W balancing, 15 kΩ / 56 kΩ / 22 kΩ bias adjust / 27 kΩ / 1N4007 bias network, 5k6 stoppers, 1 kΩ 5 W screens, NFB from the 4 Ω tap), as hosted by Dr Tube",
+   "url": "https://www.drtube.com/schematics/marshall/jcm800pw.gif"
+  },
+  {
+   "title": "Marshall drawing '2203 STD Preamp' issue 4, 19-5-88 and '2203 STD Output Stage & PSU' issue 6, 7-12-88 (Jim Marshall Products Ltd, file 2203PRE.DGM / 2203PWR.DGM), as hosted by el34world",
+   "url": "https://el34world.com/charts/Schematics/files/Marshall/Marshall_jcm800_lead_mstvol_100w_2203.pdf"
+  },
+  {
+   "title": "Marshall drawing 2203-01-60-02 issue 5 (2203 reissue circuit diagram, 2003): cross-check of values (2k7/680 nF, 10 kΩ, 470 kΩ ∥ 470 pF, 1 nF, 820 Ω, 33 kΩ / 470 pF / 22 nF, 82 kΩ / 100 kΩ / 47 pF / 470 Ω / 10 kΩ / 4.7 kΩ, 100 kΩ NFB, 5k6, 1 kΩ 5 W, C2668 OT), as hosted by el34world",
+   "url": "https://el34world.com/charts/Schematics/files/Marshall/Marshall_2203_reissue.pdf"
+  },
+  {
+   "title": "Unicord/Jim Marshall Products, '100 W Master Volume Model No. 2203', 11/10/76 (JMP 6550 version; same preamp; voltages V1 250/2 V and 220/5 V, V2 300/1.1/170 V, two 10 kΩ 1 W in series to the PI node), as hosted by el34world",
+   "url": "https://el34world.com/charts/Schematics/files/Marshall/Marshall_jmp_mastervol_100w_2203u.pdf"
+  },
+  {
+   "title": "Rob Robinette, 'How the Marshall Plexi, 2204 and JCM800 Amplifiers Work' (cold clipper 10 kΩ unbypassed, 470 kΩ / 470 pF attenuators, 0.001 µF bright cap, 22 kΩ presence with 4.7 kΩ, 1 kΩ 5 W screens, NFB from the 4 Ω tap)",
+   "url": "https://robrobinette.com/How_the_Marshall_JCM800_Works.htm"
+  },
+  {
+   "title": "el34world forum, 'Marshall JCM800 2203 reissue / One power tube failed' (measured: EL34 plates 443-445 V, grid -38 V; V1 213/1.6 V and 250/2.5 V; V2 167/0.74 V and 286/170 V; PI plates 207/221 V, cathodes 34 V)",
+   "url": "https://el34world.com/Forum/index.php?topic=29045.0"
+  },
+  {
+   "title": "18Watt.com forum, 'voltage readings for JCM 800' (measured 100 W MV JCM800: B+ 470 V, V1 rail 286 V, V2 rail 293 V, PI plates 224 V (82 kΩ) and 208 V (100 kΩ))",
+   "url": "https://www.18watt.com/viewtopic.php?t=16863"
+  },
+  {
+   "title": "Reverb listing, 'Marshall 100w Output Transformer Dagnall C2668 JCM800 or Super Lead' (1.7 kΩ Raa, 4/8/16 Ω, fitted to 100 W Marshalls into the JCM800 era)",
+   "url": "https://reverb.com/item/82220417-marshall-100w-output-transformer-dagnall-c2668-jcm800-or-super-lead"
+  },
+  {
+   "title": "N. Koren, 'Improved vacuum tube models for SPICE simulations': 12AX7 and EL34 laws (library models)",
+   "url": "https://www.normankoren.com/Audio/Tubemodspice_article.html"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "spk",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 317,
+  "note": "outputVoltsPerFS calibrated (2026-11-09) to the mean RMS match gain (-18.0 dB) of the circuit_ab settings against the legacy model, so the A/B sits at the legacy loudness on average across clean and driven settings; final level is a listening-review decision"
+ },
+ "oversampling": 2,
+ "minRate": 176400,
+ "lte": {"start": "bdf2", "tol": 4},
+ "solver": "auto",
+ "cuts": [
+  "hra",
+  "hrb",
+  "bp1",
+  "ch",
+  "bp2",
+  "bp3",
+  "bp4",
+  "bp5"
+ ],
+ "controls": [
+  {
+   "id": "preamp",
+   "label": "Pre-amp Volume",
+   "default": 0.5,
+   "params": [
+    "V1"
+   ],
+   "group": "Main",
+   "note": "VR1 1 MΩ log between the 470 kΩ ∥ 470 pF network and ground, 0.001 µF from its top to the wiper; the wiper is the cold-clipper grid"
+  },
+  {
+   "id": "master",
+   "label": "Master Volume",
+   "default": 0.5,
+   "params": [
+    "V2"
+   ],
+   "group": "Main",
+   "note": "VR2 1 MΩ log from the treble wiper to ground; wiper to the phase inverter through 0.022 µF"
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "default": 0.5,
+   "params": [
+    "T"
+   ],
+   "group": "Main",
+   "note": "VR3 220 kΩ linear, wiper = stack output"
+  },
+  {
+   "id": "middle",
+   "label": "Middle",
+   "default": 0.5,
+   "params": [
+    "M"
+   ],
+   "group": "Main",
+   "note": "VR4 22 kΩ linear to ground with the middle cap on its wiper"
+  },
+  {
+   "id": "bass",
+   "label": "Bass",
+   "default": 0.5,
+   "params": [
+    "B"
+   ],
+   "group": "Main",
+   "note": "VR5 1 MΩ log as a rheostat"
+  },
+  {
+   "id": "presence",
+   "label": "Presence",
+   "default": 0.5,
+   "params": [
+    "Pr"
+   ],
+   "group": "Main",
+   "note": "VR6 22 kΩ linear rheostat in series with 0.1 µF from the feedback node to ground (4.7 kΩ fixed across it): clockwise shunts more treble out of the feedback"
+  },
+  {
+   "id": "input_high",
+   "label": "Input",
+   "kind": "switch",
+   "default": 1,
+   "group": "Inputs",
+   "note": "Which front-panel jack the guitar is in. High (on): 1 MΩ, 68 kΩ, first gain stage. Low (off): the Low jack's tip joins the line after the first stage's 0.022 µF (its switch disconnects that coupling cap) and the empty High jack grounds the first grid, so the first stage is bypassed. No legacy parameter is bound (see Hg)",
+   "face": true,
+   "options": [
+    "Low",
+    "High"
+   ]
+  },
+  {
+   "id": "power",
+   "label": "Power",
+   "default": 0.5,
+   "params": [
+    "Pw"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Stored for presets only. The 2203 has mains and standby switches but no power scaling; the standby switch is modelled closed (open would mute the amp, so it is not bound to a legacy knob)"
+  },
+  {
+   "id": "variac",
+   "label": "Variac",
+   "default": 0.5,
+   "params": [
+    "Var"
+   ],
+   "group": "Legacy",
+   "note": "Variac: scales the mains (every transformer secondary, including the bias winding) from 75 % at 0 through nominal at 0.5 to 108 % at 1 (90 / 120 / 130 VAC on a 120 V amp)",
+   "mod": true,
+   "modNote": "Not on the original amplifier: a variac on the mains, as players did to run the amp at lower line voltage. Offered as a mod; at full scale the amp sees its rated mains."
+  },
+  {
+   "id": "sag",
+   "label": "Sag",
+   "default": 0.5,
+   "params": [
+    "Sg"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Stored for presets; sag emerges from the silicon bridge, reservoir, choke and droppers"
+  },
+  {
+   "id": "response",
+   "label": "Response",
+   "default": 0.5,
+   "params": [
+    "Rsp"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "No part in the 2203 circuit; stored for preset compatibility only"
+  },
+  {
+   "id": "bias",
+   "label": "Bias",
+   "default": 0.5,
+   "params": [
+    "Bi"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Stored for presets. The real amp has an internal 22 kΩ Bias Adjust trimmer (RV1/VR1); it is fixed here (RBADJ at mid) and the bias source is set for about 38 mA per tube"
+  },
+  {
+   "id": "hg",
+   "label": "Hg",
+   "default": 0.5,
+   "params": [
+    "Hg"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "No high-gain switch on the 2203 (that is the 2210/2205). The only gain-related selection on the real amp is the High/Low input jack, modelled by 'input_high'; Hg is not bound to it because the legacy parameter's meaning and preset values are unknown here and a wrong binding would put presets on the Low jack"
+  },
+  {
+   "id": "g4m",
+   "label": "G4M",
+   "default": 0.0,
+   "params": [
+    "G4M"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "No part in the 2203 circuit (no channel, mode or pentode/triode switch); stored for preset compatibility only"
+  },
+  {"id": "stereo", "label": "Stereo", "kind": "continuous", "default": 0.5, "params": ["CASSt"], "legacyOnly": true, "group": "Legacy", "note": "Catalogue stereo parameter; the circuit is mono, stored only"},
+  {"id": "legacy_Pwr", "label": "On/Off", "kind": "switch", "default": 1.0, "params": ["Pwr"], "legacyOnly": true, "group": "Legacy", "note": "Host handles bypass; stored only"}
+ ],
+ "parts": [
+  {
+   "ref": "VHA",
+   "scale": {
+    "control": "variac",
+    "min": 0.75,
+    "max": 1.0833
+   },
+   "type": "V",
+   "nodes": [
+    "ha",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "498",
+    "freq": 60,
+    "phase": 90
+   },
+   "label": "HT secondary (equivalent half)",
+   "note": "unverified: HT winding voltage not in the sources; amplitude set so the reservoir sits near the 1981 chart's 470 V at idle. The 1981 drawing is a 4 x 1N4007 bridge on the HT winding with the centre tap to the junction of the two series reservoir caps (1988: 'C.T. unused'); this equals a two-diode full-wave from anti-phase sources of the full-winding peak. A floating winding cannot be expressed with ground-referenced V sources"
+  },
+  {
+   "ref": "VHB",
+   "scale": {
+    "control": "variac",
+    "min": 0.75,
+    "max": 1.0833
+   },
+   "type": "V",
+   "nodes": [
+    "hb",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "498",
+    "freq": 60,
+    "phase": 270
+   },
+   "label": "HT secondary (equivalent half)"
+  },
+  {
+   "ref": "RPTA",
+   "type": "R",
+   "nodes": [
+    "ha",
+    "hra"
+   ],
+   "value": "20",
+   "label": "HT winding + reflected primary resistance",
+   "note": "unverified: mains transformer regulation assumed (20 Ω per leg)"
+  },
+  {
+   "ref": "RPTB",
+   "type": "R",
+   "nodes": [
+    "hb",
+    "hrb"
+   ],
+   "value": "20",
+   "label": "HT winding + reflected primary resistance",
+   "note": "unverified: see RPTA"
+  },
+  {
+   "ref": "DRA",
+   "type": "D",
+   "nodes": [
+    "hra",
+    "bp1"
+   ],
+   "model": "1N4001",
+   "label": "Bridge rectifier (4 x 1N4007)",
+   "note": "1N4001 model for the 1N4007"
+  },
+  {
+   "ref": "DRB",
+   "type": "D",
+   "nodes": [
+    "hrb",
+    "bp1"
+   ],
+   "model": "1N4001",
+   "label": "Bridge rectifier (4 x 1N4007)"
+  },
+  {
+   "ref": "CF1",
+   "type": "C",
+   "nodes": [
+    "bp1",
+    "0"
+   ],
+   "value": "50u",
+   "label": "Reservoir (plates, OT centre tap)",
+   "note": "unverified (sources disagree): 2 x 100 µF in series = 50 µF on the 1981 drawing (used); the 1988 sheet draws C23 as a 50+50 µF can with both sections in parallel (100 µF); the reissue uses two series 50+50 µF stacks"
+  },
+  {
+   "ref": "RCH",
+   "type": "R",
+   "nodes": [
+    "bp1",
+    "ch"
+   ],
+   "value": "150",
+   "label": "Choke DCR",
+   "note": "unverified: choke DCR not in any source; 150 Ω assumed"
+  },
+  {
+   "ref": "LCH",
+   "type": "L",
+   "nodes": [
+    "ch",
+    "bp2"
+   ],
+   "value": "20",
+   "label": "Choke (screens)",
+   "note": "unverified: inductance not in any source (the drawings give only the part number); 20 H assumed as in the 1959 netlist"
+  },
+  {
+   "ref": "CF2",
+   "type": "C",
+   "nodes": [
+    "bp2",
+    "0"
+   ],
+   "value": "50u",
+   "label": "Screen node filter",
+   "note": "unverified (sources disagree): 2 x 100 µF 500 V in series = 50 µF with 2 x 56 kΩ (1981, used); the 1988 sheet draws C22 as a 50+50 µF can with both sections in parallel (100 µF)"
+  },
+  {
+   "ref": "RBAL",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "0"
+   ],
+   "value": "112k",
+   "label": "Balancing resistors",
+   "note": "2 x 56 kΩ 2 W across the series screen-filter caps"
+  },
+  {
+   "ref": "RD1",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "bp3"
+   ],
+   "value": "20k",
+   "label": "Dropper to node A' (2 x 10 kΩ 1 W)",
+   "note": "unverified (sources disagree): 2 x 10 kΩ 1 W in series on the 1981 drawing and the 1976 Unicord drawing ('(2) 10K 1W'); the measured 330 V PI rail needs 20 kΩ. The 1988 '2203 STD' sheet shows a single 10 kΩ (R29) feeding the PI and V2 together, which would put the PI rail near 400 V; not used"
+  },
+  {
+   "ref": "CF3",
+   "type": "C",
+   "nodes": [
+    "bp3",
+    "0"
+   ],
+   "value": "100u",
+   "label": "Node A' filter (phase inverter)",
+   "note": "unverified: read as 100 µF 500 V on the 1981 drawing; the digits are partly illegible"
+  },
+  {
+   "ref": "RD2",
+   "type": "R",
+   "nodes": [
+    "bp3",
+    "bp4"
+   ],
+   "value": "10k",
+   "label": "Dropper to V2 (10 kΩ 1 W)"
+  },
+  {
+   "ref": "CF4",
+   "type": "C",
+   "nodes": [
+    "bp4",
+    "0"
+   ],
+   "value": "50u",
+   "label": "V2 node filter (one section of 50+50 µF 500 V)"
+  },
+  {
+   "ref": "RD3",
+   "type": "R",
+   "nodes": [
+    "bp4",
+    "bp5"
+   ],
+   "value": "10k",
+   "label": "Dropper to V1 (10 kΩ 1 W)"
+  },
+  {
+   "ref": "CF5",
+   "type": "C",
+   "nodes": [
+    "bp5",
+    "0"
+   ],
+   "value": "50u",
+   "label": "V1 node filter (other section of 50+50 µF 500 V)"
+  },
+  {
+   "ref": "VBIAS",
+   "scale": {
+    "control": "variac",
+    "min": 0.75,
+    "max": 1.0833
+   },
+   "type": "V",
+   "nodes": [
+    "bd",
+    "0"
+   ],
+   "value": "-54",
+   "label": "Bias rectifier output",
+   "note": "unverified: ideal source standing in for the real supply (mains-winding tap, 27 kΩ, 1N4007, 10 µF; 15 kΩ and 1N4007 for USA). Value chosen so the library EL34 idles at about 38 mA per tube at 468 V (the trimmer's job on the real amp); that puts the grids at -44 V against the 1981 chart's average -42 V (at -42 V the library EL34 idles at about 47 mA). The 10 µF on this node is omitted (it sits across an ideal source)"
+  },
+  {
+   "ref": "RB15",
+   "type": "R",
+   "nodes": [
+    "bd",
+    "bias"
+   ],
+   "value": "15k",
+   "label": "Bias feed 15 kΩ"
+  },
+  {
+   "ref": "CB10",
+   "type": "C",
+   "nodes": [
+    "bias",
+    "0"
+   ],
+   "value": "10u",
+   "label": "Bias filter 10 µF"
+  },
+  {
+   "ref": "RB56",
+   "type": "R",
+   "nodes": [
+    "bias",
+    "bj"
+   ],
+   "value": "56k",
+   "label": "Bias divider 56 kΩ (47 kΩ USA)"
+  },
+  {
+   "ref": "RBADJ",
+   "type": "R",
+   "nodes": [
+    "bj",
+    "0"
+   ],
+   "value": "11k",
+   "label": "Bias Adjust 22 kΩ trimmer (at mid)",
+   "note": "unverified: trimmer setting; mid-travel assumed (the trimmer is not bound to a control)"
+  },
+  {
+   "ref": "SWHI",
+   "type": "switch",
+   "nodes": [
+    "in",
+    "j1"
+   ],
+   "control": "input_high",
+   "label": "Guitar in the High jack"
+  },
+  {
+   "ref": "SWJ1",
+   "type": "switch",
+   "nodes": [
+    "j1",
+    "0"
+   ],
+   "control": "input_high",
+   "invert": true,
+   "label": "High jack shorting contact (closed when the High jack is empty)",
+   "note": "unverified: read from the 1988 drawing's jack symbols (J1 contact to the sleeve line); only matters when the Low jack is selected"
+  },
+  {
+   "ref": "SWLO",
+   "type": "switch",
+   "nodes": [
+    "in",
+    "lo"
+   ],
+   "control": "input_high",
+   "invert": true,
+   "label": "Guitar in the Low jack"
+  },
+  {
+   "ref": "SWJ2",
+   "type": "switch",
+   "nodes": [
+    "c3o",
+    "lo"
+   ],
+   "control": "input_high",
+   "label": "Low jack switching contact (closed when the Low jack is empty): links the first stage's 0.022 µF to the volume network"
+  },
+  {
+   "ref": "RIN",
+   "type": "R",
+   "nodes": [
+    "j1",
+    "0"
+   ],
+   "value": "1M",
+   "label": "High input 1 MΩ"
+  },
+  {
+   "ref": "RS1",
+   "type": "R",
+   "nodes": [
+    "j1",
+    "g1"
+   ],
+   "value": "68k",
+   "label": "Grid stopper 68 kΩ"
+  },
+  {
+   "ref": "V1A",
+   "type": "triode",
+   "nodes": [
+    "p1",
+    "g1",
+    "k1"
+   ],
+   "model": "12AX7",
+   "label": "V1 first stage (V1b on the 1981 drawing, V1a in 1988)"
+  },
+  {
+   "ref": "RP1",
+   "type": "R",
+   "nodes": [
+    "bp5",
+    "p1"
+   ],
+   "value": "100k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "RK1",
+   "type": "R",
+   "nodes": [
+    "k1",
+    "0"
+   ],
+   "value": "2k7",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "CK1",
+   "type": "C",
+   "nodes": [
+    "k1",
+    "0"
+   ],
+   "value": "680n",
+   "tolerance": 0.1,
+   "label": "0.68 µF partial bypass"
+  },
+  {
+   "ref": "CC1",
+   "type": "C",
+   "nodes": [
+    "p1",
+    "c3o"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Coupling 0.022 µF (to the Low jack contact)"
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "lo",
+    "vt"
+   ],
+   "value": "470k",
+   "tolerance": 0.05,
+   "label": "470 kΩ series"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "lo",
+    "vt"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "470 pF across the 470 kΩ"
+  },
+  {
+   "ref": "VOL",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "vw",
+    "vt"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "preamp",
+   "label": "Pre-amp Volume 1 MΩ log"
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "vt",
+    "vw"
+   ],
+   "value": "1n",
+   "tolerance": 0.1,
+   "label": "Bright cap 0.001 µF (top to wiper)"
+  },
+  {
+   "ref": "V1B",
+   "type": "triode",
+   "nodes": [
+    "p2",
+    "vw",
+    "k2"
+   ],
+   "model": "12AX7",
+   "label": "V1 second stage: cold clipper (V1a 1981, V1b 1988)"
+  },
+  {
+   "ref": "RP2",
+   "type": "R",
+   "nodes": [
+    "bp5",
+    "p2"
+   ],
+   "value": "100k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "RK2",
+   "type": "R",
+   "nodes": [
+    "k2",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "10 kΩ cathode, unbypassed"
+  },
+  {
+   "ref": "CC2",
+   "type": "C",
+   "nodes": [
+    "p2",
+    "n2"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Coupling 0.022 µF"
+  },
+  {
+   "ref": "R10",
+   "type": "R",
+   "nodes": [
+    "n2",
+    "g3"
+   ],
+   "value": "470k",
+   "tolerance": 0.05,
+   "label": "470 kΩ series"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "n2",
+    "g3"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "470 pF across the 470 kΩ"
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "g3",
+    "0"
+   ],
+   "value": "470k",
+   "tolerance": 0.05,
+   "label": "470 kΩ to ground (V2a grid return)"
+  },
+  {
+   "ref": "V2A",
+   "type": "triode",
+   "nodes": [
+    "p3",
+    "g3",
+    "k3"
+   ],
+   "model": "12AX7",
+   "label": "V2a third gain stage"
+  },
+  {
+   "ref": "RP3",
+   "type": "R",
+   "nodes": [
+    "bp4",
+    "p3"
+   ],
+   "value": "100k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "RK3",
+   "type": "R",
+   "nodes": [
+    "k3",
+    "0"
+   ],
+   "value": "820",
+   "tolerance": 0.05,
+   "label": "820 Ω cathode, unbypassed"
+  },
+  {
+   "ref": "V2B",
+   "type": "triode",
+   "nodes": [
+    "bp4",
+    "p3",
+    "kcf"
+   ],
+   "model": "12AX7",
+   "label": "V2b cathode follower",
+   "note": "plate on the V2 node, grid DC-coupled to the V2a plate"
+  },
+  {
+   "ref": "RKCF",
+   "type": "R",
+   "nodes": [
+    "kcf",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "CT",
+   "type": "C",
+   "nodes": [
+    "kcf",
+    "tt"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "Treble cap 470 pF"
+  },
+  {
+   "ref": "RSL",
+   "type": "R",
+   "nodes": [
+    "kcf",
+    "ns"
+   ],
+   "value": "33k",
+   "tolerance": 0.05,
+   "label": "Slope resistor 33 kΩ"
+  },
+  {
+   "ref": "CB",
+   "type": "C",
+   "nodes": [
+    "ns",
+    "tb"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Bass cap 0.022 µF"
+  },
+  {
+   "ref": "CMD",
+   "type": "C",
+   "nodes": [
+    "ns",
+    "mw"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Middle cap 0.022 µF (to the middle wiper)"
+  },
+  {
+   "ref": "TREBLE",
+   "type": "pot",
+   "nodes": [
+    "tb",
+    "tw",
+    "tt"
+   ],
+   "value": "220k",
+   "taper": "B",
+   "control": "treble",
+   "label": "Treble 220 kΩ lin",
+   "note": "unverified (sources disagree): 220 kΩ lin on the 1988 drawing (used); the 1981 sheet is barely legible here; 250 kΩ (B250K) on the 2003 reissue"
+  },
+  {
+   "ref": "BASS",
+   "type": "pot",
+   "nodes": [
+    "mb",
+    "tb",
+    "tb"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "bass",
+   "label": "Bass 1 MΩ log (rheostat)"
+  },
+  {
+   "ref": "MIDDLE",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mw",
+    "mb"
+   ],
+   "value": "22k",
+   "taper": "B",
+   "control": "middle",
+   "label": "Middle 22 kΩ lin",
+   "note": "unverified (sources disagree): 22 kΩ lin on the 1988 drawing (used); 25 kΩ (B25K) on the 2003 reissue"
+  },
+  {
+   "ref": "MASTER",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mvw",
+    "tw"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "master",
+   "label": "Master Volume 1 MΩ log"
+  },
+  {
+   "ref": "CPI",
+   "type": "C",
+   "nodes": [
+    "mvw",
+    "g4a"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "PI coupling 0.022 µF"
+  },
+  {
+   "ref": "V3A",
+   "type": "triode",
+   "nodes": [
+    "p4a",
+    "g4a",
+    "k4"
+   ],
+   "model": "12AX7",
+   "label": "V3a LTP (driven side)"
+  },
+  {
+   "ref": "V3B",
+   "type": "triode",
+   "nodes": [
+    "p4b",
+    "g4b",
+    "k4"
+   ],
+   "model": "12AX7",
+   "label": "V3b LTP"
+  },
+  {
+   "ref": "RL4A",
+   "type": "R",
+   "nodes": [
+    "bp3",
+    "p4a"
+   ],
+   "value": "82k",
+   "tolerance": 0.05,
+   "label": "PI plate load 82 kΩ"
+  },
+  {
+   "ref": "RL4B",
+   "type": "R",
+   "nodes": [
+    "bp3",
+    "p4b"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "PI plate load 100 kΩ"
+  },
+  {
+   "ref": "CPP",
+   "type": "C",
+   "nodes": [
+    "p4a",
+    "p4b"
+   ],
+   "value": "47p",
+   "tolerance": 0.1,
+   "label": "47 pF between the PI plates",
+   "note": "unverified placement (sources disagree): between the plates on the 1981 drawing and the reissue (used); the 1988 drawing places it between the two output coupling-cap ends (equivalent at audio)"
+  },
+  {
+   "ref": "RK4",
+   "type": "R",
+   "nodes": [
+    "k4",
+    "tj"
+   ],
+   "value": "470",
+   "tolerance": 0.05,
+   "label": "PI shared cathode 470 Ω"
+  },
+  {
+   "ref": "RTAIL",
+   "type": "R",
+   "nodes": [
+    "tj",
+    "nfb"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "PI tail 10 kΩ"
+  },
+  {
+   "ref": "RG4A",
+   "type": "R",
+   "nodes": [
+    "g4a",
+    "tj"
+   ],
+   "value": "1M",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "RG4B",
+   "type": "R",
+   "nodes": [
+    "g4b",
+    "tj"
+   ],
+   "value": "1M",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "CG4B",
+   "type": "C",
+   "nodes": [
+    "g4b",
+    "nfb"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "Second-grid bypass 0.1 µF to the feedback node"
+  },
+  {
+   "ref": "RNFB",
+   "type": "R",
+   "nodes": [
+    "t4",
+    "nfb"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Global feedback 100 kΩ from the 4 Ω tap"
+  },
+  {
+   "ref": "RFB",
+   "type": "R",
+   "nodes": [
+    "nfb",
+    "0"
+   ],
+   "value": "4k7",
+   "tolerance": 0.05,
+   "label": "Feedback shunt 4.7 kΩ"
+  },
+  {
+   "ref": "CPR",
+   "type": "C",
+   "nodes": [
+    "nfb",
+    "prc"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "Presence cap 0.1 µF"
+  },
+  {
+   "ref": "PRES",
+   "type": "pot",
+   "nodes": [
+    "prc",
+    "prc",
+    "0"
+   ],
+   "value": "22k",
+   "taper": "B",
+   "control": "presence",
+   "label": "Presence 22 kΩ lin (rheostat)",
+   "note": "unverified rotation sense: wired so clockwise reduces the resistance (more presence)"
+  },
+  {
+   "ref": "CCA",
+   "type": "C",
+   "nodes": [
+    "p4a",
+    "ga"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "PI coupling to V4/V5 0.022 µF"
+  },
+  {
+   "ref": "CCB",
+   "type": "C",
+   "nodes": [
+    "p4b",
+    "gb"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "PI coupling to V6/V7 0.022 µF"
+  },
+  {
+   "ref": "RBA",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "bias"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "Bias feed 220 kΩ (V4/V5)"
+  },
+  {
+   "ref": "RBB",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "bias"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "Bias feed 220 kΩ (V6/V7)"
+  },
+  {
+   "ref": "RSTA",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "g5"
+   ],
+   "value": "2k8",
+   "label": "Grid stoppers V4 + V5",
+   "note": "two 5.6 kΩ (one per tube) in parallel: exact for the matched pair solved as one device"
+  },
+  {
+   "ref": "RSTB",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "g6"
+   ],
+   "value": "2k8",
+   "label": "Grid stoppers V6 + V7",
+   "note": "two 5.6 kΩ in parallel"
+  },
+  {
+   "ref": "VPA",
+   "type": "pentode",
+   "nodes": [
+    "pa",
+    "sa",
+    "g5",
+    "0"
+   ],
+   "model": "EL34",
+   "parallel": 2,
+   "label": "V4 + V5 EL34",
+   "note": "two matched EL34 in parallel"
+  },
+  {
+   "ref": "VPB",
+   "type": "pentode",
+   "nodes": [
+    "pb",
+    "sb",
+    "g6",
+    "0"
+   ],
+   "model": "EL34",
+   "parallel": 2,
+   "label": "V6 + V7 EL34"
+  },
+  {
+   "ref": "RSCA",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "sa"
+   ],
+   "value": "500",
+   "label": "Screen resistors V4 + V5",
+   "note": "two 1 kΩ 5 W in parallel"
+  },
+  {
+   "ref": "RSCB",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "sb"
+   ],
+   "value": "500",
+   "label": "Screen resistors V6 + V7",
+   "note": "two 1 kΩ 5 W in parallel"
+  },
+  {
+   "ref": "CPPW",
+   "type": "C",
+   "nodes": [
+    "pa",
+    "pb"
+   ],
+   "value": "1n",
+   "label": "OT primary interwinding capacitance (plate to plate)",
+   "note": "unverified: typical-class value, not measured. Physically needed in this model: the transformer part has no interwinding capacitance or core loss, so without it the leakage-inductance current of a cut-off half has only the 470 pF to ground and the hard-driven render rings to kV plates (engine: 502 Newton failures at 220 Hz / 0.3 V with 5 mH; ngspice on the exported deck: 2.4 kV plates with 3 mH). With 1 nF both are clean"
+  },
+  {
+   "ref": "CWA",
+   "type": "C",
+   "nodes": [
+    "pa",
+    "wa"
+   ],
+   "value": "470p",
+   "label": "OT half-primary capacitance (A)",
+   "note": "unverified: half-primary self-capacitance with its loss as a lumped 470 pF + 2.2 kOhm from the plate to the centre tap (engine lesson from the AB763 Twin: a lossless lumped capacitance rings with the leakage and the NFB turns it into an oscillation; no capacitance gives kilovolt flyback spikes)"
+  },
+  {
+   "ref": "RWA",
+   "type": "R",
+   "nodes": [
+    "wa",
+    "bp1"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (A)",
+   "note": "see CWA"
+  },
+  {
+   "ref": "CWB",
+   "type": "C",
+   "nodes": [
+    "pb",
+    "wb"
+   ],
+   "value": "470p",
+   "label": "OT half-primary capacitance (B)",
+   "note": "see CWA"
+  },
+  {
+   "ref": "RWB",
+   "type": "R",
+   "nodes": [
+    "wb",
+    "bp1"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (B)",
+   "note": "see CWA"
+  },
+  {
+   "ref": "OT",
+   "type": "transformer",
+   "nodes": [
+    "pa",
+    "bp1",
+    "bp1",
+    "pb",
+    "t4",
+    "0",
+    "spk",
+    "t4"
+   ],
+   "turns": [
+    1,
+    1,
+    0.097014,
+    0.097014
+   ],
+   "r": [
+    30,
+    30,
+    0.2,
+    0.2
+   ],
+   "leak": [
+    "3m",
+    "3m",
+    0,
+    0
+   ],
+   "lm": 5,
+   "lsat": 2.5,
+   "label": "Output transformer Dagnall C2668, 1.7 kΩ : 4/8/16 Ω",
+   "note": "1.7 kΩ plate-to-plate. Secondary as two windings: common to 4 Ω tap (t4, turns 1/sqrt(1700/4)) and 4 Ω to 16 Ω tap (spk, same turns again); the 8 Ω tap is unused. unverified: DCR 30 Ω per half and 0.2 Ω per secondary section, leakage 3 mH per half (6 mH plate to plate), lm 5 H (20 H plate-to-plate), lsat 2.5 V·s are typical-class values for a 100 W OT, not measured. Secondary phased so the feedback is negative (200 Hz gain 57.3 dB with the 100 kΩ, 62.1 dB with it at 1 GΩ, 69.1 dB with the secondary flipped). Leakage is the loop-stability-critical unknown: with 5 mH per half the 100 kΩ / 4 Ω-tap loop breaks into an ultrasonic burst at 0.1 V input (plates 1.66-1.68 kV in both the engine and ngspice, so it is the modelled physics, not a solver artefact); 3 mH with CPPW is clean at every control extreme tried"
+  },
+  {
+   "ref": "SPK1",
+   "type": "sub",
+   "of": "lib:spk-12in-16ohm-british",
+   "nodes": [
+    "spk",
+    "0"
+   ],
+   "label": "4x12 cab: two series pairs in parallel, folded into one equivalent driver",
+   "note": "Four identical linear driver networks as two series pairs in parallel have exactly one driver's impedance (series x2, parallel /2): folded into one instance, the internal mid nodes sm1/sm2 were never read (2026-11-10)."
+  }
+ ],
+ "probes": [
+  "p1",
+  "p2",
+  "p3",
+  "tw",
+  "p4a",
+  "pa",
+  "spk"
+ ],
+ "layout": {},
+ "multirate": {
+  "oversampled": [
+   "VPA"
+  ],
+  "rates": {
+   "VPA": 16
+  },
+  "events": true
+ }
+}

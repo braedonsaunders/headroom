@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Where the Streets Have No Name</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Where the Streets Have No Name" preset-author="Headroom" preset-comment="The chiming intro arpeggio: a short slap echo and a dotted-eighth delay in front of a class-A top-boost combo set just at breakup. Rig tempo is 126 BPM so the repeats lock to the part; mute-pick eighth notes and let the delay fill in the rest." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="158000">
+    <component-audio version="1">
+      <parameters num-parameters="38">
+        <parameter id="mix" value="0.22"/>
+        <parameter id="input" value="0.7224"/>
+        <parameter id="output" value="0.7224"/>
+        <parameter id="pandry" value="0.5"/>
+        <parameter id="panwet" value="0.5"/>
+        <parameter id="stereowidth" value="0.5"/>
+        <parameter id="stereomode" value="0.5"/>
+        <parameter id="timemode" value="0"/>
+        <parameter id="time" value="0.04"/>
+        <parameter id="feedback" value="0.1"/>
+        <parameter id="style" value="0.5"/>
+        <parameter id="ana_bbdtype" value="0.5"/>
+        <parameter id="modern_sat" value="0.5"/>
+        <parameter id="modern_depth" value="0"/>
+        <parameter id="modern_rate" value="0.5"/>
+        <parameter id="modern_stereo" value="0.5"/>
+        <parameter id="diff_amount" value="0.5"/>
+        <parameter id="diff_size" value="0.5"/>
+        <parameter id="diff_movement" value="0.5"/>
+        <parameter id="diff_dense" value="0.5"/>
+        <parameter id="ana_depth" value="0.5"/>
+        <parameter id="ana_rate" value="0.5"/>
+        <parameter id="ana_stereo" value="0.5"/>
+        <parameter id="tape_sat" value="0.5"/>
+        <parameter id="tape_age" value="0.5"/>
+        <parameter id="tape_wowflut" value="0.5"/>
+        <parameter id="tape_noise" value="0.5"/>
+        <parameter id="vd_quality" value="0.5"/>
+        <parameter id="vd_depth" value="0.5"/>
+        <parameter id="vd_rate" value="0.5"/>
+        <parameter id="vd_stereo" value="0.5"/>
+        <parameter id="locut" value="0.5"/>
+        <parameter id="hicut" value="0.6"/>
+        <parameter id="duckingamount" value="0"/>
+        <parameter id="duckingsensitivity" value="0.5"/>
+        <parameter id="duckingrelease" value="0.5"/>
+        <parameter id="duckingmeter" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="158000">
+    <component-audio version="1">
+      <parameters num-parameters="38">
+        <parameter id="mix" value="0.42"/>
+        <parameter id="input" value="0.7224"/>
+        <parameter id="output" value="0.7224"/>
+        <parameter id="pandry" value="0.5"/>
+        <parameter id="panwet" value="0.5"/>
+        <parameter id="stereowidth" value="0.5"/>
+        <parameter id="stereomode" value="0.5"/>
+        <parameter id="timemode" value="2"/>
+        <parameter id="time" value="0.4286"/>
+        <parameter id="feedback" value="0.45"/>
+        <parameter id="style" value="0.5"/>
+        <parameter id="ana_bbdtype" value="0.5"/>
+        <parameter id="modern_sat" value="0.5"/>
+        <parameter id="modern_depth" value="0"/>
+        <parameter id="modern_rate" value="0.5"/>
+        <parameter id="modern_stereo" value="0.5"/>
+        <parameter id="diff_amount" value="0.5"/>
+        <parameter id="diff_size" value="0.5"/>
+        <parameter id="diff_movement" value="0.5"/>
+        <parameter id="diff_dense" value="0.5"/>
+        <parameter id="ana_depth" value="0.5"/>
+        <parameter id="ana_rate" value="0.5"/>
+        <parameter id="ana_stereo" value="0.5"/>
+        <parameter id="tape_sat" value="0.5"/>
+        <parameter id="tape_age" value="0.5"/>
+        <parameter id="tape_wowflut" value="0.5"/>
+        <parameter id="tape_noise" value="0.5"/>
+        <parameter id="vd_quality" value="0.5"/>
+        <parameter id="vd_depth" value="0.5"/>
+        <parameter id="vd_rate" value="0.5"/>
+        <parameter id="vd_stereo" value="0.5"/>
+        <parameter id="locut" value="0.5"/>
+        <parameter id="hicut" value="0.6"/>
+        <parameter id="duckingamount" value="0"/>
+        <parameter id="duckingsensitivity" value="0.5"/>
+        <parameter id="duckingrelease" value="0.5"/>
+        <parameter id="duckingmeter" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="38000">
+    <component-audio version="1">
+      <parameters num-parameters="15">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0"/>
+        <parameter id="Br" value="0.58"/>
+        <parameter id="Tb" value="0.68"/>
+        <parameter id="Bs" value="0.45"/>
+        <parameter id="Tc" value="0.35"/>
+        <parameter id="TSp" value="0.5"/>
+        <parameter id="TDt" value="0.5"/>
+        <parameter id="Hz" value="0.5"/>
+        <parameter id="Vr" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bia" value="0.5"/>
+        <parameter id="G5M" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.8159"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="0"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="132000">
+    <component-audio version="1">
+      <parameters num-parameters="5">
+        <parameter id="M0" value="0.25"/>
+        <parameter id="D1" value="0.5"/>
+        <parameter id="S2" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="S3" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.16"/>
+        <parameter id="Tm" value="0.5"/>
+        <parameter id="Sz" value="0.5"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Chr" value="0.5"/>
+        <parameter id="iM" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="158000" target-number="2" target-name="mix" min-value="0" max-value="0.5" controller-name="Delay Mix"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="158000" target-number="2" target-name="feedback" min-value="0.1" max-value="0.7" controller-name="Repeats"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="38000" target-number="1" target-name="Br" min-value="0.3" max-value="0.8" controller-name="Drive"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="38000" target-number="1" target-name="Tb" min-value="0.4" max-value="0.9" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.4" controller-name="Room"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-tempo bpm="126.000"/>
+<headroom-library version="1" id="streets-intro" category="Artist Tones" order="30" instrument="guitar" style="Post-Punk / Arena Rock">
+  <description>The chiming intro arpeggio: a short slap echo and a dotted-eighth delay in front of a class-A top-boost combo set just at breakup. Rig tempo is 126 BPM so the repeats lock to the part; mute-pick eighth notes and let the delay fill in the rest.</description>
+  <tags><tag>Artist Tones</tag><tag>Rock</tag><tag>Post-Punk</tag><tag>Delay</tag><tag>Dotted Eighth</tag><tag>Chime</tag></tags>
+  <inspired-by artist="The Edge (U2)" song="Where the Streets Have No Name" album="The Joshua Tree" part="Intro arpeggio" year="1987"/>
+  <sources>
+    <source url="https://www.guitarchalk.com/where-the-streets-have-no-name-amp-settings/" title="Guitar Chalk: Where the Streets Have No Name amp settings and gear"/>
+    <source url="https://www.amnesta.net/edge_delay/" title="Tim Darling: A study of the Edge's guitar delay"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

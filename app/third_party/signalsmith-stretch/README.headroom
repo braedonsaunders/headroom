@@ -1,0 +1,4 @@
+Signalsmith Stretch 1.4.0 (https://github.com/Signalsmith-Audio/signalsmith-stretch, tag 1.4.0)
+Licence: MIT (LICENSE.txt). Unmodified headers; cmd/, web/ (incl. its demo MP3) and tests are not vendored.
+Depends on signalsmith-linear 0.6.4 (../signalsmith-linear, MIT).
+Used by src/platform/TimeStretch.cpp for Practice speed/transpose off macOS (macOS keeps AUNewTimePitch).

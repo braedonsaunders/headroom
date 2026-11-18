@@ -1,0 +1,1162 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "fender-5f6a-bassman",
+ "version": 1,
+ "name": "Fender Bassman 5F6-A (1959 tweed, 4x10)",
+ "description": "Fender 5F6-A Bassman as drawn on the Fender factory schematic. Two input channels (Normal and Bright, Input 1 of each: two 68 kΩ stoppers in parallel, 1 MΩ to ground) into a 12AY7 whose two triodes share one 820 Ω / 250 µF cathode (100 kΩ plates), 0.02 µF into a 1 MΩ audio volume per channel (Bright has 100 pF from the top of the pot to the wiper), mixed through two 270 kΩ resistors onto the 12AX7 second stage (100 kΩ plate, 820 Ω unbypassed cathode), DC-coupled into the 12AX7 cathode follower (100 kΩ cathode resistor) that drives the treble/bass/middle stack (250 pF, 56 kΩ slope, 0.02 µF bass and middle caps, 250 kΩ treble, 1 MΩ bass, 25 kΩ middle). 0.02 µF into the 12AX7 long-tail-pair phase inverter (82 kΩ / 100 kΩ plates, 470 Ω shared cathode, 1 MΩ grid leaks, 10 kΩ tail, 47 pF across the plates); 27 kΩ global feedback from the 2 Ω speaker tap enters the bottom of the tail and, through the 0.1 µF bypass, the second grid; the 5 kΩ presence pot sits between that node and ground with 0.1 µF on its wiper. 0.1 µF / 220 kΩ into two 5881 (6L6GC model) at fixed bias (-48 V from the 15 kΩ / 56 kΩ / 8 µF bias network), screens through 470 Ω, 4 kΩ : 2 Ω output transformer (Fender/Triad 45249) into four 8 Ω 10-inch speakers in parallel. Supply: 325-0-325 V winding, 5AR4/GZ34, 2 x 20 µF at the OT centre tap (A), 4 H choke to the screens (B, 20 µF), 4.7 kΩ to the phase inverter (C, 20 µF), 10 kΩ to the preamp (B+4, 8 µF). Standby switch and anti-pop cap omitted (standby closed).",
+ "sources": [
+  {
+   "title": "Fender Musical Instruments, 'Fender Bassman Schematic, Model 5F6-A' (factory schematic with voltage chart; annotated reproduction by Rob Robinette)",
+   "url": "https://robrobinette.com/images/Guitar/Bassman/5F6A_Annotated_Fender_Schematic.gif"
+  },
+  {
+   "title": "Rob Robinette, '5F6A Mods' (How the Bassman Works, How the Long Tail Pair Phase Inverter Works, Fender Mid-Production 5F6A Circuit Changes, bias network, power transformer)",
+   "url": "https://robrobinette.com/5F6A_Modifications.htm"
+  },
+  {
+   "title": "Rob Robinette, 5F6-A Bassman layout (pot values and tapers: volume 1M log, treble 250K lin, bass 1M log, middle 25K lin)",
+   "url": "https://robrobinette.com/images/Guitar/Bassman/5F6A_Bassman_Amp_Layout.pdf"
+  },
+  {
+   "title": "R. Kuehnel, 'The Fender Bassman 5F6-A Circuit' (Pentode Press summary): 12AY7 first stage, OT 45249 4k primary / 2 Ω secondary, PT 8087 325-0-325 V, choke 14684, 27k feedback from the 2 Ω tap",
+   "url": "https://robrobinette.com/images/Guitar/Bassman/Fender_Bassman_5F6-A_Circuit_Kuehnel.pdf"
+  },
+  {
+   "title": "D. T. Yeh and J. O. Smith, 'Discretization of the 59 Fender Bassman tone stack', DAFx 2006: C1 0.25 nF, C2 = C3 20 nF, R1 250k, R2 1M, R3 25k, R4 56k; treble and middle linear, bass log; middle pot as a divider with C3 on the wiper",
+   "url": "https://ccrma.stanford.edu/~dtyeh/papers/yeh06_dafx.pdf"
+  },
+  {
+   "title": "Ampbooks, 'Fender Bassman 5F6-A Circuit Analysis' (operating points: 12AY7 shared 820 Ω / 250 µF, V2A 820 Ω unbypassed, LTP, 5881 load line 1 kΩ per tube = 4 kΩ plate-to-plate)",
+   "url": "https://www.ampbooks.com/mobile/classic-circuits/fender-bassman-5F6-A/"
+  },
+  {
+   "title": "R. McLean, 12AY7 / 6072 Koren-form SPICE model fitted to an Electro-Harmonix 6072A/12AY7EH (16 June 2005), diyAudio thread 'PSpice/LTSpice model for 12AY7/6072 wanted'",
+   "url": "https://www.diyaudio.com/community/threads/pspice-ltspice-model-for-12ay7-6072-wanted.59219/"
+  },
+  {
+   "title": "Hammond 1750K datasheet (drop-in replacement for Fender 45249/125A9A): 4000 Ω CT primary, 2 Ω secondary, primary DCR 89.43 Ω, secondary 0.180 Ω",
+   "url": "https://www.hammfg.com/files/parts/pdf/1750K.pdf"
+  },
+  {
+   "title": "Hammond 290DX datasheet (replacement for Fender 8087): 325-0-325 V at 230 mA, 356.1 V no-load per half, HT DCR 70.27 Ω red-red, primary 1.262 Ω, 50 V bias tap",
+   "url": "https://www.hammfg.com/files/parts/pdf/290DX.pdf"
+  },
+  {
+   "title": "Music Electronics Forum / Evatco 5F6-A parts list: choke 14684 is about 3.5-4 H, 90 mA, about 35-45 Ω DCR",
+   "url": "https://www.evatco.com.au/blog/valve-amp-blog/5f6a-parts-list/"
+  },
+  {
+   "title": "Reverb listings of original Triad 45249 output transformers: measured DCR 41.2 Ω and 47.5 Ω per half primary, 0.2 Ω secondary",
+   "url": "https://reverb.com/item/49798957-fender-5f6a-fender-tweed-bassman-triad-45249-output-transformer-1957-1960"
+  },
+  {
+   "title": "N. Koren, 'Improved vacuum tube models for SPICE simulations': 12AX7 and 6L6GC plate laws (library models)",
+   "url": "https://www.normankoren.com/Audio/Tubemodspice_article.html"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "spk",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 62,
+  "note": "outputVoltsPerFS calibrated (2026-11-09) to the mean RMS match gain (-14.2 dB) of the circuit_ab settings against the legacy model, so the A/B sits at the legacy loudness on average across clean and driven settings; final level is a listening-review decision"
+ },
+ "oversampling": 2,
+ "minRate": 176400,
+ "lte": {"start": "bdf2", "tol": 16},
+ "solver": "auto",
+ "cuts": [
+  "sa1",
+  "sb1",
+  "bpa",
+  "ch",
+  "bpb",
+  "bpc",
+  "bp4",
+  "bias"
+ ],
+ "controls": [
+  {
+   "id": "normal",
+   "label": "Normal Volume",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "VN"
+   ],
+   "group": "Main",
+   "note": "Normal channel 1 MΩ audio-taper volume (no bright cap)"
+  },
+  {
+   "id": "bright",
+   "label": "Bright Volume",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "VB"
+   ],
+   "group": "Main",
+   "note": "Bright channel 1 MΩ audio-taper volume with 100 pF from the top of the pot to the wiper"
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "T"
+   ],
+   "group": "Main",
+   "note": "250 kΩ linear, wiper = stack output"
+  },
+  {
+   "id": "bass",
+   "label": "Bass",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "B"
+   ],
+   "group": "Main",
+   "note": "1 MΩ audio taper as a rheostat"
+  },
+  {
+   "id": "middle",
+   "label": "Middle",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "M"
+   ],
+   "group": "Main",
+   "note": "25 kΩ linear, wired as a divider: top to the bass pot, bottom to ground, wiper to the 0.02 µF middle cap"
+  },
+  {
+   "id": "presence",
+   "label": "Presence",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Pr"
+   ],
+   "group": "Main",
+   "note": "5 kΩ pot between the feedback node (bottom of the PI tail) and ground, 0.1 µF from the wiper to ground: clockwise shunts the high frequencies of the feedback"
+  },
+  {
+   "id": "power",
+   "label": "Power",
+   "kind": "switch",
+   "default": 0.0,
+   "params": [
+    "Pw"
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Legacy 'Power' parameter. The 5F6-A has only a mains switch and a standby switch; the circuit always runs powered with standby closed. Stored for preset round-trip, no circuit meaning."
+  },
+  {
+   "id": "variac",
+   "label": "VAC",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Var"
+   ],
+   "group": "Legacy",
+   "note": "Variac: scales the mains (every transformer secondary, including the bias winding) from 75 % at 0 through nominal at 0.5 to 108 % at 1 (90 / 120 / 130 VAC on a 120 V amp)",
+   "mod": true,
+   "modNote": "Not on the original amplifier: a variac on the mains, as players did to run the amp at lower line voltage. Offered as a mod; at full scale the amp sees its rated mains."
+  },
+  {
+   "id": "sag",
+   "label": "Sag",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Sg"
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Legacy supply-sag amount. Sag here emerges from the 5AR4, winding resistance, choke and filter caps; there is no knob. Stored, no circuit meaning."
+  },
+  {
+   "id": "response",
+   "label": "Response",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Rsp"
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Legacy 'Response' (dynamics/feel) control. No such part in the 5F6-A. Stored, no circuit meaning."
+  },
+  {
+   "id": "bias",
+   "label": "Bias",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Bi"
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Legacy power-tube bias knob. The 5F6-A bias is fixed (15k/56k divider, about -48 V); there is no bias pot. Stored, no circuit meaning."
+  },
+  {
+   "id": "vintage",
+   "label": "Vintage Mode",
+   "kind": "switch",
+   "default": 0.0,
+   "params": [
+    "G4M"
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Legacy 'Vintage Mode' switch. The circuit is already the vintage 5F6-A; there is nothing to switch. Stored, no circuit meaning."
+  },
+  {"id": "stereo", "label": "Stereo", "kind": "continuous", "default": 0.5, "params": ["CASSt"], "legacyOnly": true, "group": "Legacy", "note": "Catalogue stereo parameter; the circuit is mono, stored only"},
+  {"id": "legacy_Pwr", "label": "On/Off", "kind": "switch", "default": 1.0, "params": ["Pwr"], "legacyOnly": true, "group": "Legacy", "note": "Host handles bypass; stored only"}
+ ],
+ "parts": [
+  {
+   "ref": "VA",
+   "scale": {
+    "control": "variac",
+    "min": 0.75,
+    "max": 1.0833
+   },
+   "type": "V",
+   "nodes": [
+    "sa",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "460",
+    "freq": 60,
+    "phase": 90
+   },
+   "label": "HT winding, half A (325 Vrms)",
+   "note": "PT 8087, 325-0-325 Vrms per the schematic and Kuehnel; 460 V peak. Assumes the schematic's 117 V mains"
+  },
+  {
+   "ref": "VB",
+   "scale": {
+    "control": "variac",
+    "min": 0.75,
+    "max": 1.0833
+   },
+   "type": "V",
+   "nodes": [
+    "sb",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "460",
+    "freq": 60,
+    "phase": 270
+   },
+   "label": "HT winding, half B (325 Vrms)"
+  },
+  {
+   "ref": "RWA",
+   "type": "R",
+   "nodes": [
+    "sa",
+    "sa1"
+   ],
+   "value": "46",
+   "label": "HT half-winding resistance",
+   "note": "Derived, not measured on an original 8087: Hammond 290DX (the 8087 replacement) DCR 70.27 Ω red-red = 35.1 Ω per half, plus the 1.262 Ω primary reflected by (356/120)^2 = 11.1 Ω. PT leakage inductance not modelled"
+  },
+  {
+   "ref": "RWB",
+   "type": "R",
+   "nodes": [
+    "sb",
+    "sb1"
+   ],
+   "value": "46",
+   "label": "HT half-winding resistance",
+   "note": "see RWA"
+  },
+  {
+   "ref": "DA",
+   "type": "D",
+   "nodes": [
+    "sa1",
+    "bpa"
+   ],
+   "model": "5AR4",
+   "label": "GZ34 / 5AR4 plate A"
+  },
+  {
+   "ref": "DB",
+   "type": "D",
+   "nodes": [
+    "sb1",
+    "bpa"
+   ],
+   "model": "5AR4",
+   "label": "GZ34 / 5AR4 plate B"
+  },
+  {
+   "ref": "C1A",
+   "type": "C",
+   "nodes": [
+    "bpa",
+    "0"
+   ],
+   "value": "20u",
+   "tolerance": 0.2,
+   "label": "Filter A (20 µF 600 V)"
+  },
+  {
+   "ref": "C1B",
+   "type": "C",
+   "nodes": [
+    "bpa",
+    "0"
+   ],
+   "value": "20u",
+   "tolerance": 0.2,
+   "label": "Filter A (20 µF 600 V), in parallel"
+  },
+  {
+   "ref": "RCH",
+   "type": "R",
+   "nodes": [
+    "bpa",
+    "ch"
+   ],
+   "value": "40",
+   "label": "Choke DCR",
+   "note": "unverified: choke 14684 DCR quoted 35-45 Ω by forum/parts-list sources; 40 Ω used"
+  },
+  {
+   "ref": "LCH",
+   "type": "L",
+   "nodes": [
+    "ch",
+    "bpb"
+   ],
+   "value": "4",
+   "label": "Choke 14684",
+   "note": "unverified: choke 14684 quoted as 3.5-4 H at 90 mA (Evatco parts list, Music Electronics Forum); 4 H used, no saturation"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "bpb",
+    "0"
+   ],
+   "value": "20u",
+   "tolerance": 0.2,
+   "label": "Filter B, screens (20 µF 600 V)"
+  },
+  {
+   "ref": "RD1",
+   "type": "R",
+   "nodes": [
+    "bpb",
+    "bpc"
+   ],
+   "value": "4k7",
+   "tolerance": 0.1,
+   "label": "Dropping B to C (4700)"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "bpc",
+    "0"
+   ],
+   "value": "20u",
+   "tolerance": 0.2,
+   "label": "Filter C, phase inverter (20 µF 600 V)"
+  },
+  {
+   "ref": "RD2",
+   "type": "R",
+   "nodes": [
+    "bpc",
+    "bp4"
+   ],
+   "value": "10k",
+   "tolerance": 0.1,
+   "label": "Dropping C to B+4 (10k)"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "bp4",
+    "0"
+   ],
+   "value": "8u",
+   "tolerance": 0.2,
+   "label": "Filter B+4, preamp (8 µF 450 V)"
+  },
+  {
+   "ref": "VBR",
+   "scale": {
+    "control": "variac",
+    "min": 0.75,
+    "max": 1.0833
+   },
+   "type": "V",
+   "nodes": [
+    "bsr",
+    "0"
+   ],
+   "value": "-61",
+   "label": "Bias rectifier output",
+   "note": "unverified: the real bias supply is a selenium/diode half-wave rectifier from a low-voltage PT tap (about 50 Vac) into 8 µF; modelled as an ideal DC source at the first bias filter node, value chosen so the 15k/56k divider gives the schematic's -48 V (-48 x 71/56). Ripple of the bias supply not modelled"
+  },
+  {
+   "ref": "RBD",
+   "type": "R",
+   "nodes": [
+    "bsr",
+    "bias"
+   ],
+   "value": "15k",
+   "tolerance": 0.1,
+   "label": "Bias drop 15k"
+  },
+  {
+   "ref": "RBB",
+   "type": "R",
+   "nodes": [
+    "bias",
+    "0"
+   ],
+   "value": "56k",
+   "tolerance": 0.1,
+   "label": "Bias divider 56k"
+  },
+  {
+   "ref": "CBF",
+   "type": "C",
+   "nodes": [
+    "bias",
+    "0"
+   ],
+   "value": "8u",
+   "tolerance": 0.2,
+   "label": "Bias filter 8 µF 150 V"
+  },
+  {
+   "ref": "RINB",
+   "type": "R",
+   "nodes": [
+    "in",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.1,
+   "label": "Bright Input 1 jack 1 MΩ",
+   "note": "Both channels' Input 1 jacks are driven from the one input (as with a Y cable or jumpered channels); VN/VB set each channel's level. The two 1 MΩ jack resistors load the source in parallel (500 kΩ) when io.sourceImpedance is used"
+  },
+  {
+   "ref": "R1B1",
+   "type": "R",
+   "nodes": [
+    "in",
+    "gb"
+   ],
+   "value": "68k",
+   "tolerance": 0.1,
+   "label": "Bright grid stopper (Input 1 path)"
+  },
+  {
+   "ref": "R1B2",
+   "type": "R",
+   "nodes": [
+    "in",
+    "gb"
+   ],
+   "value": "68k",
+   "tolerance": 0.1,
+   "label": "Bright grid stopper (Input 2 path, switched to Input 1 when Input 2 is empty)"
+  },
+  {
+   "ref": "RINN",
+   "type": "R",
+   "nodes": [
+    "in",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.1,
+   "label": "Normal Input 1 jack 1 MΩ"
+  },
+  {
+   "ref": "R1N1",
+   "type": "R",
+   "nodes": [
+    "in",
+    "gn"
+   ],
+   "value": "68k",
+   "tolerance": 0.1,
+   "label": "Normal grid stopper (Input 1 path)"
+  },
+  {
+   "ref": "R1N2",
+   "type": "R",
+   "nodes": [
+    "in",
+    "gn"
+   ],
+   "value": "68k",
+   "tolerance": 0.1,
+   "label": "Normal grid stopper (Input 2 path)"
+  },
+  {
+   "ref": "V1B",
+   "type": "triode",
+   "nodes": [
+    "p1b",
+    "gb",
+    "k1"
+   ],
+   "model": "12AY7",
+   "label": "V1B Bright first stage (12AY7)"
+  },
+  {
+   "ref": "V1A",
+   "type": "triode",
+   "nodes": [
+    "p1n",
+    "gn",
+    "k1"
+   ],
+   "model": "12AY7",
+   "label": "V1A Normal first stage (12AY7)"
+  },
+  {
+   "ref": "RK1",
+   "type": "R",
+   "nodes": [
+    "k1",
+    "0"
+   ],
+   "value": "820",
+   "tolerance": 0.1,
+   "label": "Shared V1 cathode 820 Ω"
+  },
+  {
+   "ref": "CK1",
+   "type": "C",
+   "nodes": [
+    "k1",
+    "0"
+   ],
+   "value": "250u",
+   "tolerance": 0.2,
+   "label": "Shared V1 bypass 250 µF 6 V"
+  },
+  {
+   "ref": "RP1B",
+   "type": "R",
+   "nodes": [
+    "bp4",
+    "p1b"
+   ],
+   "value": "100k",
+   "tolerance": 0.1,
+   "label": "V1B plate load"
+  },
+  {
+   "ref": "RP1N",
+   "type": "R",
+   "nodes": [
+    "bp4",
+    "p1n"
+   ],
+   "value": "100k",
+   "tolerance": 0.1,
+   "label": "V1A plate load"
+  },
+  {
+   "ref": "CC1B",
+   "type": "C",
+   "nodes": [
+    "p1b",
+    "vtb"
+   ],
+   "value": "20n",
+   "tolerance": 0.1,
+   "label": "Bright coupling 0.02 µF"
+  },
+  {
+   "ref": "VOLB",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "vwb",
+    "vtb"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "bright",
+   "label": "Bright Volume"
+  },
+  {
+   "ref": "CBR",
+   "type": "C",
+   "nodes": [
+    "vtb",
+    "vwb"
+   ],
+   "value": "100p",
+   "tolerance": 0.1,
+   "label": "Bright cap 100 pF (.0001)"
+  },
+  {
+   "ref": "RMB",
+   "type": "R",
+   "nodes": [
+    "vwb",
+    "g2a"
+   ],
+   "value": "270k",
+   "tolerance": 0.1,
+   "label": "Bright mixing 270k"
+  },
+  {
+   "ref": "CC1N",
+   "type": "C",
+   "nodes": [
+    "p1n",
+    "vtn"
+   ],
+   "value": "20n",
+   "tolerance": 0.1,
+   "label": "Normal coupling 0.02 µF"
+  },
+  {
+   "ref": "VOLN",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "vwn",
+    "vtn"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "normal",
+   "label": "Normal Volume"
+  },
+  {
+   "ref": "RMN",
+   "type": "R",
+   "nodes": [
+    "vwn",
+    "g2a"
+   ],
+   "value": "270k",
+   "tolerance": 0.1,
+   "label": "Normal mixing 270k"
+  },
+  {
+   "ref": "V2A",
+   "type": "triode",
+   "nodes": [
+    "p2a",
+    "g2a",
+    "k2a"
+   ],
+   "model": "12AX7",
+   "label": "V2A second stage"
+  },
+  {
+   "ref": "RK2A",
+   "type": "R",
+   "nodes": [
+    "k2a",
+    "0"
+   ],
+   "value": "820",
+   "tolerance": 0.1,
+   "label": "V2A cathode 820 Ω (unbypassed)"
+  },
+  {
+   "ref": "RP2A",
+   "type": "R",
+   "nodes": [
+    "bp4",
+    "p2a"
+   ],
+   "value": "100k",
+   "tolerance": 0.1,
+   "label": "V2A plate load"
+  },
+  {
+   "ref": "V2B",
+   "type": "triode",
+   "nodes": [
+    "bp4",
+    "p2a",
+    "kcf"
+   ],
+   "model": "12AX7",
+   "label": "V2B cathode follower (DC-coupled from V2A plate)"
+  },
+  {
+   "ref": "RKCF",
+   "type": "R",
+   "nodes": [
+    "kcf",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.1,
+   "label": "Cathode follower load 100k"
+  },
+  {
+   "ref": "CT",
+   "type": "C",
+   "nodes": [
+    "kcf",
+    "tt"
+   ],
+   "value": "250p",
+   "tolerance": 0.1,
+   "label": "Treble cap 250 pF (.00025)"
+  },
+  {
+   "ref": "RSL",
+   "type": "R",
+   "nodes": [
+    "kcf",
+    "ns"
+   ],
+   "value": "56k",
+   "tolerance": 0.1,
+   "label": "Slope resistor 56k",
+   "note": "Schematic and Yeh & Smith value. Robinette reports most production amps had 100k here"
+  },
+  {
+   "ref": "CB",
+   "type": "C",
+   "nodes": [
+    "ns",
+    "tb"
+   ],
+   "value": "20n",
+   "tolerance": 0.1,
+   "label": "Bass cap 0.02 µF",
+   "note": "Schematic and Yeh & Smith value. Robinette reports most production amps had 0.1 µF here"
+  },
+  {
+   "ref": "CM",
+   "type": "C",
+   "nodes": [
+    "ns",
+    "mw"
+   ],
+   "value": "20n",
+   "tolerance": 0.1,
+   "label": "Middle cap 0.02 µF"
+  },
+  {
+   "ref": "TREBLE",
+   "type": "pot",
+   "nodes": [
+    "tb",
+    "tw",
+    "tt"
+   ],
+   "value": "250k",
+   "taper": "B",
+   "control": "treble",
+   "label": "Treble 250k"
+  },
+  {
+   "ref": "BASS",
+   "type": "pot",
+   "nodes": [
+    "mt",
+    "tb",
+    "tb"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "bass",
+   "label": "Bass 1M"
+  },
+  {
+   "ref": "MIDDLE",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mw",
+    "mt"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "middle",
+   "label": "Middle 25k"
+  },
+  {
+   "ref": "CC3",
+   "type": "C",
+   "nodes": [
+    "tw",
+    "g3a"
+   ],
+   "value": "20n",
+   "tolerance": 0.1,
+   "label": "PI input coupling 0.02 µF"
+  },
+  {
+   "ref": "RG3A",
+   "type": "R",
+   "nodes": [
+    "g3a",
+    "pj"
+   ],
+   "value": "1M",
+   "tolerance": 0.1,
+   "label": "V3A grid leak (to the tail junction)"
+  },
+  {
+   "ref": "RG3B",
+   "type": "R",
+   "nodes": [
+    "g3b",
+    "pj"
+   ],
+   "value": "1M",
+   "tolerance": 0.1,
+   "label": "V3B grid leak (to the tail junction)"
+  },
+  {
+   "ref": "CG3B",
+   "type": "C",
+   "nodes": [
+    "g3b",
+    "fb"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "V3B grid bypass 0.1 µF 200 V (to the feedback node)"
+  },
+  {
+   "ref": "V3A",
+   "type": "triode",
+   "nodes": [
+    "p3a",
+    "g3a",
+    "k3"
+   ],
+   "model": "12AX7",
+   "label": "V3A phase inverter (inverting output)"
+  },
+  {
+   "ref": "V3B",
+   "type": "triode",
+   "nodes": [
+    "p3b",
+    "g3b",
+    "k3"
+   ],
+   "model": "12AX7",
+   "label": "V3B phase inverter (non-inverting output)"
+  },
+  {
+   "ref": "RK3",
+   "type": "R",
+   "nodes": [
+    "k3",
+    "pj"
+   ],
+   "value": "470",
+   "tolerance": 0.1,
+   "label": "PI shared cathode 470 Ω"
+  },
+  {
+   "ref": "RTAIL",
+   "type": "R",
+   "nodes": [
+    "pj",
+    "fb"
+   ],
+   "value": "10k",
+   "tolerance": 0.1,
+   "label": "PI tail 10k",
+   "note": "Schematic value. Robinette reports most production amps had 6.8k 2 W"
+  },
+  {
+   "ref": "PRES",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "prw",
+    "fb"
+   ],
+   "value": "5k",
+   "taper": "B",
+   "control": "presence",
+   "label": "Presence 5k",
+   "note": "unverified taper: schematic gives 5k only; production amps used a 25k linear pot with 4.7k across it (Robinette). Linear assumed"
+  },
+  {
+   "ref": "CPR",
+   "type": "C",
+   "nodes": [
+    "prw",
+    "0"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "Presence cap 0.1 µF 200 V"
+  },
+  {
+   "ref": "RNFB",
+   "type": "R",
+   "nodes": [
+    "spk",
+    "fb"
+   ],
+   "value": "27k",
+   "tolerance": 0.1,
+   "label": "Global feedback 27k from the 2 Ω tap"
+  },
+  {
+   "ref": "RP3A",
+   "type": "R",
+   "nodes": [
+    "bpc",
+    "p3a"
+   ],
+   "value": "82k",
+   "tolerance": 0.05,
+   "label": "V3A plate 82k 5 %"
+  },
+  {
+   "ref": "RP3B",
+   "type": "R",
+   "nodes": [
+    "bpc",
+    "p3b"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "V3B plate 100k 5 %"
+  },
+  {
+   "ref": "CSTAB",
+   "type": "C",
+   "nodes": [
+    "p3a",
+    "p3b"
+   ],
+   "value": "47p",
+   "tolerance": 0.1,
+   "label": "Stability cap 47 pF between the PI plates"
+  },
+  {
+   "ref": "CCA",
+   "type": "C",
+   "nodes": [
+    "p3a",
+    "g4"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "Coupling to V4 0.1 µF 400 V"
+  },
+  {
+   "ref": "CCB",
+   "type": "C",
+   "nodes": [
+    "p3b",
+    "g5"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "Coupling to V5 0.1 µF 400 V"
+  },
+  {
+   "ref": "RG4",
+   "type": "R",
+   "nodes": [
+    "g4",
+    "bias"
+   ],
+   "value": "220k",
+   "tolerance": 0.1,
+   "label": "V4 grid leak 220k"
+  },
+  {
+   "ref": "RG5",
+   "type": "R",
+   "nodes": [
+    "g5",
+    "bias"
+   ],
+   "value": "220k",
+   "tolerance": 0.1,
+   "label": "V5 grid leak 220k",
+   "note": "No grid stoppers on the 5F6-A schematic; the grids connect straight to the coupling caps"
+  },
+  {
+   "ref": "V4",
+   "type": "pentode",
+   "nodes": [
+    "pa",
+    "s4",
+    "g4",
+    "0"
+   ],
+   "model": "6L6GC",
+   "label": "V4 5881",
+   "note": "5881 modelled with the library 6L6GC Koren set (near-identical curves per Kuehnel; 5881 is rated 23 W versus 30 W)"
+  },
+  {
+   "ref": "V5",
+   "type": "pentode",
+   "nodes": [
+    "pb",
+    "s5",
+    "g5",
+    "0"
+   ],
+   "model": "6L6GC",
+   "label": "V5 5881",
+   "note": "see V4"
+  },
+  {
+   "ref": "RS4",
+   "type": "R",
+   "nodes": [
+    "bpb",
+    "s4"
+   ],
+   "value": "470",
+   "tolerance": 0.1,
+   "label": "V4 screen 470 Ω 1 W"
+  },
+  {
+   "ref": "RS5",
+   "type": "R",
+   "nodes": [
+    "bpb",
+    "s5"
+   ],
+   "value": "470",
+   "tolerance": 0.1,
+   "label": "V5 screen 470 Ω 1 W"
+  },
+  {
+   "ref": "OT",
+   "type": "transformer",
+   "nodes": [
+    "pa",
+    "bpa",
+    "bpa",
+    "pb",
+    "spk",
+    "0"
+   ],
+   "turns": [
+    1,
+    1,
+    0.04472
+   ],
+   "r": [
+    41.2,
+    47.5,
+    0.2
+   ],
+   "leak": [
+    "5m",
+    "5m",
+    0
+   ],
+   "lm": 5,
+   "lsat": 1.5,
+   "label": "Output transformer 45249 (4 kΩ : 2 Ω)",
+   "note": "4 kΩ plate-to-plate per Kuehnel, Robinette and the Hammond 1750K drop-in replacement (4000 Ω CT; consistent with Ampbooks' 1 kΩ per-tube load line); the task's 'about 2 kΩ' was not found in any source. Secondary turns 2/sqrt(4000/2). DCR from measured originals (41.2/47.5 Ω, 0.2 Ω); which half goes to which plate is unknown. unverified: leakage 5 mH per half (8 mH and above makes the global NFB loop burst into a 30-60 kHz oscillation at medium drive, confirmed in ngspice; 5-7 mH is stable), lm 5 H (20 H plate-to-plate), lsat 1.5 V·s are typical-class values, not measured"
+  },
+  {
+   "ref": "CWA",
+   "type": "C",
+   "nodes": [
+    "pa",
+    "cwa"
+   ],
+   "value": "470p",
+   "label": "OT half-primary capacitance (A)",
+   "note": "unverified: half-primary self-capacitance with its loss as a lumped 470 pF + 2.2 kOhm from the plate to the centre tap (engine lesson from the AB763 Twin: a lossless lumped capacitance rings with the leakage and the NFB turns it into an oscillation; no capacitance gives kilovolt flyback spikes)"
+  },
+  {
+   "ref": "RCWA",
+   "type": "R",
+   "nodes": [
+    "cwa",
+    "bpa"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (A)",
+   "note": "see CWA"
+  },
+  {
+   "ref": "CWB",
+   "type": "C",
+   "nodes": [
+    "pb",
+    "cwb"
+   ],
+   "value": "470p",
+   "label": "OT half-primary capacitance (B)",
+   "note": "see CWA"
+  },
+  {
+   "ref": "RCWB",
+   "type": "R",
+   "nodes": [
+    "cwb",
+    "bpa"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (B)",
+   "note": "see CWA"
+  },
+  {
+   "ref": "SPK1",
+   "type": "sub",
+   "of": "lib:spk-10in-8ohm-american",
+   "nodes": [
+    "spk",
+    "0"
+   ],
+   "parallel": 4,
+   "label": "10-inch Jensen P10R class, 8 Ω (x4 in parallel, folded)",
+   "note": "Four identical drivers in parallel folded into one instance with \"parallel\": 4 (R, L / 4, C x 4): the same impedance at the spk node, exactly, at a quarter of the cost (2026-11-10)."
+  }
+ ],
+ "probes": [
+  "p1b",
+  "kcf",
+  "tw",
+  "p3a",
+  "p3b",
+  "pa",
+  "bpb",
+  "spk"
+ ],
+ "layout": {},
+ "multirate": {
+  "oversampled": [
+   "V4"
+  ]
+ }
+}

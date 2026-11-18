@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Surf Spring Drip</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Surf Spring Drip" preset-author="Headroom" preset-comment="Wet, dripping surf: a tube spring tank placed before the amp, as with the classic outboard reverb unit, into a loud bright blackface driving 15-inch speakers. Staccato tremolo picking on the low strings makes the springs splash and drip. Dwell sets how hard the tank is hit." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="127000">
+    <component-audio version="1">
+      <parameters num-parameters="4">
+        <parameter id="S1" value="5"/>
+        <parameter id="M2" value="0.55"/>
+        <parameter id="M3" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="30000">
+    <component-audio version="1">
+      <parameters num-parameters="19">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.46"/>
+        <parameter id="Br" value="1"/>
+        <parameter id="Bs" value="0.45"/>
+        <parameter id="Md" value="0.55"/>
+        <parameter id="Tr" value="0.7"/>
+        <parameter id="Vr" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bia" value="0.5"/>
+        <parameter id="Hz" value="0.5"/>
+        <parameter id="RvL" value="0.5"/>
+        <parameter id="RvOn" value="0"/>
+        <parameter id="RvTm" value="0.5"/>
+        <parameter id="RvSz" value="0.5"/>
+        <parameter id="ViInt" value="0.5"/>
+        <parameter id="ViSpd" value="0.5"/>
+        <parameter id="ViOn" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="119000">
+    <component-audio version="1">
+      <parameters num-parameters="95">
+        <parameter id="L" value="0"/>
+        <parameter id="v" value="0.1075"/>
+        <parameter id="g1" value="0.62"/>
+        <parameter id="g2" value="0.5"/>
+        <parameter id="g3" value="0.5"/>
+        <parameter id="g4" value="0.5"/>
+        <parameter id="g5" value="0.5"/>
+        <parameter id="g6" value="0.5"/>
+        <parameter id="g7" value="0.5"/>
+        <parameter id="g8" value="0.5"/>
+        <parameter id="p1" value="0.5"/>
+        <parameter id="p2" value="0.5"/>
+        <parameter id="p3" value="0.5"/>
+        <parameter id="p4" value="0.5"/>
+        <parameter id="p5" value="0.5"/>
+        <parameter id="p6" value="0.5"/>
+        <parameter id="p7" value="0.5"/>
+        <parameter id="p8" value="0.5"/>
+        <parameter id="m1" value="0"/>
+        <parameter id="m2" value="0"/>
+        <parameter id="m3" value="0"/>
+        <parameter id="m4" value="0"/>
+        <parameter id="m5" value="0"/>
+        <parameter id="m6" value="0"/>
+        <parameter id="m7" value="0"/>
+        <parameter id="m8" value="0"/>
+        <parameter id="s1" value="0"/>
+        <parameter id="s2" value="0"/>
+        <parameter id="s3" value="0"/>
+        <parameter id="s4" value="0"/>
+        <parameter id="s5" value="0"/>
+        <parameter id="s6" value="0"/>
+        <parameter id="s7" value="0"/>
+        <parameter id="s8" value="0"/>
+        <parameter id="pi1" value="0"/>
+        <parameter id="pi2" value="0"/>
+        <parameter id="pi3" value="0"/>
+        <parameter id="pi4" value="0"/>
+        <parameter id="pi5" value="0"/>
+        <parameter id="pi6" value="0"/>
+        <parameter id="pi7" value="0"/>
+        <parameter id="pi8" value="0"/>
+        <parameter id="ph1" value="0.5"/>
+        <parameter id="ph2" value="0.5"/>
+        <parameter id="ph3" value="0.5"/>
+        <parameter id="ph4" value="0.5"/>
+        <parameter id="ph5" value="0.5"/>
+        <parameter id="ph6" value="0.5"/>
+        <parameter id="ph7" value="0.5"/>
+        <parameter id="ph8" value="0.5"/>
+        <parameter id="r1" value="0.5"/>
+        <parameter id="r2" value="0.5"/>
+        <parameter id="r3" value="0.5"/>
+        <parameter id="r4" value="0.5"/>
+        <parameter id="r5" value="0.5"/>
+        <parameter id="r6" value="0.5"/>
+        <parameter id="r7" value="0.5"/>
+        <parameter id="r8" value="0.5"/>
+        <parameter id="rm1" value="0"/>
+        <parameter id="rm2" value="0"/>
+        <parameter id="rm3" value="0"/>
+        <parameter id="rm4" value="0"/>
+        <parameter id="rm5" value="0"/>
+        <parameter id="rm6" value="0"/>
+        <parameter id="rm7" value="0"/>
+        <parameter id="rm8" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="a" value="0"/>
+        <parameter id="b" value="0.5"/>
+        <parameter id="t" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="Cab1" value="16"/>
+        <parameter id="Mic1" value="1"/>
+        <parameter id="MPos1" value="1"/>
+        <parameter id="Cab2" value="1"/>
+        <parameter id="Mic2" value="0"/>
+        <parameter id="MPos2" value="0"/>
+        <parameter id="Cab3" value="1"/>
+        <parameter id="Mic3" value="0"/>
+        <parameter id="MPos3" value="0"/>
+        <parameter id="Cab4" value="1"/>
+        <parameter id="Mic4" value="0"/>
+        <parameter id="MPos4" value="0"/>
+        <parameter id="Cab5" value="1"/>
+        <parameter id="Mic5" value="0"/>
+        <parameter id="MPos5" value="0"/>
+        <parameter id="Cab6" value="1"/>
+        <parameter id="Mic6" value="0"/>
+        <parameter id="MPos6" value="0"/>
+        <parameter id="Cab7" value="1"/>
+        <parameter id="Mic7" value="0"/>
+        <parameter id="MPos7" value="0"/>
+        <parameter id="Cab8" value="1"/>
+        <parameter id="Mic8" value="0"/>
+        <parameter id="MPos8" value="0"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="127000" target-number="1" target-name="M2" min-value="0.25" max-value="0.85" controller-name="Dwell"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="30000" target-number="1" target-name="Vol" min-value="0.35" max-value="0.62" controller-name="Amp Volume"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="30000" target-number="1" target-name="Tr" min-value="0.5" max-value="0.88" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="30000" target-number="1" target-name="Bs" min-value="0.3" max-value="0.65" controller-name="Bass"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="clean-surf-drip" category="Clean" order="130" instrument="guitar" style="Surf">
+  <description>Wet, dripping surf: a tube spring tank placed before the amp, as with the classic outboard reverb unit, into a loud bright blackface driving 15-inch speakers. Staccato tremolo picking on the low strings makes the springs splash and drip. Dwell sets how hard the tank is hit.</description>
+  <tags><tag>Clean</tag><tag>Surf</tag><tag>Spring Reverb</tag><tag>Wet</tag><tag>Twang</tag></tags>
+  <sources>
+    <source url="https://en.wikipedia.org/wiki/Fender_Reverb_Unit" title="Fender Reverb Unit (Wikipedia)"/>
+    <source url="https://www.premierguitar.com/pro-advice/on-the-bench/fender-6g15-reverb-unit" title="Premier Guitar: On the Bench, 1964 6G15 reverb unit"/>
+    <source url="https://wiki.surfguitar101.com/ReverbFaq" title="Surf Guitar 101 wiki: 6G15 reverb FAQ"/>
+    <source url="https://www.tdpri.com/threads/how-do-you-set-your-6g15-reverb-unit.981137/" title="TDPRI: how do you set your 6G15 reverb unit"/>
+    <source url="https://www.fuzzfaced.net/dick-dale-stratocaster-beast.html" title="Fuzzfaced: Dick Dale and the Stratocaster"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

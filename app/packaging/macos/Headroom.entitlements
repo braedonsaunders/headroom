@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Hardened-runtime entitlements for Headroom.app (Developer ID, not sandboxed).
+     audio-input: microphone/interface input under the hardened runtime (plus NSMicrophoneUsageDescription).
+     disable-library-validation: Headroom hosts third-party Audio Units (and later VST3s) in-process; without it the
+       hardened runtime refuses to load any plugin not signed by our own Team ID. Every DAW ships this.
+     Not needed: allow-jit / allow-unsigned-executable-memory. WKWebView's JavaScript JIT runs in Apple's
+       WebContent XPC process, and NAM/Eigen generate no code at run time. Add allow-unsigned-executable-memory
+       only if a specific old plugin is proven to need it. -->
+<plist version="1.0">
+<dict>
+    <key>com.apple.security.device.audio-input</key><true/>
+    <key>com.apple.security.cs.disable-library-validation</key><true/>
+</dict>
+</plist>

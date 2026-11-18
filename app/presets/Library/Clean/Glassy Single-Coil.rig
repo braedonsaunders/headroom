@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Glassy Single-Coil</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Glassy Single-Coil" preset-author="Headroom" preset-comment="Glassy, hollow 'in-between pickup' quack: low-mids thinned and a presence peak lifted before a clean blackface twin, light compression and a short silver plate. Use positions 2 or 4 on a single-coil guitar for the real thing; fingerstyle snaps and R&amp;B double-stops pop right out." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="48000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="V" value="0.75"/>
+        <parameter id="S" value="0.5"/>
+        <parameter id="A" value="0.5"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="T" value="0.55"/>
+        <parameter id="C" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="32000">
+    <component-audio version="1">
+      <parameters num-parameters="13">
+        <parameter id="V" value="0.8"/>
+        <parameter id="mi" value="0.5"/>
+        <parameter id="ma" value="0.5"/>
+        <parameter id="r" value="0.5"/>
+        <parameter id="b1" value="0.45"/>
+        <parameter id="b2" value="0.5"/>
+        <parameter id="b3" value="0.25"/>
+        <parameter id="b4" value="0.5"/>
+        <parameter id="b5" value="0.75"/>
+        <parameter id="b6" value="0.5"/>
+        <parameter id="b7" value="0.55"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="b8" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="30000">
+    <component-audio version="1">
+      <parameters num-parameters="19">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.36"/>
+        <parameter id="Br" value="1"/>
+        <parameter id="Bs" value="0.42"/>
+        <parameter id="Md" value="0.4"/>
+        <parameter id="Tr" value="0.58"/>
+        <parameter id="Vr" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bia" value="0.5"/>
+        <parameter id="Hz" value="0.5"/>
+        <parameter id="RvL" value="0.5"/>
+        <parameter id="RvOn" value="0"/>
+        <parameter id="RvTm" value="0.5"/>
+        <parameter id="RvSz" value="0.5"/>
+        <parameter id="ViInt" value="0.5"/>
+        <parameter id="ViSpd" value="0.5"/>
+        <parameter id="ViOn" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.946"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="13"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="127000">
+    <component-audio version="1">
+      <parameters num-parameters="4">
+        <parameter id="S1" value="2"/>
+        <parameter id="M2" value="0.1"/>
+        <parameter id="M3" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="32000" target-number="1" target-name="b5" min-value="0.5" max-value="0.95" controller-name="Quack"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="32000" target-number="1" target-name="b3" min-value="0.05" max-value="0.5" controller-name="Hollow"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="30000" target-number="1" target-name="Tr" min-value="0.4" max-value="0.78" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="127000" target-number="1" target-name="M2" min-value="0" max-value="0.32" controller-name="Plate"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="48000" target-number="1" target-name="S" min-value="0.25" max-value="0.85" controller-name="Squeeze"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="clean-glassy-single-coil" category="Clean" order="170" instrument="guitar" style="Pop / R&amp;B">
+  <description>Glassy, hollow 'in-between pickup' quack: low-mids thinned and a presence peak lifted before a clean blackface twin, light compression and a short silver plate. Use positions 2 or 4 on a single-coil guitar for the real thing; fingerstyle snaps and R&amp;B double-stops pop right out.</description>
+  <tags><tag>Clean</tag><tag>Pop / R&amp;B</tag><tag>Quack</tag><tag>Compressed</tag><tag>Plate Reverb</tag></tags>
+  <sources>
+    <source url="https://www.guitarplayer.com/players/mark-knopfler-down-the-road-wherever" title="Guitar Player: Mark Knopfler looks back (Twin + Strat, switch jammed between positions)"/>
+    <source url="https://guitarearo.substack.com/p/mark-knopfler-sultans-strat-not-out-of-phase" title="Guitar Earo: the Sultans of Swing Strat was not out of phase"/>
+    <source url="https://en.wikipedia.org/wiki/Dire_Straits_(album)" title="Dire Straits (album) (Wikipedia)"/>
+    <source url="https://www.musicradar.com/news/cory-wong-the-key-to-it-all-the-starting-point-for-understanding-is-just-to-listen" title="MusicRadar: Cory Wong interview (position 4, always-on compressor, records DI)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

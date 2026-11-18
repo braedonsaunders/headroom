@@ -1,0 +1,659 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "boss-ds1",
+ "version": 1,
+ "name": "Boss DS-1 Distortion (DS1-A circuit)",
+ "description": "Boss DS-1 Distortion, 'DS1-A' circuit (1994 onward: BA728N, later M5223AL and NJM2904L dual op-amps) as drawn on the ElectroSmash 'Boss DS-1 Distortion Analysis' schematic. 2SC2240 emitter-follower input buffer (R1 1 kΩ, C1 47 nF, R2 470 kΩ to Vref, R3 10 kΩ); C2 0.47 µF / R4 100 kΩ and C3 47 nF / R5 100 kΩ high-passes into the 2SC2240 shunt-feedback booster (R7 470 kΩ ∥ C4 250 pF, R8 10 kΩ, R9 22 Ω, about 35 dB); C5 68 nF, R10 100 kΩ to Vref, R39 47 kΩ and D8 1N4148 input clamp into a unity-gain op-amp buffer and the non-inverting distortion stage (100 kΩ linear Distortion pot: wiper on the − input through R11 100 kΩ, one end to the output with C7 100 pF across that section, the other end through R13 4.7 kΩ and C8 0.47 µF to ground; gain 1 ... 22.3). R14 2.2 kΩ, C9 0.47 µF into the 1N4148 pair to Vref with C10 10 nF to ground. Big-Muff-style passive tone (R16 6.8 kΩ / C12 0.1 µF low-pass, C11 22 nF / R15 2.2 kΩ / R17 6.8 kΩ high-pass, 20 kΩ linear Tone pot) into the 100 kΩ linear Level pot, R18 10 kΩ, C13 47 nF, 2SC2240 output follower (R19, R20 1 MΩ to Vref, R21 10 kΩ), R22 1 kΩ, C14 1 µF, R23 100 kΩ. Vref = R24/R25 10 kΩ divider with C15 47 µF. The 2SK30A JFET electronic bypass switching is omitted: in the effect-on state it is a closed path (the input and output buffers stay in circuit, as on the real pedal).",
+ "sources": [
+  {
+   "title": "ElectroSmash, 'Boss DS-1 Distortion Analysis' (DS1-A schematic and BOM: C1/C3 47n, C2/C8/C9 0.47u, C4 250p, C5 68n, C7 100p, C10 0.01u, C11 0.022u, C12 0.1u, C13 0.047u, C14 1u, C15 47u, C23 100u, D1 1N4004, D4/D5/D8 1N4148, Q1-Q3 2SC2240, R1/R22 1K, R2/R7 470K, R3/R8/R18/R21/R24/R25 10K, R4/R5/R10/R11/R23 100K, R9 22, R13 4.7K, R14/R15 2.2K, R16/R17 6.8K, R39 47K, R19/R20 1M, VR1/VR2 100KB, VR3 20KB; circuit-version history; Q2 collector ≈ 5.8 V). Archived copy used",
+   "url": "https://www.electrosmash.com/boss-ds1-analysis"
+  },
+  {
+   "title": "ElectroSmash, DS1-A schematic image 'boss-ds1-distortion-schematic-parts.jpg' (topology of the Distortion pot, tone and level network)",
+   "url": "https://web.archive.org/web/2023/https://www.electrosmash.com/images/tech/ds1/boss-ds1-distortion-schematic-parts.jpg"
+  },
+  {
+   "title": "New JRC NJM2904 datasheet (Ver. 2014-03-20): unity-gain bandwidth 0.6 MHz typ, slew rate 0.5 V/µs typ, open-loop gain 100 dB typ (at ±15 V)",
+   "url": "https://docs.rs-online.com/fae5/0900766b813e42b7.pdf"
+  },
+  {
+   "title": "Toshiba 2SC2240 datasheet (low-noise audio NPN, hFE 200-700 per ElectroSmash) for the stand-in model"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "out",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 1.0
+ },
+ "oversampling": 2,
+ "minRate": 176400,
+ "lte": {"start": "bdf2", "tol": 4},
+ "solver": "auto",
+ "cuts": [],
+ "models": {
+  "2SC2240": {
+   "kind": "npn",
+   "is": 2e-14,
+   "bf": 400.0,
+   "br": 3.0,
+   "note": "unverified: no vendor SPICE card. BF 400 inside the 2SC2240 hFE range (200-700, GR/BL grades); IS and BR copied from the library 2SC1815 approximation"
+  },
+  "NJM2904": {
+   "kind": "opamp",
+   "level": 1,
+   "a0": 100000.0,
+   "gbw": 600000.0,
+   "slew": 500000.0,
+   "swing_hi": 1.5,
+   "swing_lo": 0.1,
+   "vhi": 13.5,
+   "vlo": -13.5,
+   "note": "New JRC NJM2904 (2006+ DS-1): 100 dB, 0.6 MHz, 0.5 V/µs typ from the datasheet. unverified: swing_hi 1.5 V and swing_lo 0.1 V assumed from the LM358-class output stage (sinks to near the negative rail, about 1.5 V below V+). Earlier DS1-A units used the Rohm BA728N or Mitsubishi M5223AL"
+  }
+ },
+ "controls": [
+  {
+   "id": "tone",
+   "label": "Tone",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "tn"
+   ],
+   "group": "Main",
+   "note": "20 kΩ linear pot mixing the R16/C12 low-pass (counter-clockwise) and the C11/R15/R17 high-pass (clockwise); mid scoop near 500 Hz at the centre"
+  },
+  {
+   "id": "level",
+   "label": "Level",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "vol"
+   ],
+   "group": "Main",
+   "note": "100 kΩ linear pot fed from the Tone wiper, foot on Vref"
+  },
+  {
+   "id": "dist",
+   "label": "Distortion",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Dst"
+   ],
+   "group": "Main",
+   "note": "100 kΩ linear pot in the op-amp feedback: gain 1 + R(wiper-output)/(4.7 kΩ + R(wiper-R13)), 0 ... 26.5 dB"
+  },
+  {
+   "id": "bass",
+   "label": "Bass",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Bs"
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Legacy 'Bass' parameter; the DS-1 has only Tone, Level and Distortion; stored only"
+  },
+  {
+   "id": "mid",
+   "label": "Mid",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "M"
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Legacy 'Mid' parameter; no circuit meaning; stored only"
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "T"
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Legacy 'Treble' parameter; no circuit meaning; stored only"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VCC",
+   "type": "V",
+   "nodes": [
+    "vcc",
+    "0"
+   ],
+   "value": "9",
+   "label": "9 V",
+   "note": "D1 1N4004 (reverse-polarity shunt) and C23 100 µF across the supply are inert across an ideal source and omitted"
+  },
+  {
+   "ref": "R24",
+   "type": "R",
+   "nodes": [
+    "vcc",
+    "vb"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Vref divider"
+  },
+  {
+   "ref": "R25",
+   "type": "R",
+   "nodes": [
+    "vb",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C15",
+   "type": "C",
+   "nodes": [
+    "vb",
+    "0"
+   ],
+   "value": "47u",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "in",
+    "a1"
+   ],
+   "value": "1k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "a1",
+    "b1"
+   ],
+   "value": "47n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "b1",
+    "vb"
+   ],
+   "value": "470k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "Q1",
+   "type": "npn",
+   "nodes": [
+    "vcc",
+    "b1",
+    "e1"
+   ],
+   "model": "2SC2240",
+   "label": "Input buffer"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "e1",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "e1",
+    "n2"
+   ],
+   "value": "470n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "n2",
+    "vb"
+   ],
+   "value": "100k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "n2",
+    "b2"
+   ],
+   "value": "47n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "b2",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "b2",
+    "c2"
+   ],
+   "value": "470k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "b2",
+    "c2"
+   ],
+   "value": "250p",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "vcc",
+    "c2"
+   ],
+   "value": "10k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "Q2",
+   "type": "npn",
+   "nodes": [
+    "c2",
+    "b2",
+    "e2"
+   ],
+   "model": "2SC2240",
+   "label": "Transistor booster"
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "e2",
+    "0"
+   ],
+   "value": "22",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "c2",
+    "n5"
+   ],
+   "value": "68n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R10",
+   "type": "R",
+   "nodes": [
+    "n5",
+    "vb"
+   ],
+   "value": "100k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R39",
+   "type": "R",
+   "nodes": [
+    "n5",
+    "p1"
+   ],
+   "value": "47k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "D8",
+   "type": "D",
+   "nodes": [
+    "0",
+    "p1"
+   ],
+   "model": "1N4148",
+   "label": "Op-amp input clamp"
+  },
+  {
+   "ref": "U1A",
+   "type": "opamp",
+   "nodes": [
+    "p1",
+    "o1",
+    "o1",
+    "vcc",
+    "0"
+   ],
+   "model": "NJM2904",
+   "label": "Buffer"
+  },
+  {
+   "ref": "U1B",
+   "type": "opamp",
+   "nodes": [
+    "o1",
+    "m",
+    "o2",
+    "vcc",
+    "0"
+   ],
+   "model": "NJM2904",
+   "label": "Distortion stage"
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "m",
+    "xw"
+   ],
+   "value": "100k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "DIST",
+   "type": "pot",
+   "nodes": [
+    "o2",
+    "xw",
+    "r13"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "dist",
+   "label": "Distortion"
+  },
+  {
+   "ref": "C7",
+   "type": "C",
+   "nodes": [
+    "xw",
+    "o2"
+   ],
+   "value": "100p",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R13",
+   "type": "R",
+   "nodes": [
+    "r13",
+    "c8"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "c8",
+    "0"
+   ],
+   "value": "470n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R14",
+   "type": "R",
+   "nodes": [
+    "o2",
+    "n14"
+   ],
+   "value": "2.2k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C9",
+   "type": "C",
+   "nodes": [
+    "n14",
+    "k"
+   ],
+   "value": "470n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "D4",
+   "type": "D",
+   "nodes": [
+    "k",
+    "vb"
+   ],
+   "model": "1N4148",
+   "label": "Clipping diode",
+   "note": "ElectroSmash: 1S1588 / 1S2473 originally, 1N4148 equivalent"
+  },
+  {
+   "ref": "D5",
+   "type": "D",
+   "nodes": [
+    "vb",
+    "k"
+   ],
+   "model": "1N4148",
+   "label": "Clipping diode"
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "k",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "k",
+    "ta"
+   ],
+   "value": "6.8k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C12",
+   "type": "C",
+   "nodes": [
+    "ta",
+    "vb"
+   ],
+   "value": "100n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "k",
+    "n15"
+   ],
+   "value": "22n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "n15",
+    "tb"
+   ],
+   "value": "2.2k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R17",
+   "type": "R",
+   "nodes": [
+    "tb",
+    "vb"
+   ],
+   "value": "6.8k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "TONE",
+   "type": "pot",
+   "nodes": [
+    "ta",
+    "tw",
+    "tb"
+   ],
+   "value": "20k",
+   "taper": "B",
+   "control": "tone",
+   "label": "Tone"
+  },
+  {
+   "ref": "LEVEL",
+   "type": "pot",
+   "nodes": [
+    "vb",
+    "lw",
+    "tw"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "level",
+   "label": "Level"
+  },
+  {
+   "ref": "R18",
+   "type": "R",
+   "nodes": [
+    "lw",
+    "n18"
+   ],
+   "value": "10k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R19",
+   "type": "R",
+   "nodes": [
+    "n18",
+    "vb"
+   ],
+   "value": "1M",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C13",
+   "type": "C",
+   "nodes": [
+    "n18",
+    "b3"
+   ],
+   "value": "47n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R20",
+   "type": "R",
+   "nodes": [
+    "b3",
+    "vb"
+   ],
+   "value": "1M",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "Q3",
+   "type": "npn",
+   "nodes": [
+    "vcc",
+    "b3",
+    "e3"
+   ],
+   "model": "2SC2240",
+   "label": "Output buffer"
+  },
+  {
+   "ref": "R21",
+   "type": "R",
+   "nodes": [
+    "e3",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R22",
+   "type": "R",
+   "nodes": [
+    "e3",
+    "o3"
+   ],
+   "value": "1k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C14",
+   "type": "C",
+   "nodes": [
+    "o3",
+    "out"
+   ],
+   "value": "1u",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "R23",
+   "type": "R",
+   "nodes": [
+    "out",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05
+  }
+ ],
+ "probes": [
+  "e1",
+  "c2",
+  "o2",
+  "k",
+  "tw",
+  "out"
+ ],
+ "layout": {}
+}

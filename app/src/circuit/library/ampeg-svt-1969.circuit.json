@@ -1,0 +1,2280 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "ampeg-svt-1969",
+  "version": 1,
+  "name": "Ampeg SVT 1969",
+  "description": "Ampeg Super Valve Technology, catalogue 54000. POWER SECTION from the 1969 6146B sheet (Joe Piazza): input 1K + 1K with 470K and antiparallel clamp diodes into a 12DW7 (220K plate, 2.2K + 220 cathode with the global feedback 47K || 120 pF into the 220), a 12DW7 cathodyne (15K plate, 1K + 10K + 15K Balance cathode), two 12BH7 drivers (47K 5 W, 1.8K), and per bank a .047 uF / 150K / 150K drive node with the 22K - 15K lin - 39K bias divider into a 12BH7 cathode follower that drives three 6146B/8298A grids through 47K each; 22 ohm 1 W screen and 10 ohm 5 W plate resistors, one 1 ohm 1 W cathode sense per bank (K1/K2), O.T. 8950004 into a 4 ohm load (32 ohm x 8). Supply: P.T. 8930007 as a multi-winding transformer into a four-diode bridge, 100 uF/450 V over 70 uF/450 V || 40 uF/450 V with a 220K 2 W across each half, 8.2K 15 W to the 30 uF/600 V driver rail, 15K 1 W to the 40 uF/450 V V1 rail, 8.2K 2 W to the preamp's 40 uF/400 V rail; screen rail 200 uF/250 V, negative bias rail 90 uF/200 V; F.T. 8930008 for the 6.3 V heaters with the 100 ohm hum-balance pot. PREAMP from the 1972 preamp sheet (Joe Piazza) - DISCLOSED: no 1969 preamp drawing was found in any source reachable here, and early SVTs had several preamp revisions. Channel One (12DW7, Bass Select / Ultra-Low group, Bass/Treble 1 M stack) and Channel Two (12AX7, Ultra-Low / Ultra-High bank, Bass/Treble 1 M stack) are transcribed; the preamp's V3/V4 12DW7 and V5 6C4 cathode-follower stages, the 320821-1 mid inductor and the Mid-Range Select are not modelled (see notes).",
+  "sources": [
+    {
+      "title": "Ampeg SVT Power Amplifier Section, 6146B version, 1969 (drawn by Joe Piazza): six 6146B, 12DW7/12BH7 drivers, O.T. 8950004, P.T. 8930007, supply values",
+      "url": "https://schematicheaven.net/ampegamps/svtpoweramp6146b.pdf"
+    },
+    {
+      "title": "Ampeg SVT Pre-amp Section 1972 (drawn by Joe Piazza) - used with disclosure: no 1969 preamp sheet located",
+      "url": "https://schematicheaven.net/ampegamps/svtpreamp.pdf"
+    },
+    {
+      "title": "Ampeg SVT Power Amplifier Section, 6550A version (later circuit, basis of the SVT-CL, unit 177000) - cross-check for the bias supply",
+      "url": "https://schematicheaven.net/ampegamps/svtpoweramp6550a.pdf"
+    },
+    {
+      "title": "RCA 6146B/8298A datasheet: mu g1-g2 4.5, gm 7 mA/V, typical push-pull Class AB1 operation 600 V/-47 V/48 mA and 750 V/-48 V/46 mA per pair",
+      "url": "https://frank.pocnet.net/sheets/049/6/6146B.pdf"
+    }
+  ],
+  "io": {
+    "input": "in1",
+    "output": "spk",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 66.82,
+    "note": "outputVoltsPerFS = 1.5 x the 57.7 V peak measured at the speaker dimed (volume, bass, treble 1; a 0.35 FS peak DI, 88.2 kHz, settled start; sines at 41-1000 Hz, 0.03-0.3 V gave 47-56 V). 300 W into 4 ohm is 49 V peak, so the power stage clips at its rating and the feedback holds it symmetric. At the catalogue defaults the same DIs peak at 50-53 V (-4.3 dBFS), and the unit test's 0.1 V / 220 Hz sine reads 23.7 V rms (0.27 FS rms). 87 -> 66.82 (2026-11-11, control audit): the Ultra-Lo/Ultra-Hi rewire puts the drawn .001 uF || 10M coupling in Channel Two with Ultra Lo off (the catalogue default), which lowered the DI level by 2.29 dB (3 s riff, 0.5 V peak, unit defaults); the scale keeps the shipped level."
+  },
+  "oversampling": 2,
+  "minRate": 176400,
+  "lte": {"start": "bdf2", "tol": 16},
+  "solver": "auto",
+  "cuts": [
+    "bpa",
+    "bpm",
+    "bpb",
+    "bpc",
+    "bpd",
+    "biasn",
+    "bscn"
+  ],
+  "controls": [
+    {
+      "id": "volume",
+      "label": "Volume",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "G"
+      ],
+      "group": "Main",
+      "note": "the two 1 M lin channel volumes, the catalogue's Gain (G). They set how hard the preamp and power amp are driven, as the legacy Gain did. Until 2026-11-11 this took the catalogue's Master (V) first: racks with Master 0 (9 of 34 factory racks) were silent, and the library's Gain values were ignored"
+    },
+    {
+      "id": "bass",
+      "label": "Bass",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "B"
+      ],
+      "group": "Main",
+      "note": "the Bass 1 M in each channel's stack"
+    },
+    {
+      "id": "treble",
+      "label": "Treble",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "T"
+      ],
+      "group": "Main",
+      "note": "the Treble 1 M in each channel's stack"
+    },
+    {
+      "id": "ultraLow",
+      "label": "Ultra Lo",
+      "kind": "switch",
+      "default": 0.0,
+      "params": [
+        "uL"
+      ],
+      "group": "Main",
+      "note": "the Channel Two Ultra-Low switch: engaged bypasses the .001 uF || 10M coupling and loads A2 with .1 uF + 68k (full lows, mids scooped)"
+    },
+    {
+      "id": "ultraHigh",
+      "label": "Ultra Hi",
+      "kind": "switch",
+      "default": 0.0,
+      "params": [
+        "uH"
+      ],
+      "group": "Main",
+      "note": "the Channel Two Ultra-High switch: 500 pF from the volume-pot top to its wiper (a bright cap, boost depends on the volume)"
+    },
+    {
+      "id": "bias",
+      "label": "Bias",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Trim",
+      "note": "CIRCUIT-ONLY factory trim (no catalogue id): the two drawn 15k lin bank trimmers, set for the 6146B datasheet's -47 V idle"
+    },
+    {
+      "id": "balance",
+      "label": "Balance",
+      "kind": "continuous",
+      "default": 0.27,
+      "params": [],
+      "group": "Trim",
+      "note": "CIRCUIT-ONLY factory trim: the drawn 15K lin Balance rheostat in the cathodyne's cathode; 0.27 puts 1K + 10K + 4K = 15K under the cathode, equal to the 15K plate load"
+    },
+    {
+      "id": "humbal",
+      "label": "Hum Balance",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Trim",
+      "note": "CIRCUIT-ONLY factory trim: the drawn 100 ohm heater hum-balance pot"
+    },
+    {
+      "id": "mid",
+      "label": "Mid",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "M"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "the Mid-Range 50k lin and its 320821-1 inductor / Mid-Range Select are not modelled yet"
+    },
+    {
+      "id": "midFreq",
+      "label": "Mid Freq",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "mF"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "the Mid-Range Select switch is a 3-position switch, not a continuous control; not modelled with Mid"
+    },
+    {
+      "id": "bright",
+      "label": "Bright",
+      "kind": "switch",
+      "default": 1.0,
+      "params": [
+        "br"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "the 1972 sheet has Bright and Normal input jacks, not a bright switch"
+    },
+    {
+      "id": "graphicEq",
+      "label": "Graphic EQ",
+      "kind": "switch",
+      "default": 0.0,
+      "params": [
+        "gE",
+        "eQv",
+        "40",
+        "90",
+        "180",
+        "300",
+        "500",
+        "1",
+        "2",
+        "4",
+        "10"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "no graphic EQ on a 1969 SVT (that is the later SVT-III/IV); every catalogue EQ id - the switch gE, the level eQv and all nine band sliders - is stored only"
+    },
+    {
+      "id": "vintage",
+      "label": "G4M Vintage Mode",
+      "kind": "switch",
+      "default": 0.0,
+      "params": [],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "not a 1969 feature"
+    },
+    {
+      "id": "stereo",
+      "label": "Stereo",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "CASSt"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "mono unit"
+    },
+    {
+      "id": "power",
+      "label": "Power",
+      "kind": "switch",
+      "default": 1.0,
+      "params": [
+        "Pwr"
+      ],
+      "group": "Main"
+    },
+    {
+      "id": "legacy_master",
+      "label": "Master",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "V"
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "The catalogue's Master: the 1969 SVT has no master volume (the channel volumes feed the power amp directly). Output level is the rig's loudness match; stored only"
+    },
+    {
+      "id": "legacy_d",
+      "label": "D",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "D"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Not on the 1969 SVT; stored only"
+    },
+    {
+      "id": "legacy_g4m",
+      "label": "G4M",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "G4M"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Not on the 1969 SVT; stored only"
+    },
+    {
+      "id": "legacy_pv",
+      "label": "PV",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "PV"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Not on the 1969 SVT; stored only"
+    },
+    {
+      "id": "legacy_dv",
+      "label": "DV",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "DV"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Not on the 1969 SVT; stored only"
+    },
+    {
+      "id": "legacy_wv",
+      "label": "WV",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "WV"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Not on the 1969 SVT; stored only"
+    },
+    {
+      "id": "legacy_mx",
+      "label": "MX",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "MX"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Not on the 1969 SVT; stored only"
+    }
+  ],
+  "parts": [
+    {
+      "ref": "VMAINS",
+      "type": "V",
+      "nodes": [
+        "mains",
+        "0"
+      ],
+      "value": "0",
+      "ac": {
+        "amplitude": "169.7",
+        "freq": 60,
+        "phase": 90
+      },
+      "label": "120 V 60 Hz mains (169.7 V peak, starting at the crest)"
+    },
+    {
+      "ref": "PT",
+      "type": "transformer",
+      "nodes": [
+        "mains",
+        "0",
+        "sa",
+        "sb",
+        "bia",
+        "org",
+        "org",
+        "bib",
+        "sca",
+        "sorg",
+        "sorg",
+        "scb"
+      ],
+      "turns": [
+        1.0,
+        4.856,
+        1.069,
+        1.069,
+        1.3315,
+        1.3315
+      ],
+      "r": [
+        2.0,
+        32.0,
+        40.0,
+        40.0,
+        12.0,
+        12.0
+      ],
+      "leak": [
+        "8m",
+        "128m",
+        "4m",
+        "4m",
+        "4m",
+        "4m"
+      ],
+      "lm": 40.0,
+      "lsat": 4.0,
+      "label": "P.T. 8930007 (multi-winding power transformer)",
+      "note": "ALL WINDING DATA IS FITTED and disclosed - the drawing gives part numbers and rail voltages, never turns or DCR. 1:4.856 for the HT lands the settled rail on the sheet's 690 V; the bias halves at 1.069 give the ~-160 V that the drawn 22K / 15K lin / 39K divider and the 12BH7 cathode followers turn into about -48 V at the 6146B grids (24.4 mA per valve, the datasheet's point A) with the Bias trimmers centred (the 90 uF/200 V on that rail allows it); the 1.3316-per-half screen winding lands the screen rail on the datasheet's 200 V (its 200 uF/250 V cap is what pins the screen rail's voltage). DCR 2 ohm primary, 32 ohm HT, 40 ohm per bias half and 12 ohm per screen half are typical-PT values; leakages 8/128/4/4/4/4 mH, lm 40 H and lsat 4 are fitted to the settled rails, not to lab data."
+    },
+    {
+      "ref": "DB0",
+      "type": "D",
+      "nodes": [
+        "sa",
+        "bpa"
+      ],
+      "model": "1N4007",
+      "label": "bridge: winding end A -> +"
+    },
+    {
+      "ref": "DB1",
+      "type": "D",
+      "nodes": [
+        "sb",
+        "bpa"
+      ],
+      "model": "1N4007",
+      "label": "bridge: winding end B -> +"
+    },
+    {
+      "ref": "DB2",
+      "type": "D",
+      "nodes": [
+        "0",
+        "sa"
+      ],
+      "model": "1N4007",
+      "label": "bridge: - -> winding end A"
+    },
+    {
+      "ref": "DB3",
+      "type": "D",
+      "nodes": [
+        "0",
+        "sb"
+      ],
+      "model": "1N4007",
+      "label": "bridge: - -> winding end B"
+    },
+    {
+      "ref": "C1A",
+      "type": "C",
+      "nodes": [
+        "bpa",
+        "bpm"
+      ],
+      "value": "100u",
+      "tolerance": 0.2,
+      "label": "100 uF/450 V reservoir, upper half"
+    },
+    {
+      "ref": "C1B",
+      "type": "C",
+      "nodes": [
+        "bpm",
+        "0"
+      ],
+      "value": "70u",
+      "tolerance": 0.2,
+      "label": "70 uF/450 V reservoir, lower half"
+    },
+    {
+      "ref": "C1C",
+      "type": "C",
+      "nodes": [
+        "bpm",
+        "0"
+      ],
+      "value": "40u",
+      "tolerance": 0.2,
+      "label": "40 uF/450 V reservoir, lower half (in parallel with the 70 uF)"
+    },
+    {
+      "ref": "RB1",
+      "type": "R",
+      "nodes": [
+        "bpa",
+        "bpm"
+      ],
+      "value": "220k",
+      "tolerance": 0.05,
+      "label": "220k 2 W balancing resistor, upper half"
+    },
+    {
+      "ref": "RB2",
+      "type": "R",
+      "nodes": [
+        "bpm",
+        "0"
+      ],
+      "value": "220k",
+      "tolerance": 0.05,
+      "label": "220k 2 W balancing resistor, lower half"
+    },
+    {
+      "ref": "RD1",
+      "type": "R",
+      "nodes": [
+        "bpa",
+        "bpb"
+      ],
+      "value": "8k2",
+      "tolerance": 0.05,
+      "label": "8.2k 15 W dropper"
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "bpb",
+        "0"
+      ],
+      "value": "30u",
+      "tolerance": 0.2,
+      "label": "30 uF/600 V"
+    },
+    {
+      "ref": "RD2",
+      "type": "R",
+      "nodes": [
+        "bpb",
+        "bpc"
+      ],
+      "value": "15k",
+      "tolerance": 0.05,
+      "label": "15K 1 W to the power-amp V1 (12DW7) rail"
+    },
+    {
+      "ref": "C3",
+      "type": "C",
+      "nodes": [
+        "bpc",
+        "0"
+      ],
+      "value": "40u",
+      "tolerance": 0.2,
+      "label": "40 uF/450 V on the power-amp V1 rail"
+    },
+    {
+      "ref": "RD3",
+      "type": "R",
+      "nodes": [
+        "bpb",
+        "bpd"
+      ],
+      "value": "8k2",
+      "tolerance": 0.05,
+      "label": "8.2K 2 W preamp dropper (preamp sheet, from connector pin 5)"
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "bpd",
+        "0"
+      ],
+      "value": "40u",
+      "tolerance": 0.2,
+      "label": "40 uF/400 V preamp rail (preamp sheet)"
+    },
+    {
+      "ref": "RPRE",
+      "type": "R",
+      "nodes": [
+        "bpd",
+        "0"
+      ],
+      "value": "22k",
+      "tolerance": 0.1,
+      "label": "DC stand-in for the preamp's unmodelled V3/V4 12DW7 and V5 6C4 stages",
+      "note": "not a drawn part: the preamp sheet's V3 (47K/1.5K and 220K/560+7.5K), V4 (470K/3.3K and a DC-coupled follower into 47K+6.8K with 56K to V3's cathode) and V5 6C4 follower (1K+47K) are not in the audio path, but they load the 8.2K 2 W rail. Solved at DC with this netlist's 12DW7 cards they draw 16.0 mA at 350 V and 18.4 mA at 400 V (14.7 / 16.9 mA with the library 12AX7/12AU7 cards): 22K to chassis within 3 % over 300-400 V. Without it the preamp rail sits above its 40 uF/400 V cap."
+    },
+    {
+      "ref": "DBSC1",
+      "type": "D",
+      "nodes": [
+        "sca",
+        "bscn"
+      ],
+      "model": "1N4007",
+      "label": "screen rectifier: sca -> screen rail"
+    },
+    {
+      "ref": "DBSC2",
+      "type": "D",
+      "nodes": [
+        "scb",
+        "bscn"
+      ],
+      "model": "1N4007",
+      "label": "screen rectifier: scb -> screen rail"
+    },
+    {
+      "ref": "RSORG",
+      "type": "R",
+      "nodes": [
+        "sorg",
+        "0"
+      ],
+      "value": "0.1",
+      "tolerance": 0.5,
+      "label": "screen winding centre tap to chassis"
+    },
+    {
+      "ref": "CB2",
+      "type": "C",
+      "nodes": [
+        "bscn",
+        "0"
+      ],
+      "value": "200u",
+      "tolerance": 0.2,
+      "label": "200 uF/250 V screen reservoir"
+    },
+    {
+      "ref": "DBIAS1",
+      "type": "D",
+      "nodes": [
+        "biasn",
+        "bia"
+      ],
+      "model": "1N4007",
+      "label": "bias rectifier, blu-yel tap (cathode to the winding)"
+    },
+    {
+      "ref": "DBIAS2",
+      "type": "D",
+      "nodes": [
+        "biasn",
+        "bib"
+      ],
+      "model": "1N4007",
+      "label": "bias rectifier, grn-yel tap (cathode to the winding)"
+    },
+    {
+      "ref": "RORG",
+      "type": "R",
+      "nodes": [
+        "org",
+        "0"
+      ],
+      "value": "0.1",
+      "tolerance": 0.5,
+      "label": "bias winding centre tap (org) to chassis"
+    },
+    {
+      "ref": "CBI1",
+      "type": "C",
+      "nodes": [
+        "biasn",
+        "0"
+      ],
+      "value": "90u",
+      "tolerance": 0.2,
+      "label": "90 uF/200 V bias filter (+ at the org return)"
+    },
+    {
+      "ref": "RB22U",
+      "type": "R",
+      "nodes": [
+        "0",
+        "bccU"
+      ],
+      "value": "22k",
+      "tolerance": 0.05,
+      "label": "22K from chassis to the trimmer"
+    },
+    {
+      "ref": "BIASPU",
+      "type": "pot",
+      "nodes": [
+        "bccU",
+        "bpwU",
+        "bcwU"
+      ],
+      "value": "15k",
+      "taper": "B",
+      "control": "bias",
+      "label": "15K lin bias trimmer (one per bank, both on the circuit-only bias control)"
+    },
+    {
+      "ref": "RB39U",
+      "type": "R",
+      "nodes": [
+        "bcwU",
+        "biasn"
+      ],
+      "value": "39k",
+      "tolerance": 0.05,
+      "label": "39K from the trimmer to the negative rail"
+    },
+    {
+      "ref": "RB22L",
+      "type": "R",
+      "nodes": [
+        "0",
+        "bccL"
+      ],
+      "value": "22k",
+      "tolerance": 0.05,
+      "label": "22K from chassis to the trimmer"
+    },
+    {
+      "ref": "BIASPL",
+      "type": "pot",
+      "nodes": [
+        "bccL",
+        "bpwL",
+        "bcwL"
+      ],
+      "value": "15k",
+      "taper": "B",
+      "control": "bias",
+      "label": "15K lin bias trimmer (one per bank, both on the circuit-only bias control)"
+    },
+    {
+      "ref": "RB39L",
+      "type": "R",
+      "nodes": [
+        "bcwL",
+        "biasn"
+      ],
+      "value": "39k",
+      "tolerance": 0.05,
+      "label": "39K from the trimmer to the negative rail"
+    },
+    {
+      "ref": "FT",
+      "type": "transformer",
+      "nodes": [
+        "mains",
+        "0",
+        "f1",
+        "f2"
+      ],
+      "turns": [
+        1.0,
+        0.0525
+      ],
+      "r": [
+        2.0,
+        0.05
+      ],
+      "leak": [
+        "8m",
+        "0.4m"
+      ],
+      "lm": 40,
+      "lsat": 4.0,
+      "label": "F.T. 8930008 (6.3 VAC heater transformer)",
+      "note": "turns 1:0.0525 = 120 V : 6.3 V; the winding data is FITTED. The engine's valve models have no heater pins, so the heaters are not loads on this winding - only the drawn 100 ohm hum-balance pot is, and the heater current is therefore not modelled (disclosed)."
+    },
+    {
+      "ref": "HUMBAL",
+      "type": "pot",
+      "nodes": [
+        "f1",
+        "fhw",
+        "f2"
+      ],
+      "value": "100",
+      "taper": "B",
+      "control": "humbal",
+      "label": "100 ohm hum-balance pot, wiper to chassis"
+    },
+    {
+      "ref": "FHUM",
+      "type": "R",
+      "nodes": [
+        "fhw",
+        "0"
+      ],
+      "value": "0.1",
+      "tolerance": 0.5,
+      "label": "hum-balance wiper to chassis"
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "in1",
+        "g1a"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Channel One Bright jack 100k"
+    },
+    {
+      "ref": "R2",
+      "type": "R",
+      "nodes": [
+        "in1",
+        "g1a"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "Channel One Normal jack 47k"
+    },
+    {
+      "ref": "Cg1",
+      "type": "C",
+      "nodes": [
+        "in1",
+        "g1a"
+      ],
+      "value": "470p",
+      "tolerance": 0.1,
+      "label": "Bright 470 pF (across the 100k)"
+    },
+    {
+      "ref": "V1A",
+      "type": "triode",
+      "nodes": [
+        "p1a",
+        "g1a",
+        "k1a"
+      ],
+      "model": "12DW7_A",
+      "label": "V1A Channel One first stage (12DW7 section 1)"
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "bpd",
+        "p1a"
+      ],
+      "value": "220k",
+      "tolerance": 0.05,
+      "label": "V1A plate"
+    },
+    {
+      "ref": "R4",
+      "type": "R",
+      "nodes": [
+        "k1a",
+        "0"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "V1A cathode 47k"
+    },
+    {
+      "ref": "R5",
+      "type": "R",
+      "nodes": [
+        "k1a",
+        "0"
+      ],
+      "value": "3k3",
+      "tolerance": 0.05,
+      "label": "V1A cathode 3.3k (second leg)"
+    },
+    {
+      "ref": "R5b",
+      "type": "R",
+      "nodes": [
+        "p1a",
+        "v1"
+      ],
+      "value": "5M6",
+      "tolerance": 0.05,
+      "label": "V1A 5.6 M grid return for V1B"
+    },
+    {
+      "ref": "C7",
+      "type": "C",
+      "nodes": [
+        "p1a",
+        "v1"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "V1A coupling 1 uF"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "v1",
+        "b1"
+      ],
+      "value": "150k",
+      "tolerance": 0.05,
+      "label": "Channel One Bass Select 150k (left)"
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "b1",
+        "b2"
+      ],
+      "value": "150k",
+      "tolerance": 0.05,
+      "label": "Channel One Bass Select 150k (right)"
+    },
+    {
+      "ref": "C8",
+      "type": "C",
+      "nodes": [
+        "b1",
+        "0"
+      ],
+      "value": "2n",
+      "tolerance": 0.1,
+      "label": "Bass Select .002 uF to chassis"
+    },
+    {
+      "ref": "C9",
+      "type": "C",
+      "nodes": [
+        "b2",
+        "bsel"
+      ],
+      "value": "500p",
+      "tolerance": 0.1,
+      "label": "Bass Select 500 pF"
+    },
+    {
+      "ref": "BASS",
+      "type": "pot",
+      "nodes": [
+        "bsel",
+        "bw",
+        "v1"
+      ],
+      "value": "1M",
+      "taper": "A",
+      "control": "bass",
+      "label": "Bass 1 M"
+    },
+    {
+      "ref": "C10",
+      "type": "C",
+      "nodes": [
+        "bw",
+        "0"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": "Bass 10 nF"
+    },
+    {
+      "ref": "VOL1",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "v1w",
+        "v1"
+      ],
+      "value": "1M",
+      "taper": "B",
+      "control": "volume",
+      "label": "1 M lin Volume, Channel One"
+    },
+    {
+      "ref": "R9",
+      "type": "R",
+      "nodes": [
+        "v1w",
+        "g1b"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "into V1B"
+    },
+    {
+      "ref": "R10",
+      "type": "R",
+      "nodes": [
+        "g1b",
+        "0"
+      ],
+      "value": "1k5",
+      "tolerance": 0.05,
+      "label": "V1B grid return"
+    },
+    {
+      "ref": "V1B",
+      "type": "triode",
+      "nodes": [
+        "p1b",
+        "g1b",
+        "k1b"
+      ],
+      "model": "12DW7_B",
+      "label": "V1B Channel One second stage (12DW7 section 2)"
+    },
+    {
+      "ref": "R11",
+      "type": "R",
+      "nodes": [
+        "bpd",
+        "p1b"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "V1B plate"
+    },
+    {
+      "ref": "R12",
+      "type": "R",
+      "nodes": [
+        "k1b",
+        "0"
+      ],
+      "value": "1k5",
+      "tolerance": 0.05,
+      "label": "V1B cathode"
+    },
+    {
+      "ref": "C11",
+      "type": "C",
+      "nodes": [
+        "p1b",
+        "t1"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": "into the Channel One tone stack"
+    },
+    {
+      "ref": "R13",
+      "type": "R",
+      "nodes": [
+        "t1",
+        "t2"
+      ],
+      "value": "220k",
+      "tolerance": 0.05,
+      "label": "stack feed 220k"
+    },
+    {
+      "ref": "C12",
+      "type": "C",
+      "nodes": [
+        "t1",
+        "t2"
+      ],
+      "value": "47p",
+      "tolerance": 0.1,
+      "label": "47 pF"
+    },
+    {
+      "ref": "BASS1",
+      "type": "pot",
+      "nodes": [
+        "tw",
+        "bw1",
+        "t2"
+      ],
+      "value": "1M",
+      "taper": "A",
+      "control": "bass",
+      "label": "Bass 1 M (Channel One stack)"
+    },
+    {
+      "ref": "C13",
+      "type": "C",
+      "nodes": [
+        "bw1",
+        "0"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": "10 nF"
+    },
+    {
+      "ref": "R14",
+      "type": "R",
+      "nodes": [
+        "tw",
+        "t3"
+      ],
+      "value": "120k",
+      "tolerance": 0.05,
+      "label": "120k to the Treble control"
+    },
+    {
+      "ref": "TREB",
+      "type": "pot",
+      "nodes": [
+        "t3",
+        "tww",
+        "0"
+      ],
+      "value": "1M",
+      "taper": "A",
+      "control": "treble",
+      "label": "Treble 1 M"
+    },
+    {
+      "ref": "C14",
+      "type": "C",
+      "nodes": [
+        "t3",
+        "0"
+      ],
+      "value": "470p",
+      "tolerance": 0.1,
+      "label": "470 pF"
+    },
+    {
+      "ref": "R15",
+      "type": "R",
+      "nodes": [
+        "t3",
+        "0"
+      ],
+      "value": "22k",
+      "tolerance": 0.05,
+      "label": "22k"
+    },
+    {
+      "ref": "R2R1",
+      "type": "R",
+      "nodes": [
+        "in1",
+        "g2a"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Channel Two Bright jack 100k"
+    },
+    {
+      "ref": "R2R2",
+      "type": "R",
+      "nodes": [
+        "in1",
+        "g2a"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "Channel Two Normal jack 47k"
+    },
+    {
+      "ref": "C2C1",
+      "type": "C",
+      "nodes": [
+        "in1",
+        "g2a"
+      ],
+      "value": "470p",
+      "tolerance": 0.1,
+      "label": "Channel Two Bright 470 pF"
+    },
+    {
+      "ref": "V2A",
+      "type": "triode",
+      "nodes": [
+        "p2a",
+        "g2a",
+        "k2a"
+      ],
+      "model": "12AX7_A",
+      "label": "V2A Channel Two first stage (12AX7)"
+    },
+    {
+      "ref": "R2P1",
+      "type": "R",
+      "nodes": [
+        "bpd",
+        "p2a"
+      ],
+      "value": "220k",
+      "tolerance": 0.05,
+      "label": "V2A plate 220k"
+    },
+    {
+      "ref": "R2K1",
+      "type": "R",
+      "nodes": [
+        "k2a",
+        "0"
+      ],
+      "value": "3k3",
+      "tolerance": 0.05,
+      "label": "V2A cathode 3.3k"
+    },
+    {
+      "ref": "C2C2",
+      "type": "C",
+      "nodes": [
+        "p2a",
+        "a2"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "label": "V2A output coupling .1 uF"
+    },
+    {
+      "ref": "CUL",
+      "type": "C",
+      "nodes": [
+        "a2",
+        "ul1"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "label": "Ultra-Low .1 uF"
+    },
+    {
+      "ref": "RUL",
+      "type": "R",
+      "nodes": [
+        "ul1",
+        "e2"
+      ],
+      "value": "68k",
+      "tolerance": 0.05,
+      "label": "Ultra-Low 68k"
+    },
+    {
+      "ref": "RULL",
+      "type": "R",
+      "nodes": [
+        "e2",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "Ultra-Low 1 M bleed, E2 to chassis",
+      "note": "Fixed 2026-11-11 (control audit): the 1 M is drawn from E2 straight to the chassis rail (anti-pop bleed for the .1 uF/68k leg while the switch is open); the switch shorts it. svtpreamp.pdf Channel Two (x 80-260, y 360-560 native)"
+    },
+    {
+      "ref": "SWULG",
+      "type": "switch",
+      "nodes": [
+        "e2",
+        "0"
+      ],
+      "control": "ultraLow",
+      "positions": [
+        1
+      ],
+      "label": "Ultra-Low switch pole 1: E2 to chassis (engaged)",
+      "note": "Fixed 2026-11-11 (control audit): engaged shorts E2 to chassis, so .1 uF + 68k load A2 (the mid scoop). It was wired to switch the 1 M bleed instead. svtpreamp.pdf Channel Two (x 80-260, y 360-560 native)"
+    },
+    {
+      "ref": "SWULD",
+      "type": "switch",
+      "nodes": [
+        "a2",
+        "d2"
+      ],
+      "control": "ultraLow",
+      "positions": [
+        1
+      ],
+      "label": "Ultra-Low switch pole 2: A2 straight to the volume top (engaged)",
+      "note": "Fixed 2026-11-11 (control audit): engaged bypasses the .001 uF || 10M coupling, giving Channel Two its full low end (SVT-VR manual, Channel Two Ultra Lo: +11 dB at 40 Hz relative, engaged = enhances the lows). Open (off), the signal reaches the volume only through .001 uF || 10M. It was the other way round, and with the coupling missing, engaging Ultra Lo muted the channel (-55 dB). svtpreamp.pdf Channel Two (x 80-260, y 360-560 native)"
+    },
+    {
+      "ref": "RUH",
+      "type": "R",
+      "nodes": [
+        "a2",
+        "d2"
+      ],
+      "value": "10M",
+      "tolerance": 0.05,
+      "label": "Channel Two coupling 10M (across the .001 uF)",
+      "note": "Fixed 2026-11-11 (control audit): drawn 10M (not 1 M) from the A2 bus to the volume-pot top, in parallel with the .001 uF; the bleed keeps A2 referenced while Ultra-Lo is open. It was wired into the Ultra-High branch. svtpreamp.pdf Channel Two (x 80-260, y 360-560 native)"
+    },
+    {
+      "ref": "CUHC",
+      "type": "C",
+      "nodes": [
+        "a2",
+        "d2"
+      ],
+      "value": "1n",
+      "tolerance": 0.1,
+      "label": "Channel Two coupling .001 uF (bypassed by Ultra-Lo)",
+      "note": "Fixed 2026-11-11 (control audit): A2 to the volume-pot top, in parallel with the 10M. svtpreamp.pdf Channel Two (x 80-260, y 360-560 native)"
+    },
+    {
+      "ref": "CUH",
+      "type": "C",
+      "nodes": [
+        "d2",
+        "uh1"
+      ],
+      "value": "500p",
+      "tolerance": 0.1,
+      "label": "Ultra-High 500 pF from the volume-pot top",
+      "note": "Fixed 2026-11-11 (control audit): the 500 pF hangs off the volume-pot top and the Ultra-High switch takes it to the wiper, a bright cap across the top of the pot (SVT-VR manual: boost depends on the volume setting). svtpreamp.pdf Channel Two (x 80-260, y 360-560 native)"
+    },
+    {
+      "ref": "SWUH",
+      "type": "switch",
+      "nodes": [
+        "uh1",
+        "v2w"
+      ],
+      "control": "ultraHigh",
+      "positions": [
+        1
+      ],
+      "label": "Ultra-High switch: 500 pF to the volume wiper",
+      "note": "Fixed 2026-11-11 (control audit): it closed onto the volume top, in parallel with the Ultra-Low short, so it was dead. svtpreamp.pdf Channel Two (x 80-260, y 360-560 native)"
+    },
+    {
+      "ref": "VOL2",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "v2w",
+        "d2"
+      ],
+      "value": "1M",
+      "taper": "B",
+      "control": "volume",
+      "label": "1 M lin Volume, Channel Two"
+    },
+    {
+      "ref": "R2G",
+      "type": "R",
+      "nodes": [
+        "v2w",
+        "g2b"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "into V2B"
+    },
+    {
+      "ref": "R2GL",
+      "type": "R",
+      "nodes": [
+        "g2b",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "V2B grid return"
+    },
+    {
+      "ref": "V2B",
+      "type": "triode",
+      "nodes": [
+        "p2b",
+        "g2b",
+        "k2b"
+      ],
+      "model": "12AX7_B",
+      "label": "V2B Channel Two second stage (12AX7)"
+    },
+    {
+      "ref": "R2P2",
+      "type": "R",
+      "nodes": [
+        "bpd",
+        "p2b"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "V2B plate 100k"
+    },
+    {
+      "ref": "R2K2",
+      "type": "R",
+      "nodes": [
+        "k2b",
+        "0"
+      ],
+      "value": "3k3",
+      "tolerance": 0.05,
+      "label": "V2B cathode 3.3k"
+    },
+    {
+      "ref": "C2C3",
+      "type": "C",
+      "nodes": [
+        "p2b",
+        "t2a"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "label": "into the Channel Two tone stack"
+    },
+    {
+      "ref": "R2S1",
+      "type": "R",
+      "nodes": [
+        "t2a",
+        "p2s"
+      ],
+      "value": "220k",
+      "tolerance": 0.05,
+      "label": "Channel Two stack feed 220k"
+    },
+    {
+      "ref": "BASS2",
+      "type": "pot",
+      "nodes": [
+        "q2",
+        "w2",
+        "p2s"
+      ],
+      "value": "1M",
+      "taper": "A",
+      "control": "bass",
+      "label": "Bass 1 M (Channel Two stack)"
+    },
+    {
+      "ref": "C2S1",
+      "type": "C",
+      "nodes": [
+        "p2s",
+        "w2"
+      ],
+      "value": "1n",
+      "tolerance": 0.1,
+      "label": ".001 uF across the Bass top half"
+    },
+    {
+      "ref": "C2S2",
+      "type": "C",
+      "nodes": [
+        "w2",
+        "q2"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": ".01 uF across the Bass bottom half"
+    },
+    {
+      "ref": "R2S2",
+      "type": "R",
+      "nodes": [
+        "w2",
+        "t2b"
+      ],
+      "value": "120k",
+      "tolerance": 0.05,
+      "label": "120k to the Treble control"
+    },
+    {
+      "ref": "TREB2",
+      "type": "pot",
+      "nodes": [
+        "r2",
+        "t2w",
+        "t2b"
+      ],
+      "value": "1M",
+      "taper": "A",
+      "control": "treble",
+      "label": "Treble 1 M (Channel Two stack)"
+    },
+    {
+      "ref": "C2S3",
+      "type": "C",
+      "nodes": [
+        "t2b",
+        "r2"
+      ],
+      "value": "47p",
+      "tolerance": 0.1,
+      "label": "47 pF across the Treble"
+    },
+    {
+      "ref": "R2S3",
+      "type": "R",
+      "nodes": [
+        "q2",
+        "r2"
+      ],
+      "value": "22k",
+      "tolerance": 0.05,
+      "label": "22k under the Bass control"
+    },
+    {
+      "ref": "C2S4",
+      "type": "C",
+      "nodes": [
+        "r2",
+        "0"
+      ],
+      "value": "470p",
+      "tolerance": 0.1,
+      "label": "470 pF"
+    },
+    {
+      "ref": "R2S4",
+      "type": "R",
+      "nodes": [
+        "t2w",
+        "ch2"
+      ],
+      "value": "470k",
+      "tolerance": 0.05,
+      "label": "Channel Two mix into the driver"
+    },
+    {
+      "ref": "C2C4",
+      "type": "C",
+      "nodes": [
+        "ch2",
+        "g2mix"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": "Channel Two coupling to the driver grid"
+    },
+    {
+      "ref": "RIN1",
+      "type": "R",
+      "nodes": [
+        "pre",
+        "ext"
+      ],
+      "value": "1k",
+      "tolerance": 0.05,
+      "label": "1K from connector pin 1 to the Ext. Amp. jack"
+    },
+    {
+      "ref": "RIN2",
+      "type": "R",
+      "nodes": [
+        "ext",
+        "g5"
+      ],
+      "value": "1k",
+      "tolerance": 0.05,
+      "label": "1K from the Ext. Amp. jack to the V1 grid"
+    },
+    {
+      "ref": "R18",
+      "type": "R",
+      "nodes": [
+        "g5",
+        "0"
+      ],
+      "value": "470k",
+      "tolerance": 0.05,
+      "label": "V1 grid return 470K"
+    },
+    {
+      "ref": "DIN1",
+      "type": "D",
+      "nodes": [
+        "g5",
+        "0"
+      ],
+      "model": "1N914",
+      "label": "input clamp diode (type not given on the sheet)"
+    },
+    {
+      "ref": "DIN2",
+      "type": "D",
+      "nodes": [
+        "0",
+        "g5"
+      ],
+      "model": "1N914",
+      "label": "input clamp diode, antiparallel (type not given on the sheet)"
+    },
+    {
+      "ref": "C15",
+      "type": "C",
+      "nodes": [
+        "t3",
+        "pre"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": "Channel One mix into connector pin 1 (the 1972 preamp's V3-V5 are not modelled)"
+    },
+    {
+      "ref": "R19",
+      "type": "R",
+      "nodes": [
+        "pre",
+        "g2mix"
+      ],
+      "value": "470k",
+      "tolerance": 0.05,
+      "label": "Channel Two mix summing resistor into connector pin 1"
+    },
+    {
+      "ref": "V4T",
+      "type": "triode",
+      "nodes": [
+        "p5",
+        "g5",
+        "k5"
+      ],
+      "model": "12DW7_A",
+      "label": "power-amp V1 12DW7 section 1 (input amplifier)"
+    },
+    {
+      "ref": "R16",
+      "type": "R",
+      "nodes": [
+        "bpc",
+        "p5"
+      ],
+      "value": "220k",
+      "tolerance": 0.05,
+      "label": "V1 section 1 plate 220K"
+    },
+    {
+      "ref": "R17",
+      "type": "R",
+      "nodes": [
+        "k5",
+        "nfb"
+      ],
+      "value": "2k2",
+      "tolerance": 0.05,
+      "label": "V1 section 1 cathode 2.2K"
+    },
+    {
+      "ref": "RNF0",
+      "type": "R",
+      "nodes": [
+        "nfb",
+        "0"
+      ],
+      "value": "220",
+      "tolerance": 0.05,
+      "label": "220 under the cathode: the global feedback injection point"
+    },
+    {
+      "ref": "RNFB",
+      "type": "R",
+      "nodes": [
+        "spk",
+        "nfb"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "global feedback 47K from the output transformer secondary"
+    },
+    {
+      "ref": "CNFB",
+      "type": "C",
+      "nodes": [
+        "spk",
+        "nfb"
+      ],
+      "value": "120p",
+      "tolerance": 0.1,
+      "label": "120 pF across the 47K feedback resistor"
+    },
+    {
+      "ref": "C16",
+      "type": "C",
+      "nodes": [
+        "p5",
+        "gpi"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "label": "V1 section 1 plate to the cathodyne grid, .1 uF"
+    },
+    {
+      "ref": "CPI",
+      "type": "C",
+      "nodes": [
+        "gpi",
+        "0"
+      ],
+      "value": "120p",
+      "tolerance": 0.1,
+      "label": "120 pF from the cathodyne grid to chassis"
+    },
+    {
+      "ref": "VPI",
+      "type": "triode",
+      "nodes": [
+        "ppi",
+        "gpi",
+        "kpi"
+      ],
+      "model": "12DW7_B",
+      "label": "power-amp V1 12DW7 section 2 (cathodyne phase inverter)"
+    },
+    {
+      "ref": "RPI1",
+      "type": "R",
+      "nodes": [
+        "bpc",
+        "ppi"
+      ],
+      "value": "15k",
+      "tolerance": 0.05,
+      "label": "cathodyne plate 15K"
+    },
+    {
+      "ref": "RPI2",
+      "type": "R",
+      "nodes": [
+        "kpi",
+        "kpj"
+      ],
+      "value": "1k",
+      "tolerance": 0.05,
+      "label": "cathodyne cathode 1K (bias)"
+    },
+    {
+      "ref": "RPI3",
+      "type": "R",
+      "nodes": [
+        "gpi",
+        "kpj"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "cathodyne grid return 1M to the 1K/10K tap"
+    },
+    {
+      "ref": "RPI4",
+      "type": "R",
+      "nodes": [
+        "kpj",
+        "kpb"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "cathodyne cathode 10K"
+    },
+    {
+      "ref": "BAL",
+      "type": "pot",
+      "nodes": [
+        "kpb",
+        "0",
+        "0"
+      ],
+      "value": "15k",
+      "taper": "B",
+      "control": "balance",
+      "label": "15K lin Balance rheostat (wiper to the chassis end), circuit-only trim"
+    },
+    {
+      "ref": "CPU",
+      "type": "C",
+      "nodes": [
+        "ppi",
+        "g2"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "label": "cathodyne plate to V2's grid, .1 uF"
+    },
+    {
+      "ref": "CPL",
+      "type": "C",
+      "nodes": [
+        "kpi",
+        "g3"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "label": "cathodyne cathode to V3's grid, .1 uF"
+    },
+    {
+      "ref": "V2",
+      "type": "triode",
+      "nodes": [
+        "p2",
+        "g2",
+        "k2"
+      ],
+      "model": "12BH7",
+      "label": "V2 12BH7 section 1: upper-bank driver"
+    },
+    {
+      "ref": "R20",
+      "type": "R",
+      "nodes": [
+        "bpb",
+        "p2"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "V2 plate 47K 5 W"
+    },
+    {
+      "ref": "R21",
+      "type": "R",
+      "nodes": [
+        "k2",
+        "0"
+      ],
+      "value": "1k8",
+      "tolerance": 0.05,
+      "label": "V2 cathode 1.8K"
+    },
+    {
+      "ref": "R22",
+      "type": "R",
+      "nodes": [
+        "g2",
+        "0"
+      ],
+      "value": "470k",
+      "tolerance": 0.05,
+      "label": "V2 grid leak 470K"
+    },
+    {
+      "ref": "V3",
+      "type": "triode",
+      "nodes": [
+        "p3",
+        "g3",
+        "k3"
+      ],
+      "model": "12BH7",
+      "label": "V3 12BH7 section 1: lower-bank driver"
+    },
+    {
+      "ref": "R23",
+      "type": "R",
+      "nodes": [
+        "bpb",
+        "p3"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "V3 plate 47K 5 W"
+    },
+    {
+      "ref": "R24",
+      "type": "R",
+      "nodes": [
+        "k3",
+        "0"
+      ],
+      "value": "1k8",
+      "tolerance": 0.05,
+      "label": "V3 cathode 1.8K"
+    },
+    {
+      "ref": "R25",
+      "type": "R",
+      "nodes": [
+        "g3",
+        "0"
+      ],
+      "value": "470k",
+      "tolerance": 0.05,
+      "label": "V3 grid leak 470K"
+    },
+    {
+      "ref": "CDU",
+      "type": "C",
+      "nodes": [
+        "p2",
+        "bbusU"
+      ],
+      "value": "47n",
+      "tolerance": 0.1,
+      "label": "driver plate coupling .047 uF"
+    },
+    {
+      "ref": "RDBU",
+      "type": "R",
+      "nodes": [
+        "bbusU",
+        "bpwU"
+      ],
+      "value": "150k",
+      "tolerance": 0.05,
+      "label": "150K from the drive node to the bias wiper"
+    },
+    {
+      "ref": "RDGU",
+      "type": "R",
+      "nodes": [
+        "bbusU",
+        "gcfu"
+      ],
+      "value": "150k",
+      "tolerance": 0.05,
+      "label": "150K from the drive node to the cathode follower grid"
+    },
+    {
+      "ref": "VCFU",
+      "type": "triode",
+      "nodes": [
+        "bscn",
+        "gcfu",
+        "kcfu"
+      ],
+      "model": "12BH7",
+      "label": "V2 12BH7 section 2: cathode follower driving the upper bank grids"
+    },
+    {
+      "ref": "RCFU",
+      "type": "R",
+      "nodes": [
+        "kcfu",
+        "biasn"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "47K 1 W cathode follower load to the negative rail"
+    },
+    {
+      "ref": "CDL",
+      "type": "C",
+      "nodes": [
+        "p3",
+        "bbusL"
+      ],
+      "value": "47n",
+      "tolerance": 0.1,
+      "label": "driver plate coupling .047 uF"
+    },
+    {
+      "ref": "RDBL",
+      "type": "R",
+      "nodes": [
+        "bbusL",
+        "bpwL"
+      ],
+      "value": "150k",
+      "tolerance": 0.05,
+      "label": "150K from the drive node to the bias wiper"
+    },
+    {
+      "ref": "RDGL",
+      "type": "R",
+      "nodes": [
+        "bbusL",
+        "gcfl"
+      ],
+      "value": "150k",
+      "tolerance": 0.05,
+      "label": "150K from the drive node to the cathode follower grid"
+    },
+    {
+      "ref": "VCFL",
+      "type": "triode",
+      "nodes": [
+        "bscn",
+        "gcfl",
+        "kcfl"
+      ],
+      "model": "12BH7",
+      "label": "V3 12BH7 section 2: cathode follower driving the lower bank grids"
+    },
+    {
+      "ref": "RCFL",
+      "type": "R",
+      "nodes": [
+        "kcfl",
+        "biasn"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "47K 1 W cathode follower load to the negative rail"
+    },
+    {
+      "ref": "V7",
+      "type": "pentode",
+      "nodes": [
+        "pau0",
+        "scu0",
+        "gu0",
+        "kku"
+      ],
+      "model": "6146B",
+      "label": "upper bank V7, V8, V9: three 6146B/8298A in parallel",
+      "parallel": 3,
+      "note": "V7 + V8 + V9: the three matched 6146B of the bank as one part with parallel 3. The drawing gives each valve its own 47K grid, 22 ohm screen and 10 ohm plate resistor between the same nodes, so the three branches are identical and the fold is exact (the engine solves one set of tube ports instead of three)"
+    },
+    {
+      "ref": "RGu0",
+      "type": "R",
+      "nodes": [
+        "kcfu",
+        "gu0"
+      ],
+      "value": 15666.666666666666,
+      "tolerance": 0.05,
+      "label": "three 47K from the cathode follower, one per grid (in parallel)"
+    },
+    {
+      "ref": "RSu0",
+      "type": "R",
+      "nodes": [
+        "bscn",
+        "scu0"
+      ],
+      "value": 7.333333333333333,
+      "tolerance": 0.05,
+      "label": "three 22 ohm 1 W screen resistors (in parallel)"
+    },
+    {
+      "ref": "RPu0",
+      "type": "R",
+      "nodes": [
+        "pau0",
+        "otu"
+      ],
+      "value": 3.3333333333333335,
+      "tolerance": 0.05,
+      "label": "three 10 ohm 5 W plate resistors (in parallel)"
+    },
+    {
+      "ref": "RKu",
+      "type": "R",
+      "nodes": [
+        "kku",
+        "0"
+      ],
+      "value": "1",
+      "tolerance": 0.05,
+      "label": "1 ohm 1 W cathode sense (bias test point K2)"
+    },
+    {
+      "ref": "V4",
+      "type": "pentode",
+      "nodes": [
+        "pal0",
+        "scl0",
+        "gl0",
+        "kkl"
+      ],
+      "model": "6146B",
+      "label": "lower bank V4, V5, V6: three 6146B/8298A in parallel",
+      "parallel": 3,
+      "note": "V4 + V5 + V6: the three matched 6146B of the bank as one part with parallel 3. The drawing gives each valve its own 47K grid, 22 ohm screen and 10 ohm plate resistor between the same nodes, so the three branches are identical and the fold is exact (the engine solves one set of tube ports instead of three)"
+    },
+    {
+      "ref": "RGl0",
+      "type": "R",
+      "nodes": [
+        "kcfl",
+        "gl0"
+      ],
+      "value": 15666.666666666666,
+      "tolerance": 0.05,
+      "label": "three 47K from the cathode follower, one per grid (in parallel)"
+    },
+    {
+      "ref": "RSl0",
+      "type": "R",
+      "nodes": [
+        "bscn",
+        "scl0"
+      ],
+      "value": 7.333333333333333,
+      "tolerance": 0.05,
+      "label": "three 22 ohm 1 W screen resistors (in parallel)"
+    },
+    {
+      "ref": "RPl0",
+      "type": "R",
+      "nodes": [
+        "pal0",
+        "otl"
+      ],
+      "value": 3.3333333333333335,
+      "tolerance": 0.05,
+      "label": "three 10 ohm 5 W plate resistors (in parallel)"
+    },
+    {
+      "ref": "RKl",
+      "type": "R",
+      "nodes": [
+        "kkl",
+        "0"
+      ],
+      "value": "1",
+      "tolerance": 0.05,
+      "label": "1 ohm 1 W cathode sense (bias test point K1)"
+    },
+    {
+      "ref": "OT",
+      "type": "transformer",
+      "nodes": [
+        "otu",
+        "bpa",
+        "bpa",
+        "otl",
+        "spk",
+        "0"
+      ],
+      "turns": [
+        1,
+        1,
+        0.0917
+      ],
+      "r": [
+        10,
+        10,
+        0.4
+      ],
+      "leak": [
+        "5m",
+        "5m",
+        0
+      ],
+      "lm": 20,
+      "lsat": 3.0,
+      "label": "O.T. 8950004 (six 6146B : 32 ohm x 8)",
+      "note": "the drawing gives 32 ohm x 8 secondaries and no turns ratio. FITTED: the three parallel pairs want the datasheet's 5.6 k plate-to-plate each, i.e. 1.87 k for the pair of banks, so 2 primary turns : 0.0917 secondary turns reflects 4 ohm (the eight 32 ohm speakers) as 1.9 k."
+    },
+    {
+      "ref": "CWA",
+      "type": "C",
+      "nodes": [
+        "otu",
+        "cwa"
+      ],
+      "value": "470p",
+      "tolerance": 0.2,
+      "label": "OT upper-bank winding capacitance"
+    },
+    {
+      "ref": "RCWA",
+      "type": "R",
+      "nodes": [
+        "cwa",
+        "bpa"
+      ],
+      "value": "2.2k",
+      "tolerance": 0.1,
+      "label": "winding-capacitance loss"
+    },
+    {
+      "ref": "CWB",
+      "type": "C",
+      "nodes": [
+        "otl",
+        "cwb"
+      ],
+      "value": "470p",
+      "tolerance": 0.2,
+      "label": "OT lower-bank winding capacitance"
+    },
+    {
+      "ref": "RCWB",
+      "type": "R",
+      "nodes": [
+        "cwb",
+        "bpa"
+      ],
+      "value": "2.2k",
+      "tolerance": 0.1,
+      "label": "winding-capacitance loss"
+    },
+    {
+      "ref": "SPK",
+      "type": "sub",
+      "of": "lib:spk-12in-8ohm-american",
+      "nodes": [
+        "spk",
+        "0"
+      ],
+      "parallel": 2,
+      "label": "eight 32 ohm speakers presenting 4 ohm to O.T. 8950004 (two 8 ohm class blocks in parallel)",
+      "note": "the OT turns are fitted for the drawn 4 ohm load; a single 8 ohm block (the earlier netlist) put 3.8 k plate-to-plate on the banks instead of 1.9 k"
+    }
+  ],
+  "probes": [
+    "g1a",
+    "p1a",
+    "g2a",
+    "p2a",
+    "v2w",
+    "p2b",
+    "t3",
+    "g5",
+    "p5",
+    "ppi",
+    "kpi",
+    "g2",
+    "p2",
+    "p3",
+    "kcfu",
+    "gu0",
+    "pau0",
+    "otu",
+    "kku",
+    "kkl",
+    "bpa",
+    "bpm",
+    "bpb",
+    "bpc",
+    "bpd",
+    "bscn",
+    "biasn",
+    "bbusU",
+    "bpwU",
+    "nfb",
+    "spk"
+  ],
+  "layout": {},
+  "models": {
+    "1N4007": {
+      "kind": "diode",
+      "is": 7e-09,
+      "n": 1.9,
+      "rs": 0.03,
+      "note": "1N4007 silicon rectifier (the SVT bridge and the bias rectifier are solid-state)"
+    },
+    "12DW7_A": {
+      "kind": "triode",
+      "mu": 100,
+      "ex": 1.4,
+      "kg1": 1060,
+      "kp": 600,
+      "kvb": 300,
+      "cgk": 1.6e-12,
+      "cgp": 1.7e-12,
+      "cpk": 4.6e-13,
+      "gscale": 0.00062,
+      "gknee": 0.06,
+      "note": "12DW7 section 1 = a 12AX7 section (mu 100)"
+    },
+    "12DW7_B": {
+      "kind": "triode",
+      "mu": 17,
+      "ex": 1.3,
+      "kg1": 990,
+      "kp": 90,
+      "kvb": 300,
+      "cgk": 1.6e-12,
+      "cgp": 1.5e-12,
+      "cpk": 5e-13,
+      "gscale": 0.00062,
+      "gknee": 0.06,
+      "note": "12DW7 section 2 = a 12AU7 section (mu 17); the engine's 12AU7 card is mu 21.5, this is the datasheet 17"
+    },
+    "12AX7_A": {
+      "kind": "triode",
+      "mu": 100,
+      "ex": 1.4,
+      "kg1": 1060,
+      "kp": 600,
+      "kvb": 300,
+      "cgk": 1.6e-12,
+      "cgp": 1.7e-12,
+      "cpk": 4.6e-13,
+      "gscale": 0.00062,
+      "gknee": 0.06,
+      "note": "12AX7 section 1 (the engine library card)"
+    },
+    "12AX7_B": {
+      "kind": "triode",
+      "mu": 100,
+      "ex": 1.4,
+      "kg1": 1060,
+      "kp": 600,
+      "kvb": 300,
+      "cgk": 1.6e-12,
+      "cgp": 1.7e-12,
+      "cpk": 4.6e-13,
+      "gscale": 0.00062,
+      "gknee": 0.06,
+      "note": "12AX7 section 2 (the engine library card)"
+    },
+    "12BH7": {
+      "kind": "triode",
+      "mu": 16.5,
+      "ex": 1.3,
+      "kg1": 1302,
+      "kp": 202,
+      "kvb": 300,
+      "cgk": 3.2e-12,
+      "cgp": 2.6e-12,
+      "cpk": 5e-13,
+      "gscale": 0.00062,
+      "gknee": 0.06,
+      "note": "12BH7A, Koren form FITTED to the RCA datasheet's class-A1 point: mu 16.5 (sheet), ex 1.3 and kvb 300 (the library 12AU7 values), kp 202 and kg1 1302 solved so 250 V / -10.5 V gives 11.5 mA and 3.1 mA/V (sheet 11.5 mA, 3100 umho; rp 5.28k, sheet 5.3k). Caps: RCA data."
+    },
+    "6146B": {
+      "kind": "pentode",
+      "mu": 4.5,
+      "ex": 1.35,
+      "kg1": 1670,
+      "kg2": 12000,
+      "kp": 17.23,
+      "kvb": 45,
+      "cg1k": 1.35e-11,
+      "cg1p": 2.2e-13,
+      "cpk": 8.5e-12,
+      "gscale": 0.0015,
+      "gknee": 0.08,
+      "note": "6146B/8298A beam pentode, FITTED to the RCA datasheet. mu 4.5 is the datasheet's grid-2 to grid-1 amplification factor. kvb 45 is the plate knee from the Eb/Ib curves (the datasheet's two operating points do not constrain it) and ex 1.35 is the library pentode value; kg1 and kp are then solved so point A (600 V, -47 V, Vg2 200 V -> 24 mA/tube) and the gm anchor (7 mA/V at 200 V, -12 V, Vg2 200 V) are exact, and point B (750 V, -48 V -> 23 mA/tube) comes out -3.5 % low. kg2 12000 gives 2.3 mA/tube idle screen current; the datasheet gives only the max-signal figure (14.8 mA per pair) so kg2 is not fitted."
+    }
+  }
+}

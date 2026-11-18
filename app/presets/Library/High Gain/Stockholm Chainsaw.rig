@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Stockholm Chainsaw</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Stockholm Chainsaw" preset-author="Headroom" preset-comment="The Swedish death metal buzzsaw: a gyrator-EQ distortion pedal with every knob near full, into a fairly clean master-volume head, so the pedal does all the work. Huge, ripping lows and highs with a hollow middle. Best in B standard; play tremolo riffs and D-beat chords." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="19000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="T" value="0.45"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="A" value="0.5"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="G" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="165000">
+    <component-audio version="1">
+      <parameters num-parameters="6">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="distortion" value="1"/>
+        <parameter id="low" value="0.6"/>
+        <parameter id="high" value="1"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="level" value="0.6"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="32000">
+    <component-audio version="1">
+      <parameters num-parameters="13">
+        <parameter id="V" value="0.5"/>
+        <parameter id="mi" value="0.5"/>
+        <parameter id="ma" value="0.5"/>
+        <parameter id="r" value="0.5"/>
+        <parameter id="b1" value="0.8"/>
+        <parameter id="b2" value="0.5"/>
+        <parameter id="b3" value="0.15"/>
+        <parameter id="b4" value="0.5"/>
+        <parameter id="b5" value="1"/>
+        <parameter id="b6" value="0.5"/>
+        <parameter id="b7" value="0.85"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="b8" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="56000">
+    <component-audio version="1">
+      <parameters num-parameters="15">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V1" value="0.5"/>
+        <parameter id="V2" value="0.5"/>
+        <parameter id="B" value="0.5"/>
+        <parameter id="M" value="0.5"/>
+        <parameter id="T" value="0.8"/>
+        <parameter id="Pr" value="0.8"/>
+        <parameter id="Pw" value="0.5"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bi" value="0.5"/>
+        <parameter id="Hg" value="0"/>
+        <parameter id="G4M" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.7606"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="11"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="165000" target-number="1" target-name="distortion" min-value="0.6" max-value="1" controller-name="Distortion"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="165000" target-number="1" target-name="low" min-value="0.5" max-value="1" controller-name="Low"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="165000" target-number="1" target-name="high" min-value="0.4" max-value="1" controller-name="High"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="56000" target-number="1" target-name="V1" min-value="0.15" max-value="0.6" controller-name="Amp Grit"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="19000" target-number="1" target-name="T" min-value="0.2" max-value="0.75" controller-name="Gate"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="hg-stockholm-chainsaw" category="High Gain" order="70" instrument="guitar" style="Death Metal">
+  <description>The Swedish death metal buzzsaw: a gyrator-EQ distortion pedal with every knob near full, into a fairly clean master-volume head, so the pedal does all the work. Huge, ripping lows and highs with a hollow middle. Best in B standard; play tremolo riffs and D-beat chords.</description>
+  <tags><tag>High Gain</tag><tag>Death Metal</tag><tag>Swedish</tag><tag>Rhythm</tag><tag>Buzzsaw</tag><tag>Gate</tag><tag>Downtuned</tag></tags>
+  <sources>
+    <source url="https://www.guitarworld.com/features/how-entombed-and-sunlight-studios-gave-birth-to-death-metal-guitar-tone" title="Guitar World: How Entombed and Sunlight Studios gave birth to death metal guitar tone"/>
+    <source url="https://articles.boss.info/hm-2-the-sound-of-swedish-death-metal-and-beyond/" title="BOSS Articles: HM-2, the sound of Swedish death metal and beyond"/>
+    <source url="https://en.wikipedia.org/wiki/Left_Hand_Path_(album)" title="Left Hand Path (Wikipedia)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

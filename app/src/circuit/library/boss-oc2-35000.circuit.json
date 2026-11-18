@@ -1,0 +1,1244 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "boss-oc2-35000",
+  "version": 2,
+  "name": "Boss OC-2 Octaver (35000)",
+  "description": "Boss OC-2 Octaver, catalogue 35000. Single +9 V supply with a +4.9 V reference. Divider: the factory's IC6 BA634 'reference / flip-flop / buffer' function is fitted as its documented block (discrete comparators + one CD4013B half used as the squarer latch), followed by the two uPD4013C halves that make f/2 and f/4 - the same three-flip-flop chain the Busser redraw and the Sabro build draw, but with the stock 4013 part in every position (no 4027: the factory parts list has none). Shaper and divider wiring from the Busser 1999 redraw; values cross-checked against the 1982 service notes and champ.pdf.",
+  "sources": [
+    {
+      "title": "B. Busser, 'BOSS OCTAVE OC2 MODIFIED', 1999-08-23",
+      "note": "Cadence redraw, vector-clean: shaper, comparator and divider wiring (a modified unit: TL074/TL072, J110, MC14013/MC14027)"
+    },
+    {
+      "title": "Boss OC-2 Service Notes 1982-05-10 sheet BB-2 1",
+      "note": "factory parts list and values: IC1-5 TL022CP, IC6 BA634, IC7 uPD4013C, 2SK30ATM-Y, D10/D11 1S188FM Ge"
+    },
+    {
+      "title": "champ.pdf pp.1,5 (OC-2 compilation)",
+      "note": "factory parts list re-confirmed; p5 states the architecture: IC5b mixes the input with the 1/2 square wave, IC5a mixes the OCT1 signal with the 1/4 square wave, and '4013 ou 4027' for the divider"
+    },
+    {
+      "title": "Harald Sabro, Modified OC-2 Octaver",
+      "note": "second redraw plus measured pin voltages on a working unit"
+    },
+    {
+      "title": "Stellan Lehrberg OC-2 redraw",
+      "note": "third document, used for the LOG/band-pass values"
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "out"
+  },
+  "oversampling": 2,
+  "newton": {"groups": {"Q1": 0.0001, "IC1A": 0.0001, "IC1C": 0.0001, "IC1D": 0.0001, "IC2A": 0.0001, "IC2B": 0.0001, "U3A": 0.0001, "U3B": 0.0001, "U5A": 0.0001}},
+  "parts": [
+    {
+      "ref": "V9",
+      "type": "V",
+      "nodes": [
+        "p9",
+        "0"
+      ],
+      "value": "9",
+      "label": "9 V"
+    },
+    {
+      "ref": "R47K",
+      "type": "R",
+      "nodes": [
+        "p9",
+        "ref"
+      ],
+      "value": "4.7k",
+      "note": "supply divider upper (Busser R3 4k7)"
+    },
+    {
+      "ref": "R56K",
+      "type": "R",
+      "nodes": [
+        "ref",
+        "0"
+      ],
+      "value": "5.6k",
+      "note": "supply divider lower (Busser R4 5k6)"
+    },
+    {
+      "ref": "C220U",
+      "type": "C",
+      "nodes": [
+        "ref",
+        "0"
+      ],
+      "value": "220u",
+      "polar": true,
+      "note": "reference hold (Busser C1 220u)"
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "in",
+        "n_c1"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "n_c1",
+        "g1"
+      ],
+      "value": "22n"
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "g1",
+        "ref"
+      ],
+      "value": "1M",
+      "note": "gate leak to +4.9"
+    },
+    {
+      "ref": "Q1",
+      "type": "njf",
+      "nodes": [
+        "p9",
+        "g1",
+        "s1"
+      ],
+      "model": "2SK30A",
+      "note": "2SK30ATM-Y input follower, drain +9 V"
+    },
+    {
+      "ref": "R2",
+      "type": "R",
+      "nodes": [
+        "s1",
+        "0"
+      ],
+      "value": "10k",
+      "note": "source resistor, self-bias ~0.2 mA"
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "s1",
+        "jp"
+      ],
+      "value": "1u",
+      "polar": true,
+      "note": "+ at S; couples the source to J+"
+    },
+    {
+      "ref": "R4",
+      "type": "R",
+      "nodes": [
+        "jp",
+        "ref"
+      ],
+      "value": "1M",
+      "note": "J+ bias return"
+    },
+    {
+      "ref": "IC1A",
+      "type": "opamp",
+      "nodes": [
+        "jp",
+        "jm",
+        "jout",
+        "p9",
+        "0"
+      ],
+      "model": "TL022",
+      "note": "J, pins 3(+)/2(-)/1(out)"
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "jout",
+        "jm"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "jm",
+        "c3n"
+      ],
+      "value": "2.7k",
+      "note": "AC gain 4.7 with C3, corner 5.9 Hz"
+    },
+    {
+      "ref": "C3",
+      "type": "C",
+      "nodes": [
+        "c3n",
+        "0"
+      ],
+      "value": "10u",
+      "polar": true
+    },
+    {
+      "ref": "VR1",
+      "type": "pot",
+      "nodes": [
+        "ref",
+        "dw",
+        "jout"
+      ],
+      "value": "100k",
+      "taper": "B",
+      "control": "D",
+      "label": "DIRECT",
+      "note": "DEPARTURE from the two redraws, which draw this pot across J+ and the J output. That is a 4.7x blend with no silent end, so the DIRECT control could not mute and the octave's drive tracked it (measured: the divider stalled at D=1). Wired as a real level control: ccw = the +4V9 reference (silent, and the same DC as the wiper so the output bus bias does not move), cw = the J output, wiper -> the output mixer."
+    },
+    {
+      "ref": "VR2",
+      "type": "pot",
+      "nodes": [
+        "jout",
+        "log",
+        "log"
+      ],
+      "value": "100k",
+      "taper": "B",
+      "control": "log",
+      "label": "LOG",
+      "note": "LOG trim rheostat from the J output into R11: ccw = jout, wiper/cw = log, so R = 100k*knob. Fed from jout (not from the DIRECT wiper) so the octave tracking does not depend on the DIRECT setting."
+    },
+    {
+      "ref": "R11",
+      "type": "R",
+      "nodes": [
+        "log",
+        "logline"
+      ],
+      "value": "100k",
+      "note": "Busser 'R 100k': LOG wiper into the shaper feed"
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "logline",
+        "p1"
+      ],
+      "value": "22k",
+      "note": "Busser R9 22k"
+    },
+    {
+      "ref": "R9",
+      "type": "R",
+      "nodes": [
+        "p1",
+        "q1s"
+      ],
+      "value": "330k",
+      "note": "Busser R11 330k"
+    },
+    {
+      "ref": "R10",
+      "type": "R",
+      "nodes": [
+        "q1s",
+        "r1"
+      ],
+      "value": "330k",
+      "note": "Busser R12 330k"
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "p1",
+        "0"
+      ],
+      "value": "10n",
+      "polar": true
+    },
+    {
+      "ref": "C5",
+      "type": "C",
+      "nodes": [
+        "q1s",
+        "iout"
+      ],
+      "value": "2.2n",
+      "polar": true
+    },
+    {
+      "ref": "C6",
+      "type": "C",
+      "nodes": [
+        "r1",
+        "0"
+      ],
+      "value": "220p",
+      "polar": true
+    },
+    {
+      "ref": "IC1B",
+      "type": "opamp",
+      "nodes": [
+        "r1",
+        "iout",
+        "iout",
+        "p9",
+        "0"
+      ],
+      "model": "TL022",
+      "note": "I, unity follower, pins 5(+)/6(-)/7(out)"
+    },
+    {
+      "ref": "R16",
+      "type": "R",
+      "nodes": [
+        "iout",
+        "nx"
+      ],
+      "value": "33k",
+      "note": "Busser R16 33k"
+    },
+    {
+      "ref": "C11",
+      "type": "C",
+      "nodes": [
+        "nx",
+        "0"
+      ],
+      "value": "330p",
+      "polar": true
+    },
+    {
+      "ref": "C13",
+      "type": "C",
+      "nodes": [
+        "nx",
+        "nc13"
+      ],
+      "value": "10n",
+      "polar": true
+    },
+    {
+      "ref": "R21",
+      "type": "R",
+      "nodes": [
+        "nc13",
+        "0"
+      ],
+      "value": "68k",
+      "note": "Busser R21 68k: 234 Hz shelf"
+    },
+    {
+      "ref": "R20",
+      "type": "R",
+      "nodes": [
+        "nx",
+        "nhin"
+      ],
+      "value": "33k",
+      "note": "Busser R20 33k into the A channel +"
+    },
+    {
+      "ref": "IC1C",
+      "type": "opamp",
+      "nodes": [
+        "nhin",
+        "ha1",
+        "hout",
+        "p9",
+        "0"
+      ],
+      "model": "TL022",
+      "note": "H (Busser IC02 amp2): + in / - fb / out"
+    },
+    {
+      "ref": "R24",
+      "type": "R",
+      "nodes": [
+        "hrail",
+        "ha1"
+      ],
+      "value": "10k",
+      "note": "Busser R24: feedback to the rail"
+    },
+    {
+      "ref": "V3",
+      "type": "D",
+      "nodes": [
+        "ha1",
+        "hout"
+      ],
+      "model": "1N4148",
+      "note": "Busser V3: anode - node, cathode output"
+    },
+    {
+      "ref": "V5",
+      "type": "D",
+      "nodes": [
+        "hout",
+        "hrail"
+      ],
+      "model": "1N4148",
+      "note": "Busser V5: anode output, cathode rail (charges the hold)"
+    },
+    {
+      "ref": "R32",
+      "type": "R",
+      "nodes": [
+        "hrail",
+        "nc16"
+      ],
+      "value": "1k",
+      "note": "Busser R32 1k"
+    },
+    {
+      "ref": "C16",
+      "type": "C",
+      "nodes": [
+        "nc16",
+        "0"
+      ],
+      "value": "1u",
+      "polar": true,
+      "note": "Busser C16 1u positive-peak hold"
+    },
+    {
+      "ref": "IC1D",
+      "type": "opamp",
+      "nodes": [
+        "nhin",
+        "fa2",
+        "fout",
+        "p9",
+        "0"
+      ],
+      "model": "TL022",
+      "note": "F (Busser IC02 amp3): + in / - fb / out"
+    },
+    {
+      "ref": "R27",
+      "type": "R",
+      "nodes": [
+        "frail",
+        "fa2"
+      ],
+      "value": "10k",
+      "note": "Busser R27: feedback to the rail"
+    },
+    {
+      "ref": "V4",
+      "type": "D",
+      "nodes": [
+        "fout",
+        "fa2"
+      ],
+      "model": "1N4148",
+      "note": "Busser V4: anode output, cathode - node (mirror of V3)"
+    },
+    {
+      "ref": "V6",
+      "type": "D",
+      "nodes": [
+        "frail",
+        "fout"
+      ],
+      "model": "1N4148",
+      "note": "Busser V6: anode rail, cathode output (mirror of V5)"
+    },
+    {
+      "ref": "R35",
+      "type": "R",
+      "nodes": [
+        "frail",
+        "nc19"
+      ],
+      "value": "1k",
+      "note": "Busser R35 1k"
+    },
+    {
+      "ref": "C19",
+      "type": "C",
+      "nodes": [
+        "nc19",
+        "0"
+      ],
+      "value": "1u",
+      "polar": true,
+      "note": "Busser C19 1u negative-peak hold"
+    },
+    {
+      "ref": "IC2A",
+      "type": "opamp",
+      "nodes": [
+        "hout",
+        "nc16",
+        "gout",
+        "p9",
+        "0"
+      ],
+      "model": "TL022",
+      "note": "G (Busser IC02 amp1), pins 3(+)/2(-)/1(out): + = the channel A shaper output, - = the A hold (R32/C16). Peak-detect comparator: the diode drop appears on both inputs, so the trigger is amplitude-independent."
+    },
+    {
+      "ref": "R42",
+      "type": "R",
+      "nodes": [
+        "gout",
+        "g22"
+      ],
+      "value": "22k",
+      "note": "Busser R42 -> 4013 SET2 (pin 8)"
+    },
+    {
+      "ref": "IC2B",
+      "type": "opamp",
+      "nodes": [
+        "nc19",
+        "fout",
+        "eout",
+        "p9",
+        "0"
+      ],
+      "model": "TL022",
+      "note": "E (Busser IC02 amp4), pins 12(+)/13(-)/14(out): + = the B hold (R35/C19), - = the channel B shaper output (mirror of G)"
+    },
+    {
+      "ref": "R43",
+      "type": "R",
+      "nodes": [
+        "eout",
+        "e22"
+      ],
+      "value": "22k",
+      "note": "Busser R43 -> 4013 RESET2 (pin 10)"
+    },
+    {
+      "ref": "U3A",
+      "type": "dff",
+      "nodes": [
+        "0",
+        "0",
+        "g22",
+        "e22",
+        "d2",
+        "d2b",
+        "p9",
+        "0"
+      ],
+      "model": "CD4013B",
+      "note": "half 2 = RS latch that squares the input: D2(pin9)=CK2(pin11)=0, SET2(pin8)<-G, RESET2(pin10)<-E"
+    },
+    {
+      "ref": "U3B",
+      "type": "dff",
+      "nodes": [
+        "d1b",
+        "d2b",
+        "0",
+        "0",
+        "d1",
+        "d1b",
+        "p9",
+        "0"
+      ],
+      "model": "CD4013B",
+      "note": "half 1 = /2: CK1(pin3) <- Qb2(pin12), D1(pin5) <- Qb1(pin2), SET1/RESET1 = VSS. Q1 = f/2"
+    },
+    {
+      "ref": "U5A",
+      "type": "dff",
+      "nodes": [
+        "d4b",
+        "d1",
+        "0",
+        "0",
+        "d4",
+        "d4b",
+        "p9",
+        "0"
+      ],
+      "model": "CD4013B",
+      "note": "second /2 (f/4): CK <- f/2, D <- Qb. A CD4013B half, not a CD4027B: the factory list has IC6 BA634 + IC7 uPD4013C only and champ.pdf p5 lists '4013 ou 4027' for this position; the Busser/Sabro mods fit an MC14027 here"
+    },
+    {
+      "ref": "U5B",
+      "type": "dff",
+      "nodes": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "p9",
+        "0"
+      ],
+      "model": "CD4013B",
+      "note": "unused half of the second 4013, inputs tied low"
+    },
+    {
+      "ref": "R19",
+      "type": "R",
+      "nodes": [
+        "iout",
+        "bm"
+      ],
+      "value": "47k",
+      "note": "Busser R19 47k: signal into the (-) input"
+    },
+    {
+      "ref": "R36",
+      "type": "R",
+      "nodes": [
+        "bout",
+        "bm"
+      ],
+      "value": "27k",
+      "note": "Busser R36 27k feedback: gain -0.574 with the JFET on"
+    },
+    {
+      "ref": "R28",
+      "type": "R",
+      "nodes": [
+        "iout",
+        "bp"
+      ],
+      "value": "47k",
+      "note": "Busser R28 47k: signal into the (+) input (no other DC path, so +1 with the JFET off)"
+    },
+    {
+      "ref": "Q8",
+      "type": "njf",
+      "nodes": [
+        "bp",
+        "bg",
+        "ref"
+      ],
+      "model": "2SK30A",
+      "note": "voice JFET (Busser J110): shorts the (+) input to the +4V9 reference, gate <- the /2 flip-flop (the synchronous detector of stompboxology Fig. 4 circuit 1, which is the OC-2 voice)"
+    },
+    {
+      "ref": "R23",
+      "type": "R",
+      "nodes": [
+        "d1",
+        "bg"
+      ],
+      "value": "100k",
+      "note": "Busser R23 100k: /2 -> gate"
+    },
+    {
+      "ref": "R18",
+      "type": "R",
+      "nodes": [
+        "bg",
+        "0"
+      ],
+      "value": "1M",
+      "note": "Busser R18 1M gate return to ground: the source is at +4.9 V, so the gate must swing below 3.4 V to switch a 2SK30A (vto -1.5)"
+    },
+    {
+      "ref": "V2",
+      "type": "D",
+      "nodes": [
+        "bg",
+        "ref"
+      ],
+      "model": "1N34A",
+      "note": "Busser V2 1N34A Ge: gate clamp, anode at the gate, cathode at +4V9, so Vgs cannot exceed +0.3 V"
+    },
+    {
+      "ref": "IC3A",
+      "type": "opamp",
+      "nodes": [
+        "bp",
+        "bm",
+        "bout",
+        "p9",
+        "0"
+      ],
+      "model": "TL022",
+      "note": "IC5b-equivalent synchronous detector (Busser IC03), pins 5(+)/6(-)/7(out): both inputs are signal inputs"
+    },
+    {
+      "ref": "R31",
+      "type": "R",
+      "nodes": [
+        "bout",
+        "p2"
+      ],
+      "value": "22k",
+      "note": "Busser R31 22k into the low-pass"
+    },
+    {
+      "ref": "R33",
+      "type": "R",
+      "nodes": [
+        "p2",
+        "q2n"
+      ],
+      "value": "330k"
+    },
+    {
+      "ref": "R34",
+      "type": "R",
+      "nodes": [
+        "q2n",
+        "r2"
+      ],
+      "value": "330k"
+    },
+    {
+      "ref": "C54",
+      "type": "C",
+      "nodes": [
+        "p2",
+        "0"
+      ],
+      "value": "22n"
+    },
+    {
+      "ref": "C55",
+      "type": "C",
+      "nodes": [
+        "q2n",
+        "cout"
+      ],
+      "value": "4.7n"
+    },
+    {
+      "ref": "C56",
+      "type": "C",
+      "nodes": [
+        "r2",
+        "0"
+      ],
+      "value": "220p"
+    },
+    {
+      "ref": "IC3B",
+      "type": "opamp",
+      "nodes": [
+        "r2",
+        "cout",
+        "cout",
+        "p9",
+        "0"
+      ],
+      "model": "TL022",
+      "note": "IC4b-equivalent low-pass follower, pins 3(+)/2(-)/1(out)"
+    },
+    {
+      "ref": "R22",
+      "type": "R",
+      "nodes": [
+        "cout",
+        "am"
+      ],
+      "value": "47k",
+      "note": "Busser R22 47k: the OCT1 signal into the (-) input (champ p5: IC5a mixes the signal coming out of OCT1 with the 1/4 square wave)"
+    },
+    {
+      "ref": "R29",
+      "type": "R",
+      "nodes": [
+        "aout",
+        "am"
+      ],
+      "value": "27k",
+      "note": "Busser R29 27k feedback"
+    },
+    {
+      "ref": "R30",
+      "type": "R",
+      "nodes": [
+        "cout",
+        "ap"
+      ],
+      "value": "47k",
+      "note": "Busser R30 47k: the OCT1 signal into the (+) input"
+    },
+    {
+      "ref": "Q7",
+      "type": "njf",
+      "nodes": [
+        "ap",
+        "ag",
+        "ref"
+      ],
+      "model": "2SK30A",
+      "note": "voice JFET (Busser J110): shorts the (+) input to +4V9, gate <- the /4 flip-flop"
+    },
+    {
+      "ref": "R15",
+      "type": "R",
+      "nodes": [
+        "d4",
+        "ag"
+      ],
+      "value": "100k",
+      "note": "Busser R15 100k: /4 -> gate"
+    },
+    {
+      "ref": "R14",
+      "type": "R",
+      "nodes": [
+        "ag",
+        "0"
+      ],
+      "value": "1M",
+      "note": "Busser R14 1M gate return"
+    },
+    {
+      "ref": "V1",
+      "type": "D",
+      "nodes": [
+        "ag",
+        "ref"
+      ],
+      "model": "1N34A",
+      "note": "Busser V1 1N34A Ge: gate clamp, anode at the gate, cathode at +4V9"
+    },
+    {
+      "ref": "IC4A",
+      "type": "opamp",
+      "nodes": [
+        "ap",
+        "am",
+        "aout",
+        "p9",
+        "0"
+      ],
+      "model": "TL022",
+      "note": "IC5a-equivalent synchronous detector (Busser IC03), pins 5(+)/6(-)/7(out)"
+    },
+    {
+      "ref": "R51",
+      "type": "R",
+      "nodes": [
+        "aout",
+        "p3"
+      ],
+      "value": "22k"
+    },
+    {
+      "ref": "R52",
+      "type": "R",
+      "nodes": [
+        "p3",
+        "q3n"
+      ],
+      "value": "330k"
+    },
+    {
+      "ref": "R53",
+      "type": "R",
+      "nodes": [
+        "q3n",
+        "r3"
+      ],
+      "value": "330k"
+    },
+    {
+      "ref": "C57",
+      "type": "C",
+      "nodes": [
+        "p3",
+        "0"
+      ],
+      "value": "47n"
+    },
+    {
+      "ref": "C58",
+      "type": "C",
+      "nodes": [
+        "q3n",
+        "dout"
+      ],
+      "value": "10n"
+    },
+    {
+      "ref": "C59",
+      "type": "C",
+      "nodes": [
+        "r3",
+        "0"
+      ],
+      "value": "1n"
+    },
+    {
+      "ref": "IC4B",
+      "type": "opamp",
+      "nodes": [
+        "r3",
+        "dout",
+        "dout",
+        "p9",
+        "0"
+      ],
+      "model": "TL022",
+      "note": "IC4a-equivalent low-pass follower, pins 3(+)/2(-)/1(out)"
+    },
+    {
+      "ref": "VR3",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "o1w",
+        "cout"
+      ],
+      "value": "100k",
+      "taper": "B",
+      "control": "o1",
+      "label": "OCT 1"
+    },
+    {
+      "ref": "R37",
+      "type": "R",
+      "nodes": [
+        "o1w",
+        "mix1"
+      ],
+      "value": "100k",
+      "note": "100k in series with the OCT1 wiper"
+    },
+    {
+      "ref": "VR4",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "o2w",
+        "dout"
+      ],
+      "value": "100k",
+      "taper": "B",
+      "control": "o2",
+      "label": "OCT 2"
+    },
+    {
+      "ref": "R38",
+      "type": "R",
+      "nodes": [
+        "o2w",
+        "mix2"
+      ],
+      "value": "100k",
+      "note": "100k in series with the OCT2 wiper"
+    },
+    {
+      "ref": "R39",
+      "type": "R",
+      "nodes": [
+        "dw",
+        "mix3"
+      ],
+      "value": "100k",
+      "note": "DIRECT wiper into the summing bus"
+    },
+    {
+      "ref": "R61",
+      "type": "R",
+      "nodes": [
+        "mix1",
+        "mix"
+      ],
+      "value": "100k",
+      "note": "passive sum into the high-impedance base node"
+    },
+    {
+      "ref": "R62",
+      "type": "R",
+      "nodes": [
+        "mix2",
+        "mix"
+      ],
+      "value": "100k",
+      "note": "passive sum"
+    },
+    {
+      "ref": "R63",
+      "type": "R",
+      "nodes": [
+        "mix3",
+        "mix"
+      ],
+      "value": "100k",
+      "note": "passive sum"
+    },
+    {
+      "ref": "R64",
+      "type": "R",
+      "nodes": [
+        "mix",
+        "ref"
+      ],
+      "value": "1M"
+    },
+    {
+      "ref": "C15",
+      "type": "C",
+      "nodes": [
+        "mix",
+        "q2b"
+      ],
+      "value": "1u",
+      "polar": true,
+      "note": "1 uF coupler into Q2 base"
+    },
+    {
+      "ref": "R66",
+      "type": "R",
+      "nodes": [
+        "q2b",
+        "ref"
+      ],
+      "value": "1M",
+      "note": "base DC bias to the +4.9 V rail"
+    },
+    {
+      "ref": "Q2",
+      "type": "npn",
+      "nodes": [
+        "p9",
+        "q2b",
+        "q2e"
+      ],
+      "model": "2SC1815",
+      "note": "2SC732TM-GR/2SC1815 class output buffer, collector +9 V, emitter follower"
+    },
+    {
+      "ref": "R45",
+      "type": "R",
+      "nodes": [
+        "q2e",
+        "0"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "C60",
+      "type": "C",
+      "nodes": [
+        "q2e",
+        "out"
+      ],
+      "value": "1u",
+      "polar": true
+    },
+    {
+      "ref": "R46",
+      "type": "R",
+      "nodes": [
+        "out",
+        "outj"
+      ],
+      "value": "1k",
+      "note": "output series resistor"
+    },
+    {
+      "ref": "R67",
+      "type": "R",
+      "nodes": [
+        "outj",
+        "0"
+      ],
+      "value": "10k",
+      "note": "the load the pedal is specified for (output load > 10k)"
+    }
+  ],
+  "probes": [
+    "in",
+    "s1",
+    "jout",
+    "iout",
+    "nhin",
+    "nc16",
+    "nc19",
+    "gout",
+    "eout",
+    "d2",
+    "d2b",
+    "d1",
+    "d4",
+    "bp",
+    "bout",
+    "cout",
+    "ap",
+    "aout",
+    "dout",
+    "mix",
+    "out"
+  ],
+  "controls": [
+    {
+      "id": "D",
+      "label": "DIRECT",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "D"
+      ]
+    },
+    {
+      "id": "log",
+      "label": "LOG trim",
+      "kind": "continuous",
+      "default": 1.0,
+      "group": "Internal",
+      "note": "Internal trim (VR2); not a panel control."
+    },
+    {
+      "id": "o1",
+      "label": "OCT 1",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "o1"
+      ]
+    },
+    {
+      "id": "o2",
+      "label": "OCT 2",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "o2"
+      ]
+    },
+    {
+      "id": "c1",
+      "label": "Freq 1",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "C1"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Not on the OC-2; stored only"
+    },
+    {
+      "id": "res1",
+      "label": "Res 1",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "Res1"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Not on the OC-2; stored only"
+    },
+    {
+      "id": "c2",
+      "label": "Freq 2",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "C2"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Not on the OC-2; stored only"
+    },
+    {
+      "id": "stereo",
+      "label": "Stereo",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "CASSt"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Not on the OC-2; stored only"
+    },
+    {
+      "id": "power",
+      "label": "On/Off",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "Pwr"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Not on the OC-2; stored only"
+    },
+    {
+      "id": "res2",
+      "label": "Res 2",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "Res2"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Not on the OC-2; stored only"
+    }
+  ],
+  "cuts": [
+    "ref"
+  ],
+  "models": {
+    "2SK30A": {
+      "kind": "njf",
+      "vto": -1.5,
+      "beta": 0.0012,
+      "lambda": 0.01
+    },
+    "TL022": {
+      "kind": "opamp",
+      "level": 1,
+      "a0": 100000.0,
+      "gbw": 500000.0,
+      "slew": 500000.0,
+      "swing_hi": 1.5,
+      "swing_lo": 1.5,
+      "vhi": 9.0,
+      "vlo": 0.0,
+      "iq": 0.00025,
+      "ilim": 0.006
+    },
+    "2SC1815": {
+      "kind": "npn",
+      "is": 1e-14,
+      "bf": 200,
+      "vaf": 80
+    }
+  }
+}

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Terrace Anthem Stack</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Terrace Anthem Stack" preset-author="Headroom" preset-comment="Humbuckers into a loud master-volume British stack with a low-gain overdrive in front: a thick, compressed, sustaining wall for big anthemic strummed chords and simple, singable leads, with a plate glow behind it. Strum hard, let chords ring, layer it." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="15000">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.72"/>
+        <parameter id="Tn" value="0.5"/>
+        <parameter id="Dr" value="0.25"/>
+        <parameter id="Lmp" value="0.5"/>
+        <parameter id="Bs" value="0.5"/>
+        <parameter id="Cl" value="0"/>
+        <parameter id="Br" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="56000">
+    <component-audio version="1">
+      <parameters num-parameters="15">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V1" value="0.62"/>
+        <parameter id="V2" value="0.6"/>
+        <parameter id="B" value="0.52"/>
+        <parameter id="M" value="0.58"/>
+        <parameter id="T" value="0.55"/>
+        <parameter id="Pr" value="0.48"/>
+        <parameter id="Pw" value="0.5"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bi" value="0.5"/>
+        <parameter id="Hg" value="0"/>
+        <parameter id="G4M" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.6042"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="9"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="127000">
+    <component-audio version="1">
+      <parameters num-parameters="4">
+        <parameter id="S1" value="3"/>
+        <parameter id="M2" value="0.14"/>
+        <parameter id="M3" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="56000" target-number="1" target-name="V1" min-value="0.4" max-value="0.85" controller-name="Gain"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="15000" target-number="1" target-name="Dr" min-value="0" max-value="0.6" controller-name="Push"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="56000" target-number="1" target-name="M" min-value="0.35" max-value="0.85" controller-name="Mids"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="56000" target-number="1" target-name="T" min-value="0.3" max-value="0.8" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="127000" target-number="1" target-name="M2" min-value="0" max-value="0.35" controller-name="Plate"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="crunch-terrace-anthem-stack" category="Crunch" order="180" instrument="guitar" style="Britpop">
+  <description>Humbuckers into a loud master-volume British stack with a low-gain overdrive in front: a thick, compressed, sustaining wall for big anthemic strummed chords and simple, singable leads, with a plate glow behind it. Strum hard, let chords ring, layer it.</description>
+  <tags><tag>Crunch</tag><tag>Britpop</tag><tag>Rhythm</tag><tag>Humbucker</tag><tag>Overdrive</tag><tag>Plate Reverb</tag></tags>
+  <sources>
+    <source url="https://www.groundguitar.com/tone-breakdown/noel-gallaghers-gear-on-definitely-maybe/" title="Ground Guitar: Noel Gallagher's gear on Definitely Maybe"/>
+    <source url="https://www.groundguitar.com/noel-gallagher-gear/" title="Ground Guitar: Noel Gallagher's guitars, amps and gear list"/>
+    <source url="https://www.sweetwater.com/insync/the-history-of-the-legendary-marshall-jcm800-2203/" title="Sweetwater InSync: the history of the Marshall JCM800 2203"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

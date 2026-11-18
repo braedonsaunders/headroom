@@ -1,0 +1,53 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "fender-ab763-normal",
+  "version": 1,
+  "name": "Fender AB763 normal channel preamp",
+  "description": "Fender AB763 (1963-67 'blackface' Twin Reverb) normal-channel preamp: Input 1 (two 68 kΩ in parallel, 1 MΩ to ground), 12AX7 gain stage (100 kΩ plate, 1.5 kΩ / 25 µF cathode), the plate-driven treble/bass/middle tone stack (250 pF, 100 kΩ slope, 0.1 µF bass, 0.047 µF mid; 250 kΩ treble and bass, 10 kΩ middle), 1 MΩ audio-taper volume with the 120 pF bright cap, and the second 12AX7 gain stage, coupled out through 0.047 µF into the channel-mixing load. B+ at the preamp node is an ideal DC source.",
+  "sources": [
+    { "title": "Fender AB763 Twin Reverb schematic (Fender Musical Instruments, public service schematic): tone-stack and gain-stage values" },
+    { "title": "D. T. Yeh and J. O. Smith, 'Discretization of the 59 Fender Bassman tone stack', DAFx 2006: TMB topology" },
+    { "title": "N. Koren, 'Improved vacuum tube models for SPICE simulations': 12AX7 plate law", "url": "https://www.normankoren.com/Audio/Tubemodspice_article.html" }
+  ],
+  "io": { "input": "in", "output": "out", "inputVoltsPerFS": 1.0, "outputVoltsPerFS": 0.863, "note": "outputVoltsPerFS 1.0 -> 0.863 (2026-11-10): keeps the shipped level within 1 dB after the refitted 12AX7 card (DI level -1.28 dB at the same scale)" },
+  "oversampling": 2,
+  "solver": "auto",
+  "controls": [
+    { "id": "volume", "label": "Volume", "default": 0.5, "params": ["Vol"], "group": "Main", "note": "1 MΩ audio taper" },
+    { "id": "treble", "label": "Treble", "default": 0.5, "params": ["Tr"], "group": "Main", "note": "250 kΩ audio taper, wiper = stack output" },
+    { "id": "bass", "label": "Bass", "default": 0.5, "params": ["Bs"], "group": "Main", "note": "250 kΩ audio taper as a rheostat" },
+    { "id": "middle", "label": "Middle", "default": 0.5, "params": ["Md"], "group": "Main", "note": "10 kΩ linear, rheostat to ground" },
+    { "id": "bright", "label": "Bright", "kind": "switch", "default": 0.0, "params": ["Br"], "group": "Main", "note": "120 pF across the volume pot (top to wiper)" }
+  ],
+  "parts": [
+    { "ref": "BPLUS", "type": "V", "nodes": ["bplus", "0"], "value": "270", "label": "Preamp B+", "note": "Approximate preamp supply node; plates settle near 170 V" },
+    { "ref": "RIN", "type": "R", "nodes": ["in", "0"], "value": "1M", "tolerance": 0.05, "label": "Input jack 1 MΩ" },
+    { "ref": "R1A", "type": "R", "nodes": ["in", "g1"], "value": "68k", "tolerance": 0.05 },
+    { "ref": "R1B", "type": "R", "nodes": ["in", "g1"], "value": "68k", "tolerance": 0.05 },
+    { "ref": "V1A", "type": "triode", "nodes": ["p1", "g1", "k1"], "model": "12AX7", "label": "V1A gain stage" },
+    { "ref": "RK1", "type": "R", "nodes": ["k1", "0"], "value": "1k5", "tolerance": 0.05 },
+    { "ref": "CK1", "type": "C", "nodes": ["k1", "0"], "value": "25u", "tolerance": 0.2 },
+    { "ref": "RP1", "type": "R", "nodes": ["bplus", "p1"], "value": "100k", "tolerance": 0.05 },
+
+    { "ref": "CT", "type": "C", "nodes": ["p1", "tt"], "value": "250p", "tolerance": 0.1, "label": "Treble cap" },
+    { "ref": "RS", "type": "R", "nodes": ["p1", "ns"], "value": "100k", "tolerance": 0.05, "label": "Slope resistor" },
+    { "ref": "CB", "type": "C", "nodes": ["ns", "tb"], "value": "100n", "tolerance": 0.1, "label": "Bass cap" },
+    { "ref": "CM", "type": "C", "nodes": ["ns", "nm"], "value": "47n", "tolerance": 0.1, "label": "Middle cap" },
+    { "ref": "TREBLE", "type": "pot", "nodes": ["tb", "tw", "tt"], "value": "250k", "taper": "A", "control": "treble" },
+    { "ref": "BASS", "type": "pot", "nodes": ["nm", "tb", "tb"], "value": "250k", "taper": "A", "control": "bass" },
+    { "ref": "MIDDLE", "type": "pot", "nodes": ["0", "nm", "nm"], "value": "10k", "taper": "B", "control": "middle" },
+
+    { "ref": "VOLUME", "type": "pot", "nodes": ["0", "vw", "tw"], "value": "1M", "taper": "A", "control": "volume" },
+    { "ref": "CBR", "type": "C", "nodes": ["tw", "brn"], "value": "120p", "tolerance": 0.1, "label": "Bright cap" },
+    { "ref": "SBR", "type": "switch", "nodes": ["brn", "vw"], "control": "bright", "label": "Bright switch" },
+
+    { "ref": "V1B", "type": "triode", "nodes": ["p2", "vw", "k2"], "model": "12AX7", "label": "Second gain stage" },
+    { "ref": "RK2", "type": "R", "nodes": ["k2", "0"], "value": "1k5", "tolerance": 0.05 },
+    { "ref": "CK2", "type": "C", "nodes": ["k2", "0"], "value": "22u", "tolerance": 0.2 },
+    { "ref": "RP2", "type": "R", "nodes": ["bplus", "p2"], "value": "100k", "tolerance": 0.05 },
+    { "ref": "CO", "type": "C", "nodes": ["p2", "out"], "value": "47n", "tolerance": 0.1 },
+    { "ref": "RL", "type": "R", "nodes": ["out", "0"], "value": "1M", "tolerance": 0.05, "label": "Mixing / next-stage load" }
+  ],
+  "probes": ["g1", "p1", "tw", "vw", "p2", "out"],
+  "layout": {}
+}

@@ -1,0 +1,634 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "dunlop-crybaby-21000",
+  "version": 1,
+  "name": "Dunlop Cry Baby Wah (catalogue 21000)",
+  "description": "Dunlop Cry Baby GCB-95 circuit (the reference netlist 71000), delivered for catalogue unit 21000. Rev-F-and-later GCB-95 with the MPSA13 Darlington input buffer and the two-transistor Fasel wah core: R2 1 kOhm from the 9 V input onto the C4 220 uF / C11 100 nF rail, C9 10 nF and R16 2.2 MOhm / R13 1.8 MOhm into Q3, R15 68 kOhm and C1 10 nF into Q1 (MPSA18, R4 22 kOhm collector, R9 390 Ohm emitter), L1 500 mH Fasel with its 17.5 Ohm DCR in parallel with R5 33 kOhm down to the bias node (R6 470 kOhm, R3 82 kOhm, C3 4.7 uF), C5 10 nF from the resonant node to Q2's emitter, and the VR1 100 kOhm log rocker pot feeding C6 220 nF into Q2 (R18 1 kOhm collector, R8 10 kOhm emitter). Output from Q1's collector through C8 220 nF, unbuffered, as on the pedal.",
+  "sources": [
+    {
+      "title": "Catalogue unit 21000 'Dunlop Cry Baby Wah' aliases: only Pd (pedal position) has a part in the circuit (VR1). LBP/D (mode, dry mix) and the PMin/PMid/PMax, RMin/RMid/RMax, LMin/LMid/LMax tuning triplets are the legacy behavioural wah model's parameters: a GCB-95 has no mode switch, no dry blend and no sweep/level tuning, so they are legacyOnly",
+      "url": "localhost: app/src/generated/ComponentCatalog.hpp kParams_21000"
+    },
+    {
+      "title": "ElectroSmash, 'Dunlop Cry Baby GCB-95 Circuit Analysis': schematic, BOM (Q0 MPSA13, Q1/Q2 MPSA18; Cin1 0.01 \u00b5F, Cin2 22 pF, C1 0.01 \u00b5F, C2 0.01 \u00b5F, C3 4.7 \u00b5F, C4/C5 0.22 \u00b5F, C6 220 \u00b5F, C7 0.1 \u00b5F; L1 500 mH; Rin1 2.2 M\u03a9, Rin2 1.8 M\u03a9, Rin3 1 k\u03a9, Rin4 10 k\u03a9; R1 68 k\u03a9, R2 1.5 k\u03a9, R3 22 k\u03a9, R4 390 \u03a9, R5/R6 470 k\u03a9, R7 33 k\u03a9, R8 82 k\u03a9, R9 1 k\u03a9, R10 10 k\u03a9; VR1 100 k\u03a9 log), DC bias chart (8.6 V, 3 V, 4.9 V, 0.06 V, 0.6 V, 4.3 V), sweep 450 Hz-1.6 kHz with a 750 Hz peak at mid pot, up to 18 dB boost, inductor range 200 mH-1 H / 10-200 \u03a9",
+      "url": "https://www.electrosmash.com/crybaby-gcb-95"
+    },
+    {
+      "title": "ElectroSmash archive mirror (MAS Effects) of the same article",
+      "url": "https://electrosmash.mas-effects.com/crybaby-gcb-95.html"
+    },
+    {
+      "title": "B. W. K. McGrath, 'Crybaby GCB-95 schematic -- with correct component designators!' (2023): Dunlop board designators used here; the 1 k\u03a9 (ElectroSmash 'Rin3') is the series dropping resistor in the 9 V line, not a collector resistor; R13 1.8 M\u03a9 to the +9 V rail; C2/C7 not installed; R17 0 \u03a9 jumper in series with L1",
+      "url": "https://crybaby-schematic.blogspot.com/2023/03/crybaby-gcb-95-schematic-with-correct.html"
+    },
+    {
+      "title": "R. G. Keen, 'The Technology of Wah Pedals' (geofex.com): how the two-transistor wah works (Q2 + pot + Cf as a variable Miller capacitor), part roles (Rq sets Q, Cf sets the range, inductor 400-600 mH)",
+      "url": "http://www.geofex.com/Article_Folders/wahpedl/wahped.htm"
+    },
+    {
+      "title": "PedalPCB forum, 'Wah Inductors. No hype. Just measurements.': Dunlop red Fasel (toroid) 17.5 \u03a9 / 565 mH (17 \u03a9 / 583 mH); modern GCB-95 black-cylinder inductor 17.8 \u03a9 / 599 mH",
+      "url": "https://forum.pedalpcb.com/threads/wah-inductors-no-hype-just-measurements.24076/"
+    },
+    {
+      "title": "National Semiconductor MPSA18 SPICE card (IS 33.58f BF 236 BR 5.774 VAF 100 ISE 166.7f NE 1.579 CJE 7.547p CJC 4.948p), as distributed in the LTspice standard.bjt library (licence not stated; quoted as a factual parameter set)",
+      "url": "https://github.com/polimi-ispl/mxrphase90/blob/main/LTspice/standard.bjt"
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 1.0
+  },
+  "oversampling": 1,
+  "solver": "auto",
+  "models": {
+    "MPSA18": {
+      "kind": "npn",
+      "is": 3.358e-14,
+      "bf": 236,
+      "br": 5.774,
+      "vaf": 100,
+      "ise": 1.667e-13,
+      "ne": 1.579,
+      "cje": 7.547e-12,
+      "cjc": 4.948e-12,
+      "note": "National Semiconductor MPSA18 SPICE card (LTspice standard.bjt); IKF, RB/RE/RC, TF/TR and junction grading omitted. The card's BF 236 is below the datasheet hFE minimum (\u2248 500 at 10 \u00b5A-10 mA, onsemi MPSA18); ElectroSmash's DC chart (Q2 base 4.3 V with 4.9 V on Q1's collector) implies hFE \u2248 290, consistent with this card"
+    },
+    "MPSA13_DIE": {
+      "kind": "npn",
+      "is": 3.358e-14,
+      "bf": 236,
+      "br": 5.774,
+      "vaf": 100,
+      "ise": 1.667e-13,
+      "ne": 1.579,
+      "note": "unverified: no MPSA13 card found. The MPSA13 Darlington is modelled as two dies with the MPSA18 card above (overall hFE \u2248 236\u00b2 \u2248 55 000; datasheet MPSA13 hFE \u2265 5000 at 10 mA). Irrelevant to the sound as long as hFE is large: it is an emitter follower"
+    }
+  },
+  "controls": [
+    {
+      "id": "pedal",
+      "label": "Wah (pedal position)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "Pd"
+      ],
+      "group": "Main",
+      "note": "VR1 100 kOhm log rocker pot (Dunlop 'Hot Potz' class): log end to ground, other end on the output (C8), wiper to Q2 via C6. 0 = heel down (maximum Miller multiplication, lowest resonance), 1 = toe down (highest resonance)"
+    },
+    {
+      "id": "stereo",
+      "label": "Stereo",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "CASSt"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Host stereo/mono routing flag; the pedal is mono. Stored only"
+    },
+    {
+      "id": "mode",
+      "label": "Mode",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "LBP"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Legacy behavioural wah 'mode' (low-band-pass blend). The GCB-95 has no mode switch or blend: the wah core is a single tuned resonant stage. Stored only"
+    },
+    {
+      "id": "dry",
+      "label": "Dry",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "D"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Legacy dry/wet mix. The pedal has no blend: the output is taken from the wah stage's collector through C8 220 nF. Stored only"
+    },
+    {
+      "id": "freqMin",
+      "label": "Freq Min",
+      "kind": "continuous",
+      "default": 0.0,
+      "params": [
+        "PMin"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Legacy behavioural sweep-limit parameter. The real sweep is set by VR1's track, C5 10 nF and the L1/C1 resonance; no part corresponds. Stored only",
+      "paramRange": [
+        0,
+        0.33
+      ]
+    },
+    {
+      "id": "freqMid",
+      "label": "Freq Mid",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "PMid"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Legacy behavioural sweep-shape parameter (log-taper midpoint). No part corresponds. Stored only",
+      "paramRange": [
+        0.47976,
+        0.7
+      ]
+    },
+    {
+      "id": "freqMax",
+      "label": "Freq Max",
+      "kind": "continuous",
+      "default": 0.57,
+      "params": [
+        "PMax"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Legacy behavioural sweep-limit parameter. No part corresponds. Stored only",
+      "paramRange": [
+        0.57,
+        1
+      ]
+    },
+    {
+      "id": "resMin",
+      "label": "Res Min",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "RMin"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Legacy behavioural Q parameter. The Q is fixed by R5 33 kOhm across the inductor and by the transistor stage; no control exists. Stored only",
+      "paramRange": [
+        0.37,
+        1
+      ]
+    },
+    {
+      "id": "resMid",
+      "label": "Res Mid",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "RMid"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Legacy behavioural Q parameter. No part corresponds. Stored only",
+      "paramRange": [
+        0.46719,
+        1
+      ]
+    },
+    {
+      "id": "resMax",
+      "label": "Res Max",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "RMax"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Legacy behavioural Q parameter. No part corresponds. Stored only",
+      "paramRange": [
+        0.5,
+        0.81
+      ]
+    },
+    {
+      "id": "levelMin",
+      "label": "Level Min",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "LMin"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Legacy behavioural output-level trim per sweep region. The pedal has no level control. Stored only",
+      "paramRange": [
+        0.4,
+        1
+      ]
+    },
+    {
+      "id": "levelMid",
+      "label": "Level Mid",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "LMid"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Legacy behavioural output-level trim. No part corresponds. Stored only",
+      "paramRange": [
+        0.2,
+        1
+      ]
+    },
+    {
+      "id": "levelMax",
+      "label": "Level Max",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "LMax"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Legacy behavioural output-level trim. No part corresponds. Stored only",
+      "paramRange": [
+        0.14,
+        1
+      ]
+    },
+    {
+      "id": "power",
+      "label": "On/Off",
+      "kind": "switch",
+      "default": 1,
+      "params": [
+        "Pwr"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "The host's unit bypass. The netlist models the effect-on path. Stored only"
+    }
+  ],
+  "cuts": [
+    "vcc",
+    {
+      "node": "e3",
+      "loads": [
+        "R15"
+      ]
+    }
+  ],
+  "parts": [
+    {
+      "ref": "VBAT",
+      "type": "V",
+      "nodes": [
+        "vbat",
+        "0"
+      ],
+      "value": "9",
+      "label": "9 V battery / DC jack"
+    },
+    {
+      "ref": "R2",
+      "type": "R",
+      "nodes": [
+        "vbat",
+        "vcc"
+      ],
+      "value": "1k",
+      "tolerance": 0.05,
+      "label": "Supply dropping resistor",
+      "note": "Dunlop R2 (ElectroSmash 'Rin3', drawn there as Q0's collector resistor; McGrath 2023 traced it to the 9 V line). ElectroSmash's 8.6 V reading is this rail"
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "vcc",
+        "0"
+      ],
+      "value": "220u",
+      "tolerance": 0.2,
+      "label": "Rail reservoir"
+    },
+    {
+      "ref": "C11",
+      "type": "C",
+      "nodes": [
+        "vcc",
+        "0"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "note": "ElectroSmash C7 0.1 \u00b5F ('BC 026' marking)"
+    },
+    {
+      "ref": "C9",
+      "type": "C",
+      "nodes": [
+        "in",
+        "b3"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": "Input cap (Cin1)"
+    },
+    {
+      "ref": "C10",
+      "type": "C",
+      "nodes": [
+        "b3",
+        "0"
+      ],
+      "value": "22p",
+      "tolerance": 0.05,
+      "note": "ElectroSmash Cin2 22 pF ('22J A1' marking)"
+    },
+    {
+      "ref": "R16",
+      "type": "R",
+      "nodes": [
+        "b3",
+        "0"
+      ],
+      "value": "2.2M",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R13",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "b3"
+      ],
+      "value": "1.8M",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "Q3A",
+      "type": "npn",
+      "nodes": [
+        "vcc",
+        "b3",
+        "e3a"
+      ],
+      "model": "MPSA13_DIE",
+      "label": "Q3 MPSA13 Darlington (input die)"
+    },
+    {
+      "ref": "Q3B",
+      "type": "npn",
+      "nodes": [
+        "vcc",
+        "e3a",
+        "e3"
+      ],
+      "model": "MPSA13_DIE",
+      "label": "Q3 MPSA13 Darlington (output die)"
+    },
+    {
+      "ref": "R14",
+      "type": "R",
+      "nodes": [
+        "e3",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R15",
+      "type": "R",
+      "nodes": [
+        "e3",
+        "x1"
+      ],
+      "value": "68k",
+      "tolerance": 0.05,
+      "label": "Wah input resistor (ElectroSmash R1)"
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "x1",
+        "b1"
+      ],
+      "value": "10n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "Q1",
+      "type": "npn",
+      "nodes": [
+        "c1",
+        "b1",
+        "e1"
+      ],
+      "model": "MPSA18",
+      "label": "Q1 gain stage"
+    },
+    {
+      "ref": "R4",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "c1"
+      ],
+      "value": "22k",
+      "tolerance": 0.05,
+      "note": "ElectroSmash R3"
+    },
+    {
+      "ref": "R9",
+      "type": "R",
+      "nodes": [
+        "e1",
+        "0"
+      ],
+      "value": "390",
+      "tolerance": 0.05,
+      "note": "ElectroSmash R4; the V847 has 510 \u03a9"
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "b1",
+        "fb"
+      ],
+      "value": "1.5k",
+      "tolerance": 0.05,
+      "note": "ElectroSmash R2"
+    },
+    {
+      "ref": "L1",
+      "type": "L",
+      "nodes": [
+        "fb",
+        "lx"
+      ],
+      "value": "500m",
+      "tolerance": 0.1,
+      "label": "L1 Fasel 500 mH",
+      "note": "500 mH per the schematics. Modern Dunlop red Fasel measures 565-583 mH (PedalPCB); Keen: 400-600 mH. Core loss and saturation are not modelled (see notes). R17 0 \u03a9 jumper in series is merged"
+    },
+    {
+      "ref": "RL1",
+      "type": "R",
+      "nodes": [
+        "lx",
+        "nb"
+      ],
+      "value": "17.5",
+      "label": "L1 DC resistance",
+      "note": "unverified for any one pedal: Dunlop red Fasel measured 17.5 \u03a9 (17 \u03a9 on a second meter), modern GCB-95 stock inductor 17.8 \u03a9 (PedalPCB). ElectroSmash only gives a 10-200 \u03a9 acceptable range"
+    },
+    {
+      "ref": "R5",
+      "type": "R",
+      "nodes": [
+        "fb",
+        "nb"
+      ],
+      "value": "33k",
+      "tolerance": 0.05,
+      "label": "Q resistor (ElectroSmash R7)"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "c1",
+        "nb"
+      ],
+      "value": "470k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "nb",
+        "0"
+      ],
+      "value": "82k",
+      "tolerance": 0.05,
+      "note": "ElectroSmash R8; the V847 has 100 k\u03a9"
+    },
+    {
+      "ref": "C3",
+      "type": "C",
+      "nodes": [
+        "nb",
+        "0"
+      ],
+      "value": "4.7u",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "C5",
+      "type": "C",
+      "nodes": [
+        "fb",
+        "e2"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": "Sweep capacitor (ElectroSmash C2)"
+    },
+    {
+      "ref": "C8",
+      "type": "C",
+      "nodes": [
+        "c1",
+        "out"
+      ],
+      "value": "220n",
+      "tolerance": 0.1,
+      "note": "ElectroSmash C5"
+    },
+    {
+      "ref": "VR1",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "wip",
+        "out"
+      ],
+      "value": "100k",
+      "taper": "A",
+      "control": "pedal",
+      "invert": true,
+      "label": "Wah pot",
+      "note": "unverified: log end assumed on the ground lug (the usual wiring, giving a roughly log-spaced sweep); the exact Hot Potz taper is not published"
+    },
+    {
+      "ref": "C6",
+      "type": "C",
+      "nodes": [
+        "wip",
+        "b2"
+      ],
+      "value": "220n",
+      "tolerance": 0.1,
+      "note": "ElectroSmash C4"
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "c1",
+        "b2"
+      ],
+      "value": "470k",
+      "tolerance": 0.05,
+      "note": "ElectroSmash R5"
+    },
+    {
+      "ref": "Q2",
+      "type": "npn",
+      "nodes": [
+        "c2",
+        "b2",
+        "e2"
+      ],
+      "model": "MPSA18",
+      "label": "Q2 follower"
+    },
+    {
+      "ref": "R18",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "c2"
+      ],
+      "value": "1k",
+      "tolerance": 0.05,
+      "note": "ElectroSmash R9"
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "e2",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "note": "ElectroSmash R10"
+    }
+  ],
+  "probes": [
+    "e3",
+    "b1",
+    "c1",
+    "fb",
+    "e2",
+    "out"
+  ],
+  "layout": {}
+}

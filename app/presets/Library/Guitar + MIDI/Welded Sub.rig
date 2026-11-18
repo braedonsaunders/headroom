@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Welded Sub</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Welded Sub" preset-author="Headroom" preset-comment="A tracked sub-octave square wave is summed with the guitar before the overdrive and the British master-volume head, so both clip in the same tube stages. Palm mutes come out as one thick, grinding mass that is neither guitar nor synth. Weld sets how much synth hits the amp." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="900001">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="low" value="28"/>
+        <parameter id="high" value="64"/>
+        <parameter id="mode" value="0"/>
+        <parameter id="sens" value="0.6"/>
+        <parameter id="bend" value="2"/>
+        <parameter id="vel" value="0.3"/>
+        <parameter id="thru" value="1"/>
+        <parameter id="engine" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="900003">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="sound" value="14"/>
+        <parameter id="tone" value="0.4"/>
+        <parameter id="follow" value="0.9"/>
+        <parameter id="attack" value="0.35"/>
+        <parameter id="release" value="0.35"/>
+        <parameter id="level" value="0.57"/>
+        <parameter id="mix" value="0.32"/>
+        <parameter id="vibrato" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="15000">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.95"/>
+        <parameter id="Tn" value="0.6"/>
+        <parameter id="Dr" value="0.05"/>
+        <parameter id="Lmp" value="0.5"/>
+        <parameter id="Bs" value="0.5"/>
+        <parameter id="Cl" value="0.5"/>
+        <parameter id="Br" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="56000">
+    <component-audio version="1">
+      <parameters num-parameters="16">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V1" value="0.85"/>
+        <parameter id="V2" value="0.6"/>
+        <parameter id="B" value="0.5"/>
+        <parameter id="M" value="0.6"/>
+        <parameter id="T" value="0.65"/>
+        <parameter id="Pr" value="0.6"/>
+        <parameter id="Pw" value="0.5"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bi" value="0.5"/>
+        <parameter id="Hg" value="1"/>
+        <parameter id="G4M" value="0"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="input_high" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.5675"/>
+        <parameter id="c" value="0"/>
+        <parameter id="Cab" value="9"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="900003" target-number="1" target-name="mix" min-value="0.15" max-value="0.65" controller-name="Weld"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="56000" target-number="1" target-name="V1" min-value="0.5" max-value="1" controller-name="Gain"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="900003" target-number="1" target-name="tone" min-value="0.15" max-value="0.7" controller-name="Sub Tone"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="15000" target-number="1" target-name="Tn" min-value="0.4" max-value="0.9" controller-name="Attack"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="gm-welded-sub" category="Guitar + MIDI" order="10" instrument="guitar" style="Hybrid Metal">
+  <description>A tracked sub-octave square wave is summed with the guitar before the overdrive and the British master-volume head, so both clip in the same tube stages. Palm mutes come out as one thick, grinding mass that is neither guitar nor synth. Weld sets how much synth hits the amp.</description>
+  <tags><tag>Guitar + MIDI</tag><tag>Fused</tag><tag>High Gain</tag><tag>Sub</tag><tag>Synth</tag><tag>Rhythm</tag><tag>Poly</tag></tags>
+  <sources>
+    <source url="https://en.wikipedia.org/wiki/Roland_GR-300" title="Wikipedia: Roland GR-300 (guitar, synth, or a mix of the two)"/>
+    <source url="https://www.tdpri.com/threads/royal-blood-how-mike-kerr-gets-that-big-sound.803464/" title="TDPRI: how Mike Kerr gets that big sound (octave split into guitar and bass amps)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

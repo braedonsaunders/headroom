@@ -1,0 +1,800 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "klon-centaur",
+ "version": 1,
+ "name": "Klon Centaur",
+ "description": "Klon Centaur overdrive (Bill Finnegan, 1994) as drawn on the ElectroSmash 'Klon Centaur Analysis' schematic (ElectroSmash designators). TL072 U1A unity-gain input buffer (R1 10 kΩ, C1 0.1 µF, R2 1 MΩ to Vb); TL072 U1B non-inverting gain stage whose + input is shunted to Vb by one end of gain gang A (wiper on Vb) while the other end, with R10 2 kΩ, sets the − leg (R11 15 kΩ ∥ C7 82 nF to the − input, R12 422 kΩ ∥ C8 390 pF feedback): one gang section raises the input level and the gain together. C9 1 µF and R13 1 kΩ into the two 1N34A germanium diodes to ground, C10 1 µF and R16 47 kΩ into the summing node. Feed-forward network 1 (R7 1.5 kΩ, C16 1 µF to ground, R19 15 kΩ) and network 2 (R5 5.1 kΩ ∥ C4 68 nF, R8 1.5 kΩ and C6 390 nF + R9 1 kΩ to Vb, gain gang B wiper, then R15 22 kΩ + C11 2.2 nF to the diode-side node and R17 27 kΩ ∥ (C12 27 nF + R18 12 kΩ) to the summing node). TL072 U2A inverting summer (R20 392 kΩ ∥ C13 820 pF), TL072 U2B active treble shelf (R21 1.8 kΩ, 10 kΩ treble pot, C14 3.9 nF, R22 = R24 = 100 kΩ, R23 4.7 kΩ), C15 4.7 µF, R25 560 Ω, 10 kΩ output pot. The bypass (always-buffered) path C2 4.7 µF / R3 100 kΩ / R4 560 Ω reaches the output through the 68 kΩ anti-pop resistor R243 even when the effect is on (about 1 dB bleed per ElectroSmash). U1 runs from +9 V/ground, U2 from the MAX1044 charge-pump rails (+16.2 V and −8.6 V as annotated on the ElectroSmash schematic), modelled as Thevenin sources: doubler 18 V / 60 Ω through D7/D8 1N4001 into C21 1 µF, inverter −9 V / 65 Ω into C19 1 µF (pump ripple not modelled). Vb is the R29/R30 27 kΩ divider with C18 47 µF.",
+ "sources": [
+  {
+   "title": "ElectroSmash, 'Klon Centaur Analysis' (schematic with designators and values, rail annotations +16.2 V / −8.6 V, Vb divider R29/R30 27k, network descriptions, tone-stage formulas, output stage, bypass path). Fetched via the Internet Archive because electrosmash.com did not resolve",
+   "url": "https://www.electrosmash.com/klon-centaur-analysis"
+  },
+  {
+   "title": "ElectroSmash, Klon Centaur schematic image 'Klon-Centaur-Schematic-Parts.png' (archived copy used for every value in this file)",
+   "url": "https://web.archive.org/web/2023/https://www.electrosmash.com/images/tech/klon-centaur/Klon-Centaur-Schematic-Parts.png"
+  },
+  {
+   "title": "ElectroSmash, Klon Centaur power-supply drawing (MAX1044 with BOOST and V+ on +9 V; D7/D8 1N4001 doubler with C20/C21 1 µF to +16.2 V; C22 1 µF flying cap and C19 1 µF on VOUT −8.6 V; D4 1N4742 and C17 47 µF at the jack). Archived copy read",
+   "url": "https://web.archive.org/web/2024/https://www.electrosmash.com/images/tech/klon-centaur/klon-centaur-power-supply.png"
+  },
+  {
+   "title": "Coda Effects, 'Klon Centaur circuit analysis' (gain stage: 422k loop resistor, dual-gang gain pot, MAX1044 rails V+ 9 V, V− −9 V, V2+ 18 V)",
+   "url": "https://www.coda-effects.com/p/klon-centaur-circuit-analysis.html"
+  },
+  {
+   "title": "PCB Guitar Mania, 'Kloned Centaur' build document v1.2 (independent BOM: gain 100k B dual, tone 10k B, 1N34A, TL072; clone designators differ from the original)",
+   "url": "https://pcbguitarmania.com/wp-content/uploads/2018/02/Kloned-Centaur-1v2-Building-Docs.pdf"
+  },
+  {
+   "title": "Microchip TC1044S datasheet DS21348A (ROUT 60 Ω typ / 100 Ω max at V+ = 5 V, IOUT = 20 mA; positive multiplier VOUT = 2V+ − 2VF with source impedance about 60 Ω at 5 V, 10 mA; Fig. 9 combined negative converter and positive multiplier has somewhat higher source impedances; BOOST raises fOSC 10 → 45 kHz)",
+   "url": "https://ww1.microchip.com/downloads/en/DeviceDoc/21348a.pdf"
+  },
+  {
+   "title": "Maxim ICL7660/MAX1044 datasheet 19-4667 (MAX1044 output resistance 65 Ω typ / 100 Ω max at IL = 20 mA, fOSC = 5 kHz, V+ = 5 V; ROUT ≈ 2(2RSW + ESR) + 1/((fOSC/2)·C1) + ESR; BOOST = V+ raises fOSC about 6x; voltage conversion efficiency 99.9 % typ; Fig. 9 doubler, Fig. 11 combined converter)",
+   "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/icl7660-max1044.pdf"
+  },
+  {
+   "title": "TI TL072 datasheet (library model TL072: GBW 3 MHz, SR 13 V/µs)",
+   "url": "https://www.ti.com/lit/ds/symlink/tl072.pdf"
+  },
+  {
+   "title": "1N34A germanium point-contact diode SPICE cards as circulated (MODPEX 'is=2e-7 rs=7 n=1.3', LTspice standard.dio 'IS=2.6u RS=6.5 N=1.6'), LTspice groups.io 'Germanium model for LTspice' (licence: vendor/third-party card, no licence stated)",
+   "url": "https://groups.io/g/LTspice/topic/germanium_model_for_ltspice/50240829"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "out",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 1.0
+ },
+ "oversampling": 2,
+ "minRate": 176400,
+ "solver": "auto",
+ "cuts": [
+  "vb",
+  "v18",
+  "vn",
+  "vd7",
+  "cp"
+ ],
+ "controls": [
+  {
+   "id": "gain",
+   "label": "Gain",
+   "kind": "continuous",
+   "default": 0.5,
+   "group": "Main",
+   "note": "Dual-gang 100 kΩ linear pot. Gang A (GAIN_A): pin 1 on U1B +, wiper on Vb, pin 3 into R10: clockwise lifts the U1B input shunt and lowers the − leg resistance together. Gang B (GAIN_B): network-2 divider, clockwise moves the wiper to Vb so the clean feed-forward falls as the gain rises. Both parts share this control.",
+   "params": [
+    "gain"
+   ]
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "kind": "continuous",
+   "default": 0.5,
+   "group": "Main",
+   "note": "10 kΩ linear pot in the U2B shelf; clockwise moves the wiper to the R21 end (boost, (RV2+R23)/R21 = 8.2x above about 408 Hz)",
+   "params": [
+    "treble"
+   ]
+  },
+  {
+   "id": "output",
+   "label": "Output",
+   "kind": "continuous",
+   "default": 0.5,
+   "group": "Main",
+   "note": "10 kΩ output pot (ElectroSmash: 10K b) after C15 4.7 µF and R25 560 Ω",
+   "params": [
+    "output"
+   ]
+  },
+  {"id": "stereo", "label": "Stereo", "kind": "continuous", "default": 0.5, "params": ["CASSt"], "legacyOnly": true, "group": "Legacy", "note": "Catalogue stereo parameter; the circuit is mono, stored only"},
+  {"id": "power", "label": "On/Off", "kind": "switch", "default": 1.0, "params": ["Pwr"], "legacyOnly": true, "group": "Legacy", "note": "Host handles bypass; stored only"}
+ ],
+ "parts": [
+  {
+   "ref": "V9",
+   "type": "V",
+   "nodes": [
+    "v9",
+    "0"
+   ],
+   "value": "9",
+   "label": "+9 V (battery / adapter)",
+   "note": "D4 1N4742 12 V zener and C17 47 µF across the jack are omitted (an ideal source makes them inert)"
+  },
+  {
+   "ref": "VPUMP2",
+   "type": "V",
+   "nodes": [
+    "vdbl",
+    "0"
+   ],
+   "value": "18",
+   "label": "MAX1044 doubler, no-load drive (2 × V+)",
+   "note": "Thevenin model of the charge-pump doubler (TC1044S datasheet Fig. 8/9, MAX1044 Fig. 9/11): ideal 2·V+ = 18 V before the two diodes, which are placed explicitly as D7/D8, so the no-load output is 2·V+ − 2·VF as the datasheets give. The flying capacitor C20 1 µF (CAP+ to the D7/D8 junction) is folded into RPUMP2. Pump ripple (switching at fOSC/2) is not modelled"
+  },
+  {
+   "ref": "RPUMP2",
+   "type": "R",
+   "nodes": [
+    "vdbl",
+    "vd7"
+   ],
+   "value": "60",
+   "label": "Doubler output resistance",
+   "note": "TC1044S datasheet (Microchip DS21348A), Positive Voltage Multiplication: source impedance 'approximately 60 Ω' at V+ = 5 V, 10 mA, 10 µF capacitors. unverified for the Klon: it runs V+ = 9 V (lower switch resistance), BOOST tied to V+ (fOSC ×6, lower 1/(fOSC/2·C) term) but 1 µF pump caps (higher term), and the combined doubler+inverter configuration whose source impedances the datasheets call 'somewhat higher' without a number"
+  },
+  {
+   "ref": "D7",
+   "type": "D",
+   "nodes": [
+    "vd7",
+    "cp"
+   ],
+   "model": "1N4001",
+   "label": "Doubler diode D7 1N4001",
+   "note": "ElectroSmash drawing: D7 anode on +9 V, cathode on the C20 / D8 junction. In this Thevenin form its anode sees the pump source through RPUMP2 (it carries the same average current as in the real pump)"
+  },
+  {
+   "ref": "D8",
+   "type": "D",
+   "nodes": [
+    "cp",
+    "v18"
+   ],
+   "model": "1N4001",
+   "label": "Doubler diode D8 1N4001",
+   "note": "ElectroSmash drawing: D8 from the D7/C20 junction to the +16.2 V rail"
+  },
+  {
+   "ref": "C21",
+   "type": "C",
+   "nodes": [
+    "v18",
+    "0"
+   ],
+   "value": "1u",
+   "tolerance": 0.2,
+   "label": "Doubler reservoir (+16.2 V)"
+  },
+  {
+   "ref": "VPUMPN",
+   "type": "V",
+   "nodes": [
+    "vinv",
+    "0"
+   ],
+   "value": "-9",
+   "label": "MAX1044 inverter, no-load output (−V+)",
+   "note": "Thevenin model of the charge-pump inverter: ideal −V+ = −9 V (datasheet voltage conversion efficiency 99.9 % typ at no load). The flying capacitor C22 1 µF (CAP+ to CAP−) is folded into RPUMPN. Pump ripple is not modelled"
+  },
+  {
+   "ref": "RPUMPN",
+   "type": "R",
+   "nodes": [
+    "vinv",
+    "vn"
+   ],
+   "value": "65",
+   "label": "Inverter output resistance",
+   "note": "MAX1044 datasheet (Maxim 19-4667 ICL7660/MAX1044): Output Resistance 65 Ω typ (100 Ω max) at IL = 20 mA, fOSC = 5 kHz, V+ = 5 V, 25 °C, 10 µF capacitors (TC1044S: 60 Ω typ). unverified for the Klon's V+ = 9 V, BOOST = V+, 1 µF capacitors and combined configuration (see RPUMP2)"
+  },
+  {
+   "ref": "C19",
+   "type": "C",
+   "nodes": [
+    "vn",
+    "0"
+   ],
+   "value": "1u",
+   "tolerance": 0.2,
+   "label": "Inverter reservoir (−8.6 V)"
+  },
+  {
+   "ref": "R29",
+   "type": "R",
+   "nodes": [
+    "v9",
+    "vb"
+   ],
+   "value": "27k",
+   "tolerance": 0.05,
+   "label": "Vb divider"
+  },
+  {
+   "ref": "R30",
+   "type": "R",
+   "nodes": [
+    "vb",
+    "0"
+   ],
+   "value": "27k",
+   "tolerance": 0.05,
+   "label": "Vb divider"
+  },
+  {
+   "ref": "C18",
+   "type": "C",
+   "nodes": [
+    "vb",
+    "0"
+   ],
+   "value": "47u",
+   "tolerance": 0.2,
+   "label": "Vb filter"
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "in",
+    "a1"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Input ESD resistor (added 1995 per Finnegan)"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "a1",
+    "p3"
+   ],
+   "value": "100n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "p3",
+    "vb"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "Buffer bias"
+  },
+  {
+   "ref": "U1A",
+   "type": "opamp",
+   "nodes": [
+    "p3",
+    "b",
+    "b",
+    "v9",
+    "0"
+   ],
+   "model": "TL072",
+   "label": "Input buffer (always in circuit)"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "b",
+    "byp1"
+   ],
+   "value": "4.7u",
+   "tolerance": 0.2,
+   "label": "Bypass path"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "byp1",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "byp1",
+    "byp2"
+   ],
+   "value": "560",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R243",
+   "type": "R",
+   "nodes": [
+    "byp2",
+    "out"
+   ],
+   "value": "68k",
+   "tolerance": 0.05,
+   "label": "Anti-pop resistor (bypass line to output jack)",
+   "note": "Labelled R243 on the ElectroSmash drawing (sic). In the effect-on state it bleeds the clean buffered signal into the output; absent on early units per ElectroSmash"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "b",
+    "c3"
+   ],
+   "value": "100n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R6",
+   "type": "R",
+   "nodes": [
+    "c3",
+    "p5"
+   ],
+   "value": "10k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "c3",
+    "p5"
+   ],
+   "value": "68n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "GAIN_A",
+   "type": "pot",
+   "nodes": [
+    "p5",
+    "vb",
+    "g10"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "gain",
+   "label": "Gain (gang A)",
+   "note": "unverified: taper. ElectroSmash and the PCB Guitar Mania BOM give 100k B (linear); orientation inferred from ElectroSmash's description (gang B falls as gang A raises the gain). At gain 0 the wiper sits on pin 1, so U1B + is held at Vb through the pot end resistance and only the feed-forward networks pass signal"
+  },
+  {
+   "ref": "R10",
+   "type": "R",
+   "nodes": [
+    "g10",
+    "g11"
+   ],
+   "value": "2k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "g11",
+    "n6"
+   ],
+   "value": "15k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C7",
+   "type": "C",
+   "nodes": [
+    "g11",
+    "n6"
+   ],
+   "value": "82n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "U1B",
+   "type": "opamp",
+   "nodes": [
+    "p5",
+    "n6",
+    "o1b",
+    "v9",
+    "0"
+   ],
+   "model": "TL072",
+   "label": "Gain stage"
+  },
+  {
+   "ref": "R12",
+   "type": "R",
+   "nodes": [
+    "n6",
+    "o1b"
+   ],
+   "value": "422k",
+   "tolerance": 0.01
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "n6",
+    "o1b"
+   ],
+   "value": "390p",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "b",
+    "n8"
+   ],
+   "value": "5.1k",
+   "tolerance": 0.05,
+   "label": "Network 2"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "b",
+    "n8"
+   ],
+   "value": "68n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "n8",
+    "vb"
+   ],
+   "value": "1.5k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "n8",
+    "n9"
+   ],
+   "value": "390n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "n9",
+    "vb"
+   ],
+   "value": "1k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "GAIN_B",
+   "type": "pot",
+   "nodes": [
+    "n8",
+    "w2",
+    "vb"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "gain",
+   "label": "Gain (gang B)",
+   "note": "unverified: taper (see GAIN_A); pin 3 on Vb so the clean feed falls clockwise"
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "w2",
+    "n15"
+   ],
+   "value": "22k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "n15",
+    "n10"
+   ],
+   "value": "2.2n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R17",
+   "type": "R",
+   "nodes": [
+    "w2",
+    "s"
+   ],
+   "value": "27k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R18",
+   "type": "R",
+   "nodes": [
+    "w2",
+    "n18"
+   ],
+   "value": "12k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C12",
+   "type": "C",
+   "nodes": [
+    "n18",
+    "s"
+   ],
+   "value": "27n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "c3",
+    "n16"
+   ],
+   "value": "1.5k",
+   "tolerance": 0.05,
+   "label": "Network 1 (106 Hz low-pass)"
+  },
+  {
+   "ref": "C16",
+   "type": "C",
+   "nodes": [
+    "n16",
+    "0"
+   ],
+   "value": "1u",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R19",
+   "type": "R",
+   "nodes": [
+    "n16",
+    "s"
+   ],
+   "value": "15k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C9",
+   "type": "C",
+   "nodes": [
+    "o1b",
+    "n13"
+   ],
+   "value": "1u",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R13",
+   "type": "R",
+   "nodes": [
+    "n13",
+    "d"
+   ],
+   "value": "1k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "D2",
+   "type": "D",
+   "nodes": [
+    "d",
+    "0"
+   ],
+   "model": "1N34A",
+   "label": "Germanium clipper",
+   "note": "unverified: the library 1N34A card (IS 0.2 µA, N 1.3, RS 5 Ω) is a generic point-contact fit; Finnegan says 1N34A makers sound different. Reverse leakage (datasheet ~30 µA at 10 V) is not expressible in the diode kind"
+  },
+  {
+   "ref": "D3",
+   "type": "D",
+   "nodes": [
+    "0",
+    "d"
+   ],
+   "model": "1N34A",
+   "label": "Germanium clipper"
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "d",
+    "n10"
+   ],
+   "value": "1u",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "n10",
+    "s"
+   ],
+   "value": "47k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "U2A",
+   "type": "opamp",
+   "nodes": [
+    "vb",
+    "s",
+    "o2a",
+    "v18",
+    "vn"
+   ],
+   "model": "TL072",
+   "label": "Summing amp (charge-pump rails v18 / vn)"
+  },
+  {
+   "ref": "R20",
+   "type": "R",
+   "nodes": [
+    "s",
+    "o2a"
+   ],
+   "value": "392k",
+   "tolerance": 0.01
+  },
+  {
+   "ref": "C13",
+   "type": "C",
+   "nodes": [
+    "s",
+    "o2a"
+   ],
+   "value": "820p",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R22",
+   "type": "R",
+   "nodes": [
+    "o2a",
+    "n2b"
+   ],
+   "value": "100k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R21",
+   "type": "R",
+   "nodes": [
+    "o2a",
+    "t21"
+   ],
+   "value": "1.8k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "TREBLE",
+   "type": "pot",
+   "nodes": [
+    "t23",
+    "tw",
+    "t21"
+   ],
+   "value": "10k",
+   "taper": "B",
+   "control": "treble",
+   "label": "Treble"
+  },
+  {
+   "ref": "C14",
+   "type": "C",
+   "nodes": [
+    "tw",
+    "n2b"
+   ],
+   "value": "3.9n",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R23",
+   "type": "R",
+   "nodes": [
+    "t23",
+    "o2b"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R24",
+   "type": "R",
+   "nodes": [
+    "n2b",
+    "o2b"
+   ],
+   "value": "100k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "U2B",
+   "type": "opamp",
+   "nodes": [
+    "vb",
+    "n2b",
+    "o2b",
+    "v18",
+    "vn"
+   ],
+   "model": "TL072",
+   "label": "Treble shelf (charge-pump rails v18 / vn)"
+  },
+  {
+   "ref": "C15",
+   "type": "C",
+   "nodes": [
+    "o2b",
+    "l1"
+   ],
+   "value": "4.7u",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "R25",
+   "type": "R",
+   "nodes": [
+    "l1",
+    "l2"
+   ],
+   "value": "560",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "OUTPUT",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "out",
+    "l2"
+   ],
+   "value": "10k",
+   "taper": "B",
+   "control": "output",
+   "label": "Output",
+   "note": "unverified: taper; ElectroSmash labels RV3 '10Kb'. Effect-on state: SW1 connects the wiper straight to the jack (R242 68 kΩ across the switch is then shorted and omitted)"
+  },
+  {
+   "ref": "R28",
+   "type": "R",
+   "nodes": [
+    "out",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Output jack pull-down"
+  }
+ ],
+ "probes": [
+  "v18",
+  "vn",
+  "b",
+  "o1b",
+  "d",
+  "s",
+  "o2a",
+  "o2b",
+  "out"
+ ],
+ "layout": {}
+}

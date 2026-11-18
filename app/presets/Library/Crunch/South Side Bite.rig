@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>South Side Bite</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="South Side Bite" preset-author="Headroom" preset-comment="A small 1x12 tweed combo turned nearly all the way up, no pedals: a raw, honky midrange that barks like an amplified harp, with a little room around it. Fingers or a light pick; back the guitar volume off for rhythm, dig in to make it snarl." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="79000">
+    <component-audio version="1">
+      <parameters num-parameters="11">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="vb" value="1"/>
+        <parameter id="vn" value="0.6"/>
+        <parameter id="t" value="0.66"/>
+        <parameter id="Pw" value="0.5"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="1"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bi" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="input" value="0"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.1164"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="14"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.16"/>
+        <parameter id="Tm" value="0.5"/>
+        <parameter id="Sz" value="0.3"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Chr" value="0.5"/>
+        <parameter id="iM" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="79000" target-number="1" target-name="vb" min-value="0.45" max-value="1" controller-name="Amp Volume"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="79000" target-number="1" target-name="vn" min-value="0.12" max-value="0.9" controller-name="Fatness"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="79000" target-number="1" target-name="t" min-value="0.3" max-value="0.85" controller-name="Tone"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.4" controller-name="Room"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="crunch-south-side-bite" category="Crunch" order="30" instrument="guitar" style="Chicago Blues">
+  <description>A small 1x12 tweed combo turned nearly all the way up, no pedals: a raw, honky midrange that barks like an amplified harp, with a little room around it. Fingers or a light pick; back the guitar volume off for rhythm, dig in to make it snarl.</description>
+  <tags><tag>Crunch</tag><tag>Blues</tag><tag>Chicago Blues</tag><tag>Tweed</tag><tag>No pedals</tag><tag>Rhythm</tag><tag>Lead</tag></tags>
+  <sources>
+    <source url="https://blog.truefire.com/guitar-lessons/chicago-blues-guitar-tone-with-jeffery-marshall/" title="TrueFire: Chicago blues guitar tone with Jeffery Marshall"/>
+    <source url="https://www.guitarworld.com/features/classic-gear-fender-tweed-deluxe" title="Guitar World: Fender 'Tweed' Deluxe, history of the definitive tweed amp"/>
+    <source url="https://en.wikipedia.org/wiki/Fender_Deluxe" title="Fender Deluxe (Wikipedia)"/>
+    <source url="https://www.ampbooks.com/mobile/classic-circuits/fender-deluxe-5e3/" title="Ampbooks: Fender Deluxe 5E3 circuit analysis"/>
+    <source url="https://www.guitarworld.com/lessons/hubert-sumlin-blues-guitar-pioneer" title="Guitar World: Learn the guitar stylings of the pioneering Hubert Sumlin"/>
+    <source url="https://chicagoreader.com/music/jimmy-rogers-blues-guitar-muddy-chess/" title="Chicago Reader: Jimmy Rogers played a part in every era of Chicago blues"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

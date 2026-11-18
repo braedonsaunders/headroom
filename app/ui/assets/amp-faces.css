@@ -1,0 +1,331 @@
+/* =====================================================================
+   AMP FACES — family-specific amplifier faceplates (see amp-faces.js)
+   Everything is scoped under .amp.af so the legacy amp styles stay intact.
+   ===================================================================== */
+
+/* ---------- body: front and panel are stacked blocks, never overlapping ---------- */
+.amp.af > .hw-body { display: flex; flex-direction: column; padding: 10px 11px 11px; }
+.amp.af .af-gap { height: 8px; flex: none; }
+.amp.af.compact > .hw-body { padding: 7px; }
+
+/* ---------- handles ---------- */
+.amp.af .af-handle { width: 150px; }
+.amp.af-vox .af-handle { width: 128px; height: 11px; border-radius: 6px 6px 2px 2px; background: linear-gradient(180deg, #4b3322, #24170e); }
+.amp.af-vox .af-handle::before, .amp.af-vox .af-handle::after { background: linear-gradient(180deg, #e6d8a8, #a68a4d); width: 14px; }
+.amp.af-blackface .af-handle, .amp.af-jc .af-handle, .amp.af-supro .af-handle { width: 132px; height: 10px; background: linear-gradient(180deg, #2a2a2a, #090909); border-radius: 5px 5px 2px 2px; }
+.amp.af-tweed .af-handle { width: 132px; height: 10px; background: linear-gradient(180deg, #6b4526, #3a2312); border-radius: 5px 5px 2px 2px; }
+.amp.af-tweed .af-handle::before, .amp.af-tweed .af-handle::after { background: linear-gradient(180deg, #d9c48e, #8b7340); }
+.amp.af-gk .af-handle { visibility: hidden; height: 6px; }
+.amp.af-svt .af-handle { width: 190px; height: 8px; background: linear-gradient(180deg, #e3e6e9, #8d9196); border-radius: 4px 4px 1px 1px; }
+
+/* ---------- covering ---------- */
+.amp.af-tweed > .hw-body { background-color: var(--tolex);
+  background-image: linear-gradient(180deg, rgba(255,240,200,0.12), rgba(0,0,0,0) 35%, rgba(60,30,0,0.28)),
+    repeating-linear-gradient(45deg, rgba(90,60,20,0.32) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(-45deg, rgba(255,245,215,0.2) 0 1px, transparent 1px 5px);
+  background-size: auto; }
+.amp.af-orange > .hw-body { background-image: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0) 30%, rgba(80,20,0,0.25)),
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.05) 0 1px, transparent 1px 3px), var(--grain); background-size: auto, auto, 120px 120px; }
+.amp.af-vox.af-fawn > .hw-body { background-image: linear-gradient(180deg, rgba(255,255,255,0.1), rgba(0,0,0,0.18)),
+    repeating-linear-gradient(0deg, rgba(110,90,50,0.16) 0 1px, transparent 1px 3px), repeating-linear-gradient(90deg, rgba(110,90,50,0.12) 0 1px, transparent 1px 3px); background-size: auto; }
+.amp.af-supro > .hw-body { background-image: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.3)),
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.07) 0 1px, transparent 1.5px), var(--grain); background-size: auto, 5px 5px, 120px 120px; }
+
+/* ---------- front (logo zone): vinyl, cloth, metal, diamond plate ---------- */
+.af-front { position: relative; flex: none; height: var(--fh, 84px); border-radius: 5px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.af-front.cloth { box-shadow: inset 0 0 0 2px var(--pipe), inset 0 0 0 3px rgba(0,0,0,0.55), inset 0 0 26px rgba(0,0,0,0.6); }
+.af-front.metal { box-shadow: inset 0 0 0 2px var(--pipe), inset 0 0 0 3px rgba(0,0,0,0.7), inset 0 0 22px rgba(0,0,0,0.75); }
+.af-front.vinyl { background: transparent; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.6); }
+.af-front.vinyl::before { content: ""; position: absolute; inset: 7px; border-radius: 3px; border: 2px solid var(--pipe); opacity: 0.9;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(0,0,0,0.45); pointer-events: none; }
+.af-front.vent { background: repeating-linear-gradient(90deg, #050505 0 5px, #232323 5px 7px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), inset 0 0 14px rgba(0,0,0,0.8); }
+/* Rectifier-style polished diamond plate with a slotted centre vent */
+.af-front.diamond { box-shadow: inset 0 0 0 1px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.4);
+  background-color: #a9adb2;
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0) 40%, rgba(0,0,0,0.25)),
+    repeating-linear-gradient(60deg, transparent 0 9px, rgba(255,255,255,0.55) 9px 10px, rgba(0,0,0,0.25) 10px 11px, transparent 11px 20px),
+    repeating-linear-gradient(-60deg, transparent 0 9px, rgba(255,255,255,0.45) 9px 10px, rgba(0,0,0,0.3) 10px 11px, transparent 11px 20px),
+    linear-gradient(90deg, #8f949a, #d7dade 30%, #9ca1a6 55%, #e1e3e6 80%, #8e9399); }
+.af-front.diamond.dark { background-color: #26272a; background-image:
+    linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0) 40%, rgba(0,0,0,0.35)),
+    repeating-linear-gradient(60deg, transparent 0 9px, rgba(255,255,255,0.18) 9px 10px, rgba(0,0,0,0.5) 10px 11px, transparent 11px 20px),
+    repeating-linear-gradient(-60deg, transparent 0 9px, rgba(255,255,255,0.14) 9px 10px, rgba(0,0,0,0.55) 10px 11px, transparent 11px 20px),
+    linear-gradient(90deg, #1d1e20, #4a4c50 30%, #222326 55%, #505256 80%, #1c1d1f); }
+.af-front.diamond.dark .af-vent { box-shadow: 0 0 0 3px #3a3b3e, 0 0 0 4px rgba(0,0,0,0.7), inset 0 0 10px rgba(0,0,0,0.9); }
+.af-vent { position: relative; height: 62%; width: min(46%, 380px); border-radius: 4px; display: grid; place-items: center;
+  background: repeating-linear-gradient(90deg, #0c0c0d 0 6px, #2b2c2e 6px 8px);
+  box-shadow: 0 0 0 3px #b9bdc1, 0 0 0 4px rgba(0,0,0,0.6), inset 0 0 10px rgba(0,0,0,0.9); }
+
+/* ---------- grille cloths (also used by the matched cabinet's .cloth) ---------- */
+.gx-saltpepper { background-color: #2a2621; background-image:
+    radial-gradient(circle, rgba(236,222,190,0.55) 0 0.7px, transparent 1.1px),
+    radial-gradient(circle, rgba(0,0,0,0.6) 0 0.8px, transparent 1.2px),
+    repeating-linear-gradient(0deg, rgba(220,205,170,0.10) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.25) 0 1px, transparent 1px 3px);
+  background-size: 3px 3px, 4px 4px, auto, auto; background-position: 0 0, 1px 2px, 0 0, 0 0; }
+.gx-blackgold { background-color: #121110; background-image:
+    repeating-linear-gradient(45deg, rgba(214,180,110,0.20) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(-45deg, rgba(214,180,110,0.14) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.4) 0 1px, transparent 1px 2px); }
+.gx-hiwatt { background-color: #1f1f20; background-image:
+    repeating-linear-gradient(90deg, rgba(190,190,190,0.14) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(0deg, rgba(190,190,190,0.10) 0 1px, transparent 1px 3px); }
+.gx-blackmesh { background-color: #0b0b0c; background-image:
+    radial-gradient(circle, #2c2c30 0 28%, transparent 32%), radial-gradient(circle, #2c2c30 0 28%, transparent 32%);
+  background-size: 5px 5px; background-position: 0 0, 2.5px 2.5px; }
+.gx-expanded { background-color: #050505; background-image:
+    linear-gradient(60deg, transparent 42%, #3a3b3e 44% 52%, transparent 54%),
+    linear-gradient(-60deg, transparent 42%, #2c2d30 44% 52%, transparent 54%);
+  background-size: 9px 15px; }
+.gx-perf { background-color: #0a0a0a; background-image:
+    radial-gradient(circle, #000 0 38%, #3b3c3f 44%, #2a2b2e 60%, #303134 100%);
+  background-size: 7px 7px; }
+.gx-silver { background-color: #a9adb0; background-image:
+    repeating-linear-gradient(90deg, rgba(40,40,60,0.38) 0 1px, rgba(255,255,255,0.12) 1px 2px, transparent 2px 3px),
+    repeating-linear-gradient(0deg, rgba(40,45,70,0.30) 0 1px, rgba(255,255,255,0.10) 1px 2px, transparent 2px 3px),
+    linear-gradient(180deg, #b9bdc0, #8e9397); }
+.gx-oxblood { background-color: #4a1d18; background-image:
+    linear-gradient(90deg, transparent calc(50% - 7px), rgba(222,178,98,0.75) calc(50% - 6px) calc(50% - 4px), transparent calc(50% - 3px) calc(50% + 3px), rgba(222,178,98,0.75) calc(50% + 4px) calc(50% + 6px), transparent calc(50% + 7px)),
+    repeating-linear-gradient(90deg, rgba(255,200,150,0.13) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.32) 0 1px, transparent 1px 3px); }
+.gx-diamond { background-color: #4a2e1c; background-image:
+    repeating-linear-gradient(56deg, transparent 0 13px, rgba(226,196,138,0.75) 13px 14.5px, transparent 14.5px 18px),
+    repeating-linear-gradient(-56deg, transparent 0 13px, rgba(226,196,138,0.75) 13px 14.5px, transparent 14.5px 18px),
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.28) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(255,220,170,0.08) 0 1px, transparent 1px 2px); }
+.gx-basket { background-color: #cdb894; background-image:
+    linear-gradient(90deg, rgba(120,95,55,0.30) 50%, transparent 50%),
+    linear-gradient(0deg, rgba(120,95,55,0.30) 50%, transparent 50%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0 1px, transparent 1px 2px);
+  background-size: 8px 4px, 4px 8px, auto; background-position: 0 0, 4px 0, 0 0; }
+.gx-supro { background-color: #8d9298; background-image:
+    repeating-linear-gradient(0deg, rgba(30,34,40,0.45) 0 2px, rgba(255,255,255,0.12) 2px 3px, transparent 3px 5px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.08) 0 1px, transparent 1px 2px); }
+.gx-jc { background-color: #121212; background-image:
+    linear-gradient(90deg, rgba(210,212,215,0.30) 0 1px, transparent 1px), linear-gradient(0deg, rgba(210,212,215,0.30) 0 1px, transparent 1px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 2px);
+  background-size: 6px 6px, 6px 6px, auto; }
+.gx-svtsilver { background-color: #b7bbbf; background-image:
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.22) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.12) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, #cdd0d3, #9a9ea3); }
+.gx-svtblack { background-color: #0e0e0f; background-image:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.07) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 3px); }
+
+/* ---------- Vox: black band with gold wordmark, gold strip, diamond grille, panel strip ---------- */
+.amp.af-vox .af-band { position: relative; flex: none; height: 34px; display: flex; align-items: center; padding: 0 18px; border-radius: 5px 5px 0 0; }
+.amp.af-vox .af-strip { flex: none; height: 4px; margin: 0 4px; border-radius: 2px;
+  background: linear-gradient(180deg, #f6e3a6, #c39b46 50%, #8a6a27); box-shadow: 0 1px 1px rgba(0,0,0,0.6); }
+.amp.af-vox .af-front { border-radius: 0 0 5px 5px; margin-top: 2px; }
+
+/* ---------- wordmarks (unit name, styled after each maker's lettering) ---------- */
+.af-logo { position: relative; z-index: 2; white-space: nowrap; line-height: 1; color: #f2efe7; }
+.af-logo.pos-l { position: absolute; left: 22px; top: 50%; transform: translateY(-50%); }
+.af-logo.pos-ul { position: absolute; left: 20px; top: 9px; }
+.af-logo.pos-ll { position: absolute; left: 18px; bottom: 9px; }
+/* Marshall-style white script */
+.lg-mscript span { display: inline-block; font-family: "Snell Roundhand", "Brush Script MT", cursive; font-weight: 900; font-style: italic; font-size: 40px; color: #f5f2ea;
+  letter-spacing: -0.01em; text-shadow: 0 1px 0 #fff, 0 2px 0 #b9b4a8, 0 3px 0 #77736b, 0 4px 6px rgba(0,0,0,0.7); transform: skewX(-6deg); }
+.lg-mscript.big span { font-size: 46px; }
+/* Soldano-style lowercase plate */
+.lg-slo span { display: inline-block; padding: 6px 18px 8px; border-radius: 4px; background: linear-gradient(180deg, #1c1c1e, #050505);
+  box-shadow: 0 0 0 1.5px #b9bdc1, 0 3px 6px rgba(0,0,0,0.8); font-family: "Avenir Next", "Helvetica Neue", sans-serif; font-weight: 700; font-size: 26px;
+  text-transform: lowercase; letter-spacing: 0.04em; color: #f4f4f4; }
+/* 5150-style block letters on a plate */
+.lg-block51 span { display: inline-block; padding: 4px 16px; font-family: Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif; font-size: 40px; text-transform: uppercase;
+  letter-spacing: 0.04em; color: #f0f0f0; -webkit-text-stroke: 1px #111; text-shadow: 2px 2px 0 #7a7d82, 3px 3px 0 #2b2b2b, 0 5px 8px rgba(0,0,0,0.85);
+  background: linear-gradient(180deg, rgba(20,20,20,0.85), rgba(0,0,0,0.85)); border-radius: 3px; box-shadow: 0 0 0 1px rgba(255,255,255,0.12); }
+/* Rectifier badge on the vent plate */
+.lg-badge span { display: inline-block; padding: 3px 12px; border-radius: 3px; background: linear-gradient(180deg, #f2f3f4, #9fa3a8); color: #121212;
+  font-family: "Futura", "Avenir Next", sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 0.32em; text-transform: uppercase; box-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+.lg-badge.red span { background: linear-gradient(180deg, #2a2a2a, #0a0a0a); color: #ff4a2e; box-shadow: 0 0 0 1px #5a1a12, 0 2px 4px rgba(0,0,0,0.8); }
+/* Bogner-style chrome metal wordmark */
+.lg-chrome span { display: inline-block; font-family: "Didot", "Bodoni 72", "Times New Roman", serif; font-weight: 700; font-size: 38px; letter-spacing: 0.08em; text-transform: uppercase;
+  background: linear-gradient(180deg, #ffffff 0%, #c9cdd2 40%, #5d6268 52%, #e9ecef 70%, #8d9298 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.9)); }
+/* Orange-style heavy rounded letters */
+.lg-orange span { display: inline-block; font-family: "Cooper Black", "Arial Rounded MT Bold", "Avenir Next", sans-serif; font-weight: 900; font-size: 40px; text-transform: uppercase;
+  letter-spacing: 0.02em; color: #e8771f; -webkit-text-stroke: 1.2px #2b1505; text-shadow: 0 2px 0 rgba(60,25,0,0.45); }
+/* Hiwatt-style rectangular plate */
+.lg-hiplate span { display: inline-block; padding: 6px 20px; border-radius: 2px; background: linear-gradient(180deg, #2a2a2c, #111113); color: #f3f3f3;
+  font-family: "Futura", "Avenir Next", sans-serif; font-weight: 800; font-size: 22px; letter-spacing: 0.22em; text-transform: uppercase;
+  box-shadow: inset 0 0 0 2px #111, inset 0 0 0 3.5px #e8e8e8, 0 3px 6px rgba(0,0,0,0.8); }
+/* Fender-style chrome script with a tail */
+.lg-fscript span, .lg-tscript span { position: relative; display: inline-block; font-family: "Snell Roundhand", "Brush Script MT", cursive; font-weight: 900; font-style: italic; font-size: 30px;
+  background: linear-gradient(180deg, #ffffff, #c5c9ce 45%, #6f747b 55%, #e8eaec); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.85)); padding-right: 6px; }
+.lg-fscript span::after, .lg-tscript span::after { content: ""; position: absolute; left: 10%; right: -18px; bottom: -3px; height: 3px; border-radius: 3px;
+  background: linear-gradient(90deg, #8e9399, #f2f3f5 60%, #a2a6ab); transform: skewX(-30deg); }
+.lg-tscript span { font-size: 30px; }
+.lg-fscript span, .lg-tscript span { font-family: "Brush Script MT", "Snell Roundhand", cursive; font-weight: 700; font-size: 38px; letter-spacing: 0.01em;
+  -webkit-text-stroke: 0.7px #141414; filter: drop-shadow(0 1px 0 rgba(0,0,0,0.85)) drop-shadow(0 2px 3px rgba(0,0,0,0.6)); }
+.amp.af-vox.af-fawn .lg-vox span { background: linear-gradient(180deg, #5a3d16, #2e1d08); -webkit-background-clip: text; background-clip: text;
+  filter: drop-shadow(0 1px 0 rgba(255,236,180,0.85)); }
+/* Supro-style slanted script */
+.lg-supro span { display: inline-block; font-family: "Brush Script MT", "Snell Roundhand", cursive; font-weight: 700; font-style: italic; font-size: 34px; color: #f4f1e8;
+  text-shadow: 0 1px 0 #6c7178, 0 2px 4px rgba(0,0,0,0.7); transform: skewX(-8deg); }
+/* Vox-style gold capitals in the black band */
+.lg-vox span { display: inline-block; font-family: "Futura", "Avenir Next", "Century Gothic", sans-serif; font-weight: 800; font-size: 21px; letter-spacing: 0.24em; text-transform: uppercase;
+  background: linear-gradient(180deg, #fff1bf, #d6ad55 50%, #9a7429); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.9)); }
+/* JC-style brushed badge */
+.lg-jc span { display: inline-block; padding: 3px 10px; border-radius: 3px; background: linear-gradient(180deg, #e9ebed, #a6aaaf); color: #151515;
+  font-family: "Avenir Next", "Helvetica Neue", sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; box-shadow: 0 2px 4px rgba(0,0,0,0.75); }
+/* Ampeg-style script plate */
+.lg-ascript span { display: inline-block; padding: 2px 14px 5px; border-radius: 4px; font-family: "Snell Roundhand", "Brush Script MT", cursive; font-style: italic; font-weight: 900; font-size: 26px;
+  color: #f2f3f4; background: linear-gradient(180deg, #2a2b2d, #0b0b0c); box-shadow: 0 0 0 1.5px #b9bdc1, 0 2px 5px rgba(0,0,0,0.8); }
+.lg-ascript.blue span { color: #1d3e8a; background: linear-gradient(180deg, #f2f3f4, #c2c6ca); box-shadow: 0 0 0 1.5px #1d3e8a, 0 2px 5px rgba(0,0,0,0.6); }
+/* GK-style small block letters on the panel */
+.lg-gk span { font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 800; font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; color: #f2f2f2; }
+.lg-gk span::first-letter { color: #e23b2e; }
+/* Boutique plates */
+.lg-plate span { display: inline-block; padding: 5px 16px; border-radius: 3px; font-family: "Futura", "Avenir Next", sans-serif; font-weight: 800; font-size: 22px; letter-spacing: 0.2em; text-transform: uppercase; }
+.lg-plate.fire span { background: linear-gradient(180deg, #1a1a1a, #070707); color: #f1d38c; box-shadow: inset 0 0 0 1.5px #c79d4b, 0 3px 6px rgba(0,0,0,0.85); }
+.lg-plate.seeker span { background: linear-gradient(180deg, #e2b88a, #a77a49); color: #1c120a; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.4), 0 3px 6px rgba(0,0,0,0.85); }
+
+/* ---------- panels ---------- */
+.af-panel { position: relative; flex: none; border-radius: 4px; padding: 9px 14px 8px; color: var(--ink);
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 rgba(0,0,0,0.3), 0 0 0 1px rgba(0,0,0,0.6), 0 2px 3px rgba(0,0,0,0.45); }
+.af-panel::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; }
+.pn-plexi { background: linear-gradient(180deg, #f6dd94 0%, #e2b85a 38%, #c99a3c 62%, #e8c46e 100%); }
+.pn-plexi::before { background: linear-gradient(100deg, transparent 20%, rgba(255,255,255,0.32) 32%, transparent 44%), linear-gradient(180deg, rgba(255,255,255,0.35), transparent 30%); }
+.pn-gold { background: linear-gradient(180deg, #f1da9c 0%, #ddbc72 45%, #c6a256 100%); }
+.pn-gold::before, .pn-silver::before, .pn-copper::before, .pn-voxcopper::before, .pn-blueline::before { background: repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, rgba(0,0,0,0.04) 1px 2px, transparent 2px 4px); }
+.pn-chrome { background: linear-gradient(180deg, #fbfcfd 0%, #c9ced2 22%, #f2f4f5 40%, #8f969c 58%, #dfe3e6 80%, #b4babf 100%); }
+.pn-tweedchrome { background: linear-gradient(180deg, #f6f6f2 0%, #cdd0cf 30%, #eef0ee 50%, #a7aba9 75%, #d9dcda 100%); }
+.pn-white { background: linear-gradient(180deg, #ffffff, #e6e6e3); }
+.pn-silver { background: linear-gradient(180deg, #e9ecee 0%, #c6cbcf 50%, #aeb4b9 100%); }
+.pn-black { background: linear-gradient(180deg, #232323, #0e0e0e); }
+.pn-blackgold { background: linear-gradient(180deg, #1d1b18, #0b0a09); box-shadow: inset 0 0 0 1.5px #b88f45, 0 0 0 1px rgba(0,0,0,0.6), 0 2px 3px rgba(0,0,0,0.45); }
+.pn-mirror { background: linear-gradient(180deg, #2a2b2e 0%, #050506 45%, #18191b 100%); }
+.pn-mirror::before { background: linear-gradient(170deg, rgba(255,255,255,0.14) 0, transparent 35%); }
+.pn-mirror .ctl-lbl, .pn-mirror .af-model { text-shadow: 0 0 6px rgba(80,180,255,0.9), 0 0 2px rgba(120,200,255,0.9); }
+.pn-navy { background: linear-gradient(180deg, #1c2130, #0c0f17); box-shadow: inset 0 3px 6px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,0,0,0.7); }
+.pn-blackface { background: linear-gradient(180deg, #1d1d1f, #0b0b0c); }
+.pn-copper { background: linear-gradient(180deg, #d4ab7b 0%, #bb905f 50%, #9e7647 100%); }
+.pn-voxcopper { background: linear-gradient(180deg, #c8875a 0%, #b06f43 45%, #8d5531 100%); }
+.pn-voxgrey { background: linear-gradient(180deg, #6e7073 0%, #55575a 55%, #3f4144 100%); }
+.pn-supro { background: linear-gradient(180deg, #3a4a5c, #1f2a37); box-shadow: inset 0 0 0 1px #b8bcc2, 0 0 0 1px rgba(0,0,0,0.6); }
+.pn-jc { background: linear-gradient(180deg, #2b2c2d, #151617); border-bottom: 4px solid #b9bdc1; }
+.pn-blueline { background: linear-gradient(180deg, #eef0f2 0%, #cdd1d5 60%, #b3b8bd 100%); }
+.pn-blueline::after { content: ""; position: absolute; left: 10px; right: 10px; top: 4px; height: 2px; background: #1d3e8a; border-radius: 1px; box-shadow: 0 calc(100% + 0px) 0 #1d3e8a; pointer-events: none; }
+.pn-svtcl { background: linear-gradient(180deg, #202123, #0d0d0e); box-shadow: inset 0 0 0 2px #b9bdc1, inset 0 0 0 3px #111, 0 0 0 1px rgba(0,0,0,0.6); }
+.pn-gk { background: linear-gradient(180deg, #1b1b1b, #0a0a0a); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18), 0 0 0 1px rgba(0,0,0,0.6); }
+
+.af-left { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; min-width: 70px; max-width: 124px; }
+.af-right { display: flex; align-items: center; gap: 10px; }
+.af-ctls { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 6px 2px; min-width: 0; }
+.af-ctls .ctl { min-width: 54px; }
+.af-ctls .ctl.tog { min-width: 46px; }
+.af-ctls .ctl.small { min-width: 42px; }
+.af-ctls .ctl-lbl { order: -1; margin-bottom: 1px; min-height: 22px; display: flex; align-items: flex-end; justify-content: center; text-align: center; white-space: normal; max-width: 68px; }
+.af-ctls .ctl.small .ctl-lbl { font-size: 8.5px; min-height: 20px; max-width: 52px; }
+.af-ctls .ctl.small .ctl-val { font-size: 9px; }
+.amp.af-ring .af-ctls .kn { margin: 12px 6px 9px; }
+.amp.af-ring .af-ctls .ctl:not(.tog) { min-width: 60px; }
+.af-ctls .kn::before { content: ""; position: absolute; inset: -30%; background: center / 100% 100% no-repeat; pointer-events: none; }
+
+/* engine voicing well + JC effects section */
+.af-svc, .af-fx { display: flex; flex-direction: column; align-items: center; margin-left: 8px; padding: 3px 6px 2px; border-radius: 5px; }
+.af-svc { background: rgba(0,0,0,0.16); box-shadow: inset 0 1px 3px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.18); }
+.af-fx { background: linear-gradient(180deg, #4e4a2f, #34311d); box-shadow: inset 0 0 0 1px rgba(0,0,0,0.5); }
+.af-row { display: flex; gap: 2px; align-items: flex-start; }
+.af-cap { font-family: var(--font-silk); font-size: 7.5px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; opacity: 0.6; line-height: 1; margin-bottom: 1px; }
+
+/* panel text */
+.af-model { font-family: var(--font-silk); font-weight: 700; font-size: 9.5px; letter-spacing: 0.6px; text-transform: uppercase; opacity: 0.85; line-height: 1.15; max-width: 124px; }
+.af-series { font-family: "Futura", "Avenir Next", sans-serif; font-weight: 800; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; line-height: 1.1; }
+.af-pscript { font-family: "Snell Roundhand", "Brush Script MT", cursive; font-style: italic; font-weight: 900; font-size: 22px; line-height: 1; white-space: nowrap; }
+.af-ampscript { font-family: "Snell Roundhand", "Brush Script MT", cursive; font-style: italic; font-weight: 900; font-size: 18px; line-height: 1; white-space: nowrap; }
+.af-ampscript span { font-size: 0.8em; opacity: 0.85; }
+.af-badge { display: flex; align-items: baseline; gap: 4px; padding: 3px 8px; border-radius: 3px; background: linear-gradient(180deg, #d9dcdf, #9ea2a7); color: #151515;
+  font-family: "Avenir Next", "Helvetica Neue", sans-serif; font-weight: 800; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap; }
+.af-badge b { color: #c21e17; }
+
+/* jacks */
+.af-jacks { display: flex; gap: 8px; align-items: flex-end; }
+.af-jacks .af-jc { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.af-jacks.j1 { flex-direction: column; align-items: center; gap: 3px; }
+.af-jl { font-family: var(--font-silk); font-size: 7.5px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; opacity: 0.75; white-space: nowrap; line-height: 1; }
+.af-jacks .ajack { width: 16px; height: 16px; }
+
+/* pilot lamps */
+.af-jewel { flex: none; border: none; padding: 0; }
+button.af-jewel { cursor: pointer; }
+.jw-red { --jw: 255, 61, 31; }
+.jw-amber { --jw: 255, 160, 40; background: radial-gradient(circle, #ffe0a0 0, #ff9a1f 30%, #8a4600 70%) !important; }
+.jw-blue { --jw: 70, 150, 255; background: radial-gradient(circle, #cfe6ff 0, #3c8cff 30%, #0b2f80 70%) !important; }
+.jw-white { --jw: 255, 245, 225; background: radial-gradient(circle, #ffffff 0, #f3ead6 35%, #8f887a 75%) !important; }
+.af-jewel { box-shadow: 0 0 0 3px #b5b7bb, 0 0 0 4px rgba(0,0,0,0.5), 0 0 16px 4px rgba(var(--jw), 0.55); }
+.unit.bypassed .af-jewel { background: radial-gradient(circle, #4a3530 0, #1c1210 70%) !important; box-shadow: 0 0 0 3px #8e9095, 0 0 0 4px rgba(0,0,0,0.5); }
+.af-led { width: 9px; height: 9px; }
+.af-led.led-blue { background: radial-gradient(circle at 40% 35%, #d6ecff 0, #3c8cff 45%, #0b2f80 100%); box-shadow: 0 0 0 1px rgba(0,0,0,0.55), 0 0 10px 3px rgba(60,140,255,0.6); }
+.af-leds { display: flex; flex-direction: column; gap: 5px; font-family: var(--font-silk); font-size: 7.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; }
+.af-leds span { display: flex; align-items: center; gap: 5px; }
+.af-leds .led { width: 7px; height: 7px; }
+
+/* switches */
+.af-togs { display: flex; gap: 10px; }
+.toggle-sw.af-dummy { display: block; }
+.unit.bypassed .toggle-sw.af-dummy::after { top: -2px; }
+.af-rockers { display: flex; gap: 8px; }
+.af-rk { display: flex; flex-direction: column; align-items: center; gap: 3px; font-family: var(--font-silk); font-size: 7.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; }
+.af-rocker { display: block; width: 15px; height: 24px; border: none; padding: 0; border-radius: 3px; position: relative;
+  background: linear-gradient(180deg, #3a3a3a 0, #121212 48%, #050505 52%, #1d1d1d 100%); box-shadow: 0 0 0 2px #0a0a0a, 0 0 0 3px rgba(255,255,255,0.2), inset 0 1px 0 rgba(255,255,255,0.2); }
+.af-rocker.mains { background: linear-gradient(180deg, #ff6a4a 0, #c8261a 48%, #6d0d06 52%, #a1180e 100%); box-shadow: 0 0 0 2px #0a0a0a, 0 0 0 3px rgba(255,255,255,0.2), 0 0 10px rgba(255,60,30,0.55); cursor: pointer; }
+.unit.bypassed .af-rocker.mains { background: linear-gradient(180deg, #5a1d16 0, #3a0f0a 48%, #2a0805 52%, #47120c 100%); box-shadow: 0 0 0 2px #0a0a0a, 0 0 0 3px rgba(255,255,255,0.2); }
+.af-rockerbox { display: flex; align-items: flex-end; gap: 8px; padding: 5px 8px; border-radius: 4px; box-shadow: inset 0 0 0 1.5px currentColor; }
+.af-rbname { font-family: "Futura", "Avenir Next", sans-serif; font-weight: 800; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; align-self: center; white-space: nowrap; }
+.af-push { width: 20px; height: 20px; border-radius: 4px; border: none; padding: 0; cursor: pointer;
+  background: linear-gradient(180deg, #f2f3f4, #9fa3a8); box-shadow: 0 0 0 2px #111, 0 2px 3px rgba(0,0,0,0.6); }
+.unit.bypassed .af-push { background: linear-gradient(180deg, #8a8d91, #55585c); box-shadow: 0 0 0 2px #111, inset 0 2px 3px rgba(0,0,0,0.6); }
+
+/* Orange pictogram labels */
+.af-ctls .ctl-lbl .af-pic { display: block; width: 26px; height: 16px; }
+.af-ctls .ctl-lbl em { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* ---------- knobs ---------- */
+/* Fender blackface: black skirt with 1-10, chrome cap */
+.k-fendersk .kn-body { background: radial-gradient(circle at 50% 40%, #222224 0, #0b0b0c 75%); box-shadow: 0 3px 5px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.85); }
+.k-fendersk .kn-body::after { content: ""; position: absolute; inset: 30%; border-radius: 50%;
+  background: radial-gradient(circle at 40% 32%, #ffffff 0, #c9ccd0 40%, #74787d 100%); box-shadow: 0 0 0 1.5px #050505, 0 1px 2px rgba(0,0,0,0.6); z-index: 3; }
+.k-fendersk .kn-rot i { display: none; }
+.k-fendersk .kn::after { content: ""; position: absolute; left: 50%; top: -5px; width: 2px; height: 4px; margin-left: -1px; background: var(--ink); opacity: 0.8; }
+/* Chrome speed knob (Rectifier / Überschall) */
+.k-chrome .kn-body { background: conic-gradient(from 0deg, #f4f5f6, #8d9298 12%, #e8eaec 25%, #7e848a 37%, #f1f2f3 50%, #8a9096 62%, #e4e6e8 75%, #80868c 87%, #f4f5f6);
+  box-shadow: 0 3px 5px rgba(0,0,0,0.65), 0 0 0 1px rgba(0,0,0,0.75); }
+.k-chrome .kn-body::before { content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: repeating-conic-gradient(rgba(0,0,0,0.18) 0deg 4deg, rgba(255,255,255,0.12) 4deg 8deg);
+  -webkit-mask: radial-gradient(circle, transparent 66%, #000 68%); mask: radial-gradient(circle, transparent 66%, #000 68%); }
+.k-chrome .kn-body::after { content: ""; position: absolute; inset: 24%; border-radius: 50%; background: radial-gradient(circle at 40% 30%, #ffffff, #b8bdc2 50%, #6b7177); box-shadow: 0 0 0 1px rgba(0,0,0,0.4); }
+.k-chrome { --ptr: #111; }
+.k-chrome .kn-rot i { top: 6%; height: 22%; width: 2.4px; }
+/* Black knurled with silver cap (SLO, Hiwatt, JC, SVT) */
+.k-silvercap .kn-body { background: radial-gradient(circle at 50% 40%, #2c2c2e 0, #121213 70%, #050505 100%);
+  box-shadow: 0 3px 5px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.1); }
+.k-silvercap .kn-body::before { content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: repeating-conic-gradient(rgba(255,255,255,0.08) 0deg 4deg, rgba(0,0,0,0.3) 4deg 8deg);
+  -webkit-mask: radial-gradient(circle, transparent 64%, #000 66%); mask: radial-gradient(circle, transparent 64%, #000 66%); }
+.k-silvercap .kn-body::after { content: ""; position: absolute; inset: 22%; border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0) 55%, rgba(0,0,0,0.25) 100%), conic-gradient(from 10deg, #e2e4e7, #9ea2a8 12%, #f2f3f4 25%, #a4a8ae 37%, #dadcdf 50%, #9a9ea4 62%, #f3f4f5 75%, #a3a7ad 88%, #e2e4e7);
+  box-shadow: 0 0 0 1.5px #0b0b0b; }
+.k-silvercap .kn-rot i { top: 22%; height: 26%; background: #151515; width: 2px; margin-left: -1px; z-index: 2; }
+.k-silvercap .kn-rot { z-index: 4; }
+/* GK: black body, flat grey disc cap */
+.k-gk .kn-body { background: radial-gradient(circle at 50% 40%, #2a2a2a, #0c0c0c 80%); box-shadow: 0 3px 4px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.8); }
+.k-gk .kn-body::after { content: ""; position: absolute; inset: 16%; border-radius: 50%; background: radial-gradient(circle at 45% 35%, #a9acaf, #7b7e82 70%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35); }
+.k-gk { --ptr: #f2f2f2; }
+.k-gk .kn-rot i { top: 4%; height: 30%; }
+.k-marshall .kn-rot { z-index: 4; }
+
+/* ---------- compact (lane) faces ---------- */
+.amp.af.compact .af-panel { padding: 7px 10px 6px; gap: 10px; }
+.amp.af.compact .af-left { min-width: 0; max-width: 150px; gap: 5px; }
+.amp.af.compact .af-ctls .ctl { min-width: 50px; }
+.af-mini { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; padding-right: 4px; line-height: 1.05; }
+.af-mini span { font-size: 18px !important; padding: 0 !important; box-shadow: none !important; background: none !important; -webkit-text-stroke: 0 !important; text-shadow: none !important;
+  color: var(--ink) !important; -webkit-background-clip: border-box !important; background-clip: border-box !important; filter: none !important; letter-spacing: 0.04em !important; transform: none !important; }
+.af-mini.lg-mscript span, .af-mini.lg-fscript span, .af-mini.lg-tscript span, .af-mini.lg-supro span, .af-mini.lg-ascript span { font-size: 19px !important; letter-spacing: 0 !important; }
+.af-mini span::after { display: none; }

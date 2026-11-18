@@ -1,0 +1,42 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "test-zener",
+  "version": 1,
+  "name": "Zener regulators, zener clipper, current-limited op-amp and pot end resistance (validation circuit)",
+  "description": "Shunt zener regulators of the JC-120 kind: +15 V from a rippled +24 V (100 Hz, 2 V) through 470 ohms into a 1N4744A with 100 uF and a 2.2k load, and -15 V the same way into a 1N5245B. A back-to-back 1N4731A pair (4.3 V) clips the input through 1k (both breakdown and forward conduction). A TL072-class op-amp on fixed +-15 V rails with a 25 mA output current limit (ilim) drives 100 ohms at a gain of 11. A 10k pot with 200 ohms of end resistance (rend) taps the +15 V rail at its bottom end.",
+  "sources": [
+    { "title": "Vishay 1N4728A-1N4764A zener datasheet (Vz, Izt, Zzt)", "url": "https://www.vishay.com/docs/85816/1n4728a.pdf" },
+    { "title": "onsemi 1N5221B-1N5267B zener datasheet (Vz, Izt, Zzt)", "url": "https://www.onsemi.com/pdf/datasheet/1n5221b-d.pdf" }
+  ],
+  "io": { "input": "in", "output": "clip" },
+  "oversampling": 2,
+  "models": {
+    "OPL": { "kind": "opamp", "level": 1, "a0": 2e5, "gbw": 3e6, "slew": 13e6, "swing_hi": 1.5, "swing_lo": 1.5, "cdom": 30e-12, "ilim": 0.025, "rout": 100 }
+  },
+  "controls": [
+    { "id": "level", "label": "Level", "default": 0.0 }
+  ],
+  "parts": [
+    { "ref": "VS", "type": "V", "nodes": ["vs", "0"], "value": "24", "ac": { "amplitude": "2", "freq": 100, "phase": 0 } },
+    { "ref": "R1", "type": "R", "nodes": ["vs", "vz"], "value": "470" },
+    { "ref": "DZ1", "type": "D", "nodes": ["0", "vz"], "model": "1N4744A" },
+    { "ref": "C1", "type": "C", "nodes": ["vz", "0"], "value": "100u" },
+    { "ref": "RL1", "type": "R", "nodes": ["vz", "0"], "value": "2.2k" },
+    { "ref": "VN", "type": "V", "nodes": ["vn", "0"], "value": "-24", "ac": { "amplitude": "2", "freq": 100, "phase": 0 } },
+    { "ref": "R2", "type": "R", "nodes": ["vn", "vzn"], "value": "470" },
+    { "ref": "DZ2", "type": "D", "nodes": ["vzn", "0"], "model": "1N5245B" },
+    { "ref": "C2", "type": "C", "nodes": ["vzn", "0"], "value": "100u" },
+    { "ref": "RL2", "type": "R", "nodes": ["vzn", "0"], "value": "2.2k" },
+    { "ref": "R3", "type": "R", "nodes": ["in", "clip"], "value": "1k" },
+    { "ref": "DZ3", "type": "D", "nodes": ["m", "clip"], "model": "1N4731A" },
+    { "ref": "DZ4", "type": "D", "nodes": ["m", "0"], "model": "1N4731A" },
+    { "ref": "VCC", "type": "V", "nodes": ["vcc", "0"], "value": "15" },
+    { "ref": "VEE", "type": "V", "nodes": ["vee", "0"], "value": "-15" },
+    { "ref": "IC1", "type": "opamp", "nodes": ["in", "fb", "out", "vcc", "vee"], "model": "OPL" },
+    { "ref": "RF", "type": "R", "nodes": ["out", "fb"], "value": "10k" },
+    { "ref": "RG", "type": "R", "nodes": ["fb", "0"], "value": "1k" },
+    { "ref": "RLO", "type": "R", "nodes": ["out", "0"], "value": "100" },
+    { "ref": "P1", "type": "pot", "nodes": ["vz", "w", "0"], "value": "10k", "taper": "B", "control": "level", "rend": "200" }
+  ],
+  "probes": ["vz", "vzn", "clip", "out", "w"]
+}

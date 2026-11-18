@@ -1,0 +1,56 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "vox-v846-clyde-mccoy",
+  "version": 1,
+  "name": "Vox V846 Clyde McCoy wah (1967, Halo inductor)",
+  "description": "Vox / Thomas Organ 'Clyde McCoy' wah-wah (1967), the circuit later sold as the V846: no input buffer, 9 V battery straight onto the circuit. Input 0.01 µF then 68 kΩ into Q1 (BC109B, 22 kΩ collector, 470 Ω emitter); 1.5 kΩ from Q1's base to the resonant node; 500 mH Halo inductor (with its series DC resistance) in parallel with the 100 kΩ McCoy-spec Q resistor down to the bias node (470 kΩ from Q1's collector, 100 kΩ and a 4 µF non-polarised capacitor to ground); 0.01 µF from the resonant node to Q2's emitter. Q2 (BC109B, 1 kΩ collector, 10 kΩ emitter, 470 kΩ base bias from Q1's collector) follows the 100 kΩ audio-taper rocker-pot wiper through 0.22 µF. Output from Q1's collector through 0.22 µF (top of the pot), unbuffered.",
+  "sources": [
+    { "title": "Fuzz Central, 'Vox Clyde McCoy Wah': McCoy schematic (0.01 µF before the 68 kΩ input resistor, 22 kΩ, 470 Ω, 1.5 kΩ, 470 kΩ ×2, 100 kΩ bias, 4 µF NP, 500 mH, 100 kΩ across the inductor (other McCoys 33 kΩ), 0.01 µF, 0.22 µF ×2, 100 kΩ A pot, 1 kΩ, 10 kΩ; BC109 or BC173 transistors), Halo 'large hole' and 'small hole' inductors, Ducati 4 µF non-polarised cap, 2N3900A service replacement", "url": "https://fuzzcentral.ssguitar.com/mccoy.php" },
+    { "title": "TC Gakki, 'Legendary Wah-Wah Pedal VOX Clyde McCoy': teardowns of '67 'picture' #120X (Halo large-hole inductor, ICAR 100 kΩ pot, BC109B ×2, Ducati 0.01 µF ×2, Mullard 0.22 µF ×2, Ducati bipolar 4 µF) and '68 'signature' units", "url": "https://tcgakki.com/en/blogs/status-report/legendary-wah-wah-pedal-vox-clyde-mccoy-wah-wah-pedal" },
+    { "title": "Vox Showroom, 'The Thomas Vox Clyde McCoy Wah-Wah Pedal' and 'Vox V846 Wah-Wah Pedal': same circuit as the V846, 9 V battery, 500 mH Halo inductor, 100 kΩ audio-taper pot (ICAR hybrid taper on Italian units)", "url": "https://www.voxshowroom.com/us/misc/clyde.html" },
+    { "title": "Vox Showroom, 'VRM-1 Real McCoy reissue': transistor types found in Clyde pedals (2N3900A, 2N2923, 2N2924, BC109), two Halo core variants", "url": "https://www.voxshowroom.com/us/misc/VRM-1.html" },
+    { "title": "Gearnews, 'The VOX Clyde McCoy Wah': Halo inductors, initially the 'large-hole' 30 Ω, later the 80 Ω 'small-hole' version", "url": "https://www.gearnews.com/the-vox-clyde-mccoy-wah-a-quick-look-at-the-classic-effect/" },
+    { "title": "R. G. Keen, 'The Technology of Wah Pedals' (geofex.com): circuit operation and part roles; earliest wahs reputedly used 470 kΩ-1 MΩ pots, later 100 kΩ", "url": "http://www.geofex.com/Article_Folders/wahpedl/wahped.htm" },
+    { "title": "ElectroSmash, 'Dunlop Cry Baby GCB-95 Circuit Analysis': V847 vs GCB-95 differences (V847 R4 510 Ω, R8 100 kΩ, 69.5 kΩ input impedance)", "url": "https://www.electrosmash.com/crybaby-gcb-95" },
+    { "title": "Philips BC109B SPICE card (IS 7.049f BF 381.7 BR 2.359 VAF 59.59 ISE 59.74f NE 1.522 CJE 11.5p CJC 5.38p), as distributed in the LTspice standard.bjt library (licence not stated; quoted as a factual parameter set)", "url": "https://github.com/polimi-ispl/mxrphase90/blob/main/LTspice/standard.bjt" }
+  ],
+  "io": { "input": "in", "output": "out", "inputVoltsPerFS": 1.0, "outputVoltsPerFS": 1.0 },
+  "oversampling": 1,
+  "solver": "auto",
+  "models": {
+    "BC109B": { "kind": "npn", "is": 7.049e-15, "bf": 381.7, "br": 2.359, "vaf": 59.59, "ise": 5.974e-14, "ne": 1.522, "cje": 1.15e-11, "cjc": 5.38e-12, "note": "Philips BC109B SPICE card (LTspice standard.bjt); IKF/NK, ISC/NC, RC and transit times omitted. Datasheet BC109B hFE 200-450 at 2 mA" }
+  },
+  "controls": [
+    { "id": "pedal", "label": "Wah (pedal position)", "kind": "continuous", "default": 0.5, "params": ["Pd"], "group": "Main", "note": "100 kΩ audio-taper rocker pot: log end to ground, other end on the output, wiper to Q2 via 0.22 µF. 0 = heel down (lowest resonance), 1 = toe down (highest). The Italian ICAR pots had a hybrid lin/log taper (not published); 0..1 spans the whole track" },
+    { "id": "stereo", "label": "Stereo", "kind": "continuous", "default": 0.5, "params": ["CASSt"], "legacyOnly": true, "group": "Legacy", "note": "Host stereo/mono routing flag; the pedal is mono. Stored only" },
+    { "id": "power", "label": "On/Off", "kind": "switch", "default": 1, "params": ["Pwr"], "legacyOnly": true, "group": "Legacy", "note": "The Arrow SPDT footswitch is the host's unit bypass (the real bypass leaves the 0.01 µF input cap in the dry path). The netlist models the effect-on path. Stored only" }
+  ],
+  "parts": [
+    { "ref": "VBAT", "type": "V", "nodes": ["vcc", "0"], "value": "9", "label": "9 V battery", "note": "No supply filtering or polarity protection on the 1967 circuit" },
+
+    { "ref": "CIN", "type": "C", "nodes": ["in", "x1"], "value": "10n", "tolerance": 0.1, "label": "0.01 µF input (Ducati polystyrene)" },
+    { "ref": "R1", "type": "R", "nodes": ["x1", "b1"], "value": "68k", "tolerance": 0.1, "note": "McCoy order: cap first, then 68 kΩ (Fuzz Central)" },
+    { "ref": "Q1", "type": "npn", "nodes": ["c1", "b1", "e1"], "model": "BC109B", "label": "Q1 gain stage" },
+    { "ref": "R3", "type": "R", "nodes": ["vcc", "c1"], "value": "22k", "tolerance": 0.1 },
+    { "ref": "R4", "type": "R", "nodes": ["e1", "0"], "value": "470", "tolerance": 0.1, "note": "Fuzz Central McCoy schematic. ElectroSmash quotes 510 Ω for the later V847" },
+    { "ref": "R2", "type": "R", "nodes": ["b1", "fb"], "value": "1.5k", "tolerance": 0.1 },
+
+    { "ref": "L1", "type": "L", "nodes": ["fb", "lx"], "value": "500m", "tolerance": 0.1, "label": "Halo inductor 500 mH", "note": "500 mH nominal (Vox Showroom, Fuzz Central); replica Halos measure 510-598 mH (PedalPCB thread). Ferrite-core saturation (the 'Halo' character) is not modelled" },
+    { "ref": "RL1", "type": "R", "nodes": ["lx", "nb"], "value": "30", "label": "Halo DC resistance", "note": "unverified: single source (Gearnews): large-hole Halo ≈ 30 Ω (the '67 picture unit #120X had the large-hole type), later small-hole ≈ 80 Ω. Whipple / Sabbadius Halo replicas measure 28.8 / 30.3 Ω (PedalPCB)" },
+    { "ref": "RQ", "type": "R", "nodes": ["fb", "nb"], "value": "100k", "tolerance": 0.1, "label": "Q resistor (McCoy spec)", "note": "unverified which value a given 1967 unit carried: Fuzz Central reports 100 kΩ on some Clyde McCoys and the standard 33 kΩ on others; its schematic shows 100 kΩ" },
+    { "ref": "R6", "type": "R", "nodes": ["c1", "nb"], "value": "470k", "tolerance": 0.1 },
+    { "ref": "R8", "type": "R", "nodes": ["nb", "0"], "value": "100k", "tolerance": 0.1 },
+    { "ref": "C3", "type": "C", "nodes": ["nb", "0"], "value": "4u", "tolerance": 0.2, "note": "Ducati 4 µF bipolar (non-polarised) electrolytic" },
+    { "ref": "C2", "type": "C", "nodes": ["fb", "e2"], "value": "10n", "tolerance": 0.1, "label": "Sweep capacitor (Ducati polystyrene)" },
+
+    { "ref": "C5", "type": "C", "nodes": ["c1", "out"], "value": "220n", "tolerance": 0.2, "note": "Mullard 'tropical fish' 0.22 µF" },
+    { "ref": "VR1", "type": "pot", "nodes": ["0", "wip", "out"], "value": "100k", "taper": "A", "control": "pedal", "invert": true, "label": "Wah pot (ICAR 100 kΩ)", "note": "unverified: the ICAR hybrid taper is not published; the engine's A (10 % at mid) taper is used, log end on the ground lug" },
+    { "ref": "C4", "type": "C", "nodes": ["wip", "b2"], "value": "220n", "tolerance": 0.2 },
+    { "ref": "R5", "type": "R", "nodes": ["c1", "b2"], "value": "470k", "tolerance": 0.1 },
+    { "ref": "Q2", "type": "npn", "nodes": ["c2", "b2", "e2"], "model": "BC109B", "label": "Q2 follower" },
+    { "ref": "R9", "type": "R", "nodes": ["vcc", "c2"], "value": "1k", "tolerance": 0.1 },
+    { "ref": "R10", "type": "R", "nodes": ["e2", "0"], "value": "10k", "tolerance": 0.1 }
+  ],
+  "probes": ["b1", "c1", "fb", "nb", "e2", "out"],
+  "layout": {}
+}

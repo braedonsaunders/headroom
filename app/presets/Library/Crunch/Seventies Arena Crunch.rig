@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Seventies Arena Crunch</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Seventies Arena Crunch" preset-author="Headroom" preset-comment="The late-70s master-volume British 100-watt head: preamp at medium, master up, into a 4x12. Big, open, ringing chords with a muscular mid punch and just enough grind; sustained notes bloom. Strum open chords and let them ring, or chug power chords on the bridge pickup." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="56000">
+    <component-audio version="1">
+      <parameters num-parameters="15">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V1" value="0.55"/>
+        <parameter id="V2" value="0.7"/>
+        <parameter id="B" value="0.42"/>
+        <parameter id="M" value="0.55"/>
+        <parameter id="T" value="0.68"/>
+        <parameter id="Pr" value="0.65"/>
+        <parameter id="Pw" value="0.5"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bi" value="0.5"/>
+        <parameter id="Hg" value="0"/>
+        <parameter id="G4M" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.7836"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="10"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.15"/>
+        <parameter id="Tm" value="0.5"/>
+        <parameter id="Sz" value="0.6"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Chr" value="0.5"/>
+        <parameter id="iM" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="56000" target-number="1" target-name="V1" min-value="0.3" max-value="0.8" controller-name="Gain"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="56000" target-number="1" target-name="V2" min-value="0.4" max-value="0.9" controller-name="Master"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="56000" target-number="1" target-name="M" min-value="0.35" max-value="0.85" controller-name="Mids"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="56000" target-number="1" target-name="Pr" min-value="0.3" max-value="0.8" controller-name="Presence"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.35" controller-name="Room"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="crunch-seventies-arena" category="Crunch" order="100" instrument="guitar" style="Classic Rock">
+  <description>The late-70s master-volume British 100-watt head: preamp at medium, master up, into a 4x12. Big, open, ringing chords with a muscular mid punch and just enough grind; sustained notes bloom. Strum open chords and let them ring, or chug power chords on the bridge pickup.</description>
+  <tags><tag>Crunch</tag><tag>Classic Rock</tag><tag>Hard Rock</tag><tag>Rhythm</tag><tag>No pedals</tag><tag>Power Chords</tag></tags>
+  <sources>
+    <source url="https://www.sweetwater.com/insync/the-history-of-the-legendary-marshall-jcm800-2203/" title="Sweetwater InSync: the history of the Marshall JCM800 2203"/>
+    <source url="https://www.marshall.com/gb/en/backstage/history-of/the-amps-that-changed-music-jcm800" title="Marshall: the amps that changed music, JCM800"/>
+    <source url="https://www.guitarworld.com/features/marshall-jcm800-2203" title="Guitar World: why the JCM800 2203 was the head of choice for a generation"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

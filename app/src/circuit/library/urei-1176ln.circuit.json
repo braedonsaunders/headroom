@@ -1,0 +1,1703 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "urei-1176ln",
+  "version": 1,
+  "name": "UREI 1176LN Peak Limiter (Rev F)",
+  "description": "United Recording Electronics Industries Model 1176LN Solid State Limiting Amplifier, Revision F (drawing R11914, S/N suffix F): constant-impedance 600 Ω bridged-T input attenuator (R1A/R1B, R2/R3 620 Ω) → UTC O-12 500:200 Ω input transformer (T1) → R6 27 kΩ / Q1 selected 2N5457 FET shunt gain cell with LN drain-source linearising feedback (C2, C5, R7/C3, R9/C4, R16 distortion null) → Q2–Q4 2N3391A Class-A signal preamp → R27 100 kΩ Output pot → Q5–Q9 Class-AB line amplifier (2N5087 Darlington driver, MPS-U05 / MPS-U55 output pair, C14 bootstrap) → B11148 1:1.732 output transformer (T2). Sidechain: Ratio section B signal divider (R22–R26, S1B–S4B) + S9 GR disable → Q12–Q15 2N3707 two-stage feedback control amplifier → CR3/CR4 FD333 full-wave rectifier biased from Ratio section A threshold chain (R87, R42–R45, S1A–S4A between Q-bias node and −10 V, producing the hardware All-Buttons bias shift) → R76/C22/R77 Attack and R78/R79 Release timing on C27 0.22 µF.",
+  "sources": [
+    {
+      "title": "UREI Model 1176LN Solid State Limiting Amplifier Operating & Service Manual (schematic R119140 Rev F leaf 53, Rev G leaf 54, Rev K leaf 56; factory test & calibration §5)",
+      "url": "https://archive.org/details/Urei_1176LN_owners_manual"
+    },
+    {
+      "title": "Gyraf Audio redraw of UREI 1176LN Rev K schematic with marked DC operating voltages",
+      "url": "https://www.gyraf.dk/gy_pd/1176/1176sch.gif"
+    },
+    {
+      "title": "Siliconix Application Note AN105, 'FETs as Voltage-Controlled Resistors' (drain-to-gate 0.5·Vds linearisation)",
+      "url": "https://www.vishay.com/docs/70598/70598.pdf"
+    },
+    {
+      "title": "onsemi 2N5457 N-Channel JFET datasheet and InterFET 2N5457 SPICE parameters",
+      "url": "https://www.onsemi.com/pdf/datasheet/2n5457-d.pdf"
+    },
+    {
+      "title": "Sowter Type 1260 (UTC O-12 replacement) and Type 1486 (UREI B11148 50+50:150+150 replacement) transformer data",
+      "url": "https://www.sowter.co.uk/vintage-audio-transformers.php"
+    },
+    {
+      "title": "Headroom Wave C device research §5 (FET gain cell subthreshold smoothing ksub = 0.07 V)",
+      "url": "work/circuit-netlists/wave-c/DEVICES.md"
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 2.0,
+    "outputVoltsPerFS": 2.0
+  },
+  "oversampling": 1,
+  "solver": "auto",
+  "models": {
+    "UREI_13_0027": {
+      "kind": "njf",
+      "vto": -1.25,
+      "beta": 0.00104,
+      "lambda": 0.01,
+      "is": 9.56e-14,
+      "n": 1.0,
+      "cgs": 3.58e-12,
+      "cgd": 3.58e-12,
+      "ksub": 0.07,
+      "note": "InterFET 2N5457 VTO=-1.25 V, BETA=1.04 mA/V^2 with subthreshold smoothing ksub=0.07 V derived from onsemi VGS(off) 10 nA definition (DEVICES.md §5.2); unverified: lambda=0.01 V^-1 assumed for selected 13-0027 device"
+    },
+    "2N3391A": {
+      "kind": "npn",
+      "is": 6.734e-15,
+      "bf": 350.0,
+      "br": 4.0,
+      "vaf": 100.0,
+      "cje": 4.5e-12,
+      "cjc": 3.5e-12,
+      "note": "unverified: low-noise high-gain silicon NPN (datasheet hFE 250-500 at 2 mA); Ebers-Moll IS/capacitances from 2N3904 class"
+    },
+    "2N5117": {
+      "kind": "npn",
+      "is": 6.734e-15,
+      "bf": 300.0,
+      "br": 4.0,
+      "vaf": 100.0,
+      "cje": 4.5e-12,
+      "cjc": 3.5e-12,
+      "note": "unverified: line-amp input NPN ('5117' on R11914, BC107 on Gyraf redraw); small-signal silicon NPN parameters"
+    },
+    "2N5087": {
+      "kind": "pnp",
+      "is": 1.41e-15,
+      "bf": 350.0,
+      "br": 4.0,
+      "vaf": 100.0,
+      "cje": 6e-12,
+      "cjc": 4e-12,
+      "note": "Fairchild 2N5087 low-noise PNP (datasheet hFE 250-800); IS from Fairchild 2N3906 class, unverified junction capacitances"
+    },
+    "MPSU05": {
+      "kind": "npn",
+      "is": 5e-14,
+      "bf": 120.0,
+      "br": 4.0,
+      "vaf": 80.0,
+      "cje": 2.5e-11,
+      "cjc": 1.5e-11,
+      "note": "unverified: Motorola MPS-U05 80 V / 2 A complementary driver NPN (datasheet hFE >= 50 at 250 mA)"
+    },
+    "MPSU55": {
+      "kind": "pnp",
+      "is": 5e-14,
+      "bf": 120.0,
+      "br": 4.0,
+      "vaf": 80.0,
+      "cje": 2.5e-11,
+      "cjc": 1.5e-11,
+      "note": "unverified: Motorola MPS-U55 80 V / 2 A complementary driver PNP (datasheet hFE >= 50 at 250 mA)"
+    },
+    "2N3707": {
+      "kind": "npn",
+      "is": 6.734e-15,
+      "bf": 320.0,
+      "br": 4.0,
+      "vaf": 100.0,
+      "cje": 4.5e-12,
+      "cjc": 3.5e-12,
+      "note": "unverified: sidechain control-amp NPN (UREI selects hFE >= 250); small-signal silicon NPN parameters"
+    },
+    "FD333": {
+      "kind": "diode",
+      "is": 1e-10,
+      "n": 1.85,
+      "rs": 1.0,
+      "note": "unverified: Fairchild FD333 low-leakage high-conductance silicon diode used in the sidechain full-wave rectifier"
+    }
+  },
+  "controls": [
+    {
+      "id": "input",
+      "label": "Input",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "I0"
+      ],
+      "group": "Main",
+      "note": "Front-panel dual-deck constant-impedance 620 Ω bridged-T attenuator (R1A series bridging deck, R1B shunt deck; R1A·R1B = 620^2 Ω^2 across travel, 54.5 dB CCW loss to 0.15 dB CW loss)"
+    },
+    {
+      "id": "ratio",
+      "label": "Ratio",
+      "kind": "selector",
+      "options": [
+        "Off",
+        "4:1",
+        "8:1",
+        "12:1",
+        "20:1",
+        "All"
+      ],
+      "default": 0.2,
+      "paramRange": [
+        0,
+        5
+      ],
+      "params": [
+        "R1"
+      ],
+      "group": "Main",
+      "note": "Pushbutton ratio bank S1–S4 (sections A and B) plus S9 GR disable ('Off' = Attack clicked CCW, grounding C17; 'All' = all four ratio buttons depressed together, shorting R42–R44 and shifting Q1 gate bias from −1.50 V to −2.42 V)"
+    },
+    {
+      "id": "attack",
+      "label": "Attack",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "A2"
+      ],
+      "group": "Main",
+      "note": "R77 25 kΩ linear pot with R76 470 Ω || C22 22 nF across CCW-to-wiper: '1' slowest CCW (~800 µs) to '7' fastest CW (< 20 µs)"
+    },
+    {
+      "id": "release",
+      "label": "Release",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "R3"
+      ],
+      "group": "Main",
+      "note": "R78 5 MΩ linear rheostat in series with R79 270 kΩ discharging C27 0.22 µF to the Q-bias node: '1' slowest CCW (~1.1 s) to '7' fastest CW (~55 ms)"
+    },
+    {
+      "id": "output",
+      "label": "Output",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "O4"
+      ],
+      "group": "Main",
+      "note": "R27 100 kΩ audio-taper front-panel Output Gain pot feeding the Q5–Q9 Class-AB line amplifier"
+    },
+    {
+      "id": "qbias",
+      "label": "Q Bias",
+      "kind": "continuous",
+      "default": 0.344,
+      "params": [],
+      "group": "Internal",
+      "note": "R81 2 kΩ trimmer calibrated per UREI §5.3.1 (Test 10) for 1.0 dB gain drop at 1 kHz when switching Ratio from Off to 4:1"
+    },
+    {
+      "id": "thd_trim",
+      "label": "Distortion Trim",
+      "kind": "continuous",
+      "default": 0.33,
+      "params": [],
+      "group": "Internal",
+      "note": "R16 100 Ω trimmer calibrated per UREI §5.3.5 for minimum H2 THD under limiting (33 Ω)"
+    },
+    {
+      "id": "legacy_dry",
+      "label": "Dry",
+      "kind": "continuous",
+      "default": 0.0,
+      "params": [
+        "D5"
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Legacy dry-blend parameter alias (no dry blend on hardware 1176LN)"
+    },
+    {
+      "id": "legacy_sc",
+      "label": "Sidechain",
+      "kind": "continuous",
+      "default": 0.0,
+      "params": [
+        "S7"
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Legacy external sidechain parameter alias"
+    },
+    {
+      "id": "legacy_vumode",
+      "label": "VU Mode",
+      "kind": "selector",
+      "options": [
+        "GR",
+        "+4",
+        "+8"
+      ],
+      "default": 0.0,
+      "paramRange": [
+        0,
+        2
+      ],
+      "params": [
+        "VUMode"
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Front-panel meter selector S5–S7 (GR / +4 / +8; meter circuit does not load the audio path)"
+    },
+    {
+      "id": "legacy_vum",
+      "label": "VU Meter",
+      "kind": "continuous",
+      "default": 0.0,
+      "params": [
+        "VUM"
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Read-only legacy VU meter telemetry alias"
+    }
+  ],
+  "parts": [
+    {
+      "ref": "VP30",
+      "type": "V",
+      "nodes": [
+        "v30_src",
+        "0"
+      ],
+      "value": 30.0,
+      "label": "+30 V regulated supply (CR5 1N2989A)",
+      "note": "Rev F 30 V 10 W shunt zener supply; Rev G–K use 7824 lifted to +30.3 V"
+    },
+    {
+      "ref": "RP30",
+      "type": "R",
+      "nodes": [
+        "v30_src",
+        "v30"
+      ],
+      "value": 2.0,
+      "label": "+30 V zener dynamic impedance",
+      "note": "unverified: 1N2989A zener impedance (datasheet ZZT <= 3 Ω at 85 mA)"
+    },
+    {
+      "ref": "VN10",
+      "type": "V",
+      "nodes": [
+        "vm10_src",
+        "0"
+      ],
+      "value": -10.0,
+      "label": "−10 V regulated supply (CR6 1N4740)",
+      "note": "1N4740A 10 V 1 W zener reference rail"
+    },
+    {
+      "ref": "RN10",
+      "type": "R",
+      "nodes": [
+        "vm10_src",
+        "vm10"
+      ],
+      "value": 7.0,
+      "label": "−10 V zener dynamic impedance",
+      "note": "unverified: 1N4740A datasheet ZZT = 7 Ω at 25 mA"
+    },
+    {
+      "ref": "RS_IN",
+      "type": "R",
+      "nodes": [
+        "in",
+        "in_tb"
+      ],
+      "value": 600.0,
+      "label": "600 Ω line source impedance",
+      "note": "Standard 600 Ω studio generator impedance feeding TB1 +"
+    },
+    {
+      "ref": "R2",
+      "type": "R",
+      "nodes": [
+        "in_tb",
+        "pad_mid"
+      ],
+      "value": 620.0,
+      "label": "R2 bridged-T input arm"
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "pad_mid",
+        "t1_p"
+      ],
+      "value": 620.0,
+      "label": "R3 bridged-T output arm"
+    },
+    {
+      "ref": "R1A",
+      "type": "R",
+      "nodes": [
+        "in_tb",
+        "t1_p"
+      ],
+      "value": {
+        "nominal": 1905.0,
+        "control": "input",
+        "min": 11.0,
+        "max": 330000.0,
+        "law": "log",
+        "invert": true
+      },
+      "label": "R1A Input bridged-T series deck",
+      "note": "unverified: 330 kΩ max from measured Rev B dual-deck bridged-T pot; exponential law paired with R1B so R1A·R1B = 620^2 Ω^2 identically across travel"
+    },
+    {
+      "ref": "R1B",
+      "type": "R",
+      "nodes": [
+        "pad_mid",
+        "0"
+      ],
+      "value": {
+        "nominal": 201.8,
+        "control": "input",
+        "min": 1.165,
+        "max": 34945.0,
+        "law": "log"
+      },
+      "label": "R1B Input bridged-T shunt deck",
+      "note": "unverified: 35 kΩ max from measured Rev B dual-deck bridged-T pot; paired with R1A for exact 620 Ω constant impedance"
+    },
+    {
+      "ref": "T1",
+      "type": "transformer",
+      "nodes": [
+        "t1_p",
+        "0",
+        "t1_s",
+        "0"
+      ],
+      "turns": [
+        1.0,
+        0.6325
+      ],
+      "r": [
+        55.0,
+        14.4
+      ],
+      "leak": [
+        "3m",
+        0
+      ],
+      "lm": 9.0,
+      "lsat": 2.0,
+      "label": "T1 UTC O-12 input transformer (500:200 Ω)",
+      "note": "UTC O-12 pins 1–5 (500 Ω) to 6–8 (200 Ω), 1.581:1 step-down; Lp=9 H and DCR 55/14.4 Ω from Sowter 1260 replacement data; unverified: 3 mH leakage and lsat"
+    },
+    {
+      "ref": "R5",
+      "type": "R",
+      "nodes": [
+        "t1_s",
+        "0"
+      ],
+      "value": 270.0,
+      "label": "R5 T1 secondary termination"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "t1_s",
+        "q1_d"
+      ],
+      "value": 27000.0,
+      "label": "R6 gain-cell series resistor"
+    },
+    {
+      "ref": "Q1",
+      "type": "njf",
+      "nodes": [
+        "q1_d",
+        "q1_g",
+        "q1_s"
+      ],
+      "model": "UREI_13_0027",
+      "label": "Q1 UREI 13-0027 (selected 2N5457) gain-reduction FET"
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "q1_s",
+        "0"
+      ],
+      "value": 10000.0,
+      "label": "R8 Q1 source DC return"
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "q1_s",
+        "q2_e_mid"
+      ],
+      "value": "68u",
+      "label": "C2 LN source-to-preamp-emitter coupling"
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "q1_g",
+        "ctl_c27"
+      ],
+      "value": "2.2M",
+      "label": "R7 gate control-voltage resistor"
+    },
+    {
+      "ref": "C3",
+      "type": "C",
+      "nodes": [
+        "q1_g",
+        "ctl_c27"
+      ],
+      "value": "200p",
+      "label": "C3 gate control HF bypass"
+    },
+    {
+      "ref": "R9",
+      "type": "R",
+      "nodes": [
+        "q1_g",
+        "c5_l"
+      ],
+      "value": "2.2M",
+      "label": "R9 LN gate linearising resistor"
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "q1_g",
+        "c5_l"
+      ],
+      "value": "200p",
+      "label": "C4 LN gate linearising HF cap"
+    },
+    {
+      "ref": "C5",
+      "type": "C",
+      "nodes": [
+        "c5_l",
+        "pre_fb"
+      ],
+      "value": "0.22u",
+      "label": "C5 LN feedback DC-blocking cap"
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "q1_d",
+        "c1_r"
+      ],
+      "value": "1u",
+      "label": "C1 preamp input coupling cap"
+    },
+    {
+      "ref": "R10",
+      "type": "R",
+      "nodes": [
+        "c1_r",
+        "q2_b"
+      ],
+      "value": "1k",
+      "label": "R10 Q2 base stopper"
+    },
+    {
+      "ref": "C6",
+      "type": "C",
+      "nodes": [
+        "q2_b",
+        "0"
+      ],
+      "value": "27p",
+      "label": "C6 RF bypass"
+    },
+    {
+      "ref": "R11",
+      "type": "R",
+      "nodes": [
+        "q2_b",
+        "q3_e_bias"
+      ],
+      "value": "560k",
+      "label": "R11 Q2 base DC bias from Q3 emitter"
+    },
+    {
+      "ref": "R17",
+      "type": "R",
+      "nodes": [
+        "v30",
+        "b_pre"
+      ],
+      "value": "6.8k",
+      "label": "R17 preamp B+ decoupling resistor"
+    },
+    {
+      "ref": "C7",
+      "type": "C",
+      "nodes": [
+        "b_pre",
+        "0"
+      ],
+      "value": "100u",
+      "label": "C7 preamp B+ filter cap"
+    },
+    {
+      "ref": "R12",
+      "type": "R",
+      "nodes": [
+        "b_pre",
+        "q2_c"
+      ],
+      "value": "1M",
+      "label": "R12 Q2 collector load"
+    },
+    {
+      "ref": "Q2",
+      "type": "npn",
+      "nodes": [
+        "q2_c",
+        "q2_b",
+        "q2_e"
+      ],
+      "model": "2N3391A",
+      "label": "Q2 2N3391A preamp input stage"
+    },
+    {
+      "ref": "R13",
+      "type": "R",
+      "nodes": [
+        "q2_e",
+        "q2_e_mid"
+      ],
+      "value": 180.0,
+      "label": "R13 Q2 upper emitter resistor"
+    },
+    {
+      "ref": "R14",
+      "type": "R",
+      "nodes": [
+        "q2_e_mid",
+        "0"
+      ],
+      "value": 180.0,
+      "label": "R14 Q2 lower emitter resistor"
+    },
+    {
+      "ref": "R15",
+      "type": "R",
+      "nodes": [
+        "q2_e",
+        "r15_n"
+      ],
+      "value": 150.0,
+      "label": "R15 preamp feedback return resistor"
+    },
+    {
+      "ref": "R16",
+      "type": "pot",
+      "nodes": [
+        "r15_n",
+        "pre_fb",
+        "pre_fb"
+      ],
+      "value": 100.0,
+      "taper": "B",
+      "control": "thd_trim",
+      "label": "R16 distortion-null trimmer (100 Ω)"
+    },
+    {
+      "ref": "R21",
+      "type": "R",
+      "nodes": [
+        "pre_fb",
+        "q4_e"
+      ],
+      "value": "6.8k",
+      "label": "R21 preamp NFB resistor"
+    },
+    {
+      "ref": "R18",
+      "type": "R",
+      "nodes": [
+        "b_pre",
+        "q3_c"
+      ],
+      "value": "22k",
+      "label": "R18 Q3 collector load"
+    },
+    {
+      "ref": "Q3",
+      "type": "npn",
+      "nodes": [
+        "q3_c",
+        "q2_c",
+        "q3_e"
+      ],
+      "model": "2N3391A",
+      "label": "Q3 2N3391A preamp second stage"
+    },
+    {
+      "ref": "R19",
+      "type": "R",
+      "nodes": [
+        "q3_e",
+        "q3_e_bias"
+      ],
+      "value": 82.0,
+      "label": "R19 Q3 emitter degeneration"
+    },
+    {
+      "ref": "R20",
+      "type": "R",
+      "nodes": [
+        "q3_e_bias",
+        "0"
+      ],
+      "value": "1.8k",
+      "label": "R20 Q3 emitter DC bias resistor"
+    },
+    {
+      "ref": "C8",
+      "type": "C",
+      "nodes": [
+        "q3_e_bias",
+        "0"
+      ],
+      "value": "100u",
+      "label": "C8 Q3 emitter bypass cap"
+    },
+    {
+      "ref": "Q4",
+      "type": "npn",
+      "nodes": [
+        "v30",
+        "q3_c",
+        "q4_e"
+      ],
+      "model": "2N3391A",
+      "label": "Q4 2N3391A preamp emitter follower"
+    },
+    {
+      "ref": "C9",
+      "type": "C",
+      "nodes": [
+        "q4_e",
+        "pre_ac"
+      ],
+      "value": "1u",
+      "label": "C9 preamp output coupling cap"
+    },
+    {
+      "ref": "R27",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "out_w",
+        "pre_ac"
+      ],
+      "value": "100k",
+      "taper": {
+        "type": "A",
+        "mid": 0.17
+      },
+      "control": "output",
+      "label": "R27 Output Gain pot (100 kΩ audio)",
+      "note": "unverified: audio taper midpoint 0.17 assumed to match printed Output dial"
+    },
+    {
+      "ref": "C10",
+      "type": "C",
+      "nodes": [
+        "out_w",
+        "q5_b"
+      ],
+      "value": "0.15u",
+      "label": "C10 line-amp input coupling cap"
+    },
+    {
+      "ref": "R28",
+      "type": "R",
+      "nodes": [
+        "v30",
+        "b_q5"
+      ],
+      "value": "10k",
+      "label": "R28 Q5 bias supply filter resistor"
+    },
+    {
+      "ref": "C11",
+      "type": "C",
+      "nodes": [
+        "b_q5",
+        "0"
+      ],
+      "value": "47u",
+      "label": "C11 Q5 bias supply filter cap"
+    },
+    {
+      "ref": "R29",
+      "type": "R",
+      "nodes": [
+        "b_q5",
+        "q5_b"
+      ],
+      "value": "6.8M",
+      "label": "R29 Q5 upper bias resistor"
+    },
+    {
+      "ref": "R30",
+      "type": "R",
+      "nodes": [
+        "q5_b",
+        "0"
+      ],
+      "value": "1M",
+      "label": "R30 Q5 lower bias resistor"
+    },
+    {
+      "ref": "R31",
+      "type": "R",
+      "nodes": [
+        "v30",
+        "q5_c"
+      ],
+      "value": "68k",
+      "label": "R31 Q5 collector load"
+    },
+    {
+      "ref": "Q5",
+      "type": "npn",
+      "nodes": [
+        "q5_c",
+        "q5_b",
+        "q5_e"
+      ],
+      "model": "2N5117",
+      "label": "Q5 2N5117 line-amp input stage"
+    },
+    {
+      "ref": "R32",
+      "type": "R",
+      "nodes": [
+        "q5_e",
+        "0"
+      ],
+      "value": "1k",
+      "label": "R32 line-amp feedback shunt"
+    },
+    {
+      "ref": "R33",
+      "type": "R",
+      "nodes": [
+        "q5_e",
+        "c13_n"
+      ],
+      "value": "4.7k",
+      "label": "R33 line-amp HF shelf resistor"
+    },
+    {
+      "ref": "C13",
+      "type": "C",
+      "nodes": [
+        "c13_n",
+        "0"
+      ],
+      "value": "2.2n",
+      "label": "C13 line-amp HF shelf cap"
+    },
+    {
+      "ref": "R34",
+      "type": "R",
+      "nodes": [
+        "q5_e",
+        "line_out"
+      ],
+      "value": "3.9k",
+      "label": "R34 line-amp NFB resistor"
+    },
+    {
+      "ref": "R35",
+      "type": "R",
+      "nodes": [
+        "v30",
+        "q6_e"
+      ],
+      "value": "10k",
+      "label": "R35 Q6 emitter resistor"
+    },
+    {
+      "ref": "Q6",
+      "type": "pnp",
+      "nodes": [
+        "q8_b",
+        "q5_c",
+        "q6_e"
+      ],
+      "model": "2N5087",
+      "label": "Q6 2N5087 Darlington pre-driver"
+    },
+    {
+      "ref": "R36",
+      "type": "R",
+      "nodes": [
+        "v30",
+        "q7_e"
+      ],
+      "value": 100.0,
+      "label": "R36 Q7 emitter resistor"
+    },
+    {
+      "ref": "Q7",
+      "type": "pnp",
+      "nodes": [
+        "q8_b",
+        "q6_e",
+        "q7_e"
+      ],
+      "model": "2N5087",
+      "label": "Q7 2N5087 Darlington driver"
+    },
+    {
+      "ref": "C12",
+      "type": "C",
+      "nodes": [
+        "q5_c",
+        "c12_n"
+      ],
+      "value": "12p",
+      "label": "C12 Miller compensation cap"
+    },
+    {
+      "ref": "R37",
+      "type": "R",
+      "nodes": [
+        "c12_n",
+        "q9_b"
+      ],
+      "value": "1k",
+      "label": "R37 Miller compensation stopper"
+    },
+    {
+      "ref": "CR1",
+      "type": "D",
+      "nodes": [
+        "q8_b",
+        "cr1_k"
+      ],
+      "model": "1N4001",
+      "label": "CR1 1N4003 Class-AB bias diode"
+    },
+    {
+      "ref": "CR2",
+      "type": "D",
+      "nodes": [
+        "cr1_k",
+        "q9_b"
+      ],
+      "model": "1N4001",
+      "label": "CR2 1N4003 Class-AB bias diode"
+    },
+    {
+      "ref": "C29",
+      "type": "C",
+      "nodes": [
+        "q9_b",
+        "0"
+      ],
+      "value": "47p",
+      "label": "C29 Q9 base HF stability cap"
+    },
+    {
+      "ref": "R38",
+      "type": "R",
+      "nodes": [
+        "q9_b",
+        "boot_mid"
+      ],
+      "value": "1.2k",
+      "label": "R38 upper bias-load resistor"
+    },
+    {
+      "ref": "R39",
+      "type": "R",
+      "nodes": [
+        "boot_mid",
+        "0"
+      ],
+      "value": "1.2k",
+      "label": "R39 lower bias-load resistor"
+    },
+    {
+      "ref": "C14",
+      "type": "C",
+      "nodes": [
+        "line_out",
+        "boot_mid"
+      ],
+      "value": "22u",
+      "label": "C14 driver bootstrap cap"
+    },
+    {
+      "ref": "Q8",
+      "type": "npn",
+      "nodes": [
+        "v30",
+        "q8_b",
+        "q8_e"
+      ],
+      "model": "MPSU05",
+      "label": "Q8 MPS-U05 NPN output transistor"
+    },
+    {
+      "ref": "R40",
+      "type": "R",
+      "nodes": [
+        "q8_e",
+        "line_out"
+      ],
+      "value": 4.3,
+      "label": "R40 Q8 emitter ballast"
+    },
+    {
+      "ref": "Q9",
+      "type": "pnp",
+      "nodes": [
+        "0",
+        "q9_b",
+        "q9_e"
+      ],
+      "model": "MPSU55",
+      "label": "Q9 MPS-U55 PNP output transistor"
+    },
+    {
+      "ref": "R41",
+      "type": "R",
+      "nodes": [
+        "line_out",
+        "q9_e"
+      ],
+      "value": 4.3,
+      "label": "R41 Q9 emitter ballast"
+    },
+    {
+      "ref": "C15",
+      "type": "C",
+      "nodes": [
+        "line_out",
+        "t2_p"
+      ],
+      "value": "470u",
+      "label": "C15 output transformer DC-blocking cap"
+    },
+    {
+      "ref": "RCORE_T2",
+      "type": "R",
+      "nodes": [
+        "t2_p",
+        "0"
+      ],
+      "value": "1.5k",
+      "label": "T2 core-loss shunt",
+      "note": "unverified: core-loss damping resistor across B11148 primary"
+    },
+    {
+      "ref": "T2",
+      "type": "transformer",
+      "nodes": [
+        "t2_p",
+        "0",
+        "out",
+        "0"
+      ],
+      "turns": [
+        1.0,
+        1.732
+      ],
+      "r": [
+        4.0,
+        27.0
+      ],
+      "leak": [
+        "0.4m",
+        0
+      ],
+      "lm": 2.5,
+      "lsat": 0.8,
+      "label": "T2 UREI B11148 output transformer (50:150 Ω)",
+      "note": "Parallel primaries (RED+YEL to C15, BRN+ORG to ground) and parallel secondaries (GRN+VIO to X, BLU+GRY to Y), 1:1.732 step-up per Sowter 1486; unverified: Lp=2.5 H, DCR 4/27 Ω (39 Ω Zout per UREI Test 7), leakage and lsat"
+    },
+    {
+      "ref": "RLOAD",
+      "type": "R",
+      "nodes": [
+        "out",
+        "0"
+      ],
+      "value": "10k",
+      "label": "10 kΩ bridging output load"
+    },
+    {
+      "ref": "R26",
+      "type": "R",
+      "nodes": [
+        "pre_ac",
+        "tap_b4"
+      ],
+      "value": "56k",
+      "label": "R26 Ratio B ladder top (20:1)"
+    },
+    {
+      "ref": "R25",
+      "type": "R",
+      "nodes": [
+        "tap_b4",
+        "tap_b3"
+      ],
+      "value": "68k",
+      "label": "R25 Ratio B ladder (20:1–12:1)"
+    },
+    {
+      "ref": "R24",
+      "type": "R",
+      "nodes": [
+        "tap_b3",
+        "tap_b2"
+      ],
+      "value": "56k",
+      "label": "R24 Ratio B ladder (12:1–8:1)"
+    },
+    {
+      "ref": "R22",
+      "type": "R",
+      "nodes": [
+        "tap_b2",
+        "tap_b1"
+      ],
+      "value": "56k",
+      "label": "R22 Ratio B ladder (8:1–4:1)"
+    },
+    {
+      "ref": "R23",
+      "type": "R",
+      "nodes": [
+        "tap_b1",
+        "0"
+      ],
+      "value": "47k",
+      "label": "R23 Ratio B ladder bottom"
+    },
+    {
+      "ref": "S1B",
+      "type": "switch",
+      "nodes": [
+        "tap_b1",
+        "ratio_bus"
+      ],
+      "control": "ratio",
+      "positions": [
+        1,
+        5
+      ],
+      "label": "S1B 4:1 signal tap"
+    },
+    {
+      "ref": "S2B",
+      "type": "switch",
+      "nodes": [
+        "tap_b2",
+        "ratio_bus"
+      ],
+      "control": "ratio",
+      "positions": [
+        2,
+        5
+      ],
+      "label": "S2B 8:1 signal tap"
+    },
+    {
+      "ref": "S3B",
+      "type": "switch",
+      "nodes": [
+        "tap_b3",
+        "ratio_bus"
+      ],
+      "control": "ratio",
+      "positions": [
+        3,
+        5
+      ],
+      "label": "S3B 12:1 signal tap"
+    },
+    {
+      "ref": "S4B",
+      "type": "switch",
+      "nodes": [
+        "tap_b4",
+        "ratio_bus"
+      ],
+      "control": "ratio",
+      "positions": [
+        4,
+        5
+      ],
+      "label": "S4B 20:1 signal tap"
+    },
+    {
+      "ref": "S9_ON",
+      "type": "switch",
+      "nodes": [
+        "ratio_bus",
+        "sc_sw"
+      ],
+      "control": "ratio",
+      "positions": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "label": "S9 GR enable contact"
+    },
+    {
+      "ref": "S9_OFF",
+      "type": "switch",
+      "nodes": [
+        "sc_sw",
+        "0"
+      ],
+      "control": "ratio",
+      "positions": [
+        0
+      ],
+      "label": "S9 GR disable ground contact"
+    },
+    {
+      "ref": "C17",
+      "type": "C",
+      "nodes": [
+        "sc_sw",
+        "q12_b"
+      ],
+      "value": "1u",
+      "label": "C17 sidechain input coupling cap"
+    },
+    {
+      "ref": "R70",
+      "type": "R",
+      "nodes": [
+        "v30",
+        "b_sc"
+      ],
+      "value": "4.7k",
+      "label": "R70 GR control-amp B+ filter resistor"
+    },
+    {
+      "ref": "C18",
+      "type": "C",
+      "nodes": [
+        "b_sc",
+        "0"
+      ],
+      "value": "47u",
+      "label": "C18 GR control-amp B+ filter cap"
+    },
+    {
+      "ref": "R60",
+      "type": "R",
+      "nodes": [
+        "q12_c",
+        "q12_b"
+      ],
+      "value": "1M",
+      "label": "R60 Q12 collector-to-base bias"
+    },
+    {
+      "ref": "R61",
+      "type": "R",
+      "nodes": [
+        "q12_b",
+        "0"
+      ],
+      "value": "470k",
+      "label": "R61 Q12 base bias return"
+    },
+    {
+      "ref": "R62",
+      "type": "R",
+      "nodes": [
+        "b_sc",
+        "q12_c"
+      ],
+      "value": "47k",
+      "label": "R62 Q12 collector load"
+    },
+    {
+      "ref": "Q12",
+      "type": "npn",
+      "nodes": [
+        "q12_c",
+        "q12_b",
+        "q12_e"
+      ],
+      "model": "2N3707",
+      "label": "Q12 2N3707 sidechain input stage"
+    },
+    {
+      "ref": "R63",
+      "type": "R",
+      "nodes": [
+        "q12_e",
+        "q13_e_mid"
+      ],
+      "value": "4.7k",
+      "label": "R63 Q12 emitter feedback resistor"
+    },
+    {
+      "ref": "Q13",
+      "type": "npn",
+      "nodes": [
+        "v30",
+        "q12_c",
+        "q13_e"
+      ],
+      "model": "2N3707",
+      "label": "Q13 2N3707 sidechain phase-A follower"
+    },
+    {
+      "ref": "R64",
+      "type": "R",
+      "nodes": [
+        "q13_e",
+        "q13_e_mid"
+      ],
+      "value": "2.4k",
+      "label": "R64 Q13 upper emitter resistor"
+    },
+    {
+      "ref": "R65",
+      "type": "R",
+      "nodes": [
+        "q13_e_mid",
+        "0"
+      ],
+      "value": 270.0,
+      "label": "R65 Q13 lower emitter resistor"
+    },
+    {
+      "ref": "R66",
+      "type": "R",
+      "nodes": [
+        "q13_e",
+        "q14_b"
+      ],
+      "value": "182k",
+      "label": "R66 interstage divider (1%)"
+    },
+    {
+      "ref": "R67",
+      "type": "R",
+      "nodes": [
+        "q14_b",
+        "q15_e_mid"
+      ],
+      "value": "38.3k",
+      "label": "R67 Q14 base bias/feedback resistor (1%)"
+    },
+    {
+      "ref": "R69",
+      "type": "R",
+      "nodes": [
+        "b_sc",
+        "q14_c"
+      ],
+      "value": "44.2k",
+      "label": "R69 Q14 collector load (1%)"
+    },
+    {
+      "ref": "Q14",
+      "type": "npn",
+      "nodes": [
+        "q14_c",
+        "q14_b",
+        "q14_e"
+      ],
+      "model": "2N3707",
+      "label": "Q14 2N3707 sidechain inverter stage"
+    },
+    {
+      "ref": "R71",
+      "type": "R",
+      "nodes": [
+        "q14_e",
+        "q15_e_mid"
+      ],
+      "value": "7.68k",
+      "label": "R71 Q14 emitter resistor (1%)"
+    },
+    {
+      "ref": "Q15",
+      "type": "npn",
+      "nodes": [
+        "v30",
+        "q14_c",
+        "q15_e"
+      ],
+      "model": "2N3707",
+      "label": "Q15 2N3707 sidechain phase-B follower"
+    },
+    {
+      "ref": "R72",
+      "type": "R",
+      "nodes": [
+        "q15_e",
+        "q15_e_mid"
+      ],
+      "value": "2.4k",
+      "label": "R72 Q15 upper emitter resistor"
+    },
+    {
+      "ref": "R73",
+      "type": "R",
+      "nodes": [
+        "q15_e_mid",
+        "0"
+      ],
+      "value": 180.0,
+      "label": "R73 Q15 lower emitter resistor"
+    },
+    {
+      "ref": "R68",
+      "type": "R",
+      "nodes": [
+        "q15_e",
+        "q12_e"
+      ],
+      "value": "47k",
+      "label": "R68 sidechain overall NFB resistor"
+    },
+    {
+      "ref": "C19",
+      "type": "C",
+      "nodes": [
+        "q15_e",
+        "cr3_a"
+      ],
+      "value": "6.8u",
+      "label": "C19 rectifier phase-B coupling cap"
+    },
+    {
+      "ref": "C20",
+      "type": "C",
+      "nodes": [
+        "q13_e",
+        "cr4_a"
+      ],
+      "value": "6.8u",
+      "label": "C20 rectifier phase-A coupling cap"
+    },
+    {
+      "ref": "R74",
+      "type": "R",
+      "nodes": [
+        "cr3_a",
+        "thresh_ref"
+      ],
+      "value": "47k",
+      "label": "R74 CR3 threshold DC bias"
+    },
+    {
+      "ref": "R75",
+      "type": "R",
+      "nodes": [
+        "cr4_a",
+        "thresh_ref"
+      ],
+      "value": "47k",
+      "label": "R75 CR4 threshold DC bias"
+    },
+    {
+      "ref": "C21",
+      "type": "C",
+      "nodes": [
+        "thresh_ref",
+        "0"
+      ],
+      "value": "100u",
+      "label": "C21 threshold reference AC bypass"
+    },
+    {
+      "ref": "CR3",
+      "type": "D",
+      "nodes": [
+        "cr3_a",
+        "rect_out"
+      ],
+      "model": "FD333",
+      "label": "CR3 FD333 sidechain rectifier"
+    },
+    {
+      "ref": "CR4",
+      "type": "D",
+      "nodes": [
+        "cr4_a",
+        "rect_out"
+      ],
+      "model": "FD333",
+      "label": "CR4 FD333 sidechain rectifier"
+    },
+    {
+      "ref": "R76",
+      "type": "R",
+      "nodes": [
+        "rect_out",
+        "atk_w"
+      ],
+      "value": 470.0,
+      "label": "R76 minimum attack resistor"
+    },
+    {
+      "ref": "C22",
+      "type": "C",
+      "nodes": [
+        "rect_out",
+        "atk_w"
+      ],
+      "value": "22n",
+      "label": "C22 fast-attack speedup cap"
+    },
+    {
+      "ref": "R77",
+      "type": "pot",
+      "nodes": [
+        "rect_out",
+        "atk_w",
+        "ctl_c27"
+      ],
+      "value": "25k",
+      "taper": "B",
+      "control": "attack",
+      "label": "R77 Attack pot (25 kΩ linear)"
+    },
+    {
+      "ref": "C27",
+      "type": "C",
+      "nodes": [
+        "ctl_c27",
+        "0"
+      ],
+      "value": "0.22u",
+      "label": "C27 sidechain timing capacitor"
+    },
+    {
+      "ref": "R78",
+      "type": "pot",
+      "nodes": [
+        "ctl_c27",
+        "ctl_c27",
+        "rel_w"
+      ],
+      "value": "5M",
+      "taper": "B",
+      "control": "release",
+      "label": "R78 Release rheostat (5 MΩ linear)"
+    },
+    {
+      "ref": "R79",
+      "type": "R",
+      "nodes": [
+        "rel_w",
+        "qbias_w"
+      ],
+      "value": "270k",
+      "label": "R79 minimum release resistor"
+    },
+    {
+      "ref": "R82",
+      "type": "R",
+      "nodes": [
+        "vm10",
+        "qbias_tap"
+      ],
+      "value": "10k",
+      "label": "R82 Q-bias −10 V divider"
+    },
+    {
+      "ref": "R83",
+      "type": "R",
+      "nodes": [
+        "qbias_tap",
+        "0"
+      ],
+      "value": "3.9k",
+      "label": "R83 Q-bias ground divider"
+    },
+    {
+      "ref": "R81",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "qbias_w",
+        "qbias_tap"
+      ],
+      "value": "2k",
+      "taper": "B",
+      "control": "qbias",
+      "label": "R81 Q-Bias Adjust trimmer (2 kΩ)"
+    },
+    {
+      "ref": "R87",
+      "type": "R",
+      "nodes": [
+        "qbias_w",
+        "tap_a1"
+      ],
+      "value": 150.0,
+      "label": "R87 Ratio A chain (Q-bias to 4:1)"
+    },
+    {
+      "ref": "R42",
+      "type": "R",
+      "nodes": [
+        "tap_a1",
+        "tap_a2"
+      ],
+      "value": 470.0,
+      "label": "R42 Ratio A chain (4:1–8:1)"
+    },
+    {
+      "ref": "R43",
+      "type": "R",
+      "nodes": [
+        "tap_a2",
+        "tap_a3"
+      ],
+      "value": 560.0,
+      "label": "R43 Ratio A chain (8:1–12:1)"
+    },
+    {
+      "ref": "R44",
+      "type": "R",
+      "nodes": [
+        "tap_a3",
+        "tap_a4"
+      ],
+      "value": "1.5k",
+      "label": "R44 Ratio A chain (12:1–20:1)"
+    },
+    {
+      "ref": "R45",
+      "type": "R",
+      "nodes": [
+        "tap_a4",
+        "vm10"
+      ],
+      "value": "2.2k",
+      "label": "R45 Ratio A chain (20:1 to −10 V)"
+    },
+    {
+      "ref": "R46",
+      "type": "R",
+      "nodes": [
+        "tap_a1",
+        "thresh_ref"
+      ],
+      "value": "10M",
+      "label": "R46 anti-pop bleed between ratio buttons"
+    },
+    {
+      "ref": "S1A",
+      "type": "switch",
+      "nodes": [
+        "tap_a1",
+        "thresh_ref"
+      ],
+      "control": "ratio",
+      "positions": [
+        1,
+        5
+      ],
+      "label": "S1A 4:1 threshold tap"
+    },
+    {
+      "ref": "S2A",
+      "type": "switch",
+      "nodes": [
+        "tap_a2",
+        "thresh_ref"
+      ],
+      "control": "ratio",
+      "positions": [
+        2,
+        5
+      ],
+      "label": "S2A 8:1 threshold tap"
+    },
+    {
+      "ref": "S3A",
+      "type": "switch",
+      "nodes": [
+        "tap_a3",
+        "thresh_ref"
+      ],
+      "control": "ratio",
+      "positions": [
+        3,
+        5
+      ],
+      "label": "S3A 12:1 threshold tap"
+    },
+    {
+      "ref": "S4A",
+      "type": "switch",
+      "nodes": [
+        "tap_a4",
+        "thresh_ref"
+      ],
+      "control": "ratio",
+      "positions": [
+        4,
+        5
+      ],
+      "label": "S4A 20:1 threshold tap"
+    }
+  ],
+  "readouts": {
+    "gr": {
+      "law": "table",
+      "node": "ctl_c27",
+      "table": [[-1.4342, 0.0], [-1.4021, 0.34], [-1.3712, 0.98], [-1.3386, 2.13], [-1.3083, 3.51], [-1.2799, 4.98], [-1.2575, 6.21], [-1.222, 8.19], [-1.1934, 9.74], [-1.163, 11.27], [-1.1262, 12.95], [-1.0891, 14.44], [-1.0473, 15.89], [-0.9944, 17.42], [-0.9393, 18.73], [-0.8761, 19.79], [-0.7774, 21.75], [-0.5803, 23.42], [-0.4037, 24.49]],
+      "note": "Gain reduction of the Q1 FET shunt cell (R6 into the 2N5457 channel) against its gate control voltage on C27, the node the meter amplifier reads in GR. The netlist has no meter circuit, so the table is this circuit's own cell attenuation (t1_s to q1_d, 1 kHz steady tone, ratio Off as 0 dB) measured at 4:1 and All; one curve holds for every ratio and input setting within 0.3 dB at the netlist's attack / release; with the attack ripple of other settings the reading stays within ~1 dB of the gain taken off (test_circuit_unit)."
+    }
+  },
+  "probes": [
+    "q1_g",
+    "q4_e",
+    "ctl_c27",
+    "line_out"
+  ],
+  "cuts": [
+    "v30",
+    "vm10"
+  ]
+}

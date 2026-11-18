@@ -1,0 +1,2991 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "friedman-be100-151000",
+ "version": 1,
+ "name": "Friedman BE-100 (V2, 100 W, 4 x EL34)",
+ "description": "Friedman BE-100 v2 as drawn on the 'BE-100 v2' sheet (layout by Equinox, drawing by Patrice Frey, REV 1.5, May 2014): Clean / BE / HBE channel switching on two relays, FAT, C45, SAT and VOICE switches, Marshall-type stack after a cathode follower, master, LND150 FX loop, long-tail PI with presence, 4 x EL34 fixed bias, bridge + centre-tapped HT, choke-fed screens.",
+ "sources": [
+  {
+   "title": "Friedman BE100 -V2 REV1.5 (lossless 1-bit PNG, 5706x1476), MEF thread 1013225",
+   "url": "https://music-electronics-forum.com/filedata/fetch?id=1013238"
+  },
+  {
+   "title": "Owner reports of plate voltage (470-480 V) and factory bias (32 mA/tube), Rig-Talk",
+   "url": "https://www.rig-talk.com/forum/threads/bias-rating-of-the-el34-tubes-in-your-friedman-be-100.146903/"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "spk",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 193.0,
+  "note": "outputVoltsPerFS = 1.5 x the 128.6 V peak measured at the speaker dimed (HBE, gain 1, master 1, tone 0.5; 1.0 V, 220 Hz, settled start; the SLO-100 procedure). Into a 16 ohm resistor the Clean channel gives about 105-115 W at 5 % THD (1 kHz), against the 100 W rating; flat-out square-wave output is 156-174 W."
+ },
+ "oversampling": 2,
+ "minRate": 352800,
+ "solver": "auto",
+ "models": {
+  "LND150": {
+   "kind": "njf",
+   "vto": -1.8,
+   "beta": 0.0006,
+   "lambda": 0.003,
+   "is": 1e-30,
+   "n": 1.0,
+   "cgs": 7.5e-12,
+   "cgd": 1e-12,
+   "note": "Supertex/Microchip LND150 N-channel depletion MOSFET on the square-law njf channel: VGS(off) -1.8 V (datasheet -1 to -3 V), beta 0.6 mA/V^2 so IDSS 1.9 mA (datasheet >= 1 mA) and gfs 1.5 mS at 1 mA (>= 1 mS); Ciss 7.5 pF / Crss 1 pF typical. The insulated gate is represented by a gate-junction IS of 1e-30 A (no conduction below about +1.3 V Vgs, which neither stage reaches). APPROXIMATE (no vendor SPICE card)."
+  },
+  "BZX79C12": {
+   "kind": "diode",
+   "is": 1e-14,
+   "n": 1.0,
+   "rs": 0.0,
+   "bv": 12.0,
+   "ibv": 0.005,
+   "nbv": 4.84,
+   "note": "BZX79-C12: 12 V at Izt 5 mA, Zzt <= 25 ohm (datasheet); nbv = Zzt*Izt/Vt"
+  },
+  "MPSA06_BE": {
+   "kind": "diode",
+   "is": 2e-14,
+   "n": 1.0,
+   "rs": 2.0,
+   "bv": 7.0,
+   "ibv": 0.0001,
+   "nbv": 3.0,
+   "note": "MPSA06 base-emitter junction used as a zener: forward IS 20 fA; reverse avalanche ASSUMED 7.0 V at 100 uA (datasheet only guarantees VEBO >= 4.0 V; small-signal NPN emitter-base breakdown is typically 6-8 V)."
+  }
+ },
+ "controls": [
+  {
+   "id": "gain",
+   "label": "Gain",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "gain"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "VR4 GAIN 1M (BE/HBE channel), after V2B"
+  },
+  {
+   "id": "low",
+   "label": "Low",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "low"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "VR8 Bass 1MA (BE/HBE stack, rheostat)"
+  },
+  {
+   "id": "mid",
+   "label": "Mid",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "mid"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "VR7 Middle 25KB (BE/HBE stack)"
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "treble"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "VR6 Treble 250KB (BE/HBE stack)"
+  },
+  {
+   "id": "master",
+   "label": "Master",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "master"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "VR5 Master 1MA (BE/HBE channel only; the Clean channel bypasses it)"
+  },
+  {
+   "id": "gainMode",
+   "label": "Gain Mode",
+   "kind": "selector",
+   "default": 0.5,
+   "options": [
+    "Clean",
+    "BE",
+    "HBE"
+   ],
+   "params": [
+    "gainMode"
+   ],
+   "paramRange": [
+    0,
+    2
+   ],
+   "group": "Main",
+   "note": "SW5 CLN-BE-HBE (and the J7 footswitch): Clean = RELAY2 on (clean V1B output to the PI, GAIN pot top grounded); BE = both relays off (input straight to V2A); HBE = RELAY1 on (V1A, then its 1M/68k pad, ahead of V2A). Catalogue 0.5 (raw) and the default both select BE."
+  },
+  {
+   "id": "fat",
+   "label": "Fat",
+   "kind": "switch",
+   "default": 0.0,
+   "face": true,
+   "options": [
+    "Off",
+    "Fat"
+   ],
+   "group": "Main",
+   "note": "SW9 FAT: C15 22 nF in parallel with C14 2.2 nF after V2A"
+  },
+  {
+   "id": "c45",
+   "label": "C45",
+   "kind": "switch",
+   "default": 0.0,
+   "face": true,
+   "options": [
+    "Off",
+    "C45"
+   ],
+   "group": "Main",
+   "note": "C45 switch (poles S2 and SW8): Off (drawn) = R19 68K series / R16 68K shunt; C45 = R20 560K || C16 680 pF series / R26 220K shunt ahead of V2B"
+  },
+  {
+   "id": "sat",
+   "label": "Sat",
+   "kind": "switch",
+   "default": 0.0,
+   "face": true,
+   "options": [
+    "Off",
+    "Sat"
+   ],
+   "group": "Main",
+   "note": "SW7 SAT: R33 10K + C25 100 nF from the cathode follower to the MPSA06 base-emitter clipper"
+  },
+  {
+   "id": "voice",
+   "label": "Voice",
+   "kind": "selector",
+   "default": 0.0,
+   "face": true,
+   "options": [
+    "C43 (V3A bypass)",
+    "C42 (500 pF)"
+   ],
+   "group": "Main",
+   "note": "SW3 VOICE (SPDT, common to ground): pin 1 = C43 470 uF on V3A's cathode; pin 3 = C42 500 pF on the follower's cathode"
+  },
+  {
+   "id": "bright",
+   "label": "Clean Bright",
+   "kind": "selector",
+   "default": 0.0,
+   "face": true,
+   "options": [
+    "100 pF",
+    "220 pF"
+   ],
+   "group": "Clean",
+   "note": "SW4 BRIGHT (Clean channel): C12 100 pF or C11 220 pF across the Clean Vol top section"
+  },
+  {
+   "id": "loop",
+   "label": "FX Loop",
+   "kind": "selector",
+   "default": 0.0,
+   "face": true,
+   "options": [
+    "Bypass",
+    "On (nothing patched)"
+   ],
+   "group": "Main",
+   "note": "S7: Bypass = relay output straight to C31; On = Q1 send follower -> J5 return normal -> Q2 return stage -> VR10 Return LVL"
+  },
+  {
+   "id": "impedance",
+   "label": "Impedance",
+   "kind": "selector",
+   "default": 0.0,
+   "face": true,
+   "options": [
+    "16 ohm",
+    "8 ohm",
+    "4 ohm"
+   ],
+   "group": "Main",
+   "note": "Rear IMPEDANCE selector on T1 taps 1/2/3 (the cab is 16 ohm; feedback is taken from the selected tap)"
+  },
+  {
+   "id": "clean_vol",
+   "label": "Clean Volume",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Clean",
+   "note": "CIRCUIT-ONLY (no catalogue id): VR3 Clean Vol, fixed at 0.5"
+  },
+  {
+   "id": "clean_treble",
+   "label": "Clean Treble",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Clean",
+   "note": "CIRCUIT-ONLY: VR2 Treb 1MA, fixed at 0.5"
+  },
+  {
+   "id": "clean_bass",
+   "label": "Clean Bass",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Clean",
+   "note": "CIRCUIT-ONLY: VR1 Bass 250kA, fixed at 0.5"
+  },
+  {
+   "id": "presence",
+   "label": "Presence",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Tone",
+   "note": "CIRCUIT-ONLY: VR9 PRESENCE 5KB, fixed at 0.5 (no catalogue id)"
+  },
+  {
+   "id": "return_level",
+   "label": "Return Level",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Trim",
+   "note": "CIRCUIT-ONLY: VR10 Return LVL 1MA (loop on only)"
+  },
+  {
+   "id": "line_level",
+   "label": "Line Out",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Trim",
+   "note": "CIRCUIT-ONLY: VR11 Line Out 1MA (a light load on the speaker node)"
+  },
+  {
+   "id": "send_trim",
+   "label": "Send Trim",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Trim",
+   "note": "CIRCUIT-ONLY: VR12 50K bootstrap trim of the send follower"
+  },
+  {
+   "id": "bias",
+   "label": "Bias",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Trim",
+   "note": "CIRCUIT-ONLY: P12 25K bias trim (centre = the fitted 32 mA per EL34)"
+  },
+  {
+   "id": "stereo",
+   "label": "Stereo",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "CASSt"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Mono amp; stored only"
+  },
+  {
+   "id": "power",
+   "label": "On/Off",
+   "kind": "switch",
+   "default": 1.0,
+   "params": [
+    "Pwr"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Host handles bypass; stored only"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VREF",
+   "type": "V",
+   "nodes": [
+    "href",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "1",
+    "freq": 60,
+    "phase": 90
+   },
+   "label": "Mains phase reference (1 V, 60 Hz, crest at t = 0)",
+   "note": "Not a drawn part: the HT winding S1'+S1 floats (its centre tap pin 5 goes to the C37/C45 midpoint), so each half is its exact Norton equivalent (a VCCS of Vpk/R driven from this unit-amplitude phase reference, with R across it). Phase per the drawing's dots (pins 5, 6 and 10 dotted, ptz crop): pin 6 = m + v, pin 4 = m - v, pin 9 = -vbias."
+  },
+  {
+   "ref": "GS1",
+   "type": "vccs",
+   "nodes": [
+    "a6",
+    "m",
+    "href",
+    "0"
+   ],
+   "gain": 21.125,
+   "label": "PT S1 (pin 5 -> pin 6) source, Norton form",
+   "note": "[crop (5280,60,5420,290)] FITTED: 253.50 V peak per half (179.3 Vrms; 358.5 Vrms end to end) so the idle EL34 plates sit at about 475 V (owner reports 470-480 V; the drawing prints no voltages)."
+  },
+  {
+   "ref": "RS1",
+   "type": "R",
+   "nodes": [
+    "a6",
+    "m"
+   ],
+   "value": "12",
+   "label": "PT S1 half: winding + reflected primary resistance",
+   "note": "[crop (5280,60,5420,290)] ASSUMED 12 ohm per half (no transformer data on the drawing; Plexi/SLO use 12-15 ohm)."
+  },
+  {
+   "ref": "GS1P",
+   "type": "vccs",
+   "nodes": [
+    "m",
+    "a4",
+    "href",
+    "0"
+   ],
+   "gain": 21.125,
+   "label": "PT S1' (pin 4 -> pin 5) source, Norton form",
+   "note": "[crop (5280,60,5420,290)] see GS1"
+  },
+  {
+   "ref": "RS1P",
+   "type": "R",
+   "nodes": [
+    "a4",
+    "m"
+   ],
+   "value": "12",
+   "label": "PT S1' half: winding + reflected primary resistance",
+   "note": "[crop (5280,60,5420,290)] see _RS1"
+  },
+  {
+   "ref": "D1",
+   "type": "D",
+   "nodes": [
+    "a4",
+    "bp1"
+   ],
+   "model": "1N4001",
+   "label": "D1 UF4007 (pin 4 end -> +)",
+   "note": "[crop (4650,20,5450,420)] 1N4001 card for the UF4007 (as the SLO does for the 1N4007). SW2A standby closed."
+  },
+  {
+   "ref": "D2",
+   "type": "D",
+   "nodes": [
+    "0",
+    "a4"
+   ],
+   "model": "1N4001",
+   "label": "D2 UF4007 (- -> pin 4 end)",
+   "note": "[crop (4650,20,5450,420)]"
+  },
+  {
+   "ref": "D3",
+   "type": "D",
+   "nodes": [
+    "a6",
+    "bp1"
+   ],
+   "model": "1N4001",
+   "label": "D3 UF4007 (pin 6 end -> +)",
+   "note": "[crop (4650,20,5450,420)] SW2B standby closed."
+  },
+  {
+   "ref": "D4",
+   "type": "D",
+   "nodes": [
+    "0",
+    "a6"
+   ],
+   "model": "1N4001",
+   "label": "D4 UF4007 (- -> pin 6 end)",
+   "note": "[crop (4650,20,5450,420)]"
+  },
+  {
+   "ref": "C37",
+   "type": "C",
+   "nodes": [
+    "bp1",
+    "m"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "C37 100 uF/500 V reservoir, upper",
+   "note": "[crop (4650,20,5450,420)] + at the rectifier output; its - is the midpoint, where PT pin 5 (HT centre tap) lands"
+  },
+  {
+   "ref": "C45",
+   "type": "C",
+   "nodes": [
+    "m",
+    "0"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "C45 100 uF/500 V reservoir, lower",
+   "note": "[crop (4650,20,5450,420)]"
+  },
+  {
+   "ref": "RCH",
+   "type": "R",
+   "nodes": [
+    "bp1",
+    "ch"
+   ],
+   "value": "150",
+   "label": "Choke DCR",
+   "note": "[crop (4380,70,4720,160)+(4450,340,4650,520)] ASSUMED 150 ohm (drawing: 'CHOKE', no value; the Plexi netlist's value). F2 (T2A) is a wire: the OT centre tap joins BETWEEN F2 and the choke (supz crop: the CT vertical ends on the rail there), i.e. on the reservoir side, before the choke."
+  },
+  {
+   "ref": "LCH",
+   "type": "L",
+   "nodes": [
+    "ch",
+    "bp2"
+   ],
+   "value": "20",
+   "label": "Choke",
+   "note": "[crop (4380,70,4720,160)+(4450,340,4650,520)] ASSUMED 20 H (no value drawn; the Plexi netlist's value)"
+  },
+  {
+   "ref": "C47",
+   "type": "C",
+   "nodes": [
+    "bp2",
+    "bp2m"
+   ],
+   "value": "33u",
+   "tolerance": 0.2,
+   "label": "C47 33 uF/500 V screen filter, upper",
+   "note": "[crop (3950,80,4750,640)]"
+  },
+  {
+   "ref": "C48",
+   "type": "C",
+   "nodes": [
+    "bp2m",
+    "0"
+   ],
+   "value": "33u",
+   "tolerance": 0.2,
+   "label": "C48 33 uF/500 V screen filter, lower",
+   "note": "[crop (3950,80,4750,640)]"
+  },
+  {
+   "ref": "R69",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "bp2m"
+   ],
+   "value": "100k",
+   "label": "R69 100K balancing",
+   "note": "[crop (3950,80,4750,640)]"
+  },
+  {
+   "ref": "R55",
+   "type": "R",
+   "nodes": [
+    "bp2m",
+    "0"
+   ],
+   "value": "100k",
+   "label": "R55 100K balancing",
+   "note": "[crop (3950,80,4750,640)]"
+  },
+  {
+   "ref": "R68",
+   "type": "R",
+   "nodes": [
+    "bp2m",
+    "hel"
+   ],
+   "value": "470k",
+   "label": "R68 470K to '0V Heaters' (heater elevation)",
+   "note": "[crop (3950,80,4750,640)] The heater winding itself is not modelled (the valve models have no heater pins); this network loads the midpoint as drawn."
+  },
+  {
+   "ref": "R54",
+   "type": "R",
+   "nodes": [
+    "hel",
+    "0"
+   ],
+   "value": "82k",
+   "label": "R54 82K heater elevation to ground",
+   "note": "[crop (3950,80,4750,640)]"
+  },
+  {
+   "ref": "C38",
+   "type": "C",
+   "nodes": [
+    "hel",
+    "0"
+   ],
+   "value": "22u",
+   "tolerance": 0.2,
+   "label": "C38 22 uF/500 V heater elevation",
+   "note": "[crop (3950,80,4750,640)]"
+  },
+  {
+   "ref": "R53",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "n53"
+   ],
+   "value": "4k7",
+   "label": "R53 4.7K (screen node -> PI rail, first of two in series)",
+   "note": "[crop (1300,60,2800,260)+(2650,60,4100,220)]"
+  },
+  {
+   "ref": "R52",
+   "type": "R",
+   "nodes": [
+    "n53",
+    "bp3"
+   ],
+   "value": "10k",
+   "label": "R52 10K/2W (second)",
+   "note": "[crop (1300,60,2800,260)+(2650,60,4100,220)]"
+  },
+  {
+   "ref": "C30",
+   "type": "C",
+   "nodes": [
+    "bp3",
+    "0"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "C30 100 uF PI rail filter",
+   "note": "[crop (1300,60,2800,260)+(2650,60,4100,220)]"
+  },
+  {
+   "ref": "R43",
+   "type": "R",
+   "nodes": [
+    "bp3",
+    "bp4"
+   ],
+   "value": "10k",
+   "label": "R43 10K to the V3 rail",
+   "note": "[crop (1300,60,2800,260)+(2650,60,4100,220)]"
+  },
+  {
+   "ref": "C29",
+   "type": "C",
+   "nodes": [
+    "bp4",
+    "0"
+   ],
+   "value": "22u",
+   "tolerance": 0.2,
+   "label": "C29 22 uF V3 rail filter",
+   "note": "[crop (1300,60,2800,260)+(2650,60,4100,220)]"
+  },
+  {
+   "ref": "R34",
+   "type": "R",
+   "nodes": [
+    "bp4",
+    "bp5"
+   ],
+   "value": "10k",
+   "label": "R34 10K to the V1/V2 rail",
+   "note": "[crop (1300,60,2800,260)+(2650,60,4100,220)]"
+  },
+  {
+   "ref": "C28",
+   "type": "C",
+   "nodes": [
+    "bp5",
+    "0"
+   ],
+   "value": "22u",
+   "tolerance": 0.2,
+   "label": "C28 22 uF V1/V2 rail filter",
+   "note": "[crop (1300,60,2800,260)+(2650,60,4100,220)]"
+  },
+  {
+   "ref": "R76",
+   "type": "R",
+   "nodes": [
+    "bp3",
+    "bpl"
+   ],
+   "value": "33k",
+   "label": "R76 33K/2W to the FX-loop rail",
+   "note": "[crop (2250,700,2950,1120)]"
+  },
+  {
+   "ref": "C51",
+   "type": "C",
+   "nodes": [
+    "bpl",
+    "0"
+   ],
+   "value": "22u",
+   "tolerance": 0.2,
+   "label": "C51 22 uF/450 V FX-loop rail filter",
+   "note": "[crop (2250,700,2950,1120)]"
+  },
+  {
+   "ref": "VBIAS",
+   "type": "V",
+   "nodes": [
+    "s3",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "116.7000",
+    "freq": 60,
+    "phase": 270
+   },
+   "label": "PT S3 bias winding (pin 9; pin 10 grounded)",
+   "note": "[crop (5280,60,5420,290)] FITTED 116.70 V peak (82.5 Vrms) so the Bias trim P12 at its centre gives 32 mA per EL34 (Friedman's factory setting per owners; the drawing prints no bias voltage). Phase 270 = pin 9 negative while pin 6 is at its crest (dots on 6 and 10)."
+  },
+  {
+   "ref": "RS3",
+   "type": "R",
+   "nodes": [
+    "s3",
+    "b9"
+   ],
+   "value": "100",
+   "label": "PT S3 winding resistance",
+   "note": "[crop (5280,60,5420,290)] ASSUMED 100 ohm"
+  },
+  {
+   "ref": "R58",
+   "type": "R",
+   "nodes": [
+    "b9",
+    "d9k"
+   ],
+   "value": "27k",
+   "label": "R58 27K bias feed",
+   "note": "[crop (3000,820,3800,1100)+(3540,930,3660,990)] Read 27K on the lossless PNG (the JPEG pass had 26K/27K)."
+  },
+  {
+   "ref": "D9",
+   "type": "D",
+   "nodes": [
+    "b1",
+    "d9k"
+   ],
+   "model": "1N4001",
+   "label": "D9 UF4007 bias rectifier (cathode to the winding)",
+   "note": "[crop (3000,820,3800,1100)+(3540,930,3660,990)] 1N4001 card"
+  },
+  {
+   "ref": "C40",
+   "type": "C",
+   "nodes": [
+    "b1",
+    "0"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "C40 10 uF/100 V (+ to ground)",
+   "note": "[crop (3000,820,3800,1100)+(3540,930,3660,990)]"
+  },
+  {
+   "ref": "R57",
+   "type": "R",
+   "nodes": [
+    "b1",
+    "b2"
+   ],
+   "value": "15k",
+   "label": "R57 15K",
+   "note": "[crop (3000,820,3800,1100)+(3540,930,3660,990)]"
+  },
+  {
+   "ref": "C41",
+   "type": "C",
+   "nodes": [
+    "b2",
+    "0"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "C41 10 uF/100 V (+ to ground)",
+   "note": "[crop (3000,820,3800,1100)+(3540,930,3660,990)]"
+  },
+  {
+   "ref": "R56",
+   "type": "R",
+   "nodes": [
+    "b2",
+    "p12"
+   ],
+   "value": "47k",
+   "label": "R56 47K",
+   "note": "[crop (3000,820,3800,1100)+(3540,930,3660,990)]"
+  },
+  {
+   "ref": "P12",
+   "type": "pot",
+   "nodes": [
+    "p12",
+    "0",
+    "0"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "bias",
+   "label": "P12 25K bias trim (rheostat: wiper and pin 3 to ground)",
+   "note": "[crop (3000,820,3800,1100)+(3540,930,3660,990)] Taper not drawn: linear assumed (trimmer)."
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "in",
+    "0"
+   ],
+   "value": "1M",
+   "label": "R1 1M input grid return (J1 tip; J1 shorts to ground unplugged)",
+   "note": "[crop (0,450,800,1000)]"
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "in",
+    "g1a"
+   ],
+   "value": "33k",
+   "label": "R2 33k grid stopper",
+   "note": "[crop (0,60,650,520)]"
+  },
+  {
+   "ref": "V1A",
+   "type": "triode",
+   "nodes": [
+    "p1a",
+    "g1a",
+    "k1a"
+   ],
+   "model": "12AX7",
+   "label": "V1A 12AX7",
+   "note": "[crop (0,60,650,520)]"
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "k1a",
+    "0"
+   ],
+   "value": "2k7",
+   "label": "R4 2.7k",
+   "note": "[crop (0,60,650,520)]"
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "k1a",
+    "0"
+   ],
+   "value": "680n",
+   "tolerance": 0.1,
+   "label": "C5 0.68 uF",
+   "note": "[crop (0,60,650,520)]"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "t1",
+    "p1a"
+   ],
+   "value": "100k",
+   "label": "R3 100k (lower half of V1A's split plate load)",
+   "note": "[crop (0,60,650,520)]"
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "bp5",
+    "t1"
+   ],
+   "value": "220k",
+   "label": "R9 220k (upper half; the R3/R9 tap t1 feeds the Clean stack)",
+   "note": "[crop (0,60,650,520)]"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "t1",
+    "p1a"
+   ],
+   "value": "500p",
+   "tolerance": 0.1,
+   "label": "C8 500 pF across R3",
+   "note": "[crop (0,60,650,520)]"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "p1a",
+    "c3o"
+   ],
+   "value": "2n2",
+   "tolerance": 0.1,
+   "label": "C3 2.2 nF",
+   "note": "[crop (0,60,650,520)]"
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "c3o",
+    "v1o"
+   ],
+   "value": "1M",
+   "label": "R5 1M",
+   "note": "[crop (0,60,650,520)]"
+  },
+  {
+   "ref": "R6",
+   "type": "R",
+   "nodes": [
+    "v1o",
+    "0"
+   ],
+   "value": "68k",
+   "label": "R6 68k (V1A output pad to RELAY1 pin 8)",
+   "note": "[crop (0,60,650,520)]"
+  },
+  {
+   "ref": "K1_46",
+   "type": "switch",
+   "nodes": [
+    "in",
+    "k1c"
+   ],
+   "control": "gainMode",
+   "positions": [
+    0,
+    1
+   ],
+   "label": "RELAY1 pin 4-6 (rest): input jack straight to V2A (CLN, BE)",
+   "note": "[crop (300,200,1100,760)] RELAY1 coil from SW5 pin 3 / J7 tip (drv crop): energised only in HBE."
+  },
+  {
+   "ref": "K1_48",
+   "type": "switch",
+   "nodes": [
+    "v1o",
+    "k1c"
+   ],
+   "control": "gainMode",
+   "positions": [
+    2
+   ],
+   "label": "RELAY1 pin 4-8 (energised, HBE): V1A's padded output to V2A",
+   "note": "[crop (300,200,1100,760)]",
+   "roff": 1e13
+  },
+  {
+   "ref": "K1_48_GA",
+   "type": "vccs",
+   "nodes": [
+    "v1o",
+    "0",
+    "v1o",
+    "k1c"
+   ],
+   "gain": 1e-9,
+   "label": "K1_48 open: its 1 GOhm leakage, the v1o end (docs §10.65)"
+  },
+  {
+   "ref": "K1_48_GB",
+   "type": "vccs",
+   "nodes": [
+    "k1c",
+    "0",
+    "k1c",
+    "v1o"
+   ],
+   "gain": 1e-9,
+   "label": "K1_48 open: its 1 GOhm leakage, the k1c end (docs §10.65)"
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "k1c",
+    "0"
+   ],
+   "value": "10M",
+   "label": "R11 10M",
+   "note": "[crop (300,200,1100,760)]"
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "k1c",
+    "g2a"
+   ],
+   "value": "33k",
+   "label": "R7 33k",
+   "note": "[crop (300,200,1100,760)]"
+  },
+  {
+   "ref": "V2A",
+   "type": "triode",
+   "nodes": [
+    "p2a",
+    "g2a",
+    "k2a"
+   ],
+   "model": "12AX7",
+   "label": "V2A 12AX7",
+   "note": "[crop (300,200,1100,760)]"
+  },
+  {
+   "ref": "R10",
+   "type": "R",
+   "nodes": [
+    "k2a",
+    "0"
+   ],
+   "value": "2k7",
+   "label": "R10 2.7K",
+   "note": "[crop (300,200,1100,760)]"
+  },
+  {
+   "ref": "C20",
+   "type": "C",
+   "nodes": [
+    "k2a",
+    "0"
+   ],
+   "value": "680n",
+   "tolerance": 0.1,
+   "label": "C20 0.68 uF",
+   "note": "[crop (300,200,1100,760)]"
+  },
+  {
+   "ref": "R17",
+   "type": "R",
+   "nodes": [
+    "t2",
+    "p2a"
+   ],
+   "value": "100k",
+   "label": "R17 100k",
+   "note": "[crop (300,200,1100,760)]"
+  },
+  {
+   "ref": "R18",
+   "type": "R",
+   "nodes": [
+    "bp5",
+    "t2"
+   ],
+   "value": "220k",
+   "label": "R18 220k",
+   "note": "[crop (580,40,1230,500)]"
+  },
+  {
+   "ref": "C13",
+   "type": "C",
+   "nodes": [
+    "t2",
+    "p2a"
+   ],
+   "value": "500p",
+   "tolerance": 0.1,
+   "label": "C13 500 pF across R17",
+   "note": "[crop (300,200,1100,760)]"
+  },
+  {
+   "ref": "C14",
+   "type": "C",
+   "nodes": [
+    "p2a",
+    "x2"
+   ],
+   "value": "2n2",
+   "tolerance": 0.1,
+   "label": "C14 2.2 nF",
+   "note": "[crop (580,40,1230,500)]"
+  },
+  {
+   "ref": "C15",
+   "type": "C",
+   "nodes": [
+    "p2a",
+    "f9"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C15 22 nF (FAT)",
+   "note": "[crop (580,40,1230,500)]"
+  },
+  {
+   "ref": "SW9",
+   "type": "switch",
+   "nodes": [
+    "f9",
+    "x2"
+   ],
+   "control": "fat",
+   "positions": [
+    1
+   ],
+   "label": "SW9 FAT: C15 in parallel with C14",
+   "note": "[crop (580,40,1230,500)]"
+  },
+  {
+   "ref": "C16",
+   "type": "C",
+   "nodes": [
+    "x2",
+    "c45a3"
+   ],
+   "value": "680p",
+   "tolerance": 0.1,
+   "label": "C16 680 pF across R20",
+   "note": "[crop (580,40,1230,500)]"
+  },
+  {
+   "ref": "R20",
+   "type": "R",
+   "nodes": [
+    "x2",
+    "c45a3"
+   ],
+   "value": "560k",
+   "label": "R20 560K (C45 series leg)",
+   "note": "[crop (580,40,1230,500)]"
+  },
+  {
+   "ref": "R19",
+   "type": "R",
+   "nodes": [
+    "x2",
+    "c45a1"
+   ],
+   "value": "68k",
+   "label": "R19 68K (normal series leg)",
+   "note": "[crop (580,40,1230,500)]"
+  },
+  {
+   "ref": "C45A_3",
+   "type": "switch",
+   "nodes": [
+    "c45a3",
+    "y2"
+   ],
+   "control": "c45",
+   "positions": [
+    1
+   ],
+   "label": "C45 switch pole A (S2) pin 2-3: R20 || C16 in series",
+   "note": "[crop (1150,60,1850,560)]"
+  },
+  {
+   "ref": "C45A_1",
+   "type": "switch",
+   "nodes": [
+    "c45a1",
+    "y2"
+   ],
+   "control": "c45",
+   "positions": [
+    0
+   ],
+   "label": "C45 switch pole A (S2) pin 2-1 (drawn): R19 in series",
+   "note": "[crop (1150,60,1850,560)]"
+  },
+  {
+   "ref": "C45B_3",
+   "type": "switch",
+   "nodes": [
+    "y2",
+    "r26t"
+   ],
+   "control": "c45",
+   "positions": [
+    1
+   ],
+   "label": "C45 switch pole B (SW8) pin 2-3: R26 220K shunt",
+   "note": "[crop (1150,60,1850,560)]"
+  },
+  {
+   "ref": "C45B_1",
+   "type": "switch",
+   "nodes": [
+    "y2",
+    "r16t"
+   ],
+   "control": "c45",
+   "positions": [
+    0
+   ],
+   "label": "C45 switch pole B (SW8) pin 2-1 (drawn): R16 68K shunt",
+   "note": "[crop (1150,60,1850,560)]"
+  },
+  {
+   "ref": "R26",
+   "type": "R",
+   "nodes": [
+    "r26t",
+    "0"
+   ],
+   "value": "220k",
+   "label": "R26 220K",
+   "note": "[crop (1150,60,1850,560)]"
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "r16t",
+    "0"
+   ],
+   "value": "68k",
+   "label": "R16 68K",
+   "note": "[crop (1150,60,1850,560)]"
+  },
+  {
+   "ref": "R23",
+   "type": "R",
+   "nodes": [
+    "y2",
+    "g2b"
+   ],
+   "value": "33k",
+   "label": "R23 33k",
+   "note": "[crop (1150,60,1850,560)]"
+  },
+  {
+   "ref": "V2B",
+   "type": "triode",
+   "nodes": [
+    "p2b",
+    "g2b",
+    "k2b"
+   ],
+   "model": "12AX7",
+   "label": "V2B 12AX7",
+   "note": "[crop (1150,60,1850,560)]"
+  },
+  {
+   "ref": "R24",
+   "type": "R",
+   "nodes": [
+    "k2b",
+    "0"
+   ],
+   "value": "2k7",
+   "label": "R24 2.7k",
+   "note": "[crop (1150,60,1850,560)]"
+  },
+  {
+   "ref": "C17",
+   "type": "C",
+   "nodes": [
+    "k2b",
+    "0"
+   ],
+   "value": "680n",
+   "tolerance": 0.1,
+   "label": "C17 0.68 uF",
+   "note": "[crop (1150,60,1850,560)]"
+  },
+  {
+   "ref": "R21",
+   "type": "R",
+   "nodes": [
+    "bp5",
+    "p2b"
+   ],
+   "value": "100k",
+   "label": "R21 100k",
+   "note": "[crop (1150,60,1850,560)]"
+  },
+  {
+   "ref": "C19",
+   "type": "C",
+   "nodes": [
+    "p2b",
+    "gt"
+   ],
+   "value": "2n2",
+   "tolerance": 0.1,
+   "label": "C19 2.2 nF",
+   "note": "[crop (1150,60,1850,560)]"
+  },
+  {
+   "ref": "VR4",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "gw",
+    "gt"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "gain",
+   "label": "VR4 GAIN 1M",
+   "note": "[crop (1600,200,1720,330)] Taper not printed ('GAIN 1M'): audio assumed."
+  },
+  {
+   "ref": "K2_48",
+   "type": "switch",
+   "nodes": [
+    "gt",
+    "0"
+   ],
+   "control": "gainMode",
+   "positions": [
+    0
+   ],
+   "label": "RELAY2 pin 4-8 (energised, CLN): grounds the GAIN pot top (mutes the BE path)",
+   "note": "[crop (1600,380,2350,950)] RELAY2 coil from SW5 pin 1 / J7 ring (drv crop); pin 6 unconnected."
+  },
+  {
+   "ref": "R30",
+   "type": "R",
+   "nodes": [
+    "gw",
+    "g3a"
+   ],
+   "value": "470k",
+   "label": "R30 470K",
+   "note": "[crop (1150,60,1850,560)]"
+  },
+  {
+   "ref": "C26",
+   "type": "C",
+   "nodes": [
+    "gw",
+    "g3a"
+   ],
+   "value": "500p",
+   "tolerance": 0.1,
+   "label": "C26 500 pF across R30",
+   "note": "[crop (1150,60,1850,560)]"
+  },
+  {
+   "ref": "R28",
+   "type": "R",
+   "nodes": [
+    "g3a",
+    "0"
+   ],
+   "value": "470k",
+   "label": "R28 470K",
+   "note": "[crop (1750,40,2450,560)]"
+  },
+  {
+   "ref": "V3A",
+   "type": "triode",
+   "nodes": [
+    "p3a",
+    "g3a",
+    "k3a"
+   ],
+   "model": "12AX7",
+   "label": "V3A 12AX7",
+   "note": "[crop (1750,40,2450,560)]"
+  },
+  {
+   "ref": "R29",
+   "type": "R",
+   "nodes": [
+    "k3a",
+    "0"
+   ],
+   "value": "820",
+   "label": "R29 820R",
+   "note": "[crop (1750,40,2450,560)]"
+  },
+  {
+   "ref": "C24",
+   "type": "C",
+   "nodes": [
+    "k3a",
+    "0"
+   ],
+   "value": "680n",
+   "tolerance": 0.1,
+   "label": "C24 0.68 uF",
+   "note": "[crop (1750,40,2450,560)]"
+  },
+  {
+   "ref": "C43",
+   "type": "C",
+   "nodes": [
+    "k3a",
+    "c43n"
+   ],
+   "value": "470u",
+   "tolerance": 0.2,
+   "label": "C43 470 uF/16 V",
+   "note": "[crop (1750,40,2450,560)]"
+  },
+  {
+   "ref": "SW3_1",
+   "type": "switch",
+   "nodes": [
+    "c43n",
+    "0"
+   ],
+   "control": "voice",
+   "positions": [
+    0
+   ],
+   "label": "SW3 VOICE pin 2-1: C43 bypasses V3A's cathode",
+   "note": "[crop (1600,380,2350,950)]"
+  },
+  {
+   "ref": "R27",
+   "type": "R",
+   "nodes": [
+    "bp4",
+    "p3a"
+   ],
+   "value": "100k",
+   "label": "R27 100k",
+   "note": "[crop (1750,40,2450,560)]"
+  },
+  {
+   "ref": "C27",
+   "type": "C",
+   "nodes": [
+    "bp4",
+    "p3a"
+   ],
+   "value": "500p",
+   "tolerance": 0.1,
+   "label": "C27 500 pF across R27",
+   "note": "[crop (1750,40,2450,560)]"
+  },
+  {
+   "ref": "V3B",
+   "type": "triode",
+   "nodes": [
+    "bp4",
+    "p3a",
+    "kcf"
+   ],
+   "model": "12AX7",
+   "label": "V3B 12AX7 cathode follower (plate on the V3 rail, grid DC-coupled to V3A)",
+   "note": "[crop (1750,40,2450,560)]"
+  },
+  {
+   "ref": "R31",
+   "type": "R",
+   "nodes": [
+    "kcf",
+    "0"
+   ],
+   "value": "100k",
+   "label": "R31 100K",
+   "note": "[crop (1750,40,2450,560)]"
+  },
+  {
+   "ref": "C42",
+   "type": "C",
+   "nodes": [
+    "kcf",
+    "c42n"
+   ],
+   "value": "500p",
+   "tolerance": 0.1,
+   "label": "C42 500 pF",
+   "note": "[crop (2250,180,2950,760)]"
+  },
+  {
+   "ref": "SW3_3",
+   "type": "switch",
+   "nodes": [
+    "c42n",
+    "0"
+   ],
+   "control": "voice",
+   "positions": [
+    1
+   ],
+   "label": "SW3 VOICE pin 2-3: C42 from the follower's cathode to ground",
+   "note": "[crop (1600,380,2350,950)]"
+  },
+  {
+   "ref": "R33",
+   "type": "R",
+   "nodes": [
+    "kcf",
+    "r33"
+   ],
+   "value": "10k",
+   "label": "R33 10K (SAT)",
+   "note": "[crop (2250,180,2950,760)]"
+  },
+  {
+   "ref": "C25",
+   "type": "C",
+   "nodes": [
+    "r33",
+    "sat2"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "C25 100 nF/630 V (SAT)",
+   "note": "[crop (2250,180,2950,760)]"
+  },
+  {
+   "ref": "SW7",
+   "type": "switch",
+   "nodes": [
+    "sat2",
+    "sat1"
+   ],
+   "control": "sat",
+   "positions": [
+    1
+   ],
+   "label": "SW7 SAT",
+   "note": "[crop (2250,180,2950,760)]",
+   "roff": 1e19
+  },
+  {
+   "ref": "SW7_GA",
+   "type": "vccs",
+   "nodes": [
+    "sat2",
+    "0",
+    "sat2",
+    "sat1"
+   ],
+   "gain": 1e-9,
+   "label": "SW7 open: its 1 GOhm leakage, the sat2 end (docs §10.65)"
+  },
+  {
+   "ref": "SW7_GB",
+   "type": "vccs",
+   "nodes": [
+    "sat1",
+    "0",
+    "sat1",
+    "sat2"
+   ],
+   "gain": 1e-9,
+   "label": "SW7 open: its 1 GOhm leakage, the sat1 end (docs §10.65)"
+  },
+  {
+   "ref": "SW7_RB",
+   "type": "R",
+   "nodes": [
+    "sat2",
+    "0"
+   ],
+   "value": "1T",
+   "label": "1 TOhm DC return at sat2, so SW7 drops out when open (docs §10.65)"
+  },
+  {
+   "ref": "R38",
+   "type": "R",
+   "nodes": [
+    "sat1",
+    "0"
+   ],
+   "value": "1M",
+   "label": "R38 1M",
+   "note": "[crop (2250,180,2950,760)]"
+  },
+  {
+   "ref": "Z1",
+   "type": "D",
+   "nodes": [
+    "sat1",
+    "ze"
+   ],
+   "model": "MPSA06_BE",
+   "label": "Z1 MPSA06 base-emitter junction (base = anode)",
+   "note": "[crop (2350,520,2560,760)] Z1/Z2: two MPSA06 with emitters joined, Z1 base on the SAT node, Z2 base on ground, collectors unconnected (sat crop): two back-to-back base-emitter junctions (one avalanches, one conducts). The floating collector junctions carry no current and are omitted."
+  },
+  {
+   "ref": "Z2",
+   "type": "D",
+   "nodes": [
+    "0",
+    "ze"
+   ],
+   "model": "MPSA06_BE",
+   "label": "Z2 MPSA06 base-emitter junction",
+   "note": "[crop (2350,520,2560,760)]"
+  },
+  {
+   "ref": "CJZ1",
+   "type": "C",
+   "nodes": [
+    "sat1",
+    "ze"
+   ],
+   "value": "25p",
+   "label": "Z1 emitter-base junction capacitance",
+   "note": "Not a drawn part: the MPSA06 junction's own capacitance (about 25 pF, typical small-signal NPN Cibo; APPROXIMATE). It defines the emitter node, which the open collectors otherwise leave to junction leakage (Newton cost 3.5 -> 1.1 it/sample)."
+  },
+  {
+   "ref": "CJZ2",
+   "type": "C",
+   "nodes": [
+    "0",
+    "ze"
+   ],
+   "value": "25p",
+   "label": "Z2 emitter-base junction capacitance",
+   "note": "see CJZ1"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "kcf",
+    "tt"
+   ],
+   "value": "500p",
+   "tolerance": 0.1,
+   "label": "C4 500 pF treble cap",
+   "note": "[crop (2420,230,2620,440)+(2440,400,2640,640)]"
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "kcf",
+    "ns"
+   ],
+   "value": "33k",
+   "label": "R8 33K slope",
+   "note": "[crop (2420,230,2620,440)+(2440,400,2640,640)]"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "ns",
+    "tb"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C1 22 nF/630 V bass cap",
+   "note": "[crop (2420,230,2620,440)+(2440,400,2640,640)]"
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "ns",
+    "mw"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C6 22 nF/630 V middle cap (to the MIDDLE wiper)",
+   "note": "[crop (2420,230,2620,440)+(2440,400,2640,640)]"
+  },
+  {
+   "ref": "VR6",
+   "type": "pot",
+   "nodes": [
+    "tb",
+    "tw",
+    "tt"
+   ],
+   "value": "250k",
+   "taper": "B",
+   "control": "treble",
+   "label": "VR6 Treble 250KB",
+   "note": "[crop (2420,230,2620,440)+(2440,400,2640,640)]"
+  },
+  {
+   "ref": "VR8",
+   "type": "pot",
+   "nodes": [
+    "mb",
+    "tb",
+    "tb"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "low",
+   "label": "VR8 Bass 1MA (rheostat: pin 3 unconnected, drawn open; tied to the wiper here, same circuit)",
+   "note": "[crop (2420,230,2620,440)+(2440,400,2640,640)]"
+  },
+  {
+   "ref": "VR7",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mw",
+    "mb"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "mid",
+   "label": "VR7 Middle 25KB",
+   "note": "[crop (2420,230,2620,440)+(2440,400,2640,640)]"
+  },
+  {
+   "ref": "R59",
+   "type": "R",
+   "nodes": [
+    "tw",
+    "mt"
+   ],
+   "value": "220k",
+   "label": "R59 220K",
+   "note": "[crop (2250,180,2950,760)]"
+  },
+  {
+   "ref": "R32",
+   "type": "R",
+   "nodes": [
+    "mt",
+    "0"
+   ],
+   "value": "1M",
+   "label": "R32 1M",
+   "note": "[crop (2250,180,2950,760)]"
+  },
+  {
+   "ref": "VR5",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mw5",
+    "mt"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "master",
+   "label": "VR5 Master 1MA",
+   "note": "[crop (2250,180,2950,760)]"
+  },
+  {
+   "ref": "K2_1311",
+   "type": "switch",
+   "nodes": [
+    "mw5",
+    "s7c"
+   ],
+   "control": "gainMode",
+   "positions": [
+    1,
+    2
+   ],
+   "label": "RELAY2 pin 13-11 (rest: BE, HBE): Master wiper to the loop switch",
+   "note": "[crop (1600,380,2350,950)]"
+  },
+  {
+   "ref": "K2_139",
+   "type": "switch",
+   "nodes": [
+    "cj",
+    "s7c"
+   ],
+   "control": "gainMode",
+   "positions": [
+    0
+   ],
+   "label": "RELAY2 pin 13-9 (energised, CLN): Clean output to the loop switch",
+   "note": "[crop (1600,380,2350,950)]",
+   "roff": 1e13
+  },
+  {
+   "ref": "K2_139_GA",
+   "type": "vccs",
+   "nodes": [
+    "cj",
+    "0",
+    "cj",
+    "s7c"
+   ],
+   "gain": 1e-9,
+   "label": "K2_139 open: its 1 GOhm leakage, the cj end (docs §10.65)"
+  },
+  {
+   "ref": "K2_139_GB",
+   "type": "vccs",
+   "nodes": [
+    "s7c",
+    "0",
+    "s7c",
+    "cj"
+   ],
+   "gain": 1e-9,
+   "label": "K2_139 open: its 1 GOhm leakage, the s7c end (docs §10.65)"
+  },
+  {
+   "ref": "R25",
+   "type": "R",
+   "nodes": [
+    "t1",
+    "cs"
+   ],
+   "value": "100k",
+   "label": "R25 100K",
+   "note": "[crop (1020,540,1260,1010)+(1180,650,1420,920)]"
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "t1",
+    "ct3"
+   ],
+   "value": "50p",
+   "tolerance": 0.1,
+   "label": "C10 50 pF",
+   "note": "[crop (1020,540,1260,1010)+(1180,650,1420,920)]"
+  },
+  {
+   "ref": "C7",
+   "type": "C",
+   "nodes": [
+    "cs",
+    "cu"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C7 0.022 uF",
+   "note": "[crop (1020,540,1260,1010)+(1180,650,1420,920)]"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "cs",
+    "cw"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C2 0.022 uF",
+   "note": "[crop (1020,540,1260,1010)+(1180,650,1420,920)]"
+  },
+  {
+   "ref": "R42",
+   "type": "R",
+   "nodes": [
+    "cw",
+    "0"
+   ],
+   "value": "10k",
+   "label": "R42 10K",
+   "note": "[crop (1020,540,1260,1010)+(1180,650,1420,920)]"
+  },
+  {
+   "ref": "VR1",
+   "type": "pot",
+   "nodes": [
+    "cu",
+    "cw",
+    "0"
+   ],
+   "value": "250k",
+   "taper": "A",
+   "control": "clean_bass",
+   "label": "VR1 Bass 250kA (Clean)",
+   "note": "[crop (1020,540,1260,1010)+(1180,650,1420,920)] Pin 1 = C7/Treble node, wiper = C2/R42 node, pin 3 = ground, as drawn."
+  },
+  {
+   "ref": "VR2",
+   "type": "pot",
+   "nodes": [
+    "cu",
+    "cv",
+    "ct3"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "clean_treble",
+   "label": "VR2 Treb 1MA (Clean)",
+   "note": "[crop (1020,540,1260,1010)+(1180,650,1420,920)]"
+  },
+  {
+   "ref": "VR3",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "g1b",
+    "cv"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "clean_vol",
+   "label": "VR3 Clean Vol",
+   "note": "[crop (1020,540,1260,1010)+(1180,650,1420,920)] VALUE NOT PRINTED on the drawing ('VR3 Clean Vol' only): 1M audio assumed (its neighbour VR2 is 1MA)."
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "cv",
+    "b220"
+   ],
+   "value": "220p",
+   "tolerance": 0.1,
+   "label": "C11 220 pF (BRIGHT)",
+   "note": "[crop (1000,500,1800,1060)]"
+  },
+  {
+   "ref": "C12",
+   "type": "C",
+   "nodes": [
+    "cv",
+    "b100"
+   ],
+   "value": "100p",
+   "tolerance": 0.1,
+   "label": "C12 100 pF (BRIGHT)",
+   "note": "[crop (1000,500,1800,1060)]"
+  },
+  {
+   "ref": "SW4_1",
+   "type": "switch",
+   "nodes": [
+    "b100",
+    "g1b"
+   ],
+   "control": "bright",
+   "positions": [
+    0
+   ],
+   "label": "SW4 BRIGHT pin 2-1: C12 100 pF across the Clean Vol top section",
+   "note": "[crop (1020,540,1260,1010)+(1180,650,1420,920)]"
+  },
+  {
+   "ref": "SW4_3",
+   "type": "switch",
+   "nodes": [
+    "b220",
+    "g1b"
+   ],
+   "control": "bright",
+   "positions": [
+    1
+   ],
+   "label": "SW4 BRIGHT pin 2-3: C11 220 pF across the Clean Vol top section",
+   "note": "[crop (1020,540,1260,1010)+(1180,650,1420,920)]"
+  },
+  {
+   "ref": "V1B",
+   "type": "triode",
+   "nodes": [
+    "p1b",
+    "g1b",
+    "k1b"
+   ],
+   "model": "12AX7",
+   "label": "V1B 12AX7 (Clean)",
+   "note": "[crop (1000,500,1800,1060)]"
+  },
+  {
+   "ref": "R12",
+   "type": "R",
+   "nodes": [
+    "bp5",
+    "p1b"
+   ],
+   "value": "100k",
+   "label": "R12 100k",
+   "note": "[crop (1000,500,1800,1060)]"
+  },
+  {
+   "ref": "R14",
+   "type": "R",
+   "nodes": [
+    "k1b",
+    "0"
+   ],
+   "value": "820",
+   "label": "R14 820",
+   "note": "[crop (1000,500,1800,1060)]"
+  },
+  {
+   "ref": "C21",
+   "type": "C",
+   "nodes": [
+    "k1b",
+    "0"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "C21 10 uF",
+   "note": "[crop (1000,500,1800,1060)]"
+  },
+  {
+   "ref": "C9",
+   "type": "C",
+   "nodes": [
+    "p1b",
+    "c9o"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C9 0.022 uF",
+   "note": "[crop (1000,500,1800,1060)]"
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "c9o",
+    "cj"
+   ],
+   "value": "470k",
+   "label": "R15 470K",
+   "note": "[crop (1000,500,1800,1060)]"
+  },
+  {
+   "ref": "R22",
+   "type": "R",
+   "nodes": [
+    "cj",
+    "0"
+   ],
+   "value": "470k",
+   "label": "R22 470K",
+   "note": "[crop (1000,500,1800,1060)]"
+  },
+  {
+   "ref": "S7A_3",
+   "type": "switch",
+   "nodes": [
+    "s7c",
+    "s73"
+   ],
+   "control": "loop",
+   "positions": [
+    0
+   ],
+   "label": "S7 pole A pin 2-3 (loop bypassed)",
+   "note": "[crop (1650,720,2350,1300)] S7 'TL49PO' DPDT; pins 3 and 6 are strapped (loop crop)."
+  },
+  {
+   "ref": "S7B_6",
+   "type": "switch",
+   "nodes": [
+    "s73",
+    "s7o"
+   ],
+   "control": "loop",
+   "positions": [
+    0
+   ],
+   "label": "S7 pole B pin 6-5 (loop bypassed)",
+   "note": "[crop (1650,720,2350,1300)]"
+  },
+  {
+   "ref": "S7A_1",
+   "type": "switch",
+   "nodes": [
+    "s7c",
+    "snd"
+   ],
+   "control": "loop",
+   "positions": [
+    1
+   ],
+   "label": "S7 pole A pin 2-1 (loop on): to the send buffer",
+   "note": "[crop (1650,720,2350,1300)]",
+   "roff": 1e19
+  },
+  {
+   "ref": "S7A_1_GA",
+   "type": "vccs",
+   "nodes": [
+    "s7c",
+    "0",
+    "s7c",
+    "snd"
+   ],
+   "gain": 1e-9,
+   "label": "S7A_1 open: its 1 GOhm leakage, the s7c end (docs §10.65)"
+  },
+  {
+   "ref": "S7A_1_GB",
+   "type": "vccs",
+   "nodes": [
+    "snd",
+    "0",
+    "snd",
+    "s7c"
+   ],
+   "gain": 1e-9,
+   "label": "S7A_1 open: its 1 GOhm leakage, the snd end (docs §10.65)"
+  },
+  {
+   "ref": "S7A_1_RB",
+   "type": "R",
+   "nodes": [
+    "snd",
+    "0"
+   ],
+   "value": "1T",
+   "label": "1 TOhm DC return at snd, so S7A_1 drops out when open (docs §10.65)"
+  },
+  {
+   "ref": "S7B_4",
+   "type": "switch",
+   "nodes": [
+    "rlw",
+    "s7o"
+   ],
+   "control": "loop",
+   "positions": [
+    1
+   ],
+   "label": "S7 pole B pin 4-5 (loop on): from the Return LVL wiper",
+   "note": "[crop (1650,720,2350,1300)]",
+   "roff": 1e13
+  },
+  {
+   "ref": "S7B_4_GA",
+   "type": "vccs",
+   "nodes": [
+    "rlw",
+    "0",
+    "rlw",
+    "s7o"
+   ],
+   "gain": 1e-9,
+   "label": "S7B_4 open: its 1 GOhm leakage, the rlw end (docs §10.65)"
+  },
+  {
+   "ref": "S7B_4_GB",
+   "type": "vccs",
+   "nodes": [
+    "s7o",
+    "0",
+    "s7o",
+    "rlw"
+   ],
+   "gain": 1e-9,
+   "label": "S7B_4 open: its 1 GOhm leakage, the s7o end (docs §10.65)"
+  },
+  {
+   "ref": "C50",
+   "type": "C",
+   "nodes": [
+    "snd",
+    "c50"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "C50 100 nF/250 V",
+   "note": "[crop (1650,720,2350,1300)]"
+  },
+  {
+   "ref": "R70",
+   "type": "R",
+   "nodes": [
+    "c50",
+    "q1g"
+   ],
+   "value": "2M2",
+   "label": "R70 2M2",
+   "note": "[crop (1650,720,2350,1300)]"
+  },
+  {
+   "ref": "Q1",
+   "type": "njf",
+   "nodes": [
+    "q1d",
+    "q1g",
+    "q1s"
+   ],
+   "model": "LND150",
+   "label": "Q1 LND150 send follower (bootstrapped)",
+   "note": "[crop (1950,920,2150,1150)+(2000,1060,2180,1340)] LND150 depletion MOSFET on the engine's njf law (see the LND150 model note)."
+  },
+  {
+   "ref": "R60",
+   "type": "R",
+   "nodes": [
+    "bpl",
+    "q1d"
+   ],
+   "value": "100k",
+   "label": "R60 100K",
+   "note": "[crop (1950,920,2150,1150)+(2000,1060,2180,1340)]"
+  },
+  {
+   "ref": "D5",
+   "type": "D",
+   "nodes": [
+    "q1s",
+    "0"
+   ],
+   "model": "1N4148",
+   "label": "D5 1N4148 (source to ground, forward)",
+   "note": "[crop (1950,920,2150,1150)+(2000,1060,2180,1340)]"
+  },
+  {
+   "ref": "C22",
+   "type": "C",
+   "nodes": [
+    "q1s",
+    "n2"
+   ],
+   "value": "470n",
+   "tolerance": 0.1,
+   "label": "C22 470 nF/400 V",
+   "note": "[crop (1950,920,2150,1150)+(2000,1060,2180,1340)]"
+  },
+  {
+   "ref": "R61",
+   "type": "R",
+   "nodes": [
+    "n2",
+    "0"
+   ],
+   "value": "220k",
+   "label": "R61 220K",
+   "note": "[crop (1950,920,2150,1150)+(2000,1060,2180,1340)]"
+  },
+  {
+   "ref": "VR12",
+   "type": "pot",
+   "nodes": [
+    "c23",
+    "q1g",
+    "n2"
+   ],
+   "value": "50k",
+   "taper": "B",
+   "control": "send_trim",
+   "label": "VR12 50K (gate bootstrap trim)",
+   "note": "[crop (1950,920,2150,1150)+(2000,1060,2180,1340)] Taper not printed: linear assumed."
+  },
+  {
+   "ref": "C23",
+   "type": "C",
+   "nodes": [
+    "c23",
+    "n2"
+   ],
+   "value": "10p",
+   "tolerance": 0.1,
+   "label": "C23 10 pF",
+   "note": "[crop (1650,720,2350,1300)]"
+  },
+  {
+   "ref": "C46",
+   "type": "C",
+   "nodes": [
+    "n2",
+    "q2in"
+   ],
+   "value": "330n",
+   "tolerance": 0.1,
+   "label": "C46 330 nF/250 V (J5 RETURN tip, normalled to the send node n2 with no plug)",
+   "note": "[crop (2180,960,2480,1200)]"
+  },
+  {
+   "ref": "R63",
+   "type": "R",
+   "nodes": [
+    "q2in",
+    "0"
+   ],
+   "value": "1M",
+   "label": "R63 1M (to the R62/R73 junction; R73 is 0R, a wire)",
+   "note": "[crop (1950,1000,2900,1476)+(2380,1000,2760,1340)]"
+  },
+  {
+   "ref": "R72",
+   "type": "R",
+   "nodes": [
+    "q2in",
+    "q2g"
+   ],
+   "value": "1k5",
+   "label": "R72 1K5",
+   "note": "[crop (1950,1000,2900,1476)+(2380,1000,2760,1340)]"
+  },
+  {
+   "ref": "D6",
+   "type": "D",
+   "nodes": [
+    "zm",
+    "q2g"
+   ],
+   "model": "BZX79C12",
+   "label": "D6 BZX79-C12 (cathode to the gate)",
+   "note": "[crop (1950,1000,2900,1476)+(2380,1000,2760,1340)]"
+  },
+  {
+   "ref": "D7",
+   "type": "D",
+   "nodes": [
+    "zm",
+    "q2s"
+   ],
+   "model": "BZX79C12",
+   "label": "D7 BZX79-C12 (cathode to the source)",
+   "note": "[crop (1950,1000,2900,1476)+(2380,1000,2760,1340)]"
+  },
+  {
+   "ref": "CJD6",
+   "type": "C",
+   "nodes": [
+    "zm",
+    "q2g"
+   ],
+   "value": "60p",
+   "label": "D6 junction capacitance",
+   "note": "Not a drawn part: the BZX79-C12's own diode capacitance (about 60 pF at low bias; APPROXIMATE). Defines the zeners' common anode node, otherwise held only by junction leakage."
+  },
+  {
+   "ref": "CJD7",
+   "type": "C",
+   "nodes": [
+    "zm",
+    "q2s"
+   ],
+   "value": "60p",
+   "label": "D7 junction capacitance",
+   "note": "see CJD6"
+  },
+  {
+   "ref": "Q2",
+   "type": "njf",
+   "nodes": [
+    "q2d",
+    "q2g",
+    "q2s"
+   ],
+   "model": "LND150",
+   "label": "Q2 LND150 return amplifier (common source)",
+   "note": "[crop (1950,1000,2900,1476)+(2380,1000,2760,1340)]"
+  },
+  {
+   "ref": "R62",
+   "type": "R",
+   "nodes": [
+    "q2s",
+    "0"
+   ],
+   "value": "470",
+   "label": "R62 470R (R73 0R to ground is a wire)",
+   "note": "[crop (1950,1000,2900,1476)+(2380,1000,2760,1340)]"
+  },
+  {
+   "ref": "R74",
+   "type": "R",
+   "nodes": [
+    "bpl",
+    "q2d"
+   ],
+   "value": "110k",
+   "label": "R74 110K",
+   "note": "[crop (2250,700,2950,1120)]"
+  },
+  {
+   "ref": "C49",
+   "type": "C",
+   "nodes": [
+    "q2d",
+    "rlo"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "C49 100 nF/400 V",
+   "note": "[crop (1950,1000,2900,1476)+(2380,1000,2760,1340)]"
+  },
+  {
+   "ref": "R75",
+   "type": "R",
+   "nodes": [
+    "rlo",
+    "0"
+   ],
+   "value": "1M",
+   "label": "R75 1M",
+   "note": "[crop (1950,1000,2900,1476)+(2380,1000,2760,1340)]"
+  },
+  {
+   "ref": "VR10",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "rlw",
+    "rlo"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "return_level",
+   "label": "VR10 Return LVL 1MA",
+   "note": "[crop (1650,720,2350,1300)] Drawn pin 1 on C49, pin 3 on ground; oriented here so clockwise is louder."
+  },
+  {
+   "ref": "C31",
+   "type": "C",
+   "nodes": [
+    "s7o",
+    "g4a"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C31 22 nF (from S7 pin 5 along the bottom of the sheet, s7r crop)",
+   "note": "[crop (2700,500,3400,1060)]"
+  },
+  {
+   "ref": "R37",
+   "type": "R",
+   "nodes": [
+    "g4a",
+    "tj"
+   ],
+   "value": "1M",
+   "label": "R37 1M",
+   "note": "[crop (2700,500,3400,1060)]"
+  },
+  {
+   "ref": "V4A",
+   "type": "triode",
+   "nodes": [
+    "p4a",
+    "g4a",
+    "k4"
+   ],
+   "model": "12AX7",
+   "label": "V4A 12AX7 LTP",
+   "note": "[crop (2700,60,3400,620)]"
+  },
+  {
+   "ref": "V4B",
+   "type": "triode",
+   "nodes": [
+    "p4b",
+    "g4b",
+    "k4"
+   ],
+   "model": "12AX7",
+   "label": "V4B 12AX7 LTP",
+   "note": "[crop (2700,60,3400,620)]"
+  },
+  {
+   "ref": "R36",
+   "type": "R",
+   "nodes": [
+    "bp3",
+    "p4a"
+   ],
+   "value": "82k",
+   "label": "R36 82K",
+   "note": "[crop (2700,60,3400,620)]"
+  },
+  {
+   "ref": "R35",
+   "type": "R",
+   "nodes": [
+    "bp3",
+    "p4b"
+   ],
+   "value": "100k",
+   "label": "R35 100K",
+   "note": "[crop (2700,60,3400,620)]"
+  },
+  {
+   "ref": "C32",
+   "type": "C",
+   "nodes": [
+    "p4a",
+    "p4b"
+   ],
+   "value": "100p",
+   "tolerance": 0.1,
+   "label": "C32 100 pF between the PI plates",
+   "note": "[crop (2700,60,3400,620)]"
+  },
+  {
+   "ref": "R39",
+   "type": "R",
+   "nodes": [
+    "k4",
+    "tj"
+   ],
+   "value": "470",
+   "label": "R39 470R",
+   "note": "[crop (2700,500,3400,1060)]"
+  },
+  {
+   "ref": "R40",
+   "type": "R",
+   "nodes": [
+    "tj",
+    "nfb"
+   ],
+   "value": "10k",
+   "label": "R40 10K tail",
+   "note": "[crop (2700,500,3400,1060)]"
+  },
+  {
+   "ref": "R41",
+   "type": "R",
+   "nodes": [
+    "g4b",
+    "tj"
+   ],
+   "value": "1M",
+   "label": "R41 1M",
+   "note": "[crop (2700,500,3400,1060)]"
+  },
+  {
+   "ref": "C35",
+   "type": "C",
+   "nodes": [
+    "g4b",
+    "nfb"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "C35 0.1 uF",
+   "note": "[crop (2700,500,3400,1060)]"
+  },
+  {
+   "ref": "VR9",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "prw",
+    "nfb"
+   ],
+   "value": "5k",
+   "taper": "B",
+   "control": "presence",
+   "label": "VR9 PRESENCE 5KB",
+   "note": "[crop (2960,780,3060,900)] Fixed 2026-11-11 (control audit): the redraw labels pin 1 on the feedback node, but with the wiper to C33 that puts full presence (C33 straight across the feedback node) at the counter-clockwise end, so up removed highs (-18.4 dB at 8 kHz). The same sheet draws the master with pin 3 on the signal side, and the manual says presence adjusts the upper mids and highs of the power amp, so the feedback node is the clockwise end."
+  },
+  {
+   "ref": "C33",
+   "type": "C",
+   "nodes": [
+    "prw",
+    "0"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "C33 0.1 uF/630 V",
+   "note": "[crop (2700,500,3400,1060)]"
+  },
+  {
+   "ref": "R50",
+   "type": "R",
+   "nodes": [
+    "nfb",
+    "n50"
+   ],
+   "value": "47k",
+   "label": "R50 47K feedback",
+   "note": "[crop (2700,500,3400,1060)]"
+  },
+  {
+   "ref": "R51",
+   "type": "R",
+   "nodes": [
+    "n50",
+    "spk"
+   ],
+   "value": "220k",
+   "label": "R51 220K feedback (from the selected speaker tap, nfb crop)",
+   "note": "[crop (2700,500,3400,1060)]"
+  },
+  {
+   "ref": "C36",
+   "type": "C",
+   "nodes": [
+    "n50",
+    "spk"
+   ],
+   "value": "4n7",
+   "tolerance": 0.1,
+   "label": "C36 4.7 nF across R51",
+   "note": "[crop (2700,500,3400,1060)]"
+  },
+  {
+   "ref": "C18",
+   "type": "C",
+   "nodes": [
+    "p4a",
+    "ga"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C18 22 nF/630 V",
+   "note": "[crop (2700,60,3400,620)]"
+  },
+  {
+   "ref": "C34",
+   "type": "C",
+   "nodes": [
+    "p4b",
+    "gb"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C34 22 nF/630 V",
+   "note": "[crop (2700,60,3400,620)]"
+  },
+  {
+   "ref": "R44",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "b2"
+   ],
+   "value": "220k",
+   "label": "R44 220K bias feed (V5/V7)",
+   "note": "[crop (2700,60,3400,620)]"
+  },
+  {
+   "ref": "R45",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "b2"
+   ],
+   "value": "220k",
+   "label": "R45 220K bias feed (V6/V8)",
+   "note": "[crop (2700,60,3400,620)]"
+  },
+  {
+   "ref": "R66",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "g7"
+   ],
+   "value": "1k5",
+   "label": "R66 1.5K grid stopper (V7 only; V5's grid is wired straight to C18/R44)",
+   "note": "[crop (3300,100,4000,660)]"
+  },
+  {
+   "ref": "R67",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "g8"
+   ],
+   "value": "1k5",
+   "label": "R67 1.5K grid stopper (V8 only; V6's grid is wired straight to C34/R45)",
+   "note": "[crop (3300,560,4000,1000)]"
+  },
+  {
+   "ref": "V5",
+   "type": "pentode",
+   "nodes": [
+    "pa",
+    "s5",
+    "ga",
+    "0"
+   ],
+   "model": "EL34",
+   "label": "V5 EL34",
+   "note": "[crop (3300,100,4000,660)] g3 (pin 1) and cathode (pin 8) to ground (GND4); fixed bias, no cathode resistor drawn"
+  },
+  {
+   "ref": "V7",
+   "type": "pentode",
+   "nodes": [
+    "pa",
+    "s7",
+    "g7",
+    "0"
+   ],
+   "model": "EL34",
+   "label": "V7 EL34",
+   "note": "[crop (3300,100,4000,660)]"
+  },
+  {
+   "ref": "V6",
+   "type": "pentode",
+   "nodes": [
+    "pb",
+    "s6",
+    "gb",
+    "0"
+   ],
+   "model": "EL34",
+   "label": "V6 EL34",
+   "note": "[crop (3300,560,4000,1000)]"
+  },
+  {
+   "ref": "V8",
+   "type": "pentode",
+   "nodes": [
+    "pb",
+    "s8",
+    "g8",
+    "0"
+   ],
+   "model": "EL34",
+   "label": "V8 EL34",
+   "note": "[crop (3300,560,4000,1000)]"
+  },
+  {
+   "ref": "R46",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "s5"
+   ],
+   "value": "1k",
+   "label": "R46 1K/5W screen (V5)",
+   "note": "[crop (3300,100,4000,660)]"
+  },
+  {
+   "ref": "R64",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "s7"
+   ],
+   "value": "1k",
+   "label": "R64 1K/5W screen (V7)",
+   "note": "[crop (3300,100,4000,660)]"
+  },
+  {
+   "ref": "R47",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "s6"
+   ],
+   "value": "1k",
+   "label": "R47 1K/5W screen (V6)",
+   "note": "[crop (3300,100,4000,660)]"
+  },
+  {
+   "ref": "R65",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "s8"
+   ],
+   "value": "1k",
+   "label": "R65 1K/5W screen (V8)",
+   "note": "[crop (3300,100,4000,660)]"
+  },
+  {
+   "ref": "CWA",
+   "type": "C",
+   "nodes": [
+    "pa",
+    "wa"
+   ],
+   "value": "470p",
+   "label": "OT half-primary winding capacitance (A)",
+   "note": "Not drawn: the project's 470 pF + 2.2 kOhm per plate end to the centre tap (engine rule)."
+  },
+  {
+   "ref": "RWA",
+   "type": "R",
+   "nodes": [
+    "wa",
+    "bp1"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (A)"
+  },
+  {
+   "ref": "CWB",
+   "type": "C",
+   "nodes": [
+    "pb",
+    "wb"
+   ],
+   "value": "470p",
+   "label": "OT half-primary winding capacitance (B)"
+  },
+  {
+   "ref": "RWB",
+   "type": "R",
+   "nodes": [
+    "wb",
+    "bp1"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (B)"
+  },
+  {
+   "ref": "T1",
+   "type": "transformer",
+   "nodes": [
+    "pa",
+    "bp1",
+    "bp1",
+    "pb",
+    "o16",
+    "o8",
+    "o8",
+    "o4",
+    "o4",
+    "0"
+   ],
+   "turns": [
+    1,
+    1,
+    0.05683,
+    0.04018,
+    0.09701
+   ],
+   "r": [
+    30,
+    30,
+    0.1172,
+    0.0828,
+    0.2
+   ],
+   "leak": [
+    "3m",
+    "3m",
+    0,
+    0,
+    0
+   ],
+   "lm": 5,
+   "lsat": 2.5,
+   "label": "T1 output transformer, 1.7 k plate-to-plate, taps 1/2/3 = 16/8/4 ohm, pin 4 ground",
+   "note": "[crop (4500,380,5300,900)] Drawing: plate windings pins 8-7 (V5/V7 plates on 8) and 6-5 (V6/V8 on 5), 7 and 6 joined to the centre tap (B+ between F2 and the choke); secondary pins 1/2/3 to the IMPEDANCE selector, 4 to ground; dots on 8, 6 and 1. No ratings printed: 1.7 k / 16-8-4 ohm taps, DCR 30 ohm per half / 0.4 ohm secondary, lm 5 H, lsat 2.5 are the Plexi/JCM800 netlists' 100 W EL34 values (ASSUMED). Leakage 3 mH per half (6 mH plate to plate) as the JCM800 2203 netlist: the loop-stability-critical unknown. With the Plexi's 5 mH this netlist (C36 4.7 nF across R51 raises the loop gain at HF) breaks into a ~24 kHz burst whenever the output stage clips (ngspice, step-converged; the engine reproduces it only from 384-768 kHz); 4 mH and below are clean."
+  },
+  {
+   "ref": "IMP16",
+   "type": "switch",
+   "nodes": [
+    "o16",
+    "spk"
+   ],
+   "control": "impedance",
+   "positions": [
+    0
+   ],
+   "ron": 0.005,
+   "label": "IMPEDANCE selector contact '1' <- T1 pin 1 (16 ohm)",
+   "note": "[crop (4500,380,5300,900)]"
+  },
+  {
+   "ref": "IMP8",
+   "type": "switch",
+   "nodes": [
+    "o8",
+    "spk"
+   ],
+   "control": "impedance",
+   "positions": [
+    1
+   ],
+   "ron": 0.005,
+   "label": "IMPEDANCE selector contact '2' <- T1 pin 2 (8 ohm)",
+   "note": "[crop (4500,380,5300,900)]"
+  },
+  {
+   "ref": "IMP4",
+   "type": "switch",
+   "nodes": [
+    "o4",
+    "spk"
+   ],
+   "control": "impedance",
+   "positions": [
+    2
+   ],
+   "ron": 0.005,
+   "label": "IMPEDANCE selector contact '4' <- T1 pin 3 (4 ohm); contact '8' is unconnected",
+   "note": "[crop (4500,380,5300,900)]"
+  },
+  {
+   "ref": "SPK",
+   "type": "sub",
+   "nodes": [
+    "spk",
+    "0"
+   ],
+   "of": "lib:spk-12in-16ohm-british",
+   "label": "Speakers J2/J3: a 16 ohm 4x12 cab (single equivalent)",
+   "note": "[crop (4500,380,5300,900)] Not drawn: the load plugged into J2."
+  },
+  {
+   "ref": "R49",
+   "type": "R",
+   "nodes": [
+    "spk",
+    "lo3"
+   ],
+   "value": "1k5",
+   "label": "R49 1.5K line-out feed",
+   "note": "[crop (4640,640,4880,860)]"
+  },
+  {
+   "ref": "R48",
+   "type": "R",
+   "nodes": [
+    "lo3",
+    "lo1"
+   ],
+   "value": "470",
+   "label": "R48 470 (across VR11, drawn with no ground return of its own)",
+   "note": "[crop (4640,640,4880,860)]"
+  },
+  {
+   "ref": "VR11",
+   "type": "pot",
+   "nodes": [
+    "lo1",
+    "0",
+    "lo3"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "line_level",
+   "label": "VR11 1MA Line Out level (wiper on J4 tip, grounded by J4's switch with no plug)",
+   "note": "[crop (4640,640,4880,860)]"
+  }
+ ],
+ "cuts": [
+  "bp1",
+  "m",
+  "bp2",
+  "bp2m",
+  "hel",
+  "n53",
+  "bp3",
+  "bpl",
+  "bp4",
+  "bp5",
+  "b2",
+  {
+   "node": "k1c",
+   "loads": [
+    "K1_48_GA"
+   ],
+   "delay": true
+  },
+  {
+   "node": "s7c",
+   "loads": [
+    "K2_139_GA",
+    "S7A_1_GB"
+   ],
+   "delay": true
+  },
+  {
+   "node": "s7o",
+   "loads": [
+    "S7B_4_GA"
+   ],
+   "delay": true
+  },
+  {
+   "node": "sat2",
+   "loads": [
+    "SW7_GB"
+   ],
+   "delay": true
+  }
+ ],
+ "probes": [
+  "g1a",
+  "p1a",
+  "p2a",
+  "p2b",
+  "p3a",
+  "kcf",
+  "tw",
+  "p1b",
+  "g4a",
+  "p4a",
+  "p4b",
+  "pa",
+  "pb",
+  "spk",
+  "bp1",
+  "bp2",
+  "b2"
+ ],
+ "multirate": {
+  "slow": {
+   "rate": 48000,
+   "nodes": [
+    "snd",
+    "sat1"
+   ]
+  },
+  "note": "FX loop (bypassed) and SAT clamp (off) as 48 kHz slow partitions (docs §10.65). At the catalogue settings five open contacts (K1_48, K2_139, S7A_1, S7B_4, SW7) joined the dead V1A / Clean channel, FX-loop and SAT branches to the amp through their 1 GOhm roff, so the main group carried 38 ports; each 1 GOhm now sits on a pair of grounded VCCS with a VCCS-only delay cut (the dead side reads the live node a sample late), the contacts drop out when open, and the main group has 25 ports (75 unknowns, 62 states). Exact: DI nulls against §10.63 -140 to -149 dB rms in 12 switch settings; alias and engine T/8 truth (0.018 / 0.041 %) unchanged. 9900X real / driven 112.5 / 115.2 -> 88.6 / 91.0 % of a core, block p99 1927 -> 1453 us."
+ },
+ "lte": {
+  "start": "bdf2",
+  "tol": 8.0,
+  "note": "Base 384 kHz (minRate 352800, was 176400; docs §10.63). The aliasing gate's second tone (3130 Hz, own-mains mask) found 192 kHz base folds: -61.0 / -56.7 / -50.8 dB at 0.25 / 0.5 / 1.0 FS, now -69.5 / -69.1 / -66.5 (2900 Hz -71.0 / -62.0 / -57.5 -> -71.2 / -73.7 / -68.0). Event-local substeps (V1A at 8-32) leave the base folds (-56 dB); LTE tol 16 or a BE start at 384 kHz fail at 1.0 FS. Engine T/8 truth, band-limited, audio band, lead / rock DI: 0.064 / 0.157 -> 0.018 / 0.041 %. 9900X real / driven: 62.1 / 68.4 -> 117.3 / 117.9 % of a core, block p99 1371 -> 2023 us."
+ },
+ "newton": {
+  "groups": {
+   "V5": 3e-5
+  }
+ }
+}

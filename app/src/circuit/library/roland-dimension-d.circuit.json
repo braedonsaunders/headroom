@@ -1,0 +1,2623 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "roland-dimension-d",
+  "version": 1,
+  "name": "Roland Dimension D SDD-320",
+  "description": "Roland SDD-320 Dimension D (1979, ET-51B board), R output with the rear INPUT MODE on MONO. Balanced receiver IC101/IC102 (driven unbalanced), IC103 level stage (Q110 gain switch held off), per channel: IC104 pre-emphasis, NE570 compressor half, 2+2-pole transistor anti-alias filter (Q101/Q102), MN3007 BBD biased by VR12 at -7.5 V and clocked by an MN3101 driven by a MC14069UB RC oscillator whose charge current is set by the LFO through D102 (the oscillator is the bbd clock table, fitted in ngspice), VR13 clock cancel, IC109 gain, 2+3-pole reconstruction filter (Q103/Q104), NE570 expander half, IC110 de-emphasis; the R channel's own wet is inverted by IC111 (gain cut by Q111 in mode 4) and summed in IC112 with the direct dry, a 226 Hz low-passed dry (Q105) and the L channel's non-inverted wet; output stage Q106/Q107. Shared LFO: uPC4558 Schmitt + TL082 integrator (triangle 6.8 Vpp / 4 s in modes 1-2, 4.4 Vpp / 2 s in modes 3-4) and TL082 inverter: the R VCO gets the inverted triangle, the L VCO the triangle, through R36/R37 3.9k shorted by Q9/Q10 except in mode 1. Supply: 2 x 23 V peak into a W02 bridge, +/-20 V reservoirs, Q6/Q7 series pass with the 05Z15A reference and Q8 tracking: +/-14 V. Not modelled: level meter (IC1/IC2), bypass/remote logic and relays, L output stage, L input stage (STEREO), BBD supply pins.",
+  "sources": [
+    {
+      "title": "Roland SDD-320 Dimension D Service Notes, Oct. 30 1979 (Nov. 7 1983 2nd printing): specifications, block diagram, ET-51B/OP-154B schematic, parts list, checking & adjustment table, output-waveform sweep ranges (Internet Archive scan)",
+      "url": "https://archive.org/details/roland_SDD-320_SERVICE_NOTES"
+    },
+    {
+      "title": "Roland SDD-320 owner's manual (July 1981): modes, controls, input/output modes",
+      "url": "https://archive.org/details/SDD-320_owners_manual"
+    },
+    {
+      "title": "Panasonic MN3007 1024-stage low-noise BBD datasheet (Xvive reissue): 1024 stages, fcp 10-100 kHz, VDD -15 V, input bias",
+      "url": "https://xvive.com/audio/wp-content/uploads/sites/2/2021/11/Xvive_MN3007_DATASHEET.pdf"
+    },
+    {
+      "title": "Panasonic MN3101 two-phase clock generator/driver datasheet: clock frequency is 1/2 of the oscillation frequency",
+      "url": "https://datasheets.pl/elementy_czynne/IC/MN/MN3101.pdf"
+    },
+    {
+      "title": "Philips NE570/571 compandor datasheet (internal R1 10k, R2 20k, R3 20k, R4 30k, VREF 1.8 V; compressor/expander configurations)",
+      "url": "https://www.experimentalistsanonymous.com/diy/Datasheets/NE570.pdf"
+    },
+    {
+      "title": "ON Semiconductor MC14069UB hex inverter datasheet (unbuffered single-stage CMOS; IOL/IOH 8.8 mA typ at VDD 15 V): basis of the ngspice VCO model",
+      "url": "https://www.onsemi.com/pdf/datasheet/mc14069ub-d.pdf"
+    },
+    {
+      "title": "Toshiba 2SK30ATM datasheet (GR rank): library 2SK30A",
+      "url": "https://toshiba.semicon-storage.com/"
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 2.0
+  },
+  "oversampling": 1,
+  "solver": "auto",
+  "models": {
+    "HA1457": {
+      "kind": "opamp",
+      "level": 1,
+      "a0": 100000.0,
+      "gbw": 1000000.0,
+      "slew": 500000.0,
+      "swing_hi": 1.5,
+      "swing_lo": 1.5,
+      "note": "unverified: Hitachi HA1457W treated as a 741-class op-amp (no public datasheet found); external comp caps C102/C104/C107... omitted"
+    },
+    "2SC495": {
+      "kind": "npn",
+      "is": 5e-14,
+      "bf": 160,
+      "br": 5,
+      "note": "unverified: Toshiba 2SC495-Y (hFE Y rank 120-240) approximate EM set"
+    },
+    "2SA505": {
+      "kind": "pnp",
+      "is": 5e-14,
+      "bf": 160,
+      "br": 5,
+      "note": "unverified: Toshiba 2SA505-Y approximate EM set"
+    },
+    "2SD234": {
+      "kind": "npn",
+      "is": 1e-12,
+      "bf": 100,
+      "br": 3,
+      "note": "unverified: 2SD234-O power NPN approximate EM set"
+    },
+    "2SB434": {
+      "kind": "pnp",
+      "is": 1e-12,
+      "bf": 100,
+      "br": 3,
+      "note": "unverified: 2SB434-O power PNP approximate EM set"
+    },
+    "2SA733": {
+      "kind": "pnp",
+      "is": 2e-14,
+      "bf": 250,
+      "br": 5,
+      "note": "unverified: NEC 2SA733-P (hFE 200-400) approximate EM set"
+    }
+  },
+  "subcircuits": {
+    "chan": {
+      "pins": [
+        "sum_in",
+        "dry_out",
+        "lfo_in",
+        "wet_out",
+        "own_out",
+        "q110g",
+        "q111g",
+        "vcc570",
+        "vssosc",
+        "p14",
+        "m14"
+      ],
+      "parts": [
+        {
+          "ref": "R111",
+          "type": "R",
+          "nodes": [
+            "ip103",
+            "0"
+          ],
+          "value": "470"
+        },
+        {
+          "ref": "IC103",
+          "type": "opamp",
+          "nodes": [
+            "ip103",
+            "sum_in",
+            "dry_out",
+            "p14",
+            "m14"
+          ],
+          "model": "HA1457",
+          "label": "IC103 level amp",
+          "note": "unverified: HA1457W modelled as a 741-class macro (see models)"
+        },
+        {
+          "ref": "R109",
+          "type": "R",
+          "nodes": [
+            "sum_in",
+            "n109"
+          ],
+          "value": "6.8k"
+        },
+        {
+          "ref": "R110",
+          "type": "R",
+          "nodes": [
+            "n109",
+            "dry_out"
+          ],
+          "value": "6.8k"
+        },
+        {
+          "ref": "Q110",
+          "type": "njf",
+          "nodes": [
+            "sum_in",
+            "g110",
+            "n109"
+          ],
+          "model": "2SK30A",
+          "note": "2SK30ATM-GR across R109; off in normal use (IC103 out = +4 dBm for +4 dBm in, schematic annotation)"
+        },
+        {
+          "ref": "R108",
+          "type": "R",
+          "nodes": [
+            "q110g",
+            "g110"
+          ],
+          "value": "1M"
+        },
+        {
+          "ref": "C106",
+          "type": "C",
+          "nodes": [
+            "g110",
+            "0"
+          ],
+          "value": "0.1u"
+        },
+        {
+          "ref": "R114",
+          "type": "R",
+          "nodes": [
+            "ip104",
+            "0"
+          ],
+          "value": "470"
+        },
+        {
+          "ref": "IC104",
+          "type": "opamp",
+          "nodes": [
+            "ip104",
+            "in104",
+            "o104",
+            "p14",
+            "m14"
+          ],
+          "model": "HA1457",
+          "label": "IC104 pre-emphasis"
+        },
+        {
+          "ref": "C108",
+          "type": "C",
+          "nodes": [
+            "dry_out",
+            "n108"
+          ],
+          "value": "3.3n"
+        },
+        {
+          "ref": "R112",
+          "type": "R",
+          "nodes": [
+            "n108",
+            "in104"
+          ],
+          "value": "47k"
+        },
+        {
+          "ref": "C109",
+          "type": "C",
+          "nodes": [
+            "dry_out",
+            "n109b"
+          ],
+          "value": "47n"
+        },
+        {
+          "ref": "R113",
+          "type": "R",
+          "nodes": [
+            "n109b",
+            "in104"
+          ],
+          "value": "220k"
+        },
+        {
+          "ref": "R115",
+          "type": "R",
+          "nodes": [
+            "in104",
+            "o104"
+          ],
+          "value": "22k"
+        },
+        {
+          "ref": "C110",
+          "type": "C",
+          "nodes": [
+            "in104",
+            "o104"
+          ],
+          "value": "47p"
+        },
+        {
+          "ref": "C111",
+          "type": "C",
+          "nodes": [
+            "o104",
+            "c_r3"
+          ],
+          "value": "4.7u"
+        },
+        {
+          "ref": "IC105A",
+          "type": "sub",
+          "nodes": [
+            "cg",
+            "crc",
+            "cg",
+            "cinv",
+            "c_r3",
+            "cout",
+            "vcc570",
+            "0"
+          ],
+          "of": "lib:ne570",
+          "model": "NE570",
+          "label": "NE570N compressor half",
+          "note": "pins 2/3 (RECT IN, dG IN) tied to the output through C113; DC feedback R116/R117 47k with C116; C115 100p on THD pin 8 not modelled (no THD pin in lib:ne570)"
+        },
+        {
+          "ref": "C112",
+          "type": "C",
+          "nodes": [
+            "crc",
+            "0"
+          ],
+          "value": "0.22u",
+          "note": "CRECT: tau = 10k x 0.22u = 2.2 ms"
+        },
+        {
+          "ref": "C113",
+          "type": "C",
+          "nodes": [
+            "cout",
+            "cg"
+          ],
+          "value": "10u"
+        },
+        {
+          "ref": "R116",
+          "type": "R",
+          "nodes": [
+            "cout",
+            "cdc"
+          ],
+          "value": "47k"
+        },
+        {
+          "ref": "C116",
+          "type": "C",
+          "nodes": [
+            "cdc",
+            "0"
+          ],
+          "value": "10u"
+        },
+        {
+          "ref": "R117",
+          "type": "R",
+          "nodes": [
+            "cdc",
+            "cinv"
+          ],
+          "value": "47k"
+        },
+        {
+          "ref": "C114",
+          "type": "C",
+          "nodes": [
+            "cinv",
+            "cout"
+          ],
+          "value": "10p"
+        },
+        {
+          "ref": "R118",
+          "type": "R",
+          "nodes": [
+            "cout",
+            "f1"
+          ],
+          "value": "12k"
+        },
+        {
+          "ref": "C118",
+          "type": "C",
+          "nodes": [
+            "f1",
+            "q101e"
+          ],
+          "value": "4.7n"
+        },
+        {
+          "ref": "R119",
+          "type": "R",
+          "nodes": [
+            "f1",
+            "q101b"
+          ],
+          "value": "12k"
+        },
+        {
+          "ref": "C119",
+          "type": "C",
+          "nodes": [
+            "q101b",
+            "0"
+          ],
+          "value": "390p"
+        },
+        {
+          "ref": "Q101",
+          "type": "npn",
+          "nodes": [
+            "p14",
+            "q101b",
+            "q101e"
+          ],
+          "model": "2SC1815",
+          "note": "unverified: 2SC732TM-GR modelled with the library 2SC1815 (GR rank, same class)"
+        },
+        {
+          "ref": "R120",
+          "type": "R",
+          "nodes": [
+            "q101e",
+            "m14"
+          ],
+          "value": "12k"
+        },
+        {
+          "ref": "R121",
+          "type": "R",
+          "nodes": [
+            "q101e",
+            "f2"
+          ],
+          "value": "12k"
+        },
+        {
+          "ref": "C120",
+          "type": "C",
+          "nodes": [
+            "f2",
+            "q102e"
+          ],
+          "value": "1.8n"
+        },
+        {
+          "ref": "R122",
+          "type": "R",
+          "nodes": [
+            "f2",
+            "q102b"
+          ],
+          "value": "12k"
+        },
+        {
+          "ref": "C121",
+          "type": "C",
+          "nodes": [
+            "q102b",
+            "0"
+          ],
+          "value": "1.2n"
+        },
+        {
+          "ref": "Q102",
+          "type": "npn",
+          "nodes": [
+            "p14",
+            "q102b",
+            "q102e"
+          ],
+          "model": "2SC1815"
+        },
+        {
+          "ref": "R123",
+          "type": "R",
+          "nodes": [
+            "q102e",
+            "m14"
+          ],
+          "value": "22k"
+        },
+        {
+          "ref": "C122",
+          "type": "C",
+          "nodes": [
+            "q102e",
+            "n122"
+          ],
+          "value": "1u"
+        },
+        {
+          "ref": "R124",
+          "type": "R",
+          "nodes": [
+            "n122",
+            "bin"
+          ],
+          "value": "4.7k"
+        },
+        {
+          "ref": "C124",
+          "type": "C",
+          "nodes": [
+            "bin",
+            "0"
+          ],
+          "value": "1n"
+        },
+        {
+          "ref": "R125",
+          "type": "R",
+          "nodes": [
+            "bw",
+            "bin"
+          ],
+          "value": "100k"
+        },
+        {
+          "ref": "R127",
+          "type": "R",
+          "nodes": [
+            "0",
+            "n127"
+          ],
+          "value": "10k"
+        },
+        {
+          "ref": "VR12",
+          "type": "pot",
+          "nodes": [
+            "n127",
+            "bw",
+            "n126"
+          ],
+          "value": "22k",
+          "taper": "B",
+          "control": "bias",
+          "label": "VR12 BBD bias",
+          "note": "22 kB trimmer between R127 10k (to 0 V) and R126 10k (to -14 V): wiper -3.3 to -10.7 V; schematic annotation -7.5 V at the BBD input (default 0.55)"
+        },
+        {
+          "ref": "R126",
+          "type": "R",
+          "nodes": [
+            "n126",
+            "m14"
+          ],
+          "value": "10k"
+        },
+        {
+          "ref": "C123",
+          "type": "C",
+          "nodes": [
+            "bw",
+            "0"
+          ],
+          "value": "10u"
+        },
+        {
+          "ref": "IC106",
+          "type": "bbd",
+          "nodes": [
+            "bin",
+            "bo1",
+            "bo2",
+            "ctl"
+          ],
+          "model": "MN3007",
+          "clock": {
+            "points": [
+              [
+                -13.501,
+                33491
+              ],
+              [
+                -12.848,
+                35922
+              ],
+              [
+                -12.194,
+                39209
+              ],
+              [
+                -11.541,
+                43460
+              ],
+              [
+                -11.214,
+                46049
+              ],
+              [
+                -10.887,
+                49032
+              ],
+              [
+                -10.561,
+                52504
+              ],
+              [
+                -10.234,
+                56590
+              ],
+              [
+                -9.907,
+                61464
+              ],
+              [
+                -9.581,
+                67374
+              ],
+              [
+                -9.254,
+                74695
+              ],
+              [
+                -8.927,
+                83981
+              ],
+              [
+                -8.6,
+                96160
+              ],
+              [
+                -8.274,
+                112846
+              ],
+              [
+                -7.947,
+                137088
+              ],
+              [
+                -7.62,
+                175573
+              ],
+              [
+                -7.293,
+                245225
+              ],
+              [
+                -6.967,
+                337293
+              ],
+              [
+                -6.64,
+                408675
+              ]
+            ]
+          },
+          "label": "MN3007 BBD (1024 stages)",
+          "note": "Clock: MN3101 (IC107) driven by the MC14069UB RC oscillator IC108; table = fcp (half the 4069 frequency, MN3101 divides by 2) vs the unloaded voltage of node ctl (R129 6.8k / R130 3.3k junction, D102 anode), fitted by an ngspice CMOS-level run of the real oscillator (notes). MN3007 VDD -14 V (rails not modelled); delay = 1024/(2 fcp)"
+        },
+        {
+          "ref": "VR13",
+          "type": "pot",
+          "nodes": [
+            "bo1",
+            "vw",
+            "bo2"
+          ],
+          "value": "10k",
+          "taper": "B",
+          "control": "cancel",
+          "label": "VR13 clock cancel",
+          "note": "10 kB trimmer between the two BBD outputs; factory-set for minimum clock residue at IC109 pin 1"
+        },
+        {
+          "ref": "R132",
+          "type": "R",
+          "nodes": [
+            "vw",
+            "0"
+          ],
+          "value": "100k"
+        },
+        {
+          "ref": "C129",
+          "type": "C",
+          "nodes": [
+            "vw",
+            "n129"
+          ],
+          "value": "47n"
+        },
+        {
+          "ref": "R133",
+          "type": "R",
+          "nodes": [
+            "n129",
+            "ip109"
+          ],
+          "value": "1k"
+        },
+        {
+          "ref": "R134",
+          "type": "R",
+          "nodes": [
+            "ip109",
+            "0"
+          ],
+          "value": "100k"
+        },
+        {
+          "ref": "C130",
+          "type": "C",
+          "nodes": [
+            "ip109",
+            "0"
+          ],
+          "value": "220p"
+        },
+        {
+          "ref": "IC109",
+          "type": "opamp",
+          "nodes": [
+            "ip109",
+            "in109",
+            "o109",
+            "p14",
+            "m14"
+          ],
+          "model": "HA1457",
+          "label": "IC109 BBD output amp"
+        },
+        {
+          "ref": "R135",
+          "type": "R",
+          "nodes": [
+            "in109",
+            "n135"
+          ],
+          "value": "10k"
+        },
+        {
+          "ref": "C132",
+          "type": "C",
+          "nodes": [
+            "n135",
+            "0"
+          ],
+          "value": "1u"
+        },
+        {
+          "ref": "R136",
+          "type": "R",
+          "nodes": [
+            "in109",
+            "o109"
+          ],
+          "value": "4.7k"
+        },
+        {
+          "ref": "R137",
+          "type": "R",
+          "nodes": [
+            "o109",
+            "g1"
+          ],
+          "value": "12k"
+        },
+        {
+          "ref": "C133",
+          "type": "C",
+          "nodes": [
+            "g1",
+            "q103e"
+          ],
+          "value": "5.6n"
+        },
+        {
+          "ref": "R138",
+          "type": "R",
+          "nodes": [
+            "g1",
+            "q103b"
+          ],
+          "value": "12k"
+        },
+        {
+          "ref": "C134",
+          "type": "C",
+          "nodes": [
+            "q103b",
+            "0"
+          ],
+          "value": "330p"
+        },
+        {
+          "ref": "Q103",
+          "type": "npn",
+          "nodes": [
+            "p14",
+            "q103b",
+            "q103e"
+          ],
+          "model": "2SC1815"
+        },
+        {
+          "ref": "R139",
+          "type": "R",
+          "nodes": [
+            "q103e",
+            "m14"
+          ],
+          "value": "12k"
+        },
+        {
+          "ref": "R140",
+          "type": "R",
+          "nodes": [
+            "q103e",
+            "g2"
+          ],
+          "value": "12k"
+        },
+        {
+          "ref": "C135",
+          "type": "C",
+          "nodes": [
+            "g2",
+            "0"
+          ],
+          "value": "2.7n"
+        },
+        {
+          "ref": "R141",
+          "type": "R",
+          "nodes": [
+            "g2",
+            "g3"
+          ],
+          "value": "12k"
+        },
+        {
+          "ref": "C136",
+          "type": "C",
+          "nodes": [
+            "g3",
+            "q104e"
+          ],
+          "value": "4.7n"
+        },
+        {
+          "ref": "R142",
+          "type": "R",
+          "nodes": [
+            "g3",
+            "q104b"
+          ],
+          "value": "12k"
+        },
+        {
+          "ref": "C137",
+          "type": "C",
+          "nodes": [
+            "q104b",
+            "0"
+          ],
+          "value": "330p"
+        },
+        {
+          "ref": "Q104",
+          "type": "npn",
+          "nodes": [
+            "p14",
+            "q104b",
+            "q104e"
+          ],
+          "model": "2SC1815"
+        },
+        {
+          "ref": "R143",
+          "type": "R",
+          "nodes": [
+            "q104e",
+            "m14"
+          ],
+          "value": "22k"
+        },
+        {
+          "ref": "C138",
+          "type": "C",
+          "nodes": [
+            "q104e",
+            "eg"
+          ],
+          "value": "4.7u"
+        },
+        {
+          "ref": "IC105B",
+          "type": "sub",
+          "nodes": [
+            "eg",
+            "erc",
+            "eg",
+            "einv",
+            "er3",
+            "eout",
+            "vcc570",
+            "0"
+          ],
+          "of": "lib:ne570",
+          "model": "NE570",
+          "label": "NE570N expander half",
+          "note": "pins 14/15 driven through C138; R3 (pin 11) AC-coupled to the output by C143; DC feedback R146/R145 47k with C141 (output DC 1.8 x (1 + 94k/30k) = 7.4 V, schematic +7 V); C144 100p on THD pin 9 not modelled"
+        },
+        {
+          "ref": "C140",
+          "type": "C",
+          "nodes": [
+            "erc",
+            "0"
+          ],
+          "value": "0.22u"
+        },
+        {
+          "ref": "C143",
+          "type": "C",
+          "nodes": [
+            "er3",
+            "eout"
+          ],
+          "value": "4.7u"
+        },
+        {
+          "ref": "R146",
+          "type": "R",
+          "nodes": [
+            "eout",
+            "edc"
+          ],
+          "value": "47k"
+        },
+        {
+          "ref": "C141",
+          "type": "C",
+          "nodes": [
+            "edc",
+            "0"
+          ],
+          "value": "10u"
+        },
+        {
+          "ref": "R145",
+          "type": "R",
+          "nodes": [
+            "edc",
+            "einv"
+          ],
+          "value": "47k"
+        },
+        {
+          "ref": "C142",
+          "type": "C",
+          "nodes": [
+            "einv",
+            "eout"
+          ],
+          "value": "330p"
+        },
+        {
+          "ref": "C145",
+          "type": "C",
+          "nodes": [
+            "eout",
+            "n145"
+          ],
+          "value": "47n"
+        },
+        {
+          "ref": "R147",
+          "type": "R",
+          "nodes": [
+            "n145",
+            "in110"
+          ],
+          "value": "47k"
+        },
+        {
+          "ref": "R148",
+          "type": "R",
+          "nodes": [
+            "ip110",
+            "0"
+          ],
+          "value": "470"
+        },
+        {
+          "ref": "IC110",
+          "type": "opamp",
+          "nodes": [
+            "ip110",
+            "in110",
+            "o110",
+            "p14",
+            "m14"
+          ],
+          "model": "HA1457",
+          "label": "IC110 de-emphasis"
+        },
+        {
+          "ref": "R149",
+          "type": "R",
+          "nodes": [
+            "in110",
+            "o110"
+          ],
+          "value": "680k"
+        },
+        {
+          "ref": "R150",
+          "type": "R",
+          "nodes": [
+            "in110",
+            "n150"
+          ],
+          "value": "330k"
+        },
+        {
+          "ref": "C147",
+          "type": "C",
+          "nodes": [
+            "n150",
+            "o110"
+          ],
+          "value": "47n"
+        },
+        {
+          "ref": "R151",
+          "type": "R",
+          "nodes": [
+            "in110",
+            "n151"
+          ],
+          "value": "47k"
+        },
+        {
+          "ref": "C148",
+          "type": "C",
+          "nodes": [
+            "n151",
+            "o110"
+          ],
+          "value": "3.3n"
+        },
+        {
+          "ref": "C149",
+          "type": "C",
+          "nodes": [
+            "in110",
+            "o110"
+          ],
+          "value": "150p"
+        },
+        {
+          "ref": "C162",
+          "type": "C",
+          "nodes": [
+            "o110",
+            "wet_out"
+          ],
+          "value": "0.1u",
+          "note": "Wet to the other channel's mixer (line A/C), not inverted"
+        },
+        {
+          "ref": "R152",
+          "type": "R",
+          "nodes": [
+            "o110",
+            "n152"
+          ],
+          "value": "22k"
+        },
+        {
+          "ref": "C150",
+          "type": "C",
+          "nodes": [
+            "n152",
+            "in111"
+          ],
+          "value": "15n"
+        },
+        {
+          "ref": "R153",
+          "type": "R",
+          "nodes": [
+            "ip111",
+            "0"
+          ],
+          "value": "470"
+        },
+        {
+          "ref": "IC111",
+          "type": "opamp",
+          "nodes": [
+            "ip111",
+            "in111",
+            "o111",
+            "p14",
+            "m14"
+          ],
+          "model": "HA1457",
+          "label": "IC111 own-wet inverter"
+        },
+        {
+          "ref": "R155",
+          "type": "R",
+          "nodes": [
+            "in111",
+            "n155"
+          ],
+          "value": "15k"
+        },
+        {
+          "ref": "R156",
+          "type": "R",
+          "nodes": [
+            "n155",
+            "o111"
+          ],
+          "value": "6.8k"
+        },
+        {
+          "ref": "Q111",
+          "type": "njf",
+          "nodes": [
+            "in111",
+            "g111",
+            "n155"
+          ],
+          "model": "2SK30A",
+          "note": "Shorts R155 in DIMENSION MODE 4 (gate line D pulled up by S4-c): own-wet gain -0.99 -> -0.31"
+        },
+        {
+          "ref": "R154",
+          "type": "R",
+          "nodes": [
+            "q111g",
+            "g111"
+          ],
+          "value": "1M"
+        },
+        {
+          "ref": "C151",
+          "type": "C",
+          "nodes": [
+            "g111",
+            "0"
+          ],
+          "value": "0.1u"
+        },
+        {
+          "ref": "C153",
+          "type": "C",
+          "nodes": [
+            "o111",
+            "own_out"
+          ],
+          "value": "27n"
+        },
+        {
+          "ref": "R129",
+          "type": "R",
+          "nodes": [
+            "lfo_in",
+            "ctl"
+          ],
+          "value": "6.8k"
+        },
+        {
+          "ref": "R130",
+          "type": "R",
+          "nodes": [
+            "ctl",
+            "vssosc"
+          ],
+          "value": "3.3k",
+          "note": "To the 4069 VSS (pin 7) node; D102 (anode here) and the oscillator are inside the clock table"
+        }
+      ]
+    }
+  },
+  "controls": [
+    {
+      "id": "mode",
+      "label": "Dimension mode",
+      "kind": "selector",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "default": 0.333333,
+      "paramRange": [
+        0,
+        3
+      ],
+      "params": [
+        "mode"
+      ],
+      "group": "Main",
+      "note": "The four interlocked DIMENSION MODE buttons (1-4, 0-based indices 0..3). Decoded directly by switch positions: S1-a (mode 1: index 0 inserts R36/R37 3.9k; indices 1..3 short them via Q9/Q10), LFO tap (modes 1-2: indices 0..1 select 4 s; modes 3-4: indices 2..3 select 2 s), and S4-c (mode 4: index 3 turns Q111/Q211 on). Default mode 2"
+    },
+    {
+      "id": "inmode",
+      "label": "Input Mode",
+      "kind": "switch",
+      "default": 1,
+      "params": [],
+      "group": "Main",
+      "note": "Rear INPUT MODE slide switch. MONO (default here, one guitar input) feeds the R input to both channels through Q4. STEREO leaves the L channel without input (L input stage not modelled)",
+      "face": true,
+      "options": [
+        "Stereo",
+        "Mono"
+      ]
+    },
+    {
+      "id": "biasR",
+      "label": "VR12 BBD bias (R)",
+      "kind": "continuous",
+      "default": 0.55,
+      "params": [],
+      "group": "Internal",
+      "note": "Factory: centred operating point (both peaks clip symmetrically); 0.55 puts the MN3007 input at the schematic -7.5 V"
+    },
+    {
+      "id": "biasL",
+      "label": "VR22 BBD bias (L)",
+      "kind": "continuous",
+      "default": 0.55,
+      "params": [],
+      "group": "Internal",
+      "note": "As VR12"
+    },
+    {
+      "id": "cancelR",
+      "label": "VR13 clock cancel (R)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Internal",
+      "note": "Factory: minimum clock components at IC109 pin 1"
+    },
+    {
+      "id": "cancelL",
+      "label": "VR23 clock cancel (L)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Internal",
+      "note": "As VR13"
+    },
+    {
+      "id": "cmr",
+      "label": "VR11 CMR adj",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Internal",
+      "note": "Factory: minimum output for a common-mode 100 Hz input; irrelevant with the cold input grounded"
+    },
+    {
+      "id": "legacy_voices",
+      "label": "Voices",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "voices"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No such control: two BBD voices fixed; stored only"
+    },
+    {
+      "id": "legacy_delay",
+      "label": "Delay",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "delay"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No delay control: the centre delay is set per mode by the circuit (about 7.5-10 ms); stored only"
+    },
+    {
+      "id": "legacy_feedback",
+      "label": "Feedback",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "feedback"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No regeneration path in the SDD-320; stored only"
+    },
+    {
+      "id": "legacy_rate",
+      "label": "Rate",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "rate"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No rate control: 4 s (modes 1, 2) or 2 s (modes 3, 4); stored only"
+    },
+    {
+      "id": "legacy_amount",
+      "label": "Amount",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "amount"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No depth knob: depth is fixed per mode; stored only"
+    },
+    {
+      "id": "legacy_width",
+      "label": "Width",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "width"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No width control: the stereo matrix is fixed; stored only"
+    },
+    {
+      "id": "legacy_mix",
+      "label": "Mix",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "mix"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No mix control: dry and wets are summed at fixed resistor ratios in IC112; stored only"
+    },
+    {
+      "id": "legacy_scatter",
+      "label": "Scatter",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "scatter"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No such control; stored only"
+    },
+    {
+      "id": "legacy_invert",
+      "label": "Invert",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "invert"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No such control (the matrix inversion is fixed); stored only"
+    }
+  ],
+  "cuts": [
+    "praw",
+    "mraw",
+    "p20",
+    "m20",
+    "p14",
+    "m14",
+    "qb7",
+    "sd1",
+    "sd2",
+    "sns",
+    "vccR",
+    "vccL",
+    "vssR",
+    "vssL",
+    {"node": "q110g", "loads": ["XR.R108", "XL.R108"], "note": "Static gate line (1 MOhm loads): splits the two IC103 stages"},
+    {"node": "dline", "loads": ["XR.R154", "XL.R154"], "note": "Static gate line (1 MOhm loads): splits the two IC111 stages"},
+    {"node": "n155", "loads": ["R162"], "note": "Resistive 47 kOhm feed of the Q105 low-passed dry into the mixer"},
+    {"node": "a", "loads": ["R107", "R52"], "note": "Resistive 10 kOhm feeds from the C105 node into the two IC103 virtual grounds"},
+    {"node": "g4", "loads": ["Q4"]},
+    {"node": "q112g", "loads": ["Q112"]},
+    {"node": "XR.q103e", "loads": ["XR.R140"]},
+    {"node": "XL.q103e", "loads": ["XL.R140"]},
+    {"node": "ip112", "loads": ["IC112"]}
+  ],
+  "parts": [
+    {
+      "ref": "VAC1",
+      "type": "V",
+      "nodes": [
+        "ac1",
+        "0"
+      ],
+      "value": "0",
+      "ac": {
+        "amplitude": "23",
+        "freq": 60,
+        "phase": 90
+      },
+      "label": "Secondary YEL (46 Vpp)",
+      "note": "Schematic: 46 Vpp each end to the centre tap (pins 27/28 grounded); 60 Hz assumed (100/117 V version)"
+    },
+    {
+      "ref": "VAC2",
+      "type": "V",
+      "nodes": [
+        "ac2",
+        "0"
+      ],
+      "value": "0",
+      "ac": {
+        "amplitude": "23",
+        "freq": 60,
+        "phase": 270
+      },
+      "label": "Secondary BLK (46 Vpp)"
+    },
+    {
+      "ref": "D6A",
+      "type": "D",
+      "nodes": [
+        "ac1",
+        "praw"
+      ],
+      "model": "1N4001",
+      "note": "W02 bridge (one quarter)"
+    },
+    {
+      "ref": "D6B",
+      "type": "D",
+      "nodes": [
+        "ac2",
+        "praw"
+      ],
+      "model": "1N4001",
+      "note": "W02 bridge (one quarter)"
+    },
+    {
+      "ref": "D6C",
+      "type": "D",
+      "nodes": [
+        "mraw",
+        "ac1"
+      ],
+      "model": "1N4001",
+      "note": "W02 bridge (one quarter)"
+    },
+    {
+      "ref": "D6D",
+      "type": "D",
+      "nodes": [
+        "mraw",
+        "ac2"
+      ],
+      "model": "1N4001",
+      "note": "W02 bridge (one quarter)"
+    },
+    {
+      "ref": "R44",
+      "type": "R",
+      "nodes": [
+        "praw",
+        "p20"
+      ],
+      "value": "4.7"
+    },
+    {
+      "ref": "C12",
+      "type": "C",
+      "nodes": [
+        "p20",
+        "0"
+      ],
+      "value": "1000u",
+      "label": "+20 V reservoir"
+    },
+    {
+      "ref": "R46",
+      "type": "R",
+      "nodes": [
+        "m20",
+        "mraw"
+      ],
+      "value": "4.7"
+    },
+    {
+      "ref": "C11",
+      "type": "C",
+      "nodes": [
+        "m20",
+        "0"
+      ],
+      "value": "1000u",
+      "label": "-20 V reservoir"
+    },
+    {
+      "ref": "VZ9",
+      "type": "V",
+      "nodes": [
+        "vz",
+        "0"
+      ],
+      "value": "14.65",
+      "label": "D9 05Z15A (zener stand-in)",
+      "note": "unverified: ideal 14.65 V source for the 05Z15A zener D9 at the Q6 base (engine has no zener model); fed by a 1.5 kOhm from +20 V with C14 220u, both inert here"
+    },
+    {
+      "ref": "RZ9",
+      "type": "R",
+      "nodes": [
+        "p20",
+        "vz"
+      ],
+      "value": "1.5k"
+    },
+    {
+      "ref": "Q6",
+      "type": "npn",
+      "nodes": [
+        "p20",
+        "vz",
+        "p14"
+      ],
+      "model": "2SD234",
+      "label": "Q6 +14 V pass"
+    },
+    {
+      "ref": "C16",
+      "type": "C",
+      "nodes": [
+        "p14",
+        "0"
+      ],
+      "value": "220u"
+    },
+    {
+      "ref": "C18",
+      "type": "C",
+      "nodes": [
+        "p14",
+        "0"
+      ],
+      "value": "0.1u"
+    },
+    {
+      "ref": "Q7",
+      "type": "pnp",
+      "nodes": [
+        "m20",
+        "qb7",
+        "m14"
+      ],
+      "model": "2SB434",
+      "label": "Q7 -14 V pass"
+    },
+    {
+      "ref": "RQ7",
+      "type": "R",
+      "nodes": [
+        "qb7",
+        "m20"
+      ],
+      "value": "1.5k"
+    },
+    {
+      "ref": "C13",
+      "type": "C",
+      "nodes": [
+        "qb7",
+        "0"
+      ],
+      "value": "220u",
+      "note": "unverified: C13 220u/16 placement read as Q7 base to ground"
+    },
+    {
+      "ref": "C15",
+      "type": "C",
+      "nodes": [
+        "m14",
+        "0"
+      ],
+      "value": "220u"
+    },
+    {
+      "ref": "C17",
+      "type": "C",
+      "nodes": [
+        "m14",
+        "0"
+      ],
+      "value": "0.1u"
+    },
+    {
+      "ref": "RS1",
+      "type": "R",
+      "nodes": [
+        "p14",
+        "sd1"
+      ],
+      "value": "10k",
+      "note": "unverified: designator illegible (R? 10k)"
+    },
+    {
+      "ref": "D7",
+      "type": "D",
+      "nodes": [
+        "sd1",
+        "sd2"
+      ],
+      "model": "1N4148",
+      "note": "1S2473/1S1588"
+    },
+    {
+      "ref": "D8",
+      "type": "D",
+      "nodes": [
+        "sd2",
+        "sns"
+      ],
+      "model": "1N4148"
+    },
+    {
+      "ref": "RS2",
+      "type": "R",
+      "nodes": [
+        "sns",
+        "m14"
+      ],
+      "value": "10k",
+      "note": "unverified: designator illegible (R? 10k)"
+    },
+    {
+      "ref": "Q8",
+      "type": "pnp",
+      "nodes": [
+        "qb7",
+        "sns",
+        "0"
+      ],
+      "model": "2SA733",
+      "label": "Q8 tracking error amp",
+      "note": "Senses the +14/-14 midpoint (two diodes, 10k/10k) and drives the Q7 base: -14 V tracks +14 V"
+    },
+    {
+      "ref": "R144R",
+      "type": "R",
+      "nodes": [
+        "p14",
+        "vccR"
+      ],
+      "value": "47",
+      "note": "NE570 VCC filter (R144/R244)"
+    },
+    {
+      "ref": "C139R",
+      "type": "C",
+      "nodes": [
+        "vccR",
+        "0"
+      ],
+      "value": "47u"
+    },
+    {
+      "ref": "R131R",
+      "type": "R",
+      "nodes": [
+        "m14",
+        "vssR"
+      ],
+      "value": "22",
+      "note": "4069 VSS filter (R131/R231)"
+    },
+    {
+      "ref": "C127R",
+      "type": "C",
+      "nodes": [
+        "vssR",
+        "0"
+      ],
+      "value": "100u"
+    },
+    {
+      "ref": "R144L",
+      "type": "R",
+      "nodes": [
+        "p14",
+        "vccL"
+      ],
+      "value": "47",
+      "note": "NE570 VCC filter (R144/R244)"
+    },
+    {
+      "ref": "C139L",
+      "type": "C",
+      "nodes": [
+        "vccL",
+        "0"
+      ],
+      "value": "47u"
+    },
+    {
+      "ref": "R131L",
+      "type": "R",
+      "nodes": [
+        "m14",
+        "vssL"
+      ],
+      "value": "22",
+      "note": "4069 VSS filter (R131/R231)"
+    },
+    {
+      "ref": "C127L",
+      "type": "C",
+      "nodes": [
+        "vssL",
+        "0"
+      ],
+      "value": "100u"
+    },
+    {
+      "ref": "R103",
+      "type": "R",
+      "nodes": [
+        "in",
+        "h1"
+      ],
+      "value": "3.16k",
+      "note": "1 % (parts list CRB 3.16k)"
+    },
+    {
+      "ref": "C101",
+      "type": "C",
+      "nodes": [
+        "h1",
+        "0"
+      ],
+      "value": "470p"
+    },
+    {
+      "ref": "R104",
+      "type": "R",
+      "nodes": [
+        "h1",
+        "h2"
+      ],
+      "value": "9.53k",
+      "note": "unverified: value read from the parts list (9.53k) and the CMR balance R104 + VR11/2 = 9.77k vs R101/R102 divider; designator illegible"
+    },
+    {
+      "ref": "VR11",
+      "type": "pot",
+      "nodes": [
+        "h2",
+        "h2",
+        "0"
+      ],
+      "value": "470",
+      "taper": "B",
+      "control": "cmr",
+      "label": "VR11 CMR adj"
+    },
+    {
+      "ref": "IC101",
+      "type": "opamp",
+      "nodes": [
+        "h1",
+        "o101",
+        "o101",
+        "p14",
+        "m14"
+      ],
+      "model": "HA1457",
+      "label": "IC101 hot buffer"
+    },
+    {
+      "ref": "R105",
+      "type": "R",
+      "nodes": [
+        "o101",
+        "i102"
+      ],
+      "value": "8.06k"
+    },
+    {
+      "ref": "R106",
+      "type": "R",
+      "nodes": [
+        "i102",
+        "o102"
+      ],
+      "value": "8.06k"
+    },
+    {
+      "ref": "C103",
+      "type": "C",
+      "nodes": [
+        "i102",
+        "o102"
+      ],
+      "value": "15p"
+    },
+    {
+      "ref": "R101",
+      "type": "R",
+      "nodes": [
+        "0",
+        "c102"
+      ],
+      "value": "8.06k",
+      "note": "Cold input grounded: the unit is driven unbalanced (phone jack)"
+    },
+    {
+      "ref": "R102",
+      "type": "R",
+      "nodes": [
+        "c102",
+        "0"
+      ],
+      "value": "4.87k"
+    },
+    {
+      "ref": "C100",
+      "type": "C",
+      "nodes": [
+        "c102",
+        "0"
+      ],
+      "value": "330p",
+      "note": "unverified: C100 value read as 330p"
+    },
+    {
+      "ref": "IC102",
+      "type": "opamp",
+      "nodes": [
+        "c102",
+        "i102",
+        "o102",
+        "p14",
+        "m14"
+      ],
+      "model": "HA1457",
+      "label": "IC102 differential amp (-0.753 x (hot - cold))"
+    },
+    {
+      "ref": "C105",
+      "type": "C",
+      "nodes": [
+        "o102",
+        "a"
+      ],
+      "value": "10u"
+    },
+    {
+      "ref": "R107",
+      "type": "R",
+      "nodes": [
+        "a",
+        "sumR"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "R52",
+      "type": "R",
+      "nodes": [
+        "a",
+        "nq4"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "Q4",
+      "type": "njf",
+      "nodes": [
+        "nq4",
+        "g4",
+        "sumL"
+      ],
+      "model": "2SK30A",
+      "label": "Q4 MONO input switch"
+    },
+    {
+      "ref": "R40",
+      "type": "R",
+      "nodes": [
+        "ss",
+        "g4"
+      ],
+      "value": "1M"
+    },
+    {
+      "ref": "C10",
+      "type": "C",
+      "nodes": [
+        "g4",
+        "0"
+      ],
+      "value": "0.1u"
+    },
+    {
+      "ref": "SMONO",
+      "type": "switch",
+      "nodes": [
+        "ss",
+        "0"
+      ],
+      "control": "inmode",
+      "label": "INPUT MODE (MONO = closed)"
+    },
+    {
+      "ref": "R41",
+      "type": "R",
+      "nodes": [
+        "ss",
+        "q3b"
+      ],
+      "value": "22k"
+    },
+    {
+      "ref": "R42",
+      "type": "R",
+      "nodes": [
+        "q3b",
+        "m14"
+      ],
+      "value": "47k",
+      "note": "Q3 (STEREO path: drives Q5) not modelled; R41/R42 hold the switch line at -14 V in STEREO"
+    },
+    {
+      "ref": "R38",
+      "type": "R",
+      "nodes": [
+        "q110g",
+        "m14"
+      ],
+      "value": "56k",
+      "note": "unverified: the driver that pulls this line up (turning Q110/Q210 on) could not be traced; held off here, which matches the +4 dBm annotations"
+    },
+    {
+      "ref": "R23",
+      "type": "R",
+      "nodes": [
+        "dline",
+        "m14"
+      ],
+      "value": "56k"
+    },
+    {
+      "ref": "S4C",
+      "type": "switch",
+      "nodes": [
+        "dline",
+        "0"
+      ],
+      "control": "mode",
+      "label": "S4-c (mode 4)",
+      "note": "unverified: S4-c read as connecting line D to 0 V; it turns Q111/Q211 on",
+      "positions": [
+        3
+      ]
+    },
+    {
+      "ref": "XR",
+      "type": "sub",
+      "nodes": [
+        "sumR",
+        "dryR",
+        "lfoR",
+        "wetR",
+        "ownR",
+        "q110g",
+        "dline",
+        "vccR",
+        "vssR",
+        "p14",
+        "m14"
+      ],
+      "of": "chan",
+      "controls": {
+        "bias": "biasR",
+        "cancel": "cancelR"
+      },
+      "label": "R channel (IC103-IC111, IC105, IC106-IC108)"
+    },
+    {
+      "ref": "XL",
+      "type": "sub",
+      "nodes": [
+        "sumL",
+        "dryL",
+        "lfoL",
+        "wetL",
+        "ownL",
+        "q110g",
+        "dline",
+        "vccL",
+        "vssL",
+        "p14",
+        "m14"
+      ],
+      "of": "chan",
+      "controls": {
+        "bias": "biasL",
+        "cancel": "cancelL"
+      },
+      "label": "L channel (IC203-IC211, IC205, IC206-IC208)"
+    },
+    {
+      "ref": "RLOADL",
+      "type": "R",
+      "nodes": [
+        "ownL",
+        "0"
+      ],
+      "value": "10k",
+      "note": "Stands in for R257 into the (not modelled) L mixer virtual ground; only the R output is the engine output"
+    },
+    {
+      "ref": "IC3",
+      "type": "opamp",
+      "nodes": [
+        "lp",
+        "0",
+        "sq",
+        "p14",
+        "m14"
+      ],
+      "model": "JRC4558",
+      "label": "IC3 LFO comparator (uPC4558)"
+    },
+    {
+      "ref": "STAPA",
+      "type": "switch",
+      "nodes": [
+        "sq",
+        "j1"
+      ],
+      "control": "mode",
+      "label": "S1-a/S2-a (modes 1, 2: 4 s)",
+      "positions": [
+        0,
+        1
+      ]
+    },
+    {
+      "ref": "STAPB",
+      "type": "switch",
+      "nodes": [
+        "sq",
+        "j2"
+      ],
+      "control": "mode",
+      "label": "S3-a/S4-a (modes 3, 4: 2 s)",
+      "positions": [
+        2,
+        3
+      ]
+    },
+    {
+      "ref": "R29",
+      "type": "R",
+      "nodes": [
+        "lp",
+        "j1"
+      ],
+      "value": "56k"
+    },
+    {
+      "ref": "R30",
+      "type": "R",
+      "nodes": [
+        "j1",
+        "j2"
+      ],
+      "value": "33k"
+    },
+    {
+      "ref": "R31",
+      "type": "R",
+      "nodes": [
+        "j2",
+        "pp"
+      ],
+      "value": "100k"
+    },
+    {
+      "ref": "R32",
+      "type": "R",
+      "nodes": [
+        "pp",
+        "0"
+      ],
+      "value": "39k"
+    },
+    {
+      "ref": "R33",
+      "type": "R",
+      "nodes": [
+        "pp",
+        "ni"
+      ],
+      "value": "1M"
+    },
+    {
+      "ref": "C7",
+      "type": "C",
+      "nodes": [
+        "ni",
+        "tri"
+      ],
+      "value": "1u",
+      "note": "unverified: value read as 1/50 (1 uF 50 V non-polar, parts list ECEA50VR1U); gives 4.9 s / 2.5 s periods vs the printed 4 s / 2 s (0.82 uF would match)"
+    },
+    {
+      "ref": "IC4A",
+      "type": "opamp",
+      "nodes": [
+        "0",
+        "ni",
+        "tri",
+        "p14",
+        "m14"
+      ],
+      "model": "TL072",
+      "label": "IC4a integrator (TL082)",
+      "note": "TL082 modelled with the library TL072 (same die family)"
+    },
+    {
+      "ref": "R51",
+      "type": "R",
+      "nodes": [
+        "tri",
+        "lp"
+      ],
+      "value": "15k"
+    },
+    {
+      "ref": "R34",
+      "type": "R",
+      "nodes": [
+        "tri",
+        "ni2"
+      ],
+      "value": "100k"
+    },
+    {
+      "ref": "R35",
+      "type": "R",
+      "nodes": [
+        "ni2",
+        "ntri"
+      ],
+      "value": "100k"
+    },
+    {
+      "ref": "C8",
+      "type": "C",
+      "nodes": [
+        "ni2",
+        "ntri"
+      ],
+      "value": "2.2n"
+    },
+    {
+      "ref": "IC4B",
+      "type": "opamp",
+      "nodes": [
+        "0",
+        "ni2",
+        "ntri",
+        "p14",
+        "m14"
+      ],
+      "model": "TL072",
+      "label": "IC4b inverter (TL082)"
+    },
+    {
+      "ref": "VKICK",
+      "type": "V",
+      "nodes": [
+        "kick",
+        "0"
+      ],
+      "value": "0",
+      "ac": {
+        "amplitude": "1m",
+        "freq": 0.25,
+        "phase": 0
+      },
+      "label": "LFO start kick",
+      "note": "Simulation aid, not in the unit: 1 mV through 10 MOhm into the comparator input breaks a balanced DC point"
+    },
+    {
+      "ref": "RKICK",
+      "type": "R",
+      "nodes": [
+        "kick",
+        "lp"
+      ],
+      "value": "10M"
+    },
+    {
+      "ref": "R36",
+      "type": "R",
+      "nodes": [
+        "tri",
+        "lfoL"
+      ],
+      "value": "3.9k"
+    },
+    {
+      "ref": "Q9",
+      "type": "njf",
+      "nodes": [
+        "lfoL",
+        "g9",
+        "tri"
+      ],
+      "model": "2SK30A"
+    },
+    {
+      "ref": "R53",
+      "type": "R",
+      "nodes": [
+        "tri",
+        "g9"
+      ],
+      "value": "1M"
+    },
+    {
+      "ref": "D10",
+      "type": "D",
+      "nodes": [
+        "g9",
+        "gctl"
+      ],
+      "model": "1N4148"
+    },
+    {
+      "ref": "R37",
+      "type": "R",
+      "nodes": [
+        "ntri",
+        "lfoR"
+      ],
+      "value": "3.9k"
+    },
+    {
+      "ref": "Q10",
+      "type": "njf",
+      "nodes": [
+        "lfoR",
+        "g10",
+        "ntri"
+      ],
+      "model": "2SK30A"
+    },
+    {
+      "ref": "R54",
+      "type": "R",
+      "nodes": [
+        "ntri",
+        "g10"
+      ],
+      "value": "1M"
+    },
+    {
+      "ref": "D11",
+      "type": "D",
+      "nodes": [
+        "g10",
+        "gctl"
+      ],
+      "model": "1N4148"
+    },
+    {
+      "ref": "R55",
+      "type": "R",
+      "nodes": [
+        "s1a",
+        "gctl"
+      ],
+      "value": "220k"
+    },
+    {
+      "ref": "C19",
+      "type": "C",
+      "nodes": [
+        "gctl",
+        "0"
+      ],
+      "value": "1u"
+    },
+    {
+      "ref": "S1AP",
+      "type": "switch",
+      "nodes": [
+        "s1a",
+        "p14"
+      ],
+      "control": "mode",
+      "label": "S1-a released: +14 V (Q9/Q10 on)",
+      "positions": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "ref": "S1AN",
+      "type": "switch",
+      "nodes": [
+        "s1a",
+        "m14"
+      ],
+      "control": "mode",
+      "label": "S1-a pressed (mode 1): -14 V (Q9/Q10 off, 3.9k in series)",
+      "positions": [
+        0
+      ]
+    },
+    {
+      "ref": "R159",
+      "type": "R",
+      "nodes": [
+        "dryR",
+        "n159"
+      ],
+      "value": "47k"
+    },
+    {
+      "ref": "C154",
+      "type": "C",
+      "nodes": [
+        "n159",
+        "0"
+      ],
+      "value": "15n"
+    },
+    {
+      "ref": "R160",
+      "type": "R",
+      "nodes": [
+        "n159",
+        "q105b"
+      ],
+      "value": "2.2k"
+    },
+    {
+      "ref": "Q105",
+      "type": "npn",
+      "nodes": [
+        "p14",
+        "q105b",
+        "q105e"
+      ],
+      "model": "2SC1815",
+      "note": "2SC732TM-GR"
+    },
+    {
+      "ref": "R161",
+      "type": "R",
+      "nodes": [
+        "q105e",
+        "m14"
+      ],
+      "value": "12k"
+    },
+    {
+      "ref": "C155",
+      "type": "C",
+      "nodes": [
+        "q105e",
+        "n155"
+      ],
+      "value": "4.7u"
+    },
+    {
+      "ref": "R162",
+      "type": "R",
+      "nodes": [
+        "n155",
+        "n1"
+      ],
+      "value": "47k"
+    },
+    {
+      "ref": "C156",
+      "type": "C",
+      "nodes": [
+        "dryR",
+        "n156"
+      ],
+      "value": "1u"
+    },
+    {
+      "ref": "R163",
+      "type": "R",
+      "nodes": [
+        "n156",
+        "sum"
+      ],
+      "value": "10k",
+      "note": "Direct dry into the IC112 virtual ground (always)"
+    },
+    {
+      "ref": "R157",
+      "type": "R",
+      "nodes": [
+        "ownR",
+        "n1"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "R158",
+      "type": "R",
+      "nodes": [
+        "wetL",
+        "n1"
+      ],
+      "value": "10k",
+      "note": "Cross wet from the L channel (line C)"
+    },
+    {
+      "ref": "Q112",
+      "type": "njf",
+      "nodes": [
+        "n1",
+        "q112g",
+        "sum"
+      ],
+      "model": "2SK30A",
+      "note": "On in DIMENSION modes (line B at 0 V): adds the wet/LF mix node n1 to the summing node and R167 to the feedback"
+    },
+    {
+      "ref": "R164",
+      "type": "R",
+      "nodes": [
+        "bline",
+        "q112g"
+      ],
+      "value": "1M"
+    },
+    {
+      "ref": "C157",
+      "type": "C",
+      "nodes": [
+        "q112g",
+        "0"
+      ],
+      "value": "0.1u"
+    },
+    {
+      "ref": "R22",
+      "type": "R",
+      "nodes": [
+        "bline",
+        "0"
+      ],
+      "value": "100k",
+      "note": "Q1 collector load; Q1/Q2, S0-1 OFF/BYPASS and the REMOTE jack not modelled (effect on: Q1 off, line B = 0 V)"
+    },
+    {
+      "ref": "R167",
+      "type": "R",
+      "nodes": [
+        "n1",
+        "out"
+      ],
+      "value": "22k"
+    },
+    {
+      "ref": "R166",
+      "type": "R",
+      "nodes": [
+        "sum",
+        "out"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "C158",
+      "type": "C",
+      "nodes": [
+        "sum",
+        "out"
+      ],
+      "value": "47p"
+    },
+    {
+      "ref": "R165",
+      "type": "R",
+      "nodes": [
+        "ip112",
+        "0"
+      ],
+      "value": "470"
+    },
+    {
+      "ref": "IC112",
+      "type": "opamp",
+      "nodes": [
+        "ip112",
+        "sum",
+        "o112",
+        "p14",
+        "m14"
+      ],
+      "model": "HA1457",
+      "label": "IC112 output mixer (hot)"
+    },
+    {
+      "ref": "R169",
+      "type": "R",
+      "nodes": [
+        "p14",
+        "b107"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "D104",
+      "type": "D",
+      "nodes": [
+        "b107",
+        "o112"
+      ],
+      "model": "1N4148"
+    },
+    {
+      "ref": "D103",
+      "type": "D",
+      "nodes": [
+        "o112",
+        "b106"
+      ],
+      "model": "1N4148"
+    },
+    {
+      "ref": "R168",
+      "type": "R",
+      "nodes": [
+        "b106",
+        "m14"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "Q107",
+      "type": "npn",
+      "nodes": [
+        "p14",
+        "b107",
+        "e107"
+      ],
+      "model": "2SC495"
+    },
+    {
+      "ref": "R171",
+      "type": "R",
+      "nodes": [
+        "e107",
+        "out"
+      ],
+      "value": "39"
+    },
+    {
+      "ref": "Q106",
+      "type": "pnp",
+      "nodes": [
+        "m14",
+        "b106",
+        "e106"
+      ],
+      "model": "2SA505"
+    },
+    {
+      "ref": "R170",
+      "type": "R",
+      "nodes": [
+        "e106",
+        "out"
+      ],
+      "value": "39"
+    },
+    {
+      "ref": "RLOAD",
+      "type": "R",
+      "nodes": [
+        "out",
+        "0"
+      ],
+      "value": "10k",
+      "note": "Assumed load (spec: unbalanced greater than 600 Ohm); output = XLR pin 2 (hot) of OUTPUT RIGHT"
+    }
+  ],
+  "probes": [
+    "a",
+    "XR.cout",
+    "XR.bin",
+    "XR.ctl",
+    "XL.ctl",
+    "XR.eout",
+    "XR.o110",
+    "tri",
+    "sq",
+    "out"
+  ],
+  "multirate": {
+    "slow": {
+      "rate": 3000.0,
+      "nodes": [
+        "praw",
+        "mraw",
+        "p20",
+        "m20",
+        "p14",
+        "m14",
+        "qb7",
+        "sd1",
+        "sd2",
+        "sns",
+        "vccR",
+        "vccL",
+        "vssR",
+        "vssL",
+        "q110g",
+        "dline",
+        "g4",
+        "q112g",
+        "sq",
+        "tri",
+        "ntri",
+        "lfoR",
+        "lfoL",
+        "XR.IC105A.vref",
+        "XR.IC105B.vref",
+        "XL.IC105A.vref",
+        "XL.IC105B.vref"
+      ]
+    }
+  },
+  "readouts": {
+    "lfo": "tri"
+  }
+}

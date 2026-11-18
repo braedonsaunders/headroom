@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Cathedral Swell</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Cathedral Swell" preset-author="Headroom" preset-comment="Clean chords bloom into a pad: a soft compressor and a sparkling clean amp feed an octave-up shimmer delay and a huge, slowly modulated reverb. Let chords ring and swell with your volume knob." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="48000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="V" value="0.6"/>
+        <parameter id="S" value="0.45"/>
+        <parameter id="A" value="0.5"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="T" value="0.5"/>
+        <parameter id="C" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="30000">
+    <component-audio version="1">
+      <parameters num-parameters="19">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.32"/>
+        <parameter id="Br" value="1"/>
+        <parameter id="Bs" value="0.45"/>
+        <parameter id="Md" value="0.45"/>
+        <parameter id="Tr" value="0.55"/>
+        <parameter id="Vr" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bia" value="0.5"/>
+        <parameter id="Hz" value="0.5"/>
+        <parameter id="RvL" value="0.5"/>
+        <parameter id="RvOn" value="0"/>
+        <parameter id="RvTm" value="0.5"/>
+        <parameter id="RvSz" value="0.5"/>
+        <parameter id="ViInt" value="0.5"/>
+        <parameter id="ViSpd" value="0.5"/>
+        <parameter id="ViOn" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="1"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="13"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="157000">
+    <component-audio version="1">
+      <parameters num-parameters="18">
+        <parameter id="input" value="0.7624"/>
+        <parameter id="output" value="0.7524"/>
+        <parameter id="mix" value="0.32"/>
+        <parameter id="time" value="0.5"/>
+        <parameter id="feedback" value="0.55"/>
+        <parameter id="shimmer" value="0.5"/>
+        <parameter id="shimmerfeedback" value="0.5"/>
+        <parameter id="interval" value="0.5"/>
+        <parameter id="diffamount" value="0.5"/>
+        <parameter id="diffsize" value="0.5"/>
+        <parameter id="diffmovement" value="0.5"/>
+        <parameter id="hicut" value="0.5"/>
+        <parameter id="locut" value="0.5"/>
+        <parameter id="duckingamount" value="0.5"/>
+        <parameter id="duckingsensitivity" value="0.5"/>
+        <parameter id="duckingrelease" value="0.5"/>
+        <parameter id="duckingmeter" value="-0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="148000">
+    <component-audio version="1">
+      <parameters num-parameters="20">
+        <parameter id="mode" value="0.5"/>
+        <parameter id="densityMode" value="0.5"/>
+        <parameter id="freeze" value="0.5"/>
+        <parameter id="preDSync" value="0.5"/>
+        <parameter id="preDNumerator" value="0.5"/>
+        <parameter id="preDDenominator" value="0.5"/>
+        <parameter id="preDMode" value="0.5"/>
+        <parameter id="preD" value="0.5"/>
+        <parameter id="preDFeedback" value="0.5"/>
+        <parameter id="highCut" value="0.5"/>
+        <parameter id="lowShelf" value="0.5"/>
+        <parameter id="size" value="0.8"/>
+        <parameter id="diff" value="0.5"/>
+        <parameter id="revTime" value="0.85"/>
+        <parameter id="damp" value="0.5"/>
+        <parameter id="mod" value="0.5"/>
+        <parameter id="mix" value="0.42"/>
+        <parameter id="modFreq" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="reverbMix" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="26000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Vol" value="0.8693"/>
+        <parameter id="F1" value="0.5"/>
+        <parameter id="G1" value="0.5"/>
+        <parameter id="Q1" value="0.5"/>
+        <parameter id="F2" value="0.5"/>
+        <parameter id="G2" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="Q2" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="148000" target-number="1" target-name="mix" min-value="0.1" max-value="0.8" controller-name="Space"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="157000" target-number="1" target-name="mix" min-value="0" max-value="0.7" controller-name="Shimmer"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="148000" target-number="1" target-name="revTime" min-value="0.4" max-value="1" controller-name="Decay"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="148000" target-number="1" target-name="freeze" min-value="0" max-value="1" controller-name="Freeze"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="30000" target-number="1" target-name="Tr" min-value="0.3" max-value="0.8" controller-name="Treble"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-tempo bpm="72.000"/>
+<headroom-library version="1" id="ambient-cathedral-swell" category="Ambient &amp; FX" order="10" instrument="guitar" style="Ambient">
+  <description>Clean chords bloom into a pad: a soft compressor and a sparkling clean amp feed an octave-up shimmer delay and a huge, slowly modulated reverb. Let chords ring and swell with your volume knob.</description>
+  <tags><tag>Ambient</tag><tag>Post-Rock</tag><tag>Shimmer</tag><tag>Reverb</tag><tag>Delay</tag><tag>Pad</tag></tags>
+  <sources>
+    <source url="https://en.wikipedia.org/wiki/Reverb_effect" title="Shimmer (reverb technique), Wikipedia: Reverb effect"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

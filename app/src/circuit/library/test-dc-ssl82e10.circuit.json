@@ -1,0 +1,1080 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "test-dc-ssl82e10",
+  "version": 1,
+  "name": "DC regression: SSL 82E10 dynamics servo (snapshot of the wave-e WIP netlist, ENGINE_QUEUE item 29)",
+  "description": "Frozen snapshot of work/circuit-netlists/wave-e/ssl-4000e-dynamics-133000.circuit.json as of the ENGINE_QUEUE item 29 report (2026-11-10, before its servo was reworked), kept as the DC regression for gmin stepping: one 53-unknown group holding the dbx 2151-class VCA, the AD536 side-chain, the attack/release integrator and the CV servo, where the direct and source-stepped Newton fail. Card 82E10 DYNAMICS SECTION (drawing T82010.71) of the SSL 611E channel module, from the 4000G service manual page 35. Audio in (card pin 60) through 2u2 + 20K0 into a dbx 2151 Blackmer VCA, out of an NE5534 I/V converter with a 20K feedback, then two 220 uF/25 V coupling capacitors to the AUDIO OUT (pin 61) with R83 1M polarising the midpoint. The side-chain taps that output node through R85 10K into an AD536AJ rms-to-DC converter in the datasheet's dB connection (side-chain input on card pin 25), whose dB output (3 mV/dB) drives a x32.9 amplifier trimmed to the card's printed law 10 dB = 1 V (TP1), then an inverter/0 dBm trim (TP2); a 1M/1M attack-release integrator with the COMPRESS THRESHOLD injection, the RELEASE and ATTACK panel controls and the FAST/AUTO release resistors, a unity-gain buffer, the COMPRESS RATIO divider, and the T4 ratio-law shaper (a diode network on its feedback: R56 5K1 + R88 56K to 0 V with D14/D19, R55 100K to the D27/T4b/R94 shaping node, and D20 from the control node) driving TR1, an emitter follower that drives the VCA's control pin. A 5534 servo (T8) with 1K/1n around the control node closes the loop.",
+  "sources": [
+    {
+      "title": "Solid State Logic SL4000G Console Service Manual, card 82E10 'Dynamics Section', drawing T82010.71, 611E/V sheet 1 of 1, PDF page 35",
+      "url": "https://funkwerkes.com/web/wp-content/techdocs/MixedProAudio/SSL-4000G-Console-Service-Manual-v1_1.pdf"
+    },
+    {
+      "title": "Solid State Logic SL4000G Console Service Manual, 'Component Pin Out' sheet drawing T500A: the DBX2151 VCA symbol, pins IN, VC+, VC-, SYM, V-, GND, V+, OUT (real text layer)",
+      "url": "https://funkwerkes.com/web/wp-content/techdocs/MixedProAudio/SSL-4000G-Console-Service-Manual-v1_1.pdf"
+    },
+    {
+      "title": "Analog Devices AD536A rms-to-DC converter datasheet rev. G: pin functions, dB output 3 mV/dB, Fig. 6 (R1 25k averaging, R4 50k input), Fig. 7 (dB connection, +100 mV/dB amplifier)",
+      "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/AD536A.pdf"
+    },
+    {
+      "title": "Headroom CIRCUIT_ENGINE.md 10.17: the ad536 part and its model (input 16.67k to COM behind R4 50k, CAV averaging at 25 ms/uF, dB = COM - 3 mV/dB x 20 log10(I3/IREF), IREF 20 uA = 0 dB at 1 V rms)",
+      "url": ""
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 1.0
+  },
+  "oversampling": 2,
+  "solver": "auto",
+  "models": {
+    "NE5534": {
+      "kind": "opamp",
+      "level": 1,
+      "a0": 100000.0,
+      "gbw": 10000000.0,
+      "slew": 13000000.0,
+      "swing_hi": 1.0,
+      "swing_lo": 1.0,
+      "vhi": 14.0,
+      "vlo": -14.0,
+      "note": "TI NE5534 datasheet: AVD 100 V/mV, GBW 10 MHz, slew 13 V/us. The library has no 5534 card; the 22 pF compensation (CT on 82E13, C21 here) is not representable on the 5-node opamp card, its effect is carried by gbw/slew."
+    },
+    "ZENER_1V4": {
+      "kind": "diode",
+      "is": 1e-14,
+      "n": 1.0,
+      "rs": 0.0,
+      "bv": 1.4,
+      "ibv": 0.005,
+      "nbv": 2.0,
+      "note": "1 V4 5% zener (D1), the card's side-chain reference. No published datasheet for a 1.4 V zener: bv 1.4 V at 5 mA with nbv 2 to keep the breakdown knee outside the forward region (CIRCUIT_ENGINE 10.15). At the card's ~0.6 mA it sits near 1.34 V."
+    }
+  },
+  "controls": [
+    {
+      "id": "ratio",
+      "label": "Ratio",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "C1"
+      ],
+      "group": "Compressor",
+      "note": "COMPRESS RATIO 10K LIN. DUAL (section A). Its track runs from 0 V to the filtered side-chain demand (T2D buffer through R26 100R + R27 2K7); the wiper feeds T4c's + input (card pins 10 = wiper, 11 = track top). 0 = 1:1, 1 = the full demand, i.e. the maximum ratio."
+    },
+    {
+      "id": "threshold",
+      "label": "Threshold",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "C3"
+      ],
+      "group": "Compressor",
+      "note": "COMPRESS THRESHOLD 10K LIN. DUAL (section A): top to +5 V, bottom through R16 4K7 to 0 V, wiper on card pin 15 into R15 1M2 at the attack/release integrator's summing node."
+    },
+    {
+      "id": "attack",
+      "label": "Attack",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Compressor",
+      "note": "ATTACK 10K LIN. DUAL (card pin 21), a rheostat between the integrator's output (T2C pin 7) and the timing node C5 3u3. The panel pot is drawn through the harness, so the card carries it on pin 21."
+    },
+    {
+      "id": "release",
+      "label": "Release",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "C6"
+      ],
+      "group": "Compressor",
+      "note": "RELEASE 250K LOG (card pin 20 = one end, pin 23 '0V RELEASE' = the wiper, returned to 0 V): a rheostat from the R22 10K node to 0 V. LOG taper."
+    },
+    {
+      "id": "reltype",
+      "label": "Release type (FAST/AUTO)",
+      "kind": "switch",
+      "default": 1,
+      "params": [
+        "C4"
+      ],
+      "group": "Compressor",
+      "note": "The panel FAST/AUTO release switch (card pins 19 = FAST, 22 = AUTO): selects R19 300R (fast) or R21 10K (auto) into the release node. 0 = FAST, 1 = AUTO."
+    },
+    {
+      "id": "attackfast",
+      "label": "Fast attack",
+      "kind": "switch",
+      "default": 0,
+      "params": [
+        "C5"
+      ],
+      "group": "Compressor",
+      "note": "unverified: the 82E08 Dynamics Switch card carries a FAST ATTACK switch (SOURCES-and-BLOCKERS.md section 2); its contacts are not on the 82E10 drawing. Modelled as a short across the ATTACK rheostat, the only point where a fast-attack switch can act on this card."
+    },
+    {
+      "id": "sym",
+      "label": "VCA symmetry (VR4)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Trims",
+      "note": "VR4 50K ADJUST SYM across +-15 V, wiper through R74 33K to the 2151 SYM pin, with R25 51R from SYM to 0 V."
+    },
+    {
+      "id": "setgain",
+      "label": "dB law set (VR1 200R)",
+      "kind": "continuous",
+      "default": 1.0,
+      "params": [],
+      "group": "Trims",
+      "note": "VR1 200R SET GAIN, a rheostat in series with R6 910R: 3 mV/dB x 36K5/(910+VR1) = 100 mV/dB at VR1 = 185 ohm, the card's printed 10 dB = 1 V at TP1. Default = full 200 ohm (1.11k), the value the AD536 validation circuit uses."
+    },
+    {
+      "id": "set0dbm",
+      "label": "0 dBm set (VR2 5K0)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Trims",
+      "note": "VR2 5K0 SET 0dBm, a rheostat from R9 8K2 (fed by the D1 1V4 reference through R5 2K2) into T2B's summing node: the DC (0 dB) level at TP2."
+    },
+    {
+      "id": "knee",
+      "label": "Knee",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "C2"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "no knee control exists on either 82E10 or 82E13: the knee is the fixed diode network D14/D19 + R88 56K + R56 5K1 on T4c's feedback, and D27/R94/T4b feeding the R55 100K node. Stored only."
+    },
+    {
+      "id": "output",
+      "label": "Output",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "D15"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "the card has no output-level control: AUDIO OUT (pin 61) leaves through R84 10R, and the channel level is the fader on 82E13. Stored only."
+    },
+    {
+      "id": "link",
+      "label": "Link",
+      "kind": "switch",
+      "default": 0,
+      "params": [
+        "L12"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "SW2B LINK couples this channel's shaping node (Z, the D27/R55/D20 junction) into the inter-channel bus through C1 0.1 uF; the bus side is the Total-Recall/multiplex interface (MPX, SW2A, R23 'ON 611', the +11 V rail), which is console housekeeping and not netlisted. A single channel runs with the link open, which is what this netlist models."
+    },
+    {
+      "id": "sidechain",
+      "label": "Side-chain source",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "S13"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "the internal tap (R85 10K from the output node) and the SIDE CHAIN INPUT connector (card pin 25) are summed permanently on the drawing; there is no source-select switch on either card. Stored only."
+    },
+    {
+      "id": "wet",
+      "label": "Wet",
+      "kind": "continuous",
+      "default": 1.0,
+      "params": [
+        "W14"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "a console channel card has no wet/dry mix. Stored only."
+    },
+    {
+      "id": "cmpmeter",
+      "label": "Compressor meter",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "CM"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "the card's LED bargraph (T5/T6/T7 CA3130 comparators with LED pairs 58/59, 56/57, 54/55, 52/53, 50/51 marked 3/6/10/14/20 dB and 3K0 droppers) is display only, not audio. Stored only."
+    },
+    {
+      "id": "gatemeter",
+      "label": "Gate meter",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "GM"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "as the compressor meter: display only."
+    },
+    {
+      "id": "gateRange",
+      "label": "Gate range",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "G7"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "the gate/expander half of 82E10 (VR3 SET GATE, R31 510K, R30/R34 36K, D8/D9, T3/T4 CA3130, the 250K LIN RANGE and RELEASE pots) is not netlisted yet; the drawing is read at value level only. Stored only."
+    },
+    {
+      "id": "gateThreshold",
+      "label": "Gate threshold",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "G8"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "as gateRange."
+    },
+    {
+      "id": "gateMode",
+      "label": "Gate mode",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "G9"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "as gateRange."
+    },
+    {
+      "id": "gateAttack",
+      "label": "Gate fast attack",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "G10"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "as gateRange."
+    },
+    {
+      "id": "gateRelease",
+      "label": "Gate release",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "G11"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "as gateRange."
+    },
+    {
+      "id": "boost",
+      "label": "Boost",
+      "kind": "continuous",
+      "default": 0.0,
+      "params": [
+        "B16"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "not on either card. Stored only."
+    },
+    {
+      "id": "pwr",
+      "label": "On/Off",
+      "kind": "continuous",
+      "default": 1.0,
+      "params": [
+        "Pwr"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "console-driven. Stored only."
+    }
+  ],
+  "parts": [
+    {
+      "ref": "V15",
+      "type": "V",
+      "nodes": [
+        "v15",
+        "0"
+      ],
+      "value": "15",
+      "note": "card +15 V from TR5 78L15 (82E10 supply block, read at label level: R101 10R from +18 V, C19 10 uF 35 V, C3 100 uF 25 V)"
+    },
+    {
+      "ref": "V15N",
+      "type": "V",
+      "nodes": [
+        "v15n",
+        "0"
+      ],
+      "value": "-15",
+      "note": "card -15 V from TR6 79L15 (R103 10R, C17 10 uF)"
+    },
+    {
+      "ref": "V18N",
+      "type": "V",
+      "nodes": [
+        "v18n",
+        "0"
+      ],
+      "value": "-18",
+      "note": "console -18 V: the AD536AJ's -VS is drawn on a -18V rail flag"
+    },
+    {
+      "ref": "V5",
+      "type": "V",
+      "nodes": [
+        "v5",
+        "0"
+      ],
+      "value": "5",
+      "note": "card +5 V (D25/D26 5V0 in the supply block)"
+    },
+    {
+      "ref": "R78",
+      "type": "R",
+      "nodes": [
+        "in",
+        "0"
+      ],
+      "value": "100k",
+      "note": "AUDIO IN (card pin 60) load to 0 V"
+    },
+    {
+      "ref": "C10",
+      "type": "C",
+      "nodes": [
+        "in",
+        "n_ain"
+      ],
+      "value": "2u2"
+    },
+    {
+      "ref": "R79",
+      "type": "R",
+      "nodes": [
+        "n_ain",
+        "vca_in"
+      ],
+      "value": "20k0",
+      "note": "Rin; asterisked on the card (selected 1%)"
+    },
+    {
+      "ref": "R80",
+      "type": "R",
+      "nodes": [
+        "n_hf",
+        "vca_in"
+      ],
+      "value": "20k",
+      "note": "as drawn: R80 from the VCA's IN pin (a virtual ground) to a node that C11 returns to 0 V, so it carries no current - recorded, not omitted. If C11 is instead meant across R80 the stage gets a +6 dB shelf above 8 kHz"
+    },
+    {
+      "ref": "C11",
+      "type": "C",
+      "nodes": [
+        "n_hf",
+        "0"
+      ],
+      "value": "1n0"
+    },
+    {
+      "ref": "U1",
+      "type": "vca",
+      "nodes": [
+        "vca_in",
+        "0",
+        "n_cv",
+        "n_sym",
+        "n_vm",
+        "0",
+        "v15",
+        "vca_out"
+      ],
+      "model": "DBX202",
+      "note": "T10 DBX 2151. IN 1 <- R79 20K0; VC+ 2 and GND 6 bracketed to 0 V; VC- 3 to the control node; SYM 4 via R74 33K to VR4 with R25 51R to 0 V; V- 5 via R76 4K3 to -15 V and R75 10K to the control node; V+ 7 = +15 V; OUT 8 into the I/V. The engine has no 2151 card: DBX202 (mvdb 6.0, rc 203 ohm, rsym 51 ohm) is the closest documented dbx Blackmer cell - a part-substitution decision, not a value."
+    },
+    {
+      "ref": "R76",
+      "type": "R",
+      "nodes": [
+        "n_vm",
+        "v15n"
+      ],
+      "value": "4k3"
+    },
+    {
+      "ref": "R75",
+      "type": "R",
+      "nodes": [
+        "n_vm",
+        "n_cv"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "R25",
+      "type": "R",
+      "nodes": [
+        "n_sym",
+        "0"
+      ],
+      "value": "51r"
+    },
+    {
+      "ref": "R74",
+      "type": "R",
+      "nodes": [
+        "n_sym",
+        "vr4_w"
+      ],
+      "value": "33k"
+    },
+    {
+      "ref": "VR4",
+      "type": "pot",
+      "nodes": [
+        "v15n",
+        "vr4_w",
+        "v15"
+      ],
+      "value": "50k",
+      "taper": "B",
+      "control": "sym"
+    },
+    {
+      "ref": "U2",
+      "type": "opamp",
+      "nodes": [
+        "n_ivp",
+        "vca_out",
+        "n_iv",
+        "v15",
+        "v15n"
+      ],
+      "model": "NE5534",
+      "note": "T9 5534 I/V converter"
+    },
+    {
+      "ref": "R77",
+      "type": "R",
+      "nodes": [
+        "n_ivp",
+        "0"
+      ],
+      "value": "20k0"
+    },
+    {
+      "ref": "R81",
+      "type": "R",
+      "nodes": [
+        "vca_out",
+        "n_iv"
+      ],
+      "value": "20k0",
+      "note": "Rout; asterisked. 20K0 in / 20K0 out = 0 dB stage"
+    },
+    {
+      "ref": "C12",
+      "type": "C",
+      "nodes": [
+        "vca_out",
+        "n_iv"
+      ],
+      "value": "100p"
+    },
+    {
+      "ref": "C13",
+      "type": "C",
+      "nodes": [
+        "n_iv",
+        "n_mid"
+      ],
+      "value": "220u",
+      "note": "220 uF 25 V"
+    },
+    {
+      "ref": "R82",
+      "type": "R",
+      "nodes": [
+        "n_iv",
+        "n_mid"
+      ],
+      "value": "100k"
+    },
+    {
+      "ref": "R83",
+      "type": "R",
+      "nodes": [
+        "v15",
+        "n_mid"
+      ],
+      "value": "1M"
+    },
+    {
+      "ref": "C14",
+      "type": "C",
+      "nodes": [
+        "n_mid",
+        "out"
+      ],
+      "value": "220u",
+      "note": "220 uF 25 V"
+    },
+    {
+      "ref": "R84",
+      "type": "R",
+      "nodes": [
+        "out",
+        "n_aout"
+      ],
+      "value": "10r",
+      "note": "to AUDIO OUT, card pin 61"
+    },
+    {
+      "ref": "R85",
+      "type": "R",
+      "nodes": [
+        "out",
+        "n_sc"
+      ],
+      "value": "10k",
+      "note": "side-chain tap from TP3"
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "n_sc",
+        "0"
+      ],
+      "value": "100k",
+      "note": "SIDE CHAIN INPUT (card pin 25) load"
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "n_sc",
+        "n_sc_c"
+      ],
+      "value": "10u",
+      "note": "10 uF 35 V"
+    },
+    {
+      "ref": "R2",
+      "type": "R",
+      "nodes": [
+        "n_sc_c",
+        "n_vin"
+      ],
+      "value": "6k2"
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "n_vin",
+        "0"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "T1",
+      "type": "ad536",
+      "nodes": [
+        "n_vin",
+        "nc2",
+        "v18n",
+        "cav",
+        "db",
+        "bo",
+        "bi",
+        "iout",
+        "0",
+        "0",
+        "nc11",
+        "nc12",
+        "nc13",
+        "v15"
+      ],
+      "model": "AD536AJ",
+      "note": "T1 AD 536J = AD536AJ. Pins 7 (BUF OUT) and 6 (BUF IN) are bracketed together on the drawing; they are left on stub nodes here (the buffer is unused either way, as in library/test-ad536). Pin 8 IOUT open, pins 9 RL and 10 COM on the card's 0 V ticks, pins 11-13 no-connect."
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "cav",
+        "v15"
+      ],
+      "value": "3n3",
+      "note": "CAV to +15 V as drawn (25 ms/uF x 3n3 = 82.5 us)"
+    },
+    {
+      "ref": "VR1",
+      "type": "pot",
+      "nodes": [
+        "db",
+        "vr1_w",
+        "vr1_w"
+      ],
+      "value": "200r",
+      "taper": "B",
+      "control": "setgain",
+      "note": "200R SET GAIN rheostat in series with R6"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "vr1_w",
+        "n_t2a"
+      ],
+      "value": "910r"
+    },
+    {
+      "ref": "U3",
+      "type": "opamp",
+      "nodes": [
+        "0",
+        "n_t2a",
+        "tp1",
+        "v15",
+        "v15n"
+      ],
+      "model": "TL072",
+      "note": "T2A (TL074 section 13/12/14; TL072 is the same amplifier)"
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "n_t2a",
+        "tp1"
+      ],
+      "value": "36k5",
+      "note": "asterisked; 36K5/1.11k x 3 mV/dB = 98.6 mV/dB, 100 mV/dB at 185 ohm"
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "tp1",
+        "n_t2b"
+      ],
+      "value": "36k5",
+      "note": "asterisked"
+    },
+    {
+      "ref": "U4",
+      "type": "opamp",
+      "nodes": [
+        "n_t2bp",
+        "n_t2b",
+        "tp2",
+        "v15",
+        "v15n"
+      ],
+      "model": "TL072",
+      "note": "T2B (9/10/8)"
+    },
+    {
+      "ref": "R11",
+      "type": "R",
+      "nodes": [
+        "n_t2b",
+        "tp2"
+      ],
+      "value": "36k5",
+      "note": "asterisked"
+    },
+    {
+      "ref": "R10",
+      "type": "R",
+      "nodes": [
+        "n_t2bp",
+        "0"
+      ],
+      "value": "7k5"
+    },
+    {
+      "ref": "R5",
+      "type": "R",
+      "nodes": [
+        "v5",
+        "n_ref"
+      ],
+      "value": "2k2"
+    },
+    {
+      "ref": "D1",
+      "type": "D",
+      "nodes": [
+        "0",
+        "n_ref"
+      ],
+      "model": "ZENER_1V4",
+      "note": "1 V4 5 %: anode to 0 V, cathode to the R5 node; the card prints MARKED POLARITY OF 1V5 ZENERS MAY DIFFER"
+    },
+    {
+      "ref": "R9",
+      "type": "R",
+      "nodes": [
+        "n_ref",
+        "vr2_a"
+      ],
+      "value": "8k2"
+    },
+    {
+      "ref": "VR2",
+      "type": "pot",
+      "nodes": [
+        "vr2_a",
+        "vr2_w",
+        "n_t2b"
+      ],
+      "value": "5k0",
+      "taper": "B",
+      "control": "set0dbm",
+      "note": "5K0 SET 0dBm, rheostat between R9 and T2B's summing node"
+    },
+    {
+      "ref": "R12",
+      "type": "R",
+      "nodes": [
+        "tp2",
+        "n_ar"
+      ],
+      "value": "1M"
+    },
+    {
+      "ref": "U5",
+      "type": "opamp",
+      "nodes": [
+        "n_arc",
+        "n_ar",
+        "n_t2c",
+        "v15",
+        "v15n"
+      ],
+      "model": "TL072",
+      "note": "T2C (6/5/7) attack-release integrator"
+    },
+    {
+      "ref": "R57",
+      "type": "R",
+      "nodes": [
+        "n_arc",
+        "0"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "D2",
+      "type": "D",
+      "nodes": [
+        "n_ar",
+        "n_t2c"
+      ],
+      "model": "1N4148",
+      "note": "anode at the summing node, cathode at the output: the fast direction"
+    },
+    {
+      "ref": "R13",
+      "type": "R",
+      "nodes": [
+        "n_ar",
+        "d3a"
+      ],
+      "value": "1M"
+    },
+    {
+      "ref": "D3",
+      "type": "D",
+      "nodes": [
+        "n_t2c",
+        "d3a"
+      ],
+      "model": "1N4148",
+      "note": "antiparallel with D2 through R13 1M: the slow direction"
+    },
+    {
+      "ref": "R15",
+      "type": "R",
+      "nodes": [
+        "thr_w",
+        "n_ar"
+      ],
+      "value": "1m2",
+      "note": "1M2: the threshold pot's wiper into the integrator's summing node"
+    },
+    {
+      "ref": "R16",
+      "type": "R",
+      "nodes": [
+        "n_thrb",
+        "0"
+      ],
+      "value": "4k7"
+    },
+    {
+      "ref": "THR",
+      "type": "pot",
+      "nodes": [
+        "n_thrb",
+        "thr_w",
+        "v5"
+      ],
+      "value": "10k",
+      "taper": "B",
+      "control": "threshold",
+      "note": "COMPRESS THRESHOLD 10K LIN DUAL section A: +5 V at the clockwise end, R16 4K7 at the other, wiper = card pin 15"
+    },
+    {
+      "ref": "ATK",
+      "type": "pot",
+      "nodes": [
+        "n_t2c",
+        "n_cva",
+        "n_cva"
+      ],
+      "value": "10k",
+      "taper": "B",
+      "control": "attack",
+      "note": "ATTACK 10K LIN DUAL (card pin 21), a rheostat between the integrator's output and the timing node"
+    },
+    {
+      "ref": "SFATK",
+      "type": "switch",
+      "nodes": [
+        "n_t2c",
+        "n_cva"
+      ],
+      "control": "attackfast",
+      "note": "unverified fast-attack short across ATK (see the control note)"
+    },
+    {
+      "ref": "C5",
+      "type": "C",
+      "nodes": [
+        "n_cva",
+        "n_m"
+      ],
+      "value": "3u3",
+      "note": "3 u3 50 V, the attack capacitor"
+    },
+    {
+      "ref": "C6",
+      "type": "C",
+      "nodes": [
+        "n_m",
+        "0"
+      ],
+      "value": "22u",
+      "note": "22 uF 25 V, the release capacitor"
+    },
+    {
+      "ref": "R22",
+      "type": "R",
+      "nodes": [
+        "n_m",
+        "pot20"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "S19",
+      "type": "switch",
+      "nodes": [
+        "n_m",
+        "s19a"
+      ],
+      "control": "reltype",
+      "note": "FAST position (pin 19)"
+    },
+    {
+      "ref": "R19",
+      "type": "R",
+      "nodes": [
+        "s19a",
+        "pot20"
+      ],
+      "value": "300r"
+    },
+    {
+      "ref": "S21",
+      "type": "switch",
+      "nodes": [
+        "n_m",
+        "s21a"
+      ],
+      "control": "reltype",
+      "invert": true,
+      "note": "AUTO position (pin 22)"
+    },
+    {
+      "ref": "R21",
+      "type": "R",
+      "nodes": [
+        "s21a",
+        "pot20"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "R23",
+      "type": "R",
+      "nodes": [
+        "pot20",
+        "0"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "REL",
+      "type": "pot",
+      "nodes": [
+        "pot20",
+        "0",
+        "0"
+      ],
+      "value": "250k",
+      "taper": "A",
+      "control": "release",
+      "note": "RELEASE 250K LOG: pin 20 to the release node, the wiper returned to 0 V (pin 23, 0V RELEASE) - a rheostat"
+    },
+    {
+      "ref": "U6",
+      "type": "opamp",
+      "nodes": [
+        "n_cva",
+        "n_dem",
+        "n_dem",
+        "v15",
+        "v15n"
+      ],
+      "model": "TL072",
+      "note": "T2D (2/3/1), a unity-gain buffer: + input on the timing node, - input tied to its own output"
+    },
+    {
+      "ref": "R26",
+      "type": "R",
+      "nodes": [
+        "n_dem",
+        "n_q"
+      ],
+      "value": "100r"
+    },
+    {
+      "ref": "R27",
+      "type": "R",
+      "nodes": [
+        "n_q",
+        "n_pot11"
+      ],
+      "value": "2k7"
+    },
+    {
+      "ref": "RATIO",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "n_pot10",
+        "n_pot11"
+      ],
+      "value": "10k",
+      "taper": "B",
+      "control": "ratio",
+      "note": "COMPRESS RATIO 10K LIN DUAL section A: track from 0 V to the filtered demand, wiper (card pin 10) to T4c's + input"
+    },
+    {
+      "ref": "U9",
+      "type": "opamp",
+      "nodes": [
+        "n_pot10",
+        "n_cv",
+        "n_t8o",
+        "v15",
+        "v15n"
+      ],
+      "model": "NE5534",
+      "note": "T8 5534, the control servo. Its inverting input is the VCA's control node (R86 1K0 in parallel with C30 1n0 and C21 22p as feedback, as drawn); its non-inverting input takes the ratio-scaled demand. INFERRED: the drawing shows this input ending on a 0 V tick at 2.8-4.8 px/source-px, but a servo held at 0 V can never move the VCA's control pin, so the demand is the only reading that makes the node a control node at all. See notes 7a."
+    },
+    {
+      "ref": "R86",
+      "type": "R",
+      "nodes": [
+        "n_cv",
+        "n_t8o"
+      ],
+      "value": "1k0",
+      "note": "asterisked. The servo's feedback resistor, as drawn (the control node to T8's output), in parallel with C30 and C21. This is the DC feedback that makes the servo a transimpedance stage rather than a drifting integrator."
+    },
+    {
+      "ref": "C30",
+      "type": "C",
+      "nodes": [
+        "n_cv",
+        "n_t8o"
+      ],
+      "value": "1n0",
+      "note": "the drawing labels this capacitor '1N' with its designator off-crop; 1 nF from the servo's summing node to its output"
+    },
+    {
+      "ref": "C21",
+      "type": "C",
+      "nodes": [
+        "n_cv",
+        "n_t8o"
+      ],
+      "value": "22p",
+      "note": "22 p, in parallel with C30"
+    }
+  ],
+  "probes": [
+    "in",
+    "vca_in",
+    "n_cv",
+    "n_iv",
+    "out",
+    "n_sc",
+    "n_vin",
+    "db",
+    "tp1",
+    "tp2",
+    "n_ar",
+    "n_t2c",
+    "n_cva",
+    "n_m",
+    "n_dem",
+    "n_pot10",
+    "n_t8o"
+  ]
+}

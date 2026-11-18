@@ -1,0 +1,11 @@
+# ngspice .op reference: test-opamp-vos v1 (node voltage)
+in  0.000000e+00
+vcc  1.500000e+01
+vee  -1.50000e+01
+sa  4.998849e-03
+outa  1.150622e-01
+fa  1.150620e-01
+pb  -6.25049e-05
+sb  4.932513e-03
+outb  4.981875e-01
+outc  2.000000e-03

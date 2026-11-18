@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Classic Tube Bass</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Classic Tube Bass" preset-author="Headroom" preset-comment="The all-tube 300-watt bass head into an 8x10, with a gentle compressor for even notes. Round, warm lows and a growl that appears when you dig in. Works for rock, soul and pop, fingers or pick." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="48000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="V" value="0.6"/>
+        <parameter id="S" value="0.3"/>
+        <parameter id="A" value="0.55"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="T" value="0.5"/>
+        <parameter id="C" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="177000">
+    <component-audio version="1">
+      <parameters num-parameters="11">
+        <parameter id="CASSt" value="0"/>
+        <parameter id="gain" value="0.5"/>
+        <parameter id="ultra low" value="0.5"/>
+        <parameter id="ultra high" value="0.5"/>
+        <parameter id="bass" value="0.6"/>
+        <parameter id="midrange" value="0.5"/>
+        <parameter id="frequency" value="1"/>
+        <parameter id="treble" value="0.5"/>
+        <parameter id="volume" value="0.55"/>
+        <parameter id="output selector" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.983"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="1"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="177000" target-number="1" target-name="gain" min-value="0.2" max-value="0.85" controller-name="Growl"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="177000" target-number="1" target-name="bass" min-value="0.3" max-value="0.85" controller-name="Bass"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="177000" target-number="1" target-name="midrange" min-value="0.2" max-value="0.8" controller-name="Mids"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="177000" target-number="1" target-name="treble" min-value="0.2" max-value="0.8" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="48000" target-number="1" target-name="S" min-value="0" max-value="0.8" controller-name="Compression"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="bass-tube-classic" category="Bass" order="10" instrument="bass" style="Rock">
+  <description>The all-tube 300-watt bass head into an 8x10, with a gentle compressor for even notes. Round, warm lows and a growl that appears when you dig in. Works for rock, soul and pop, fingers or pick.</description>
+  <tags><tag>Bass</tag><tag>Rock</tag><tag>Soul</tag><tag>Tube</tag><tag>8x10</tag></tags>
+  <sources>
+    <source url="https://en.wikipedia.org/wiki/Ampeg#SVT" title="Ampeg SVT (Wikipedia)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

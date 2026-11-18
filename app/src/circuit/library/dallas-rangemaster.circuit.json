@@ -1,0 +1,43 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "dallas-rangemaster",
+  "version": 1,
+  "name": "Dallas Rangemaster Treble Booster (1965, OC44)",
+  "description": "Dallas Rangemaster, the original germanium treble booster: one OC44 (or OC71) PNP in common emitter, positive ground so the rail is -9 V. The 470k/68k series string biases the base, 3k9 with a 47uF bypass sets the emitter, and the 10k audio-taper 'Boost' pot is simultaneously the collector load and the output level control (the collector DC sits on the track, which is why the original crackles when turned). 0.005uF input cap into a ~12k input resistance gives unity gain at about 80 Hz and full boost (about 20-24 dB) above 1-2 kHz; the 0.01uF output cap feeds the amp. Fuzz Central's parts list and R.G. Keen's 'Austin Treble Blaster' analysis agree on every value; Keen's tuning target is a collector at -6.6 to -7.2 V on a fresh -9 V battery. The 'Bright' control is documented as the input-capacitor tuning mod (Keen: stay within +/-50% of 0.005uF), not a knob on the original. Engine note (docs §10.62): the circuit runs at 768 kHz. At 192 kHz the clipped collector folds at -63.0 / -52.4 / -44.5 dB (aliasing gate, every bin, 0.25 / 0.5 / 1.0 FS) and at 384 kHz still -57.9 dB at 1.0 FS; LTE events never fire on these edges. At 768 kHz: -102.9 / -80.4 / -71.0 dB. Engine 8x fine-step truth (band-limited), audio band, lead / rock DI: 0.076 / 0.158 -> 0.0025 / 0.0075 %.",
+  "sources": [
+    { "title": "Fuzz Central, 'Dallas Rangemaster' (original schematic: 470K, 68K, 3K9, 0.005uF, 0.01uF, two 47uF, 10K audio Boost; OC44/OC71; parts list with the same six values and 10K audio taper pot)", "url": "https://fuzzcentral.ssguitar.com/rangemaster.php" },
+    { "title": "R.G. Keen, 'Dallas Rangemaster / Austin Treble Blaster' (GEO Fex): 470K/68K bias string, Rb1 nominal 68K, Re nominal 3.9K, 10K audio-taper collector/level pot (some units 22K), collector target -6.6 to -7.2 V on -9 V, Cin 0.005uF +/-50%, input resistance about 12k, unity gain at 80 Hz, full boost 1-2 kHz, 24 dB", "url": "https://www.geofex.com/Article_Folders/Rangemaster/atboost.pdf" },
+    { "title": "OC44 germanium PNP datasheet class data: Vceo 15 V, Ptot 100-200 mW, hFE 60-100 typical, fT about 1 MHz (Mullard OC44/OC71 data as circulated)", "url": "https://www.radiomuseum.org/tubes/tube_oc44.html" }
+  ],
+  "io": { "input": "in", "output": "out", "inputVoltsPerFS": 1.0, "outputVoltsPerFS": 1.0 },
+  "oversampling": 2,
+  "minRate": 705600,
+  "solver": "auto",
+  "models": {
+    "OC44": {
+      "kind": "pnp", "is": 1.0e-7, "bf": 80.0, "br": 20.0, "ise": 0.435e-9, "ne": 1.2, "vaf": 80.0, "rb": 150.0, "icbo": 1.5e-6, "vleak": 0.2,
+      "note": "unverified: no OC44 SPICE card is published. IS 0.1 uA reproduces the germanium Vbe of about 0.2 V at 0.24 mA (Keen's bias point); BF 80 inside the OC44 hFE 60-100 range; BR/ISE/NE borrowed from the ElectroSmash AC128 card; VAF 80 and RB 150 assumed for an alloy-junction AF device; ICBO 1.5 uA (ICEO about 120 uA) assumed inside the 10 uA-class leakage of a small Ge part"
+    }
+  },
+  "controls": [
+    { "id": "boost", "label": "Boost", "kind": "continuous", "default": 0.5, "paramRange": [0.14, 1.0], "params": ["Bs"], "group": "Main", "note": "10 kOhm audio-taper pot, hot lug on the collector and cold lug on the -9 V rail, output from the wiper through 0.01uF: it is the collector load AND the level control" },
+    { "id": "bright", "label": "Bright (input cap)", "kind": "continuous", "default": 0.5, "params": ["Br"], "group": "Mods", "note": "Documented tuning mod, not an original control: C1 the 0.005uF input cap, 7n5 (darker, unity gain lower) ... 3n3 (brighter, full boost higher). Keen: stay within +/-50% of 0.005uF for the original sound" },
+    { "id": "power", "label": "On/Off", "kind": "switch", "default": 1.0, "params": ["Pwr"], "legacyOnly": true, "group": "Legacy", "note": "Catalogue on/off parameter; the host handles unit bypass. Stored only" }
+  ],
+  "parts": [
+    { "ref": "VBAT", "type": "V", "nodes": ["0", "vee"], "value": "9", "label": "9 V battery, positive ground (rail -9 V)", "note": "The original runs from a 9 V battery with its + terminal at circuit ground" },
+    { "ref": "C4", "type": "C", "nodes": ["vee", "0"], "value": "47u", "tolerance": 0.2, "label": "Rail decoupling" },
+
+    { "ref": "C1", "type": "C", "nodes": ["in", "b1"], "value": { "nominal": "5n", "control": "bright", "min": "7n5", "max": "3n3", "law": "log" }, "tolerance": 0.1, "label": "Input cap (0.005uF stock)" },
+    { "ref": "R1", "type": "R", "nodes": ["b1", "vee"], "value": "470k", "tolerance": 0.01, "note": "Keen: 1% metal film, this stage amplifies hiss" },
+    { "ref": "R2", "type": "R", "nodes": ["b1", "0"], "value": "68k", "tolerance": 0.01 },
+    { "ref": "Q1", "type": "pnp", "nodes": ["c1", "b1", "e1"], "model": "OC44", "label": "OC44 (or OC71)" },
+    { "ref": "R3", "type": "R", "nodes": ["e1", "0"], "value": "3k9", "tolerance": 0.01, "label": "Emitter resistor, nominal 3.9k (2.7k-5.1k tuning range)" },
+    { "ref": "C2", "type": "C", "nodes": ["e1", "0"], "value": "47u", "tolerance": 0.2, "label": "Emitter bypass" },
+    { "ref": "BOOST", "type": "pot", "nodes": ["vee", "ow", "c1"], "value": "10k", "taper": "A", "control": "boost", "label": "Boost (collector load + level)" },
+    { "ref": "C3", "type": "C", "nodes": ["ow", "out"], "value": "10n", "tolerance": 0.1, "label": "Output cap (0.01uF)" },
+    { "ref": "R4", "type": "R", "nodes": ["out", "0"], "value": "2.2M", "tolerance": 0.05, "note": "unverified: the original has no pulldown (the following tube grid leak did the job); Keen's GEO Fex build adds 2.2M at each end to stop switching pops, and the output node needs a DC path" }
+  ],
+  "probes": ["b1", "e1", "c1", "ow", "out"],
+  "layout": {}
+}

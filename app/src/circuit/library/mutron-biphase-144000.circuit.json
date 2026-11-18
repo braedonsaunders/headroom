@@ -1,0 +1,3818 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "mutron-biphase-144000",
+ "version": 1,
+ "name": "Mu-Tron Bi-Phase",
+ "description": "Musitronics / ARP Mu-Tron Bi-Phase (ARP drawings 77204 rev 2 control board, phasing board, 77206 supply, 1979). NOT a barber-pole phaser: two independent six-stage photocell phasers with two sweep generators; the 'Out A' input setting cascades them into 12 stages on output B. Each phasor: Z8A/Z10A follower (390K input), Z8B/Z10B inverting amp that also sums the FEEDBACK pot's share of the chain return, six op-amp all-pass stages (4.7K/4.7K, .0068u, 220K // one photocell of PM3 or PM4), return inverted by Z9B/Z11B, through the PM1/PM2 photocell (the footswitch-driven on/off) and the NOTCH DEPTH trimmer into a passive mix with the dry signal (4.7K wet / 12K dry) and the Z9A/Z11A output follower (560 ohm out). Sweep generator 1: rate amplifier Z12A/Z12B (CR1 compensates the bridge drop) feeding a four-diode current-steering bridge into the Z13B integrator, Z13A Schmitt; triangle ('Sine') or R76/C36-rounded square through S3 into Z15A. Sweep generator 2: Z14A Schmitt / Z14B integrator with RATE B dividing the square. DEPTH A / DEPTH B pots, Sweep A (Gen 1/Ped), Sweep B (Gen 1/Gen 2/Ped), Sweep Sync Norm/Rev (Z15B inverter). On the phasing board each sweep drives an op-amp/NPN LED current regulator with a diode breakpoint (R98/R114 220K, R100/R116 68K, R99/R115 10K + diode) lighting one LED that sets six cells. Photocell and LED laws are ASSUMED (VTL5C3 cards): no data exist for the PM modules. Op-amp type not printed: 1458-class assumed. Supply: ideal +-15 V at the RC4195 regulator output. The Opti-Pedal (J6-2) is not on the drawings and is left unplugged; the dual footswitch is modelled as its two ground-closing contacts.",
+ "sources": [
+  {
+   "title": "ARP Instruments, 'SCHEMATIC, PC BD, CONTROL, BI-PHASE', drawing 77204 rev 2, drawn DLJ 1-8-79 (the control board: inputs, output amps, notch-depth modules PM1/PM2, both sweep generators, pedal input, S1-S7). 5197x3148 1-bit scan (from designer Mike Beigel, per the thread). THE NETLIST REVISION",
+   "url": "https://web.archive.org/web/2023id_/https://www.freestompboxes.org/download/file.php?id=24301&mode=view"
+  },
+  {
+   "title": "ARP Instruments, 'SCHEMATIC, PC BD, PHASING, BI-PHASE' (the two six-stage chains, PM3/PM4, LED drivers, sweep offset/range trimmers), same set",
+   "url": "https://web.archive.org/web/2023id_/https://www.freestompboxes.org/download/file.php?id=24302&mode=view"
+  },
+  {
+   "title": "ARP Instruments, 'SCHEMATIC, BD 3, BI-PHASOR', drawing 77206 rev 1, W.J. Ames 1/11/79 (power supply: RC4195TK +-15 V)",
+   "url": "https://web.archive.org/web/2023id_/https://www.freestompboxes.org/download/file.php?id=24303&mode=view"
+  },
+  {
+   "title": "Second, independent scan: ARP 'SCHEMATIC, BD 1, BI-PHASOR', drawing 77204 (earlier revision; Marc Bareille), sheet 1 control board. Used for the faded spots of the fsb scan where the topology is identical; value differences listed in the notes",
+   "url": "http://m.bareille.free.fr/biphase/vintage/mutron_biphase_sch1.gif"
+  },
+  {
+   "title": "Bareille scan, sheet 2 (phasing board; the bottom of the sheet is cut off below R117)",
+   "url": "http://m.bareille.free.fr/biphase/vintage/mutron_biphase_sch2.gif"
+  },
+  {
+   "title": "Bareille scan, sheet 3 (power supply, the same drawing 77206)",
+   "url": "http://m.bareille.free.fr/biphase/vintage/mutron_biphase_sch3.gif"
+  },
+  {
+   "title": "Marc Bareille, 'Mutron BiPhase Vintage' page: the footswitch is 'two simple switches to connect 2 wires to ground or leave the circuit open' (PED SW A/B)",
+   "url": "http://m.bareille.free.fr/biphase/the_vintage.htm"
+  },
+  {
+   "title": "Musitronics Bi-Phase owner's manual: rates .1-18 Hz, input impedance 390K single / 180K parallel, output 600 ohm, phasors inoperative without the footswitch, PED with no pedal = very low rate",
+   "url": "http://www.randtronics.net/wp-content/uploads/2017/12/Bi-Phase-Owners-Manual-Complete.pdf"
+  }
+ ],
+ "io": {
+  "input": "ina",
+  "inputR": "inb",
+  "output": "ja",
+  "outputR": "jb",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 1.0
+ },
+ "oversampling": 2,
+ "newton": {"groups": {"R4": 0.0001, "R36": 0.0001, "Z8A": 0.0001, "Z10A": 0.0001, "PM1C": 0.0001, "PM2C": 0.0001, "Z9A": 0.0001, "Z11A": 0.0001}},
+ "solver": "auto",
+ "cuts": [
+  "cp",
+  "cn",
+  "pp",
+  "pn",
+  "g1v",
+  "g2v",
+  "n15z"
+ ],
+ "readouts": {
+  "lfo": {
+   "node": "g1o",
+   "minSwing": 0.5
+  }
+ },
+ "multirate": {
+  "slow": {
+   "rate": 12000.0,
+   "nodes": [
+    "brl",
+    "brr",
+    "brt",
+    "cr18a",
+    "cr19a",
+    "cr1a",
+    "cr8a",
+    "dbx",
+    "e1a",
+    "e1b",
+    "e2a",
+    "e2b",
+    "g1o",
+    "g2a",
+    "j1_5",
+    "j1_6",
+    "j6_2",
+    "j6_3",
+    "j6_4",
+    "kna",
+    "knb",
+    "n105",
+    "n68",
+    "n86",
+    "n93",
+    "n96",
+    "pedn",
+    "pedo",
+    "pm1la",
+    "pm2la",
+    "pn1",
+    "r104b",
+    "r125w",
+    "r126w",
+    "r130w",
+    "r131w",
+    "r75b",
+    "r76b",
+    "r77b",
+    "raw",
+    "rbw",
+    "rna",
+    "rnb",
+    "s2m",
+    "s4p",
+    "s5p",
+    "s6p",
+    "sga",
+    "sgb",
+    "sq1",
+    "sq2",
+    "sq2f",
+    "tri1",
+    "tri2",
+    "z12bm",
+    "z12m",
+    "z13p",
+    "z14bm",
+    "z14p",
+    "z15bm",
+    "z15bo",
+    "z15bp",
+    "z15p",
+    "z16bm",
+    "z16bp",
+    "z16m",
+    "z16o",
+    "z16p",
+    "z7am",
+    "z7ao",
+    "z7ap",
+    "z7bm",
+    "z7bo",
+    "z7bp",
+    "lt_pm1",
+    "lt_pm2",
+    "lt_pm3",
+    "lt_pm4",
+    "lt_cr18",
+    "lt_cr19",
+    "PM1C#n",
+    "PM2C#n",
+    "PM3A#n",
+    "PM3B#n",
+    "PM3C#n",
+    "PM3D#n",
+    "PM3E#n",
+    "PM3F#n",
+    "PM4A#n",
+    "PM4B#n",
+    "PM4C#n",
+    "PM4D#n",
+    "PM4E#n",
+    "PM4F#n"
+   ]
+  }
+ },
+ "models": {
+  "MC1458": {
+   "kind": "opamp",
+   "level": 1,
+   "a0": 200000.0,
+   "gbw": 1000000.0,
+   "slew": 500000.0,
+   "swing_hi": 2.0,
+   "swing_lo": 2.0,
+   "vhi": 13.0,
+   "vlo": -13.0,
+   "note": "ASSUMED TYPE: the drawings give no op-amp part number (8-pin duals, pins 1-3/5-7, V+ 8, V- 4). 1458-class card (AVD 200 V/mV, GBW 1 MHz, SR 0.5 V/us, +-13 V swing at +-15 V); Bareille's Bi-Phase clone notes say 'all opamps are good old 1458'"
+  },
+  "MV5054": {
+   "kind": "led",
+   "is": 1e-19,
+   "n": 1.6,
+   "rs": 5.0,
+   "iref": 0.02,
+   "tau_light": 0.0001,
+   "note": "MV5054 red panel LED (CR18/CR19): generic red LED fit (Vf about 1.6-1.7 V at 5-10 mA); its light is not read by anything"
+  }
+ },
+ "controls": [
+  {
+   "id": "rateA",
+   "label": "Rate (Gen 1)",
+   "kind": "continuous",
+   "default": 0.3,
+   "params": [
+    "lfoRate"
+   ],
+   "paramRange": [
+    0.005,
+    0.835938
+   ],
+   "group": "Sweep Generator 1",
+   "note": "R135 25K RATE A (sweep generator 1). Taper not printed: linear assumed. Legacy 'Rate' raw range 0.005-0.836 maps onto the pot"
+  },
+  {
+   "id": "rateControl",
+   "label": "Rate Control",
+   "kind": "selector",
+   "default": 0,
+   "params": [],
+   "face": true,
+   "options": [
+    "Man",
+    "Ped"
+   ],
+   "group": "Sweep Generator 1",
+   "note": "S2 RATE CONTROL: MAN = the RATE A knob; PED = the pedal network (R82/R87/R89/R88/CR8). With no pedal plugged gen 1 runs at its minimum rate (manual)"
+  },
+  {
+   "id": "shapeA",
+   "label": "Shape (Gen 1)",
+   "kind": "selector",
+   "default": 0,
+   "params": [],
+   "face": true,
+   "options": [
+    "Sine",
+    "Square"
+   ],
+   "group": "Sweep Generator 1",
+   "note": "S3 SHAPE: Sine = the triangle through R75; Square = the square through R76 120K / C36 .47 (labels as on the rev-2 drawing; the Bareille drawing swaps the labels)"
+  },
+  {
+   "id": "rateB",
+   "label": "Rate (Gen 2)",
+   "kind": "continuous",
+   "default": 0.3,
+   "params": [],
+   "group": "Sweep Generator 2",
+   "note": "R136 25K RATE B (sweep generator 2), the integrator's input taken from the square through the pot and R93 120 ohm. Linear taper assumed"
+  },
+  {
+   "id": "shapeB",
+   "label": "Shape (Gen 2)",
+   "kind": "selector",
+   "default": 0,
+   "params": [],
+   "face": true,
+   "options": [
+    "Sine",
+    "Square"
+   ],
+   "group": "Sweep Generator 2",
+   "note": "S4 SHAPE: Sine = Z14B's triangle; Square = the square through R92 10K / C35 2.2u"
+  },
+  {
+   "id": "depthA",
+   "label": "Depth A",
+   "kind": "continuous",
+   "default": 0.8,
+   "params": [
+    "range"
+   ],
+   "paramRange": [
+    0.215079,
+    1.0
+   ],
+   "group": "Phasor A",
+   "note": "R137 10K DEPTH A: the sweep width of phasor A (manual: '1' narrow ... '10' widest; smoothest at about '8'). Legacy 'Amount' maps onto it"
+  },
+  {
+   "id": "feedbackA",
+   "label": "Feedback A",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "feedback"
+   ],
+   "group": "Phasor A",
+   "note": "R133 10K FDBCK A: phaser A's return into Z8B's + input through R7 6.2K"
+  },
+  {
+   "id": "sweepA",
+   "label": "Sweep A",
+   "kind": "selector",
+   "default": 0,
+   "params": [],
+   "face": true,
+   "options": [
+    "Gen 1",
+    "Ped"
+   ],
+   "group": "Phasor A",
+   "note": "S6 SWEEP: phasor A from sweep generator 1 or from the pedal amp Z16B (no pedal plugged: a fixed sweep position set by the PEDAL OFFSET trimmer)"
+  },
+  {
+   "id": "footA",
+   "label": "Phasor A On",
+   "kind": "switch",
+   "default": 1,
+   "params": [],
+   "face": true,
+   "options": [
+    "Off",
+    "On"
+   ],
+   "group": "Phasor A",
+   "note": "Bypass footswitch A (external dual footswitch, J6-3 to ground): lights PM1 (wet path on) and CR18. Off = dry only (the photocell opens the wet path)"
+  },
+  {
+   "id": "depthB",
+   "label": "Depth B",
+   "kind": "continuous",
+   "default": 0.8,
+   "params": [],
+   "group": "Phasor B",
+   "note": "R138 10K DEPTH B"
+  },
+  {
+   "id": "feedbackB",
+   "label": "Feedback B",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [],
+   "group": "Phasor B",
+   "note": "R134 10K FDBCK B"
+  },
+  {
+   "id": "sweepB",
+   "label": "Sweep B",
+   "kind": "selector",
+   "default": 0,
+   "params": [],
+   "face": true,
+   "options": [
+    "Gen 1",
+    "Gen 2",
+    "Ped"
+   ],
+   "group": "Phasor B",
+   "note": "S5 SWEEP (rotary): phasor B from gen 1, gen 2 (through the GEN 2 AMP trimmer) or the pedal amp"
+  },
+  {
+   "id": "sweepSync",
+   "label": "Sweep Sync",
+   "kind": "selector",
+   "default": 0,
+   "params": [
+    "lfoSync"
+   ],
+   "paramRange": [
+    0.0,
+    1.0
+   ],
+   "options": [
+    "Norm",
+    "Rev"
+   ],
+   "group": "Phasor B",
+   "note": "S7 SWEEP SYNC (DPDT): Norm = the DEPTH B wiper to J1-6; Rev = Z15B's inverted copy (and R104 47K grounded). Legacy 'LFO Sync' 0/1"
+  },
+  {
+   "id": "phasorBInput",
+   "label": "Phasor B Input",
+   "kind": "selector",
+   "default": 0.5,
+   "params": [],
+   "face": true,
+   "options": [
+    "In A",
+    "Out A",
+    "In B"
+   ],
+   "group": "Phasor B",
+   "note": "S1 PHASOR B INPUT: In A (both phasors on input A, stereo), Out A (B fed from output A: the 12-stage cascade, default), In B (the right input, J2)"
+  },
+  {
+   "id": "footB",
+   "label": "Phasor B On",
+   "kind": "switch",
+   "default": 1,
+   "params": [],
+   "face": true,
+   "options": [
+    "Off",
+    "On"
+   ],
+   "group": "Phasor B",
+   "note": "Bypass footswitch B (J6-4 to ground): lights PM2 and CR19"
+  },
+  {
+   "id": "trimLowSpeed",
+   "label": "LFO Low Speed (internal)",
+   "kind": "continuous",
+   "default": 0.117,
+   "params": [],
+   "group": "Internal",
+   "note": "R126 10K LFO LOW SPEED ADJ: sets gen 1's minimum rate (the RATE A knob at 0)"
+  },
+  {
+   "id": "trimGen1Amp",
+   "label": "Gen 1 Amp (internal)",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Internal",
+   "note": "R128 25K GEN 1 AMP rheostat"
+  },
+  {
+   "id": "trimGen2Amp",
+   "label": "Gen 2 Amp (internal)",
+   "kind": "continuous",
+   "default": 0.59,
+   "params": [],
+   "group": "Internal",
+   "note": "R127 10K GEN 2 AMP rheostat"
+  },
+  {
+   "id": "trimPedalOffset",
+   "label": "Pedal Offset (internal)",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Internal",
+   "note": "R125 10K PEDAL OFFSET ADJ (also the fixed sweep position in PED mode with no pedal)"
+  },
+  {
+   "id": "trimNotchA",
+   "label": "Notch Depth A (internal)",
+   "kind": "continuous",
+   "default": 0.52,
+   "params": [],
+   "group": "Internal",
+   "note": "R123 10K NOTCH DEPTH A rheostat in the wet path"
+  },
+  {
+   "id": "trimNotchB",
+   "label": "Notch Depth B (internal)",
+   "kind": "continuous",
+   "default": 0.52,
+   "params": [],
+   "group": "Internal",
+   "note": "R124 10K NOTCH DEPTH B"
+  },
+  {
+   "id": "trimOffsetA",
+   "label": "Sweep A Offset (internal)",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Internal",
+   "note": "R131 10K SWEEP A OFFSET"
+  },
+  {
+   "id": "trimOffsetB",
+   "label": "Sweep B Offset (internal)",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Internal",
+   "note": "R130 10K SWEEP B OFFSET"
+  },
+  {
+   "id": "trimRangeA",
+   "label": "Sweep A Range (internal)",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Internal",
+   "note": "R132 1K SWEEP A RANGE rheostat (LED current sense with R117 220)"
+  },
+  {
+   "id": "trimRangeB",
+   "label": "Sweep B Range (internal)",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Internal",
+   "note": "R129 1K SWEEP B RANGE rheostat (with R101 220)"
+  },
+  {
+   "id": "notches",
+   "label": "Notches",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "notches"
+   ],
+   "paramRange": [
+    2.0,
+    12.0
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Legacy 2-12 notch count. The Bi-Phase has two fixed six-stage chains (three notches each); 6 vs 12 stages is the Phasor B Input switch (Out A = 12-stage cascade on output B). Stored only"
+  },
+  {
+   "id": "lfoNoteLengthNumerator",
+   "label": "Numerator",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "lfoNoteLengthNumerator"
+   ],
+   "paramRange": [
+    1.0,
+    5.0
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "legacy LFO tempo-sync parameter; the Bi-Phase's sweep generators are free-running analog oscillators. Stored only"
+  },
+  {
+   "id": "lfoNoteLengthDenominator",
+   "label": "Denominator",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "lfoNoteLengthDenominator"
+   ],
+   "paramRange": [
+    0.0,
+    6.0
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "legacy LFO tempo-sync parameter; the Bi-Phase's sweep generators are free-running analog oscillators. Stored only"
+  },
+  {
+   "id": "lfoMode",
+   "label": "Sync Mode",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "lfoMode"
+   ],
+   "paramRange": [
+    0.0,
+    3.0
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "legacy LFO tempo-sync parameter; the Bi-Phase's sweep generators are free-running analog oscillators. Stored only"
+  },
+  {
+   "id": "ultra",
+   "label": "Mode",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "ultra"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Behavioural-phaser mode switch with no Bi-Phase counterpart. Stored only"
+  },
+  {
+   "id": "invert",
+   "label": "Invert",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "invert"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "No wet-polarity switch on the Bi-Phase (Z9B/Z11B always invert the return). Stored only"
+  },
+  {
+   "id": "lfoSpreadPolarity",
+   "label": "Spread Mod Polarity",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "lfoSpreadPolarity"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Its nearest hardware meaning is Sweep Sync Norm/Rev, which answers the legacy 'LFO Sync' instead. Stored only"
+  },
+  {
+   "id": "mix",
+   "label": "Mix",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "mix"
+   ],
+   "paramRange": [
+    0.2,
+    1.0
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "The dry/wet mix is fixed (R31/R63 12K dry, R29/R62 4.7K + photocell + NOTCH DEPTH trimmer wet). Stored only"
+  },
+  {
+   "id": "lfoMix",
+   "label": "Mod Mix",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "lfoMix"
+   ],
+   "paramRange": [
+    0.0,
+    0.755
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "No modulation-mix control on the Bi-Phase. Stored only"
+  },
+  {
+   "id": "stereo",
+   "label": "Stereo",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "stereo"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Host stereo flag. The circuit always renders Output A (left) and Output B (right); its routing is the Phasor B Input switch. Stored only"
+  },
+  {
+   "id": "cutoff",
+   "label": "Center",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "cutoff"
+   ],
+   "paramRange": [
+    0.107,
+    0.88
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "No front-panel centre control: the sweep centre is the internal SWEEP OFFSET trimmers (R130/R131). Stored only"
+  },
+  {
+   "id": "spread",
+   "label": "Spread",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "spread"
+   ],
+   "paramRange": [
+    0.21,
+    1.0
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "No spread control (the Bi-Phase is not a barber-pole phaser). Stored only"
+  },
+  {
+   "id": "power",
+   "label": "On/Off",
+   "kind": "switch",
+   "default": 1,
+   "params": [
+    "Pwr"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Host bypass. The unit's own bypass is the dual footswitch (Phasor A On / Phasor B On). Stored only"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VP15",
+   "type": "V",
+   "nodes": [
+    "p15",
+    "0"
+   ],
+   "value": "15",
+   "label": "+15 V regulated rail, RC4195TK Z17 output (J1-8/J1-9). Mains, T1, CR11-CR14 bridge, C37/C38 470u, Z17, R122 1M, CR15 and C39-C42 of the supply board are not netlisted: the engine has no regulator part, and the RC4195's output is the rail (see notes)"
+  },
+  {
+   "ref": "VN15",
+   "type": "V",
+   "nodes": [
+    "n15",
+    "0"
+   ],
+   "value": "-15",
+   "label": "-15 V regulated rail, RC4195TK Z17 output (J1-7/J1-10)"
+  },
+  {
+   "ref": "C47",
+   "type": "C",
+   "nodes": [
+    "p15",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "C47 .01 J1-8 +15 to ground (control board)"
+  },
+  {
+   "ref": "C48",
+   "type": "C",
+   "nodes": [
+    "n15",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "C48 .01 J1-7 -15 to ground (control board)"
+  },
+  {
+   "ref": "R118",
+   "type": "R",
+   "nodes": [
+    "p15",
+    "cp"
+   ],
+   "value": "12",
+   "tolerance": 0.05,
+   "label": "R118 12 ohm +15 decoupler -> the starred +15 rail (+15*)"
+  },
+  {
+   "ref": "R120",
+   "type": "R",
+   "nodes": [
+    "n15",
+    "cn"
+   ],
+   "value": "12",
+   "tolerance": 0.05,
+   "label": "R120 12 ohm -15 decoupler -> the starred -15 rail (-15*)"
+  },
+  {
+   "ref": "C51",
+   "type": "C",
+   "nodes": [
+    "cp",
+    "0"
+   ],
+   "value": "47u",
+   "tolerance": 0.2,
+   "label": "C51 47u +15* reservoir"
+  },
+  {
+   "ref": "C49",
+   "type": "C",
+   "nodes": [
+    "cp",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "C49 .01 +15*"
+  },
+  {
+   "ref": "C52",
+   "type": "C",
+   "nodes": [
+    "cn",
+    "0"
+   ],
+   "value": "47u",
+   "tolerance": 0.2,
+   "label": "C52 47u -15* reservoir"
+  },
+  {
+   "ref": "C50",
+   "type": "C",
+   "nodes": [
+    "cn",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "C50 .01 -15*"
+  },
+  {
+   "ref": "C55",
+   "type": "C",
+   "nodes": [
+    "p15",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "C55 .01 J1-9 to J1-4 (phasing board)"
+  },
+  {
+   "ref": "C45",
+   "type": "C",
+   "nodes": [
+    "p15",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "C45 .01 +15 to ground (phasing board)"
+  },
+  {
+   "ref": "C56",
+   "type": "C",
+   "nodes": [
+    "n15",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "C56 .01 J1-10 to J1-12 (phasing board)"
+  },
+  {
+   "ref": "C46",
+   "type": "C",
+   "nodes": [
+    "n15",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "C46 .01 -15 to ground (phasing board)"
+  },
+  {
+   "ref": "R119",
+   "type": "R",
+   "nodes": [
+    "p15",
+    "pp"
+   ],
+   "value": "12",
+   "tolerance": 0.05,
+   "label": "R119 12 ohm -> decoupled +15 (phasing board, open-arrow symbol)"
+  },
+  {
+   "ref": "R121",
+   "type": "R",
+   "nodes": [
+    "n15",
+    "pn"
+   ],
+   "value": "12",
+   "tolerance": 0.05,
+   "label": "R121 12 ohm -> decoupled -15 (phasing board, open-arrow symbol)"
+  },
+  {
+   "ref": "C43",
+   "type": "C",
+   "nodes": [
+    "pp",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "C43 .01 decoupled +15"
+  },
+  {
+   "ref": "C39",
+   "type": "C",
+   "nodes": [
+    "pp",
+    "0"
+   ],
+   "value": "47u",
+   "tolerance": 0.2,
+   "label": "C39 47u 16V decoupled +15 (phasing board; not the supply board's C39)"
+  },
+  {
+   "ref": "C44",
+   "type": "C",
+   "nodes": [
+    "pn",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "C44 .01 decoupled -15"
+  },
+  {
+   "ref": "C40",
+   "type": "C",
+   "nodes": [
+    "pn",
+    "0"
+   ],
+   "value": "47u",
+   "tolerance": 0.2,
+   "label": "C40 47u 16V decoupled -15 (phasing board; not the supply board's C40)"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "ina",
+    "a1"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "C1 .047 10% input A coupling (J1 INPUT A tip via the shielded lead)"
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "a1",
+    "0"
+   ],
+   "value": "390k",
+   "tolerance": 0.05,
+   "label": "R1 390K input A bias (input impedance 390K, owner's manual)"
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "a1",
+    "a2"
+   ],
+   "value": "3.9k",
+   "tolerance": 0.05,
+   "label": "R2 3.9K input stopper"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "a2",
+    "0"
+   ],
+   "value": "30p",
+   "tolerance": 0.1,
+   "label": "C2 30P input RF shunt"
+  },
+  {
+   "ref": "Z8A",
+   "type": "opamp",
+   "nodes": [
+    "a2",
+    "a3m",
+    "a3o",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z8A input A follower (pins 3/2/1)"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "a3m",
+    "a3o"
+   ],
+   "value": "390k",
+   "tolerance": 0.05,
+   "label": "R3 390K follower feedback"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "a3m",
+    "a3o"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "C3 .1 100V across R3"
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "a3o",
+    "a4m"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R4 4.7K"
+  },
+  {
+   "ref": "Z8B",
+   "type": "opamp",
+   "nodes": [
+    "a4p",
+    "a4m",
+    "j1_2",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z8B inverting input amp / feedback summer -> J1-2 (phaser A in)"
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "a4m",
+    "j1_2"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R5 4.7K feedback"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "a4m",
+    "j1_2"
+   ],
+   "value": "1n",
+   "tolerance": 0.1,
+   "label": "C4 .001 feedback"
+  },
+  {
+   "ref": "R6",
+   "type": "R",
+   "nodes": [
+    "a4p",
+    "0"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R6 4.7K"
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "a4p",
+    "0"
+   ],
+   "value": "3.3n",
+   "tolerance": 0.1,
+   "label": "C5 .0033"
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "a4p",
+    "fba"
+   ],
+   "value": "6.2k",
+   "tolerance": 0.05,
+   "label": "R7 6.2K from the FDBCK A wiper"
+  },
+  {
+   "ref": "R133",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "fba",
+    "j1_1"
+   ],
+   "value": "10k",
+   "taper": "B",
+   "control": "feedbackA",
+   "label": "R133 10K FDBCK A: top J1-1 (phaser A return), bottom ground, wiper -> R7"
+  },
+  {
+   "ref": "R26",
+   "type": "R",
+   "nodes": [
+    "j1_1",
+    "a9m"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R26 4.7K"
+  },
+  {
+   "ref": "Z9B",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "a9m",
+    "a9o",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z9B unity inverter of the phaser A return (pins 5/6/7)"
+  },
+  {
+   "ref": "R27",
+   "type": "R",
+   "nodes": [
+    "a9m",
+    "a9o"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R27 4.7K"
+  },
+  {
+   "ref": "C13",
+   "type": "C",
+   "nodes": [
+    "a9m",
+    "a9o"
+   ],
+   "value": "1n",
+   "tolerance": 0.1,
+   "label": "C13 .001"
+  },
+  {
+   "ref": "PM1C",
+   "type": "cds",
+   "nodes": [
+    "a9o",
+    "pm1b"
+   ],
+   "light": "lt_pm1",
+   "model": "VTL5C3_CELL",
+   "label": "PM1 P873-12 photo module, cell: series in the wet path (the phasor A on/off switch). Cell law assumed: VTL5C3 card, no P873-12 data"
+  },
+  {
+   "ref": "R123",
+   "type": "pot",
+   "nodes": [
+    "pm1b",
+    "c14a",
+    "c14a"
+   ],
+   "value": "10k",
+   "taper": "B",
+   "control": "trimNotchA",
+   "label": "R123 10K NOTCH DEPTH A trimmer, rheostat (one end from PM1, wiper -> C14, other end N.C.)"
+  },
+  {
+   "ref": "C14",
+   "type": "C",
+   "nodes": [
+    "c14a",
+    "c14b"
+   ],
+   "value": "150n",
+   "tolerance": 0.1,
+   "label": "C14 .15"
+  },
+  {
+   "ref": "R29",
+   "type": "R",
+   "nodes": [
+    "c14b",
+    "suma"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R29 4.7K wet into the A mix"
+  },
+  {
+   "ref": "R31",
+   "type": "R",
+   "nodes": [
+    "a3o",
+    "suma"
+   ],
+   "value": "12k",
+   "tolerance": 0.05,
+   "label": "R31 12K dry (Z8A out) into the A mix"
+  },
+  {
+   "ref": "C15",
+   "type": "C",
+   "nodes": [
+    "suma",
+    "0"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "C15 470P"
+  },
+  {
+   "ref": "Z9A",
+   "type": "opamp",
+   "nodes": [
+    "suma",
+    "outa",
+    "outa",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z9A output A follower (pins 3/2/1)"
+  },
+  {
+   "ref": "R32",
+   "type": "R",
+   "nodes": [
+    "outa",
+    "c16a"
+   ],
+   "value": "560",
+   "tolerance": 0.05,
+   "label": "R32 560 (output impedance 600 ohm, manual)"
+  },
+  {
+   "ref": "C16",
+   "type": "C",
+   "nodes": [
+    "c16a",
+    "ja"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "C16 10u 16V output A coupling"
+  },
+  {
+   "ref": "RLA",
+   "type": "R",
+   "nodes": [
+    "ja",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "NOT ON THE DRAWING: the load at J3 OUTPUT A (the next device's input), so the jack node has a DC path"
+  },
+  {
+   "ref": "R30",
+   "type": "R",
+   "nodes": [
+    "j6_3",
+    "pm1la"
+   ],
+   "value": "2.7k",
+   "tolerance": 0.05,
+   "label": "R30 2.7K PED SW A -> PM1 LED"
+  },
+  {
+   "ref": "PM1L",
+   "type": "led",
+   "nodes": [
+    "pm1la",
+    "cn"
+   ],
+   "light": "lt_pm1",
+   "model": "VTL5C3_LED",
+   "label": "PM1 LED, cathode to -15* (assumed VTL5C3 LED card)"
+  },
+  {
+   "ref": "R28",
+   "type": "R",
+   "nodes": [
+    "j6_3",
+    "cr18a"
+   ],
+   "value": "1.2k",
+   "tolerance": 0.05,
+   "label": "R28 1.2K (Bareille scan: 1.3K)"
+  },
+  {
+   "ref": "CR18",
+   "type": "led",
+   "nodes": [
+    "cr18a",
+    "cn"
+   ],
+   "light": "lt_cr18",
+   "model": "MV5054",
+   "label": "CR18 MV5054-2 red panel LED 'Phasor A on' (Bareille: MV5054-1)"
+  },
+  {
+   "ref": "SWA",
+   "type": "switch",
+   "nodes": [
+    "j6_3",
+    "0"
+   ],
+   "control": "footA",
+   "label": "Bypass footswitch A (external dual footswitch on J6): closes PED SW A (J6-3) to ground = phasor A on (Bareille page: 'two simple switches to connect 2 wires to ground or leave the circuit open')"
+  },
+  {
+   "ref": "S1A",
+   "type": "switch",
+   "nodes": [
+    "s1p",
+    "ina"
+   ],
+   "control": "phasorBInput",
+   "positions": [
+    0
+   ],
+   "label": "S1 PHASOR B INPUT: A IN"
+  },
+  {
+   "ref": "S1B",
+   "type": "switch",
+   "nodes": [
+    "s1p",
+    "outa"
+   ],
+   "control": "phasorBInput",
+   "positions": [
+    1
+   ],
+   "label": "S1 PHASOR B INPUT: A OUT (Z9A output; the 12-stage cascade)"
+  },
+  {
+   "ref": "S1C",
+   "type": "switch",
+   "nodes": [
+    "s1p",
+    "inb"
+   ],
+   "control": "phasorBInput",
+   "positions": [
+    2
+   ],
+   "label": "S1 PHASOR B INPUT: B IN (J2 INPUT B tip)"
+  },
+  {
+   "ref": "C17",
+   "type": "C",
+   "nodes": [
+    "s1p",
+    "b1"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "C17 .047"
+  },
+  {
+   "ref": "R33",
+   "type": "R",
+   "nodes": [
+    "b1",
+    "0"
+   ],
+   "value": "390k",
+   "tolerance": 0.05,
+   "label": "R33 390K"
+  },
+  {
+   "ref": "R34",
+   "type": "R",
+   "nodes": [
+    "b1",
+    "b2"
+   ],
+   "value": "3.9k",
+   "tolerance": 0.05,
+   "label": "R34 3.9K"
+  },
+  {
+   "ref": "C18",
+   "type": "C",
+   "nodes": [
+    "b2",
+    "0"
+   ],
+   "value": "30p",
+   "tolerance": 0.1,
+   "label": "C18 30P"
+  },
+  {
+   "ref": "Z10A",
+   "type": "opamp",
+   "nodes": [
+    "b2",
+    "b3m",
+    "b3o",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z10A input B follower"
+  },
+  {
+   "ref": "R35",
+   "type": "R",
+   "nodes": [
+    "b3m",
+    "b3o"
+   ],
+   "value": "390k",
+   "tolerance": 0.05,
+   "label": "R35 390K"
+  },
+  {
+   "ref": "C19",
+   "type": "C",
+   "nodes": [
+    "b3m",
+    "b3o"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "C19 .1"
+  },
+  {
+   "ref": "R36",
+   "type": "R",
+   "nodes": [
+    "b3o",
+    "b4m"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R36 4.7K"
+  },
+  {
+   "ref": "Z10B",
+   "type": "opamp",
+   "nodes": [
+    "b4p",
+    "b4m",
+    "j1_14",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z10B inverting input amp / feedback summer -> J1-14 (phaser B in)"
+  },
+  {
+   "ref": "R37",
+   "type": "R",
+   "nodes": [
+    "b4m",
+    "j1_14"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R37 4.7K"
+  },
+  {
+   "ref": "C20",
+   "type": "C",
+   "nodes": [
+    "b4m",
+    "j1_14"
+   ],
+   "value": "1n",
+   "tolerance": 0.1,
+   "label": "C20 .001"
+  },
+  {
+   "ref": "R38",
+   "type": "R",
+   "nodes": [
+    "b4p",
+    "0"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R38 4.7K"
+  },
+  {
+   "ref": "C21",
+   "type": "C",
+   "nodes": [
+    "b4p",
+    "0"
+   ],
+   "value": "3.3n",
+   "tolerance": 0.1,
+   "label": "C21 .0033"
+  },
+  {
+   "ref": "R39",
+   "type": "R",
+   "nodes": [
+    "b4p",
+    "fbb"
+   ],
+   "value": "6.2k",
+   "tolerance": 0.05,
+   "label": "R39 6.2K from the FDBCK B wiper"
+  },
+  {
+   "ref": "R134",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "fbb",
+    "j1_13"
+   ],
+   "value": "10k",
+   "taper": "B",
+   "control": "feedbackB",
+   "label": "R134 10K FDBCK B: top J1-13 (phaser B return), wiper -> R39"
+  },
+  {
+   "ref": "R58",
+   "type": "R",
+   "nodes": [
+    "j1_13",
+    "b9m"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R58 4.7K"
+  },
+  {
+   "ref": "Z11B",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "b9m",
+    "b9o",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z11B unity inverter of the phaser B return"
+  },
+  {
+   "ref": "R59",
+   "type": "R",
+   "nodes": [
+    "b9m",
+    "b9o"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R59 4.7K"
+  },
+  {
+   "ref": "C29",
+   "type": "C",
+   "nodes": [
+    "b9m",
+    "b9o"
+   ],
+   "value": "1n",
+   "tolerance": 0.1,
+   "label": "C29 .001"
+  },
+  {
+   "ref": "PM2C",
+   "type": "cds",
+   "nodes": [
+    "b9o",
+    "pm2b"
+   ],
+   "light": "lt_pm2",
+   "model": "VTL5C3_CELL",
+   "label": "PM2 P873-12 photo module, cell (phasor B on/off). Cell law assumed: VTL5C3 card"
+  },
+  {
+   "ref": "R124",
+   "type": "pot",
+   "nodes": [
+    "pm2b",
+    "c30a",
+    "c30a"
+   ],
+   "value": "10k",
+   "taper": "B",
+   "control": "trimNotchB",
+   "label": "R124 10K NOTCH DEPTH B trimmer, rheostat"
+  },
+  {
+   "ref": "C30",
+   "type": "C",
+   "nodes": [
+    "c30a",
+    "c30b"
+   ],
+   "value": "150n",
+   "tolerance": 0.1,
+   "label": "C30 .15"
+  },
+  {
+   "ref": "R62",
+   "type": "R",
+   "nodes": [
+    "c30b",
+    "sumb"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R62 4.7K wet into the B mix"
+  },
+  {
+   "ref": "R63",
+   "type": "R",
+   "nodes": [
+    "b3o",
+    "sumb"
+   ],
+   "value": "12k",
+   "tolerance": 0.05,
+   "label": "R63 12K dry (Z10A out) into the B mix"
+  },
+  {
+   "ref": "C31",
+   "type": "C",
+   "nodes": [
+    "sumb",
+    "0"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "C31 470P"
+  },
+  {
+   "ref": "Z11A",
+   "type": "opamp",
+   "nodes": [
+    "sumb",
+    "outb",
+    "outb",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z11A output B follower"
+  },
+  {
+   "ref": "R64",
+   "type": "R",
+   "nodes": [
+    "outb",
+    "c32a"
+   ],
+   "value": "560",
+   "tolerance": 0.05,
+   "label": "R64 560"
+  },
+  {
+   "ref": "C32",
+   "type": "C",
+   "nodes": [
+    "c32a",
+    "jb"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "C32 10u 16V output B coupling"
+  },
+  {
+   "ref": "RLB",
+   "type": "R",
+   "nodes": [
+    "jb",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "NOT ON THE DRAWING: the load at J4 OUTPUT B"
+  },
+  {
+   "ref": "R61",
+   "type": "R",
+   "nodes": [
+    "j6_4",
+    "pm2la"
+   ],
+   "value": "2.7k",
+   "tolerance": 0.05,
+   "label": "R61 2.7K PED SW B -> PM2 LED"
+  },
+  {
+   "ref": "PM2L",
+   "type": "led",
+   "nodes": [
+    "pm2la",
+    "cn"
+   ],
+   "light": "lt_pm2",
+   "model": "VTL5C3_LED",
+   "label": "PM2 LED (assumed VTL5C3 LED card)"
+  },
+  {
+   "ref": "R60",
+   "type": "R",
+   "nodes": [
+    "j6_4",
+    "cr19a"
+   ],
+   "value": "1.2k",
+   "tolerance": 0.05,
+   "label": "R60 1.2K (Bareille scan: 1.3K)"
+  },
+  {
+   "ref": "CR19",
+   "type": "led",
+   "nodes": [
+    "cr19a",
+    "cn"
+   ],
+   "light": "lt_cr19",
+   "model": "MV5054",
+   "label": "CR19 MV5054-2 panel LED 'Phasor B on'"
+  },
+  {
+   "ref": "SWB",
+   "type": "switch",
+   "nodes": [
+    "j6_4",
+    "0"
+   ],
+   "control": "footB",
+   "label": "Bypass footswitch B: closes PED SW B (J6-4) to ground = phasor B on"
+  },
+  {
+   "ref": "R135",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "raw",
+    "cp"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "rateA",
+   "label": "R135 25K RATE A across +15* and ground, wiper -> R65 (taper not printed; linear assumed)"
+  },
+  {
+   "ref": "R65",
+   "type": "R",
+   "nodes": [
+    "raw",
+    "s2m"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "R65 47K"
+  },
+  {
+   "ref": "S2M",
+   "type": "switch",
+   "nodes": [
+    "z12m",
+    "s2m"
+   ],
+   "control": "rateControl",
+   "positions": [
+    0
+   ],
+   "label": "S2 RATE CONTROL: MAN (R65)"
+  },
+  {
+   "ref": "S2P",
+   "type": "switch",
+   "nodes": [
+    "z12m",
+    "pedn"
+   ],
+   "control": "rateControl",
+   "positions": [
+    1
+   ],
+   "label": "S2 RATE CONTROL: PED (pedal network)"
+  },
+  {
+   "ref": "R67",
+   "type": "R",
+   "nodes": [
+    "z12m",
+    "r126w"
+   ],
+   "value": "390k",
+   "tolerance": 0.05,
+   "label": "R67 390K minimum-rate current"
+  },
+  {
+   "ref": "R126",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "r126w",
+    "n68"
+   ],
+   "value": "10k",
+   "taper": "B",
+   "control": "trimLowSpeed",
+   "label": "R126 10K LFO LOW SPEED ADJ trimmer, ground to R68"
+  },
+  {
+   "ref": "R68",
+   "type": "R",
+   "nodes": [
+    "n68",
+    "cp"
+   ],
+   "value": "20k",
+   "tolerance": 0.05,
+   "label": "R68 20K to +15* (Bareille scan: 120K)"
+  },
+  {
+   "ref": "R66",
+   "type": "R",
+   "nodes": [
+    "z12m",
+    "cr1a"
+   ],
+   "value": "39k",
+   "tolerance": 0.05,
+   "label": "R66 39K (Bareille: 39K 2%)"
+  },
+  {
+   "ref": "CR1",
+   "type": "D",
+   "nodes": [
+    "cr1a",
+    "sga"
+   ],
+   "model": "1N4148",
+   "label": "CR1 1N4148 in Z12A's feedback (matches the bridge diode drop)"
+  },
+  {
+   "ref": "Z12A",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "z12m",
+    "sga",
+    "g1v",
+    "cn"
+   ],
+   "model": "MC1458",
+   "label": "Z12A rate amplifier (output <= 0): V = -(I_rate*39K + Vd)"
+  },
+  {
+   "ref": "R70",
+   "type": "R",
+   "nodes": [
+    "sga",
+    "z12bm"
+   ],
+   "value": "39.2k",
+   "tolerance": 0.01,
+   "label": "R70 39.2K 1% (Bareille: 39K 2%)"
+  },
+  {
+   "ref": "R71",
+   "type": "R",
+   "nodes": [
+    "z12bm",
+    "sgb"
+   ],
+   "value": "39.2k",
+   "tolerance": 0.01,
+   "label": "R71 39.2K (tolerance mark faded; Bareille: 39K 2%)"
+  },
+  {
+   "ref": "Z12B",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "z12bm",
+    "sgb",
+    "g1v",
+    "cn"
+   ],
+   "model": "MC1458",
+   "label": "Z12B unity inverter -> positive rate voltage"
+  },
+  {
+   "ref": "R69",
+   "type": "R",
+   "nodes": [
+    "sga",
+    "brl"
+   ],
+   "value": "33k",
+   "tolerance": 0.05,
+   "label": "R69 33K current source into the bridge (left node)"
+  },
+  {
+   "ref": "R72",
+   "type": "R",
+   "nodes": [
+    "sgb",
+    "brr"
+   ],
+   "value": "33k",
+   "tolerance": 0.05,
+   "label": "R72 33K current source into the bridge (right node; value faded, '33' legible; Bareille 33K)"
+  },
+  {
+   "ref": "CR2",
+   "type": "D",
+   "nodes": [
+    "brt",
+    "brl"
+   ],
+   "model": "1N4148",
+   "label": "CR2 bridge, anode at the integrator node, cathode left"
+  },
+  {
+   "ref": "CR5",
+   "type": "D",
+   "nodes": [
+    "brr",
+    "brt"
+   ],
+   "model": "1N4148",
+   "label": "CR5 bridge, anode right, cathode at the integrator node"
+  },
+  {
+   "ref": "CR3",
+   "type": "D",
+   "nodes": [
+    "sq1",
+    "brl"
+   ],
+   "model": "1N4148",
+   "label": "CR3 bridge, anode at Z13A's output (bottom), cathode left"
+  },
+  {
+   "ref": "CR4",
+   "type": "D",
+   "nodes": [
+    "brr",
+    "sq1"
+   ],
+   "model": "1N4148",
+   "label": "CR4 bridge, anode right, cathode at Z13A's output (bottom)"
+  },
+  {
+   "ref": "Z13A",
+   "type": "opamp",
+   "nodes": [
+    "z13p",
+    "0",
+    "sq1",
+    "g1v",
+    "cn"
+   ],
+   "model": "MC1458",
+   "label": "Z13A Schmitt comparator (square), steers the bridge"
+  },
+  {
+   "ref": "R73",
+   "type": "R",
+   "nodes": [
+    "z13p",
+    "sq1"
+   ],
+   "value": "68k",
+   "tolerance": 0.05,
+   "label": "R73 68K Schmitt positive feedback"
+  },
+  {
+   "ref": "R74",
+   "type": "R",
+   "nodes": [
+    "z13p",
+    "tri1"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "R74 47K from the triangle"
+  },
+  {
+   "ref": "Z13B",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "brt",
+    "tri1",
+    "g1v",
+    "cn"
+   ],
+   "model": "MC1458",
+   "label": "Z13B integrator (triangle)"
+  },
+  {
+   "ref": "C33",
+   "type": "C",
+   "nodes": [
+    "brt",
+    "tri1"
+   ],
+   "value": "470n",
+   "tolerance": 0.1,
+   "label": "C33 .47 integrator"
+  },
+  {
+   "ref": "CR6",
+   "type": "D",
+   "nodes": [
+    "cp",
+    "g1v"
+   ],
+   "model": "1N4148",
+   "label": "CR6 1N4148 from +15* into pin 8 of Z12 and Z13 (V+ one diode below +15*)"
+  },
+  {
+   "ref": "R75",
+   "type": "R",
+   "nodes": [
+    "tri1",
+    "r75b"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "R75 47K triangle -> S3 (value faded on fsb; Bareille 47K)"
+  },
+  {
+   "ref": "R76",
+   "type": "R",
+   "nodes": [
+    "sq1",
+    "r76b"
+   ],
+   "value": "120k",
+   "tolerance": 0.05,
+   "label": "R76 120K square -> S3 with C36"
+  },
+  {
+   "ref": "C36",
+   "type": "C",
+   "nodes": [
+    "r76b",
+    "0"
+   ],
+   "value": "470n",
+   "tolerance": 0.1,
+   "label": "C36 .47 square smoothing"
+  },
+  {
+   "ref": "S3SI",
+   "type": "switch",
+   "nodes": [
+    "z15p",
+    "r75b"
+   ],
+   "control": "shapeA",
+   "positions": [
+    0
+   ],
+   "label": "S3 SHAPE: SINE (triangle via R75; the Bareille drawing labels this throw SQUARE)"
+  },
+  {
+   "ref": "S3SQ",
+   "type": "switch",
+   "nodes": [
+    "z15p",
+    "r76b"
+   ],
+   "control": "shapeA",
+   "positions": [
+    1
+   ],
+   "label": "S3 SHAPE: SQUARE (R76/C36 rounded square; Bareille labels it SINE)"
+  },
+  {
+   "ref": "R77",
+   "type": "R",
+   "nodes": [
+    "z15p",
+    "r77b"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "R77 47K"
+  },
+  {
+   "ref": "R128",
+   "type": "pot",
+   "nodes": [
+    "r77b",
+    "0",
+    "0"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "trimGen1Amp",
+   "label": "R128 25K GEN 1 AMP trimmer, rheostat to ground, other end N.C. (Bareille: 22K)"
+  },
+  {
+   "ref": "Z15A",
+   "type": "opamp",
+   "nodes": [
+    "z15p",
+    "g1o",
+    "g1o",
+    "cp",
+    "cn"
+   ],
+   "model": "MC1458",
+   "label": "Z15A GEN 1 AMP follower"
+  },
+  {
+   "ref": "S6G",
+   "type": "switch",
+   "nodes": [
+    "s6p",
+    "g1o"
+   ],
+   "control": "sweepA",
+   "positions": [
+    0
+   ],
+   "label": "S6 SWEEP (phasor A): GEN 1"
+  },
+  {
+   "ref": "S6P",
+   "type": "switch",
+   "nodes": [
+    "s6p",
+    "pedo"
+   ],
+   "control": "sweepA",
+   "positions": [
+    1
+   ],
+   "label": "S6 SWEEP (phasor A): PED"
+  },
+  {
+   "ref": "R137",
+   "type": "pot",
+   "nodes": [
+    "n96",
+    "j1_5",
+    "s6p"
+   ],
+   "value": "10k",
+   "taper": "B",
+   "control": "depthA",
+   "label": "R137 10K DEPTH A: top from S6, bottom R96, wiper -> J1-5 (sweep A)"
+  },
+  {
+   "ref": "R96",
+   "type": "R",
+   "nodes": [
+    "n96",
+    "0"
+   ],
+   "value": "560",
+   "tolerance": 0.05,
+   "label": "R96 560"
+  },
+  {
+   "ref": "R78",
+   "type": "R",
+   "nodes": [
+    "j6_2",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "R78 1M PEDAL IN pull-down (nothing plugged: the external Opti-Pedal is not on these drawings)"
+  },
+  {
+   "ref": "R79",
+   "type": "R",
+   "nodes": [
+    "j6_2",
+    "z16p"
+   ],
+   "value": "3.9k",
+   "tolerance": 0.05,
+   "label": "R79 3.9K"
+  },
+  {
+   "ref": "Z16A",
+   "type": "opamp",
+   "nodes": [
+    "z16p",
+    "z16m",
+    "z16o",
+    "cp",
+    "cn"
+   ],
+   "model": "MC1458",
+   "label": "Z16A pedal follower"
+  },
+  {
+   "ref": "R80",
+   "type": "R",
+   "nodes": [
+    "z16m",
+    "z16o"
+   ],
+   "value": "33k",
+   "tolerance": 0.05,
+   "label": "R80 33K follower feedback (Bareille: 39K)"
+  },
+  {
+   "ref": "R82",
+   "type": "R",
+   "nodes": [
+    "z16o",
+    "pn1"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R82 4.7K"
+  },
+  {
+   "ref": "R87",
+   "type": "R",
+   "nodes": [
+    "pn1",
+    "0"
+   ],
+   "value": "430",
+   "tolerance": 0.05,
+   "label": "R87 430"
+  },
+  {
+   "ref": "R89",
+   "type": "R",
+   "nodes": [
+    "pn1",
+    "pedn"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "R89 10K -> S2 PED"
+  },
+  {
+   "ref": "R88",
+   "type": "R",
+   "nodes": [
+    "pn1",
+    "cr8a"
+   ],
+   "value": "560",
+   "tolerance": 0.05,
+   "label": "R88 560"
+  },
+  {
+   "ref": "CR8",
+   "type": "D",
+   "nodes": [
+    "cr8a",
+    "pedn"
+   ],
+   "model": "1N4148",
+   "label": "CR8 1N4148, cathode at the S2 PED node"
+  },
+  {
+   "ref": "R81",
+   "type": "R",
+   "nodes": [
+    "z16o",
+    "z16bp"
+   ],
+   "value": "39k",
+   "tolerance": 0.05,
+   "label": "R81 39K (Bareille: 39K 2%)"
+  },
+  {
+   "ref": "R83",
+   "type": "R",
+   "nodes": [
+    "z16bp",
+    "0"
+   ],
+   "value": "39k",
+   "tolerance": 0.05,
+   "label": "R83 39K (Bareille: 39K 2%)"
+  },
+  {
+   "ref": "Z16B",
+   "type": "opamp",
+   "nodes": [
+    "z16bp",
+    "z16bm",
+    "pedo",
+    "cp",
+    "cn"
+   ],
+   "model": "MC1458",
+   "label": "Z16B pedal sweep amp (gain 1.04 of the pedal, minus the offset) -> S5/S6 PED"
+  },
+  {
+   "ref": "R84",
+   "type": "R",
+   "nodes": [
+    "z16bm",
+    "pedo"
+   ],
+   "value": "39k",
+   "tolerance": 0.05,
+   "label": "R84 39K (Bareille: 39K 2%)"
+  },
+  {
+   "ref": "R85",
+   "type": "R",
+   "nodes": [
+    "z16bm",
+    "r125w"
+   ],
+   "value": "36k",
+   "tolerance": 0.05,
+   "label": "R85 36K (fsb: hand-corrected to 36K; Bareille: 36K)"
+  },
+  {
+   "ref": "R125",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "r125w",
+    "n86"
+   ],
+   "value": "10k",
+   "taper": "B",
+   "control": "trimPedalOffset",
+   "label": "R125 10K PEDAL OFFSET ADJ trimmer, ground to R86"
+  },
+  {
+   "ref": "R86",
+   "type": "R",
+   "nodes": [
+    "n86",
+    "cp"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R86 4.7K to +15*"
+  },
+  {
+   "ref": "WZ14",
+   "type": "R",
+   "nodes": [
+    "n15",
+    "n15z"
+   ],
+   "value": "0.01",
+   "tolerance": 0.0,
+   "label": "ENGINE WORKAROUND, NOT A PART: 10 milliohm of harness wire from -15 (J1-7) to Z14 pin 4. Z14's V+ is one diode below +15* (CR7, a circuit node), which makes Z14 a rail-node op-amp, and the compiler needs both of its supply pins on cut nodes; a DC-source node cannot be cut"
+  },
+  {
+   "ref": "Z14A",
+   "type": "opamp",
+   "nodes": [
+    "z14p",
+    "0",
+    "sq2",
+    "g2v",
+    "n15z"
+   ],
+   "model": "MC1458",
+   "label": "Z14A Schmitt comparator (square)"
+  },
+  {
+   "ref": "R91",
+   "type": "R",
+   "nodes": [
+    "z14p",
+    "sq2"
+   ],
+   "value": "68k",
+   "tolerance": 0.05,
+   "label": "R91 68K Schmitt positive feedback"
+  },
+  {
+   "ref": "R90",
+   "type": "R",
+   "nodes": [
+    "z14p",
+    "tri2"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "R90 47K from the triangle"
+  },
+  {
+   "ref": "R92",
+   "type": "R",
+   "nodes": [
+    "sq2",
+    "sq2f"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "R92 10K square smoothing"
+  },
+  {
+   "ref": "C35",
+   "type": "C",
+   "nodes": [
+    "sq2f",
+    "cp"
+   ],
+   "value": "2.2u",
+   "tolerance": 0.2,
+   "label": "C35 2.2u 50V to +15* (value faded on fsb; Bareille 2.2 50V)"
+  },
+  {
+   "ref": "R136",
+   "type": "pot",
+   "nodes": [
+    "n93",
+    "rbw",
+    "sq2"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "rateB",
+   "label": "R136 25K RATE B: top from the square (Z14A out), bottom R93 (taper not printed; linear assumed)"
+  },
+  {
+   "ref": "R93",
+   "type": "R",
+   "nodes": [
+    "n93",
+    "0"
+   ],
+   "value": "120",
+   "tolerance": 0.05,
+   "label": "R93 120 (minimum-rate end resistor)"
+  },
+  {
+   "ref": "R94",
+   "type": "R",
+   "nodes": [
+    "rbw",
+    "z14bm"
+   ],
+   "value": "39k",
+   "tolerance": 0.05,
+   "label": "R94 39K (Bareille: 39K 2%)"
+  },
+  {
+   "ref": "Z14B",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "z14bm",
+    "tri2",
+    "g2v",
+    "n15z"
+   ],
+   "model": "MC1458",
+   "label": "Z14B integrator (triangle)"
+  },
+  {
+   "ref": "C34",
+   "type": "C",
+   "nodes": [
+    "z14bm",
+    "tri2"
+   ],
+   "value": "470n",
+   "tolerance": 0.1,
+   "label": "C34 .47 integrator"
+  },
+  {
+   "ref": "CR7",
+   "type": "D",
+   "nodes": [
+    "cp",
+    "g2v"
+   ],
+   "model": "1N4148",
+   "label": "CR7 1N4148 into Z14 pin 8 (anode on +15*: the star is faint on both scans)"
+  },
+  {
+   "ref": "S4SI",
+   "type": "switch",
+   "nodes": [
+    "s4p",
+    "tri2"
+   ],
+   "control": "shapeB",
+   "positions": [
+    0
+   ],
+   "label": "S4 SHAPE (gen 2): SINE (triangle)"
+  },
+  {
+   "ref": "S4SQ",
+   "type": "switch",
+   "nodes": [
+    "s4p",
+    "sq2f"
+   ],
+   "control": "shapeB",
+   "positions": [
+    1
+   ],
+   "label": "S4 SHAPE (gen 2): SQ (R92/C35 rounded square)"
+  },
+  {
+   "ref": "R127",
+   "type": "pot",
+   "nodes": [
+    "s4p",
+    "g2a",
+    "g2a"
+   ],
+   "value": "10k",
+   "taper": "B",
+   "control": "trimGen2Amp",
+   "label": "R127 10K GEN 2 AMP trimmer, rheostat in series with DEPTH B (other end N.C.)"
+  },
+  {
+   "ref": "S5G1",
+   "type": "switch",
+   "nodes": [
+    "s5p",
+    "g1o"
+   ],
+   "control": "sweepB",
+   "positions": [
+    0
+   ],
+   "label": "S5 SWEEP (phasor B): GEN 1"
+  },
+  {
+   "ref": "S5G2",
+   "type": "switch",
+   "nodes": [
+    "s5p",
+    "g2a"
+   ],
+   "control": "sweepB",
+   "positions": [
+    1
+   ],
+   "label": "S5 SWEEP (phasor B): GEN 2"
+  },
+  {
+   "ref": "S5P",
+   "type": "switch",
+   "nodes": [
+    "s5p",
+    "pedo"
+   ],
+   "control": "sweepB",
+   "positions": [
+    2
+   ],
+   "label": "S5 SWEEP (phasor B): PED"
+  },
+  {
+   "ref": "R138",
+   "type": "pot",
+   "nodes": [
+    "n105",
+    "dbx",
+    "s5p"
+   ],
+   "value": "10k",
+   "taper": "B",
+   "control": "depthB",
+   "label": "R138 10K DEPTH B: top from S5, bottom R105, wiper = sweep B (normal)"
+  },
+  {
+   "ref": "R105",
+   "type": "R",
+   "nodes": [
+    "n105",
+    "0"
+   ],
+   "value": "560",
+   "tolerance": 0.05,
+   "label": "R105 560"
+  },
+  {
+   "ref": "R104",
+   "type": "R",
+   "nodes": [
+    "dbx",
+    "r104b"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "R104 47K, grounded by S7 in REV"
+  },
+  {
+   "ref": "S7A",
+   "type": "switch",
+   "nodes": [
+    "r104b",
+    "0"
+   ],
+   "control": "sweepSync",
+   "positions": [
+    1
+   ],
+   "label": "S7 SWEEP SYNC pole 1 (ground): REV throw = R104 (NORM throw unconnected)"
+  },
+  {
+   "ref": "R106",
+   "type": "R",
+   "nodes": [
+    "dbx",
+    "z15bm"
+   ],
+   "value": "39.2k",
+   "tolerance": 0.01,
+   "label": "R106 39.2K 1% (Bareille: 39K 2%)"
+  },
+  {
+   "ref": "R107",
+   "type": "R",
+   "nodes": [
+    "z15bm",
+    "z15bo"
+   ],
+   "value": "39.2k",
+   "tolerance": 0.01,
+   "label": "R107 39.2K 1% (Bareille: 39K 2%)"
+  },
+  {
+   "ref": "Z15B",
+   "type": "opamp",
+   "nodes": [
+    "z15bp",
+    "z15bm",
+    "z15bo",
+    "cp",
+    "cn"
+   ],
+   "model": "MC1458",
+   "label": "Z15B sweep inverter (REV)"
+  },
+  {
+   "ref": "R108",
+   "type": "R",
+   "nodes": [
+    "z15bp",
+    "0"
+   ],
+   "value": "18k",
+   "tolerance": 0.05,
+   "label": "R108 18K"
+  },
+  {
+   "ref": "S7N",
+   "type": "switch",
+   "nodes": [
+    "j1_6",
+    "dbx"
+   ],
+   "control": "sweepSync",
+   "positions": [
+    0
+   ],
+   "label": "S7 SWEEP SYNC pole 2 (J1-6): NORM = the DEPTH B wiper"
+  },
+  {
+   "ref": "S7R",
+   "type": "switch",
+   "nodes": [
+    "j1_6",
+    "z15bo"
+   ],
+   "control": "sweepSync",
+   "positions": [
+    1
+   ],
+   "label": "S7 SWEEP SYNC pole 2 (J1-6): REV = Z15B (inverted)"
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "j1_2",
+    "pa1m"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R8 4.7K stage 1 input"
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "pa1m",
+    "pa1o"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R9 4.7K stage 1 feedback"
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "j1_2",
+    "pa1p"
+   ],
+   "value": "6.8n",
+   "tolerance": 0.1,
+   "label": "C6 .0068 10% stage 1"
+  },
+  {
+   "ref": "R10",
+   "type": "R",
+   "nodes": [
+    "pa1p",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R10 220K stage 1 shunt"
+  },
+  {
+   "ref": "PM3A",
+   "type": "cds",
+   "nodes": [
+    "pa1p",
+    "0"
+   ],
+   "light": "lt_pm3",
+   "model": "VTL5C3_CELL",
+   "label": "PM3A photocell (module pins 10/9), shunt on stage 1's + input. Cell law assumed: VTL5C3 card (no Bi-Phase photocell data)"
+  },
+  {
+   "ref": "Z1A",
+   "type": "opamp",
+   "nodes": [
+    "pa1p",
+    "pa1m",
+    "pa1o",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z1A all-pass stage 1"
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "pa1o",
+    "pa2m"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R11 4.7K stage 2 input"
+  },
+  {
+   "ref": "R12",
+   "type": "R",
+   "nodes": [
+    "pa2m",
+    "pa2o"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R12 4.7K stage 2 feedback"
+  },
+  {
+   "ref": "C7",
+   "type": "C",
+   "nodes": [
+    "pa1o",
+    "pa2p"
+   ],
+   "value": "6.8n",
+   "tolerance": 0.1,
+   "label": "C7 .0068 10% stage 2"
+  },
+  {
+   "ref": "R13",
+   "type": "R",
+   "nodes": [
+    "pa2p",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R13 220K stage 2 shunt"
+  },
+  {
+   "ref": "PM3B",
+   "type": "cds",
+   "nodes": [
+    "pa2p",
+    "0"
+   ],
+   "light": "lt_pm3",
+   "model": "VTL5C3_CELL",
+   "label": "PM3B photocell (module pins 8/9), shunt on stage 2's + input. Cell law assumed: VTL5C3 card (no Bi-Phase photocell data)"
+  },
+  {
+   "ref": "Z1B",
+   "type": "opamp",
+   "nodes": [
+    "pa2p",
+    "pa2m",
+    "pa2o",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z1B all-pass stage 2"
+  },
+  {
+   "ref": "R14",
+   "type": "R",
+   "nodes": [
+    "pa2o",
+    "pa3m"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R14 4.7K stage 3 input"
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "pa3m",
+    "pa3o"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R15 4.7K stage 3 feedback"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "pa2o",
+    "pa3p"
+   ],
+   "value": "6.8n",
+   "tolerance": 0.1,
+   "label": "C8 .0068 10% stage 3"
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "pa3p",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R16 220K stage 3 shunt"
+  },
+  {
+   "ref": "PM3C",
+   "type": "cds",
+   "nodes": [
+    "pa3p",
+    "0"
+   ],
+   "light": "lt_pm3",
+   "model": "VTL5C3_CELL",
+   "label": "PM3C photocell (module pins 7/9), shunt on stage 3's + input. Cell law assumed: VTL5C3 card (no Bi-Phase photocell data)"
+  },
+  {
+   "ref": "Z2A",
+   "type": "opamp",
+   "nodes": [
+    "pa3p",
+    "pa3m",
+    "pa3o",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z2A all-pass stage 3"
+  },
+  {
+   "ref": "R17",
+   "type": "R",
+   "nodes": [
+    "pa3o",
+    "pa4m"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R17 4.7K stage 4 input"
+  },
+  {
+   "ref": "R18",
+   "type": "R",
+   "nodes": [
+    "pa4m",
+    "pa4o"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R18 4.7K stage 4 feedback"
+  },
+  {
+   "ref": "C9",
+   "type": "C",
+   "nodes": [
+    "pa3o",
+    "pa4p"
+   ],
+   "value": "6.8n",
+   "tolerance": 0.1,
+   "label": "C9 .0068 10% stage 4"
+  },
+  {
+   "ref": "R19",
+   "type": "R",
+   "nodes": [
+    "pa4p",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R19 220K stage 4 shunt"
+  },
+  {
+   "ref": "PM3D",
+   "type": "cds",
+   "nodes": [
+    "pa4p",
+    "0"
+   ],
+   "light": "lt_pm3",
+   "model": "VTL5C3_CELL",
+   "label": "PM3D photocell (module pins 6/4), shunt on stage 4's + input. Cell law assumed: VTL5C3 card (no Bi-Phase photocell data)"
+  },
+  {
+   "ref": "Z2B",
+   "type": "opamp",
+   "nodes": [
+    "pa4p",
+    "pa4m",
+    "pa4o",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z2B all-pass stage 4"
+  },
+  {
+   "ref": "R20",
+   "type": "R",
+   "nodes": [
+    "pa4o",
+    "pa5m"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R20 4.7K stage 5 input; fsb faded; Bareille 4.7K"
+  },
+  {
+   "ref": "R21",
+   "type": "R",
+   "nodes": [
+    "pa5m",
+    "pa5o"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R21 4.7K stage 5 feedback"
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "pa4o",
+    "pa5p"
+   ],
+   "value": "6.8n",
+   "tolerance": 0.1,
+   "label": "C10 .0068 10% stage 5; fsb faded; Bareille .0068 10%"
+  },
+  {
+   "ref": "R22",
+   "type": "R",
+   "nodes": [
+    "pa5p",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R22 220K stage 5 shunt; fsb faded; Bareille 220K"
+  },
+  {
+   "ref": "PM3E",
+   "type": "cds",
+   "nodes": [
+    "pa5p",
+    "0"
+   ],
+   "light": "lt_pm3",
+   "model": "VTL5C3_CELL",
+   "label": "PM3E photocell (module pins 5/4), shunt on stage 5's + input. Cell law assumed: VTL5C3 card (no Bi-Phase photocell data)"
+  },
+  {
+   "ref": "Z3A",
+   "type": "opamp",
+   "nodes": [
+    "pa5p",
+    "pa5m",
+    "pa5o",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z3A all-pass stage 5"
+  },
+  {
+   "ref": "R23",
+   "type": "R",
+   "nodes": [
+    "pa5o",
+    "pa6m"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R23 4.7K stage 6 input"
+  },
+  {
+   "ref": "R24",
+   "type": "R",
+   "nodes": [
+    "pa6m",
+    "pa6o"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R24 4.7K stage 6 feedback"
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "pa5o",
+    "pa6p"
+   ],
+   "value": "6.8n",
+   "tolerance": 0.1,
+   "label": "C11 .0068 10% stage 6"
+  },
+  {
+   "ref": "R25",
+   "type": "R",
+   "nodes": [
+    "pa6p",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R25 220K stage 6 shunt"
+  },
+  {
+   "ref": "PM3F",
+   "type": "cds",
+   "nodes": [
+    "pa6p",
+    "0"
+   ],
+   "light": "lt_pm3",
+   "model": "VTL5C3_CELL",
+   "label": "PM3F photocell (module pins 3/4), shunt on stage 6's + input. Cell law assumed: VTL5C3 card (no Bi-Phase photocell data)"
+  },
+  {
+   "ref": "Z3B",
+   "type": "opamp",
+   "nodes": [
+    "pa6p",
+    "pa6m",
+    "pa6o",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z3B all-pass stage 6"
+  },
+  {
+   "ref": "C12",
+   "type": "C",
+   "nodes": [
+    "pa6o",
+    "j1_1"
+   ],
+   "value": "470n",
+   "tolerance": 0.1,
+   "label": "C12 .47 10% chain output coupling -> J1-1"
+  },
+  {
+   "ref": "R40",
+   "type": "R",
+   "nodes": [
+    "j1_14",
+    "pb1m"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R40 4.7K stage 1 input"
+  },
+  {
+   "ref": "R41",
+   "type": "R",
+   "nodes": [
+    "pb1m",
+    "pb1o"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R41 4.7K stage 1 feedback"
+  },
+  {
+   "ref": "C22",
+   "type": "C",
+   "nodes": [
+    "j1_14",
+    "pb1p"
+   ],
+   "value": "6.8n",
+   "tolerance": 0.1,
+   "label": "C22 .0068 10% stage 1"
+  },
+  {
+   "ref": "R42",
+   "type": "R",
+   "nodes": [
+    "pb1p",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R42 220K stage 1 shunt"
+  },
+  {
+   "ref": "PM4A",
+   "type": "cds",
+   "nodes": [
+    "pb1p",
+    "0"
+   ],
+   "light": "lt_pm4",
+   "model": "VTL5C3_CELL",
+   "label": "PM4A photocell (module pins 10/9), shunt on stage 1's + input. Cell law assumed: VTL5C3 card (no Bi-Phase photocell data)"
+  },
+  {
+   "ref": "Z4A",
+   "type": "opamp",
+   "nodes": [
+    "pb1p",
+    "pb1m",
+    "pb1o",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z4A all-pass stage 1"
+  },
+  {
+   "ref": "R43",
+   "type": "R",
+   "nodes": [
+    "pb1o",
+    "pb2m"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R43 4.7K stage 2 input"
+  },
+  {
+   "ref": "R44",
+   "type": "R",
+   "nodes": [
+    "pb2m",
+    "pb2o"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R44 4.7K stage 2 feedback"
+  },
+  {
+   "ref": "C23",
+   "type": "C",
+   "nodes": [
+    "pb1o",
+    "pb2p"
+   ],
+   "value": "6.8n",
+   "tolerance": 0.1,
+   "label": "C23 .0068 10% stage 2"
+  },
+  {
+   "ref": "R45",
+   "type": "R",
+   "nodes": [
+    "pb2p",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R45 220K stage 2 shunt"
+  },
+  {
+   "ref": "PM4B",
+   "type": "cds",
+   "nodes": [
+    "pb2p",
+    "0"
+   ],
+   "light": "lt_pm4",
+   "model": "VTL5C3_CELL",
+   "label": "PM4B photocell (module pins 8/9), shunt on stage 2's + input. Cell law assumed: VTL5C3 card (no Bi-Phase photocell data)"
+  },
+  {
+   "ref": "Z4B",
+   "type": "opamp",
+   "nodes": [
+    "pb2p",
+    "pb2m",
+    "pb2o",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z4B all-pass stage 2"
+  },
+  {
+   "ref": "R46",
+   "type": "R",
+   "nodes": [
+    "pb2o",
+    "pb3m"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R46 4.7K stage 3 input"
+  },
+  {
+   "ref": "R47",
+   "type": "R",
+   "nodes": [
+    "pb3m",
+    "pb3o"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R47 4.7K stage 3 feedback"
+  },
+  {
+   "ref": "C24",
+   "type": "C",
+   "nodes": [
+    "pb2o",
+    "pb3p"
+   ],
+   "value": "6.8n",
+   "tolerance": 0.1,
+   "label": "C24 .0068 10% stage 3"
+  },
+  {
+   "ref": "R48",
+   "type": "R",
+   "nodes": [
+    "pb3p",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R48 220K stage 3 shunt"
+  },
+  {
+   "ref": "PM4C",
+   "type": "cds",
+   "nodes": [
+    "pb3p",
+    "0"
+   ],
+   "light": "lt_pm4",
+   "model": "VTL5C3_CELL",
+   "label": "PM4C photocell (module pins 7/9), shunt on stage 3's + input. Cell law assumed: VTL5C3 card (no Bi-Phase photocell data)"
+  },
+  {
+   "ref": "Z5A",
+   "type": "opamp",
+   "nodes": [
+    "pb3p",
+    "pb3m",
+    "pb3o",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z5A all-pass stage 3"
+  },
+  {
+   "ref": "R49",
+   "type": "R",
+   "nodes": [
+    "pb3o",
+    "pb4m"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R49 4.7K stage 4 input"
+  },
+  {
+   "ref": "R50",
+   "type": "R",
+   "nodes": [
+    "pb4m",
+    "pb4o"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R50 4.7K stage 4 feedback; printed '47K' on both scans with no visible decimal point: read 4.7K (see notes)"
+  },
+  {
+   "ref": "C25",
+   "type": "C",
+   "nodes": [
+    "pb3o",
+    "pb4p"
+   ],
+   "value": "6.8n",
+   "tolerance": 0.1,
+   "label": "C25 .0068 10% stage 4"
+  },
+  {
+   "ref": "R51",
+   "type": "R",
+   "nodes": [
+    "pb4p",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R51 220K stage 4 shunt"
+  },
+  {
+   "ref": "PM4D",
+   "type": "cds",
+   "nodes": [
+    "pb4p",
+    "0"
+   ],
+   "light": "lt_pm4",
+   "model": "VTL5C3_CELL",
+   "label": "PM4D photocell (module pins 6/4), shunt on stage 4's + input. Cell law assumed: VTL5C3 card (no Bi-Phase photocell data)"
+  },
+  {
+   "ref": "Z5B",
+   "type": "opamp",
+   "nodes": [
+    "pb4p",
+    "pb4m",
+    "pb4o",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z5B all-pass stage 4"
+  },
+  {
+   "ref": "R52",
+   "type": "R",
+   "nodes": [
+    "pb4o",
+    "pb5m"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R52 4.7K stage 5 input; fsb faded; Bareille 4.7K"
+  },
+  {
+   "ref": "R53",
+   "type": "R",
+   "nodes": [
+    "pb5m",
+    "pb5o"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R53 4.7K stage 5 feedback; printed '47K' on both scans with no visible decimal point: read 4.7K (see notes)"
+  },
+  {
+   "ref": "C26",
+   "type": "C",
+   "nodes": [
+    "pb4o",
+    "pb5p"
+   ],
+   "value": "6.8n",
+   "tolerance": 0.1,
+   "label": "C26 .0068 10% stage 5; fsb faded; Bareille .0068 10%"
+  },
+  {
+   "ref": "R54",
+   "type": "R",
+   "nodes": [
+    "pb5p",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R54 220K stage 5 shunt; fsb faded; Bareille 220K"
+  },
+  {
+   "ref": "PM4E",
+   "type": "cds",
+   "nodes": [
+    "pb5p",
+    "0"
+   ],
+   "light": "lt_pm4",
+   "model": "VTL5C3_CELL",
+   "label": "PM4E photocell (module pins 5/4), shunt on stage 5's + input. Cell law assumed: VTL5C3 card (no Bi-Phase photocell data)"
+  },
+  {
+   "ref": "Z6A",
+   "type": "opamp",
+   "nodes": [
+    "pb5p",
+    "pb5m",
+    "pb5o",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z6A all-pass stage 5"
+  },
+  {
+   "ref": "R55",
+   "type": "R",
+   "nodes": [
+    "pb5o",
+    "pb6m"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R55 4.7K stage 6 input"
+  },
+  {
+   "ref": "R56",
+   "type": "R",
+   "nodes": [
+    "pb6m",
+    "pb6o"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R56 4.7K stage 6 feedback"
+  },
+  {
+   "ref": "C27",
+   "type": "C",
+   "nodes": [
+    "pb5o",
+    "pb6p"
+   ],
+   "value": "6.8n",
+   "tolerance": 0.1,
+   "label": "C27 .0068 10% stage 6"
+  },
+  {
+   "ref": "R57",
+   "type": "R",
+   "nodes": [
+    "pb6p",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R57 220K stage 6 shunt"
+  },
+  {
+   "ref": "PM4F",
+   "type": "cds",
+   "nodes": [
+    "pb6p",
+    "0"
+   ],
+   "light": "lt_pm4",
+   "model": "VTL5C3_CELL",
+   "label": "PM4F photocell (module pins 3/4), shunt on stage 6's + input. Cell law assumed: VTL5C3 card (no Bi-Phase photocell data)"
+  },
+  {
+   "ref": "Z6B",
+   "type": "opamp",
+   "nodes": [
+    "pb6p",
+    "pb6m",
+    "pb6o",
+    "p15",
+    "n15"
+   ],
+   "model": "MC1458",
+   "label": "Z6B all-pass stage 6"
+  },
+  {
+   "ref": "C28",
+   "type": "C",
+   "nodes": [
+    "pb6o",
+    "j1_13"
+   ],
+   "value": "470n",
+   "tolerance": 0.1,
+   "label": "C28 .47 10% chain output coupling -> J1-13"
+  },
+  {
+   "ref": "R109",
+   "type": "R",
+   "nodes": [
+    "j1_5",
+    "z7ap"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "R109 47K sweep A in (J1-5)"
+  },
+  {
+   "ref": "R112",
+   "type": "R",
+   "nodes": [
+    "r131w",
+    "z7ap"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "R112 47K from the SWEEP A OFFSET wiper"
+  },
+  {
+   "ref": "R113",
+   "type": "R",
+   "nodes": [
+    "z7ap",
+    "0"
+   ],
+   "value": "3.6k",
+   "tolerance": 0.05,
+   "label": "R113 3.6K"
+  },
+  {
+   "ref": "R131",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "r131w",
+    "pp"
+   ],
+   "value": "10k",
+   "taper": "B",
+   "control": "trimOffsetA",
+   "label": "R131 10K SWEEP A OFFSET trimmer across decoupled +15 and ground (Bareille adds R110/R111 2.2K at the ends)"
+  },
+  {
+   "ref": "Z7B",
+   "type": "opamp",
+   "nodes": [
+    "z7ap",
+    "z7am",
+    "z7ao",
+    "pp",
+    "pn"
+   ],
+   "model": "MC1458",
+   "label": "Z7B LED driver amp (decoupled rails)"
+  },
+  {
+   "ref": "Q2",
+   "type": "npn",
+   "nodes": [
+    "pp",
+    "z7ao",
+    "e1a"
+   ],
+   "model": "2N3904",
+   "label": "Q2 3904 LED driver (Bareille: C1852), collector on decoupled +15"
+  },
+  {
+   "ref": "PM3L",
+   "type": "led",
+   "nodes": [
+    "e1a",
+    "e2a"
+   ],
+   "light": "lt_pm3",
+   "model": "VTL5C3_LED",
+   "label": "PM3 LED (pins 2/1) lighting the six PM3 cells. Assumed VTL5C3 LED card"
+  },
+  {
+   "ref": "CR17",
+   "type": "D",
+   "nodes": [
+    "e2a",
+    "e1a"
+   ],
+   "model": "1N4148",
+   "label": "CR17 1N4148 reverse protection across the PM3 LED"
+  },
+  {
+   "ref": "R114",
+   "type": "R",
+   "nodes": [
+    "e2a",
+    "z7am"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R114 220K feedback from the LED cathode"
+  },
+  {
+   "ref": "R115",
+   "type": "R",
+   "nodes": [
+    "z7am",
+    "kna"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "R115 10K breakpoint"
+  },
+  {
+   "ref": "CR10",
+   "type": "D",
+   "nodes": [
+    "kna",
+    "0"
+   ],
+   "model": "1N4148",
+   "label": "CR10 1N4148 breakpoint diode to ground"
+  },
+  {
+   "ref": "R116",
+   "type": "R",
+   "nodes": [
+    "z7am",
+    "0"
+   ],
+   "value": "68k",
+   "tolerance": 0.05,
+   "label": "R116 68K"
+  },
+  {
+   "ref": "R132",
+   "type": "pot",
+   "nodes": [
+    "rna",
+    "e2a",
+    "e2a"
+   ],
+   "value": "1k",
+   "taper": "B",
+   "control": "trimRangeA",
+   "label": "R132 1K SWEEP A RANGE trimmer, rheostat (wiper from the LED cathode, other end N.C.)"
+  },
+  {
+   "ref": "R117",
+   "type": "R",
+   "nodes": [
+    "rna",
+    "0"
+   ],
+   "value": "220",
+   "tolerance": 0.05,
+   "label": "R117 220 (Bareille: 1/2 W) current sense to ground"
+  },
+  {
+   "ref": "R97",
+   "type": "R",
+   "nodes": [
+    "j1_6",
+    "z7bp"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "R97 47K sweep B in (J1-6)"
+  },
+  {
+   "ref": "R102",
+   "type": "R",
+   "nodes": [
+    "r130w",
+    "z7bp"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "R102 47K from the SWEEP B OFFSET wiper"
+  },
+  {
+   "ref": "R103",
+   "type": "R",
+   "nodes": [
+    "z7bp",
+    "0"
+   ],
+   "value": "3.6k",
+   "tolerance": 0.05,
+   "label": "R103 3.6K (Bareille: 3.9K)"
+  },
+  {
+   "ref": "R130",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "r130w",
+    "pp"
+   ],
+   "value": "10k",
+   "taper": "B",
+   "control": "trimOffsetB",
+   "label": "R130 10K SWEEP B OFFSET trimmer across decoupled +15 and ground (Bareille adds R110/R111 2.2K at the ends)"
+  },
+  {
+   "ref": "Z7A",
+   "type": "opamp",
+   "nodes": [
+    "z7bp",
+    "z7bm",
+    "z7bo",
+    "pp",
+    "pn"
+   ],
+   "model": "MC1458",
+   "label": "Z7A LED driver amp (decoupled rails)"
+  },
+  {
+   "ref": "Q1",
+   "type": "npn",
+   "nodes": [
+    "pp",
+    "z7bo",
+    "e1b"
+   ],
+   "model": "2N3904",
+   "label": "Q1 3904 LED driver (Bareille: C1852), collector on decoupled +15"
+  },
+  {
+   "ref": "PM4L",
+   "type": "led",
+   "nodes": [
+    "e1b",
+    "e2b"
+   ],
+   "light": "lt_pm4",
+   "model": "VTL5C3_LED",
+   "label": "PM4 LED (pins 2/1) lighting the six PM4 cells. Assumed VTL5C3 LED card"
+  },
+  {
+   "ref": "CR16",
+   "type": "D",
+   "nodes": [
+    "e2b",
+    "e1b"
+   ],
+   "model": "1N4148",
+   "label": "CR16 1N4148 reverse protection across the PM4 LED"
+  },
+  {
+   "ref": "R98",
+   "type": "R",
+   "nodes": [
+    "e2b",
+    "z7bm"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R98 220K feedback from the LED cathode"
+  },
+  {
+   "ref": "R99",
+   "type": "R",
+   "nodes": [
+    "z7bm",
+    "knb"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "R99 10K breakpoint"
+  },
+  {
+   "ref": "CR9",
+   "type": "D",
+   "nodes": [
+    "knb",
+    "0"
+   ],
+   "model": "1N4148",
+   "label": "CR9 1N4148 breakpoint diode to ground"
+  },
+  {
+   "ref": "R100",
+   "type": "R",
+   "nodes": [
+    "z7bm",
+    "0"
+   ],
+   "value": "68k",
+   "tolerance": 0.05,
+   "label": "R100 68K"
+  },
+  {
+   "ref": "R129",
+   "type": "pot",
+   "nodes": [
+    "rnb",
+    "e2b",
+    "e2b"
+   ],
+   "value": "1k",
+   "taper": "B",
+   "control": "trimRangeB",
+   "label": "R129 1K SWEEP B RANGE trimmer, rheostat (wiper from the LED cathode, other end N.C.)"
+  },
+  {
+   "ref": "R101",
+   "type": "R",
+   "nodes": [
+    "rnb",
+    "0"
+   ],
+   "value": "220",
+   "tolerance": 0.05,
+   "label": "R101 220 (Bareille: 1/2 W) current sense to ground"
+  }
+ ],
+ "probes": [
+  "ja",
+  "jb",
+  "j1_2",
+  "j1_1",
+  "tri1",
+  "g1o",
+  "tri2",
+  "j1_5",
+  "j1_6",
+  "e2a",
+  "e2b",
+  "lt_pm3",
+  "lt_pm4"
+ ],
+ "layout": {}
+}

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Master of Puppets Rhythm</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Master of Puppets Rhythm" preset-author="Headroom" preset-comment="Mid-80s thrash rhythm: a tight, saturated boutique lead channel with a V-shaped EQ (deep lows, scooped mids, crisp highs), a gate and a 4x12. Built for downpicked palm mutes and fast chromatic riffs." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="19000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="T" value="0.45"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="A" value="0.5"/>
+        <parameter id="R" value="0.3"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="G" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="122000">
+    <component-audio version="1">
+      <parameters num-parameters="17">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="P0" value="0.5"/>
+        <parameter id="P1" value="0.72"/>
+        <parameter id="O2" value="1"/>
+        <parameter id="B3" value="0.68"/>
+        <parameter id="M4" value="0.28"/>
+        <parameter id="T5" value="0.66"/>
+        <parameter id="M6" value="0.5"/>
+        <parameter id="P7" value="0.5"/>
+        <parameter id="D8" value="0.6"/>
+        <parameter id="P9" value="0"/>
+        <parameter id="V10" value="0.5"/>
+        <parameter id="S11" value="0.5"/>
+        <parameter id="R12" value="0.5"/>
+        <parameter id="B13" value="0.5"/>
+        <parameter id="L14" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.7986"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="10"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="122000" target-number="1" target-name="P1" min-value="0.4" max-value="0.95" controller-name="Gain"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="122000" target-number="1" target-name="M4" min-value="0.1" max-value="0.7" controller-name="Mids"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="122000" target-number="1" target-name="D8" min-value="0.2" max-value="0.9" controller-name="Depth"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="122000" target-number="1" target-name="T5" min-value="0.4" max-value="0.9" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="19000" target-number="1" target-name="T" min-value="0.1" max-value="0.8" controller-name="Gate"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-tempo bpm="212.000"/>
+<headroom-library version="1" id="puppets-rhythm" category="Artist Tones" order="40" instrument="guitar" style="Thrash Metal">
+  <description>Mid-80s thrash rhythm: a tight, saturated boutique lead channel with a V-shaped EQ (deep lows, scooped mids, crisp highs), a gate and a 4x12. Built for downpicked palm mutes and fast chromatic riffs.</description>
+  <tags><tag>Artist Tones</tag><tag>Metal</tag><tag>Thrash</tag><tag>Rhythm</tag><tag>Scooped</tag><tag>Downpicking</tag></tags>
+  <inspired-by artist="James Hetfield (Metallica)" song="Master of Puppets" album="Master of Puppets" part="Main rhythm riff" year="1986"/>
+  <sources>
+    <source url="https://www.gearnews.com/how-to-sound-like-metallica-master-of-puppets/" title="Gearnews: How to sound like Metallica, Master of Puppets"/>
+    <source url="https://mixdownmag.com.au/features/how-to-get-the-metallica-master-of-puppets-tone/" title="Mixdown: How to get the Metallica Master of Puppets tone"/>
+    <source url="https://en.wikipedia.org/wiki/Master_of_Puppets" title="Master of Puppets (Wikipedia)"/>
+    <source url="https://www.musicradar.com/artists/producers-engineers/all-the-albums-i-did-with-metallica-were-recorded-on-24-track-analogue-tape-theres-not-a-computer-in-sight-how-flemming-rasmussen-produced-metallicas-classic-master-of-puppets" title="MusicRadar: How Flemming Rasmussen produced Master Of Puppets"/>
+    <source url="https://www.guitarchalk.com/master-of-puppets-metallica-amp-settings/" title="Guitar Chalk: Master of Puppets amp settings"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

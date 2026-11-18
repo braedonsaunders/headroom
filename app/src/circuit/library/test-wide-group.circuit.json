@@ -1,0 +1,795 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "test-wide-group",
+ "version": 1,
+ "name": "Test: 28 coupled diode ports in one solve group",
+ "description": "Regression for ENGINE_QUEUE item 13: a resistor ladder with a diode to ground at every node (alternating polarity), so all 28 junctions couple in one group, above the old 24-port ceiling. Exercises the generic Newton / pseudo-transient / homotopy paths.",
+ "io": {
+  "input": "in",
+  "output": "out"
+ },
+ "oversampling": 2,
+ "controls": [],
+ "parts": [
+  {
+   "ref": "RIN",
+   "type": "R",
+   "nodes": [
+    "in",
+    "n1"
+   ],
+   "value": "1k"
+  },
+  {
+   "ref": "D1",
+   "type": "D",
+   "nodes": [
+    "n1",
+    "0"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "n1",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "n1",
+    "n2"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D2",
+   "type": "D",
+   "nodes": [
+    "0",
+    "n2"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "n2",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "n2",
+    "n3"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D3",
+   "type": "D",
+   "nodes": [
+    "n3",
+    "0"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "n3",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "n3",
+    "n4"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D4",
+   "type": "D",
+   "nodes": [
+    "0",
+    "n4"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "n4",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "n4",
+    "n5"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D5",
+   "type": "D",
+   "nodes": [
+    "n5",
+    "0"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "n5",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "n5",
+    "n6"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D6",
+   "type": "D",
+   "nodes": [
+    "0",
+    "n6"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "n6",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R6",
+   "type": "R",
+   "nodes": [
+    "n6",
+    "n7"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D7",
+   "type": "D",
+   "nodes": [
+    "n7",
+    "0"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C7",
+   "type": "C",
+   "nodes": [
+    "n7",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "n7",
+    "n8"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D8",
+   "type": "D",
+   "nodes": [
+    "0",
+    "n8"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "n8",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "n8",
+    "n9"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D9",
+   "type": "D",
+   "nodes": [
+    "n9",
+    "0"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C9",
+   "type": "C",
+   "nodes": [
+    "n9",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "n9",
+    "n10"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D10",
+   "type": "D",
+   "nodes": [
+    "0",
+    "n10"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "n10",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R10",
+   "type": "R",
+   "nodes": [
+    "n10",
+    "n11"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D11",
+   "type": "D",
+   "nodes": [
+    "n11",
+    "0"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "n11",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "n11",
+    "n12"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D12",
+   "type": "D",
+   "nodes": [
+    "0",
+    "n12"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C12",
+   "type": "C",
+   "nodes": [
+    "n12",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R12",
+   "type": "R",
+   "nodes": [
+    "n12",
+    "n13"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D13",
+   "type": "D",
+   "nodes": [
+    "n13",
+    "0"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C13",
+   "type": "C",
+   "nodes": [
+    "n13",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R13",
+   "type": "R",
+   "nodes": [
+    "n13",
+    "n14"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D14",
+   "type": "D",
+   "nodes": [
+    "0",
+    "n14"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C14",
+   "type": "C",
+   "nodes": [
+    "n14",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R14",
+   "type": "R",
+   "nodes": [
+    "n14",
+    "n15"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D15",
+   "type": "D",
+   "nodes": [
+    "n15",
+    "0"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C15",
+   "type": "C",
+   "nodes": [
+    "n15",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "n15",
+    "n16"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D16",
+   "type": "D",
+   "nodes": [
+    "0",
+    "n16"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C16",
+   "type": "C",
+   "nodes": [
+    "n16",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "n16",
+    "n17"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D17",
+   "type": "D",
+   "nodes": [
+    "n17",
+    "0"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C17",
+   "type": "C",
+   "nodes": [
+    "n17",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R17",
+   "type": "R",
+   "nodes": [
+    "n17",
+    "n18"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D18",
+   "type": "D",
+   "nodes": [
+    "0",
+    "n18"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C18",
+   "type": "C",
+   "nodes": [
+    "n18",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R18",
+   "type": "R",
+   "nodes": [
+    "n18",
+    "n19"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D19",
+   "type": "D",
+   "nodes": [
+    "n19",
+    "0"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C19",
+   "type": "C",
+   "nodes": [
+    "n19",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R19",
+   "type": "R",
+   "nodes": [
+    "n19",
+    "n20"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D20",
+   "type": "D",
+   "nodes": [
+    "0",
+    "n20"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C20",
+   "type": "C",
+   "nodes": [
+    "n20",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R20",
+   "type": "R",
+   "nodes": [
+    "n20",
+    "n21"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D21",
+   "type": "D",
+   "nodes": [
+    "n21",
+    "0"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C21",
+   "type": "C",
+   "nodes": [
+    "n21",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R21",
+   "type": "R",
+   "nodes": [
+    "n21",
+    "n22"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D22",
+   "type": "D",
+   "nodes": [
+    "0",
+    "n22"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C22",
+   "type": "C",
+   "nodes": [
+    "n22",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R22",
+   "type": "R",
+   "nodes": [
+    "n22",
+    "n23"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D23",
+   "type": "D",
+   "nodes": [
+    "n23",
+    "0"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C23",
+   "type": "C",
+   "nodes": [
+    "n23",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R23",
+   "type": "R",
+   "nodes": [
+    "n23",
+    "n24"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D24",
+   "type": "D",
+   "nodes": [
+    "0",
+    "n24"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C24",
+   "type": "C",
+   "nodes": [
+    "n24",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R24",
+   "type": "R",
+   "nodes": [
+    "n24",
+    "n25"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D25",
+   "type": "D",
+   "nodes": [
+    "n25",
+    "0"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C25",
+   "type": "C",
+   "nodes": [
+    "n25",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R25",
+   "type": "R",
+   "nodes": [
+    "n25",
+    "n26"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D26",
+   "type": "D",
+   "nodes": [
+    "0",
+    "n26"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C26",
+   "type": "C",
+   "nodes": [
+    "n26",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R26",
+   "type": "R",
+   "nodes": [
+    "n26",
+    "n27"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D27",
+   "type": "D",
+   "nodes": [
+    "n27",
+    "0"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C27",
+   "type": "C",
+   "nodes": [
+    "n27",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "R27",
+   "type": "R",
+   "nodes": [
+    "n27",
+    "n28"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "D28",
+   "type": "D",
+   "nodes": [
+    "0",
+    "n28"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C28",
+   "type": "C",
+   "nodes": [
+    "n28",
+    "0"
+   ],
+   "value": "1n"
+  },
+  {
+   "ref": "RL",
+   "type": "R",
+   "nodes": [
+    "n28",
+    "out"
+   ],
+   "value": "10k"
+  },
+  {
+   "ref": "RO",
+   "type": "R",
+   "nodes": [
+    "out",
+    "0"
+   ],
+   "value": "100k"
+  }
+ ],
+ "probes": [
+  "n1",
+  "n14",
+  "n28",
+  "out"
+ ]
+}

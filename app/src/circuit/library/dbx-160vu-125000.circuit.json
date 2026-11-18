@@ -1,0 +1,1728 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "dbx-160vu-125000",
+ "version": 1,
+ "name": "dbx 160 Compressor/Limiter (AKG-era, VCA 200 / RMS 208)",
+ "description": "dbx 160 compressor/limiter, one channel: TL082 balanced input (gain 0.5), dbx VCA (200) with TL082 I/V, feed-forward RMS (208) detector, threshold / ratio side chain (4558), front-panel gain control on the VCA port, LM301 + BC341/BC361 class-AB output on +-24 V with the KE4858 output clamp. Hard knee (this revision has no OverEasy).",
+ "sources": [
+  {
+   "title": "dbx (AKG Acoustics) SCHEMATIC 160 COMP/LIMITER, ref. assembly dwg 260182 (archive.org 'dbx_160-161-162_Schematic', PDF p.18; p.19 a second copy)",
+   "url": "https://archive.org/download/dbx_160-161-162_Schematic/160-161-162_Schematic.pdf"
+  },
+  {
+   "title": "dbx 160/161 brochure specifications (ratio, threshold 10 mV-3 V, release 120 dB/s)",
+   "url": "https://audiocircuit.dk/downloads/dbx/DBX-16x-lim-sm.pdf"
+  },
+  {
+   "title": "dbx 160/161 initial procedure (alignment: level cal -0.011 V at 1.228 Vrms, both LEDs off at threshold)",
+   "url": "https://audiocircuit.dk/downloads/dbx/DBX-160-cl-sm.pdf"
+  },
+  {
+   "title": "dbx MOD 160/161 simplified schematics (VCA & RMS, RMS & meter control, output buffer): cross-check of the block topology and of dbx's 'unity / 1/100' side-chain description",
+   "url": "https://audiocircuit.dk/downloads/dbx/DBX-16x-lim-sch.pdf"
+  },
+  {
+   "title": "THAT Corporation 2252 data sheet (the rms law used inside the RMS 208 model)",
+   "url": "https://www.thatcorp.com/datashts/THAT_2252_Datasheet.pdf"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "out",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 1.0
+ },
+ "oversampling": 2,
+ "cuts": [
+  "s_p",
+  "s_m"
+ ],
+ "solver": "auto",
+ "models": {
+  "TL082": {
+   "kind": "opamp",
+   "level": 1,
+   "a0": 200000.0,
+   "gbw": 3000000.0,
+   "slew": 13000000.0,
+   "swing_hi": 1.5,
+   "swing_lo": 1.5,
+   "vhi": 13.5,
+   "vlo": -13.5,
+   "iq": 0.0014,
+   "note": "TI TL082 (TL08x data sheet): AVD 200 V/mV, GBW 3 MHz, SR 13 V/us, +-13.5 V swing; the library TL072 card's values (same die, the TL072 is the low-noise grade)"
+  },
+  "LM301_10P": {
+   "kind": "opamp",
+   "level": 1,
+   "a0": 160000.0,
+   "gbw": 3000000.0,
+   "slew": 1500000.0,
+   "swing_hi": 1.5,
+   "swing_lo": 1.5,
+   "iq": 0.0018,
+   "note": "National LM301A: AVOL 160 V/mV typ, supply current 1.8 mA; with the standard 30 pF single-pole compensation unity-gain 1 MHz, 0.5 V/us (S). C26 is 10 pF here, so GBW and slew are scaled by 30/10 (D: both are set by the compensation capacitor). Rails from the supply pins"
+  },
+  "BC341": {
+   "kind": "npn",
+   "is": 3e-14,
+   "bf": 150.0,
+   "br": 3.0,
+   "vaf": 100.0,
+   "note": "BC341 (60 V, 1 A NPN, hFE 63-250): bf at the band's geometric mean; is/br approximate, no vendor SPICE card (A)"
+  },
+  "BC361": {
+   "kind": "pnp",
+   "is": 3e-14,
+   "bf": 130.0,
+   "br": 3.0,
+   "vaf": 100.0,
+   "note": "BC361 (60 V, 1 A PNP, complement of BC341): as BC341 (A)"
+  },
+  "BC261": {
+   "kind": "pnp",
+   "is": 1.4e-14,
+   "bf": 200.0,
+   "br": 3.0,
+   "note": "BC261 small-signal PNP; generic small-signal values (A)"
+  },
+  "KE4858": {
+   "kind": "njf",
+   "vto": -2.0,
+   "beta": 0.00625,
+   "lambda": 0.01,
+   "is": 1e-14,
+   "n": 1.0,
+   "cgs": 1e-11,
+   "cgd": 8e-12,
+   "note": "Teledyne KE4858 = 2N4858 switch: IDSS 8-80 mA, VGS(off) -0.8..-4 V, rDS(on) <= 60 ohm, Crss 8 pF (S); vto -2 V and IDSS 25 mA (beta = IDSS/vto^2) inside the bands give rDS(on) 40 ohm (D). It is held off (gate at -24 V) in operation"
+  },
+  "DBX200_CORE": {
+   "kind": "vca",
+   "mvdb": 6.1,
+   "iq": 2e-05,
+   "vsym": 7.4e-06,
+   "rs": 0.0761,
+   "rd": 0.0,
+   "rsym": 0,
+   "rc": 0,
+   "icc": 0,
+   "vczero": 0,
+   "bf": 0,
+   "note": "core of the dbx 'VCA (200)' module (subcircuit vca200): four separate core bases (P0 P1 N0 N1), no control buffer, so rc 0 and rsym 0. The module's law is 3.05 mV/dB at its base pins = VT*ln10/20 at the 35 C chip of the RMS card, i.e. the classic one-junction-per-path Blackmer cell (D): the 24.9K / 200 ohm || 200 ohm divider puts the GAIN CONTROL's +-15 V ends at +-60.0 mV on the control pins, which the panel marks +-20 dB (3.0 mV/dB), and the side chain feeds the control pins half the detector's 6.1 mV/dB at the ratio pot's infinity end. iq 20 uA assumed (A); no 200 distortion data is published: vsym / rs are the library DBX202 card's (its successor module; fitted to the THAT 202R, A). rs > 0 is also what keeps ngspice's .op on the physical root (with rs 0 its Newton lands on a 10 kV root of the I/V op-amp)"
+  },
+  "RMS208_CORE": {
+   "kind": "rms",
+   "mvdb": 6.1,
+   "kgeo": 2.9,
+   "nb": 3,
+   "vbias": 2.1,
+   "ibref": 2.4e-05,
+   "vsym": 0.0,
+   "iflr": 1.6e-08,
+   "vofs": 0.0,
+   "icc": 0,
+   "note": "the log-domain RMS law of the THAT 2252 card (2VT ln, 6.1 mV/dB at a 35 C chip, Iin0 = sqrt(IBIAS IT)/2.9). vofs 0: the 208's internal level is unknown, so its output is 0 V at the core's Iin0 (A); the level-cal network (R63/R64) sets the absolute calibration as on the hardware"
+  }
+ },
+ "subcircuits": {
+  "vca200": {
+   "pins": [
+    "in",
+    "ctl",
+    "p0",
+    "vm",
+    "gnd",
+    "vp",
+    "out"
+   ],
+   "parts": [
+    {
+     "ref": "EP",
+     "type": "vcvs",
+     "nodes": [
+      "cp",
+      "0",
+      "ctl",
+      "gnd"
+     ],
+     "gain": 2.0,
+     "note": "the engine's vca is the two-junction-per-path cell (2VT per neper, 6.1 mV/dB) with a fixed 1.3 V idle drop per path, which does not converge below about 5 mV/dB; the 200's one-junction law (VT per neper, 3.05 mV/dB at the bases) is the same exponential at twice the base voltage. The bases draw no current (beta ideal), so this x2 is a pure change of scale onto the core's Ec+ and SYM ..."
+    },
+    {
+     "ref": "EN",
+     "type": "vcvs",
+     "nodes": [
+      "cn",
+      "0",
+      "p0",
+      "gnd"
+     ],
+     "gain": 2.0,
+     "note": "... and onto its Ec- (P0)"
+    },
+    {
+     "ref": "U",
+     "type": "vca",
+     "nodes": [
+      "in",
+      "cp",
+      "cn",
+      "cp",
+      "vm",
+      "gnd",
+      "vp",
+      "out"
+     ],
+     "model": "DBX200_CORE"
+    }
+   ]
+  },
+  "rms208": {
+   "pins": [
+    "in",
+    "gnd",
+    "sym",
+    "vp",
+    "vm",
+    "out"
+   ],
+   "parts": [
+    {
+     "ref": "U",
+     "type": "rms",
+     "nodes": [
+      "in",
+      "ib",
+      "gnd",
+      "sym",
+      "vm",
+      "c",
+      "oi",
+      "vp"
+     ],
+     "model": "RMS208_CORE",
+     "note": "the detector core: a log-domain squarer / log stage whose log transistor writes the internal node c"
+    },
+    {
+     "ref": "RB",
+     "type": "R",
+     "nodes": [
+      "ib",
+      "gnd"
+     ],
+     "value": "560k",
+     "note": "IBIAS set inside the module: the THAT 2252 application value (560 kOhm, 23 uA) (A); the 208 has no IBIAS pin"
+    },
+    {
+     "ref": "EH",
+     "type": "vcvs",
+     "nodes": [
+      "ch",
+      "0",
+      "gnd",
+      "out"
+     ],
+     "gain": 1.0,
+     "note": "polarity of the 208: the log transistor sinks from the timing node (the CAP sits below ground and the timing current is sourced from +15 V through R35). c is held at -V(out) ..."
+    },
+    {
+     "ref": "RS",
+     "type": "R",
+     "nodes": [
+      "c",
+      "ch"
+     ],
+     "value": "1",
+     "note": "... the log current is sensed across 1 ohm (1 uV per uA, negligible against the 26 mV junction) ..."
+    },
+    {
+     "ref": "GM",
+     "type": "vccs",
+     "nodes": [
+      "out",
+      "gnd",
+      "c",
+      "ch"
+     ],
+     "gain": 1.0,
+     "note": "... and drawn from OUT/CAP. Net: C15 dV/dt = IT(R35) - Iin^2 k exp((V(out))/VT)/IBIAS, so OUT falls 6.1 mV/dB with level and releases at IT/C15. Behavioural glue around the library law (the module is potted; no internal schematic is published)"
+    }
+   ]
+  }
+ },
+ "controls": [
+  {
+   "id": "threshold",
+   "label": "Threshold",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "T0"
+   ],
+   "group": "Main",
+   "note": "R70 20K THRESHOLD: 0 = lowest threshold (about -38 dBu), 1 = C.W. (about +13 dBu); published 10 mV ... 3 V"
+  },
+  {
+   "id": "compression",
+   "label": "Compression",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "C1"
+   ],
+   "group": "Main",
+   "note": "R40 20K ratio pot with R41/R42/R43: 0 = 1:1, 0.5 = 4:1 (R43 calibrated), 1 = infinity:1"
+  },
+  {
+   "id": "output",
+   "label": "Output Gain",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "O2"
+   ],
+   "group": "Main",
+   "note": "R80 20K FRONT PANEL GAIN CONTROL into the VCA control port: 0 = -20 dB, 0.5 = 0 dB, 1 = +20 dB"
+  },
+  {
+   "id": "symvca",
+   "label": "SYM VCA (R27)",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Trims",
+   "note": "R27 50K, centred (the card has no mismatch to null)"
+  },
+  {
+   "id": "symrms",
+   "label": "SYM RMS (R34)",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Trims",
+   "note": "R34 50K, centred"
+  },
+  {
+   "id": "levelcal",
+   "label": "Level cal (R63)",
+   "kind": "continuous",
+   "default": 0.505,
+   "params": [],
+   "group": "Trims",
+   "note": "R63 50K LEVEL-CAL, centred; R64 is fitted to meet the alignment target at this setting"
+  },
+  {
+   "id": "cal41",
+   "label": "4:1 CAL (R43)",
+   "kind": "continuous",
+   "default": 0.182,
+   "params": [],
+   "group": "Trims",
+   "note": "R43 50K rheostat; the default is overwritten by the fitted value"
+  },
+  {
+   "id": "dry",
+   "label": "Dry",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "D3"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "the 160 has no dry/wet mix. Stored only"
+  },
+  {
+   "id": "dethp",
+   "label": "Detector HP",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "L4"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "no side-chain filter: the detector is fed from OA3 through C11 0.33 uF / R38 23.2K only. Stored only"
+  },
+  {
+   "id": "sidechain",
+   "label": "Sidechain",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "S5"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "no key input on this card (the stereo-strap / detector jack is an option). Stored only"
+  },
+  {
+   "id": "below",
+   "label": "Below",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "B6"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "the BELOW LED (CR10) is netlisted (node p48 lit when OA5 is above +0.5 V); no knob. Stored only"
+  },
+  {
+   "id": "above",
+   "label": "Above",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "A7"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "the ABOVE LED (CR11) is netlisted; no knob. Stored only"
+  },
+  {
+   "id": "vumode",
+   "label": "VU Mode",
+   "kind": "continuous",
+   "default": 1.0,
+   "params": [
+    "VUMode"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "S2 meter function (INPUT / OUTPUT / GAIN CHANGE) drives only the VU meter circuit, which is not netlisted (notes); the GR meter is the readout. Stored only"
+  },
+  {
+   "id": "vum",
+   "label": "VU Meter",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "VUM"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "meter telemetry. Stored only"
+  },
+  {
+   "id": "pwr",
+   "label": "On/Off",
+   "kind": "continuous",
+   "default": 1.0,
+   "params": [
+    "Pwr"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "host bypass. Stored only"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VP15",
+   "type": "V",
+   "nodes": [
+    "vp15",
+    "0"
+   ],
+   "value": "15",
+   "note": "+15 V regulated rail (OA2 723 + Q5/Q6 BC361, R14 4.99K / R15 4.02K 1 %, R16 TRIM; alignment +15.00 V). Ideal: the 723 has no engine device; crop (1650,1830)."
+  },
+  {
+   "ref": "VM15",
+   "type": "V",
+   "nodes": [
+    "vm15",
+    "0"
+   ],
+   "value": "-15",
+   "note": "-15 V tracking rail (OA1 301 + Q1-Q4, R18/R19 10K 1 %). Ideal; crop (850,1830)."
+  },
+  {
+   "ref": "VP24",
+   "type": "V",
+   "nodes": [
+    "vp24",
+    "0"
+   ],
+   "value": "24",
+   "note": "+24 V raw rail (CR1-CR4 1N4383, C2 470 uF 25 V). Ideal: T1 (110083) has no winding data on any source, so the reservoir ripple is not modelled; crop (850,1830)."
+  },
+  {
+   "ref": "VM24",
+   "type": "V",
+   "nodes": [
+    "vm24",
+    "0"
+   ],
+   "value": "-24",
+   "note": "-24 V raw rail (C3 470 uF 25 V). Ideal, as +24 V."
+  },
+  {
+   "ref": "R82",
+   "type": "R",
+   "nodes": [
+    "in",
+    "b3"
+   ],
+   "value": "2.2k",
+   "note": "P3-4 (hot) -> R82 2.2K; crop (140,600) 1.2x"
+  },
+  {
+   "ref": "C19",
+   "type": "C",
+   "nodes": [
+    "in",
+    "0"
+   ],
+   "value": "1n",
+   "note": "C19 1 nF P3-4 to the P3-3 ground bus; crop (140,600) 1.2x"
+  },
+  {
+   "ref": "C20",
+   "type": "C",
+   "nodes": [
+    "b3",
+    "0"
+   ],
+   "value": "1n",
+   "note": "C20 1 nF after R82 to ground; crop (140,600) 1.2x"
+  },
+  {
+   "ref": "R20",
+   "type": "R",
+   "nodes": [
+    "0",
+    "e3"
+   ],
+   "value": "2.2k",
+   "note": "P3-5 (cold) -> R20 2.2K; P3-5 is grounded for the unbalanced drive (the spec sheet's 25 kOhm unbalanced case), so C9 1 nF (P3-5 to ground) has both ends on ground and is not netlisted; crop (140,600) 1.2x"
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "e3",
+    "0"
+   ],
+   "value": "1n",
+   "note": "C10 1 nF after R20 to ground; crop (140,600) 1.2x"
+  },
+  {
+   "ref": "R21",
+   "type": "R",
+   "nodes": [
+    "b3",
+    "oa3_n"
+   ],
+   "value": "20k",
+   "tolerance": 0.01,
+   "note": "R21 20K 1 %; crop (140,600) 1.2x"
+  },
+  {
+   "ref": "R24",
+   "type": "R",
+   "nodes": [
+    "oa3_n",
+    "oa3_o"
+   ],
+   "value": "10k",
+   "tolerance": 0.01,
+   "note": "R24 10K 1 % feedback (gain 0.5); crop (140,600) 1.2x"
+  },
+  {
+   "ref": "R22",
+   "type": "R",
+   "nodes": [
+    "e3",
+    "oa3_p"
+   ],
+   "value": "20k",
+   "tolerance": 0.01,
+   "note": "R22 20K 1 %; crop (140,600) 1.2x"
+  },
+  {
+   "ref": "R23",
+   "type": "R",
+   "nodes": [
+    "oa3_p",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.01,
+   "note": "R23 10K 1 % to the P3-3 bus; crop (140,600) 1.2x"
+  },
+  {
+   "ref": "OA3A",
+   "type": "opamp",
+   "nodes": [
+    "oa3_p",
+    "oa3_n",
+    "oa3_o",
+    "vp15",
+    "vm15"
+   ],
+   "model": "TL082",
+   "note": "OA3 1/2 TL082 (pins 3/2/1), +-15 V; crop (140,600) 1.2x"
+  },
+  {
+   "ref": "C12",
+   "type": "C",
+   "nodes": [
+    "oa3_o",
+    "c12b"
+   ],
+   "value": "330n",
+   "note": "C12 .33 uF 250 V, OA3 out to the VCA input resistor; crop (980,640) 2x"
+  },
+  {
+   "ref": "R26",
+   "type": "R",
+   "nodes": [
+    "c12b",
+    "m1_in"
+   ],
+   "value": "100k",
+   "note": "R26 100K -> M1 IN; crop (980,640) 2x"
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "oa3_o",
+    "c11b"
+   ],
+   "value": "330n",
+   "note": "C11 .33 uF 250 V: its lower lead crosses the ground bus without a dot at (1045,955) and runs left at y=977 to R38 (crops (980,640) 2x, (650,930) 2x): the detector is fed forward from OA3's output"
+  },
+  {
+   "ref": "R38",
+   "type": "R",
+   "nodes": [
+    "c11b",
+    "rms_in"
+   ],
+   "value": "23.2k",
+   "tolerance": 0.01,
+   "note": "R38 23.2K 1 % into M2 IN; crop (180,940) 1.3x"
+  },
+  {
+   "ref": "M1",
+   "type": "sub",
+   "nodes": [
+    "m1_in",
+    "ctl",
+    "p0",
+    "vm15",
+    "0",
+    "m1_vp",
+    "m1_out"
+   ],
+   "of": "vca200",
+   "note": "M1 'VCA (200)' (dbx potted module; legend IN GND P1 N1 P0 / +V -V N0 OUT). Two control pins (N0 and the pin beside it, P1) are tied to the control node; P0 carries the SYM VCA trim (R28 300K, R25 22 ohm to ground) and N1 is grounded. The tied pair is the cell's Ec+ side and P0/N1 its Ec- side: the FRONT PANEL GAIN CONTROL is marked +20 dB at its +15 V (CW) end and feeds the control node positive, and the side chain drives it negative when the level is above threshold. N1 is merged with P0 into the engine cell's single Ec- node (P0 sits at 0 V with the trim centred). GND = ground. crops (1300,540) 2x, (1310,640) 4x, (1150,620) 1.6x; pin legend (2180,530) 5x"
+  },
+  {
+   "ref": "R27",
+   "type": "pot",
+   "nodes": [
+    "vm15",
+    "r27w",
+    "vp15"
+   ],
+   "value": "50k",
+   "control": "symvca",
+   "note": "R27 50K 'SYM VCA' across +-15 V; crops (1300,540) 2x, (1310,640) 4x, (1150,620) 1.6x; pin legend (2180,530) 5x"
+  },
+  {
+   "ref": "R28",
+   "type": "R",
+   "nodes": [
+    "r27w",
+    "p0"
+   ],
+   "value": "300k",
+   "note": "R28 300K -> P0; crops (1300,540) 2x, (1310,640) 4x, (1150,620) 1.6x; pin legend (2180,530) 5x"
+  },
+  {
+   "ref": "R25",
+   "type": "R",
+   "nodes": [
+    "p0",
+    "0"
+   ],
+   "value": "22",
+   "note": "R25 22 ohm, P0 to the ground bus (crop (980,640) 2x: the lead crosses the C12/R26 line without a dot)"
+  },
+  {
+   "ref": "R29",
+   "type": "R",
+   "nodes": [
+    "vp15",
+    "m1_vp"
+   ],
+   "value": "470",
+   "note": "R29 470 ohm from +15 V to M1 +V (the top pin between -V and GND); crops (1300,540) 2x, (1310,640) 4x, (1150,620) 1.6x; pin legend (2180,530) 5x"
+  },
+  {
+   "ref": "C13",
+   "type": "C",
+   "nodes": [
+    "m1_vp",
+    "0"
+   ],
+   "value": "22u",
+   "note": "C13 22 uF 16 V, + on M1 +V, - on the GND-pin node, which runs down to the ground bus at (1640,950). Q7 (BC263, 'SELECT WITH VCA', note 7: selected with M1 per dwg 160017) sits across C13 with its base lead drawn ending at its own label (crop (1450,560) 5x, both copies): not netlisted, see notes. crops (1300,540) 2x, (1310,640) 4x, (1150,620) 1.6x; pin legend (2180,530) 5x"
+  },
+  {
+   "ref": "R30",
+   "type": "R",
+   "nodes": [
+    "ctl",
+    "0"
+   ],
+   "value": "200",
+   "tolerance": 0.01,
+   "note": "R30 200 ohm 1 %, control node to ground; crops (1300,540) 2x, (1310,640) 4x, (1150,620) 1.6x; pin legend (2180,530) 5x"
+  },
+  {
+   "ref": "R48",
+   "type": "R",
+   "nodes": [
+    "w5",
+    "ctl"
+   ],
+   "value": "200",
+   "tolerance": 0.01,
+   "note": "R48 200 ohm 1 %, from OA5B's output node (after R46) to the control node; crops (1150,620) 1.6x, (1180,900) 2x"
+  },
+  {
+   "ref": "R39X",
+   "type": "R",
+   "nodes": [
+    "r80w",
+    "ctl"
+   ],
+   "value": "24.9k",
+   "tolerance": 0.01,
+   "note": "the 24.9K 1 % resistor beside R30 (designator blotted on both copies, crop (1560,820) 5x): from the GAIN CONTROL wiper (P4-1) to the control node; crop (1180,900) 2x"
+  },
+  {
+   "ref": "R80",
+   "type": "pot",
+   "nodes": [
+    "vm15",
+    "r80w",
+    "vp15"
+   ],
+   "value": "20k",
+   "taper": "B",
+   "control": "output",
+   "note": "R80 20K FRONT PANEL GAIN CONTROL (P4-1): -15 V end marked '20 dB' (cut), +15 V end marked 'C.W. +20 dB'. Taper not printed: linear assumed (A), which gives a dB-linear knob. crop (1180,900) 2x"
+  },
+  {
+   "ref": "OA4A",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "m1_out",
+    "oa4_o",
+    "vp15",
+    "vm15"
+   ],
+   "model": "TL082",
+   "note": "OA4 1/2 TL082, + to the ground bus, - = M1 OUT; crop (1300,540) 2x"
+  },
+  {
+   "ref": "R32",
+   "type": "R",
+   "nodes": [
+    "m1_out",
+    "oa4_o"
+   ],
+   "value": "100k",
+   "note": "R32 100K, I/V feedback (unity with R26); crop (1300,540) 2x"
+  },
+  {
+   "ref": "C14",
+   "type": "C",
+   "nodes": [
+    "m1_out",
+    "oa4_o"
+   ],
+   "value": "22p",
+   "note": "C14 22 pF across R32; crop (1300,540) 2x"
+  },
+  {
+   "ref": "C21",
+   "type": "C",
+   "nodes": [
+    "oa4_o",
+    "c21b"
+   ],
+   "value": "4.7u",
+   "note": "C21 4.7 uF 25 V to the output amplifier; overview (2000,760)"
+  },
+  {
+   "ref": "R83",
+   "type": "R",
+   "nodes": [
+    "c21b",
+    "p6"
+   ],
+   "value": "10k",
+   "tolerance": 0.01,
+   "note": "R83 10K 1 % -> OA6 +; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "C23",
+   "type": "C",
+   "nodes": [
+    "p6",
+    "0"
+   ],
+   "value": "100p",
+   "note": "100 pF from OA6 + to ground (designator illegible; C23 by elimination); crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "R92",
+   "type": "R",
+   "nodes": [
+    "p6",
+    "k6"
+   ],
+   "value": "22.1k",
+   "tolerance": 0.01,
+   "note": "R92 22.1K 1 %: OA6 + to the output-low sense node; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "R103",
+   "type": "R",
+   "nodes": [
+    "k6",
+    "0"
+   ],
+   "value": "2.4k",
+   "note": "R103 2.4K to ground; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "C35",
+   "type": "C",
+   "nodes": [
+    "k6",
+    "p31"
+   ],
+   "value": "22u",
+   "note": "C35 22 uF 16 V (+ at R92/R103) to P3-1 (output low); crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "R93",
+   "type": "R",
+   "nodes": [
+    "p31",
+    "0"
+   ],
+   "value": "100",
+   "note": "R93 100 ohm, P3-1 to ground; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "C32",
+   "type": "C",
+   "nodes": [
+    "p31",
+    "0"
+   ],
+   "value": "1n",
+   "note": "C32 1 nF, P3-1 to ground; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "OA6",
+   "type": "opamp",
+   "nodes": [
+    "p6",
+    "n6",
+    "o6",
+    "s_p",
+    "s_m"
+   ],
+   "model": "LM301_10P",
+   "note": "OA6 301, rails on the bootstrapped nodes (pin 7 via R85, pin 4 via R95), C26 10 pF on pins 1-8 (in the card); crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "R33",
+   "type": "R",
+   "nodes": [
+    "n6",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.01,
+   "note": "R33 10K 1 %: OA6 - to the star ground (the line runs down to the ground symbol at (2210,1900)); crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "R81",
+   "type": "R",
+   "nodes": [
+    "0",
+    "r81b"
+   ],
+   "value": "100k",
+   "note": "R81 100K in series with C22 150 pF, together across R33; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "C22",
+   "type": "C",
+   "nodes": [
+    "r81b",
+    "n6"
+   ],
+   "value": "150p",
+   "note": "150 pF (designator illegible; C22 by elimination) in series with R81; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "R84",
+   "type": "R",
+   "nodes": [
+    "m",
+    "n6"
+   ],
+   "value": "22.1k",
+   "tolerance": 0.01,
+   "note": "R84 22.1K 1 %: output node to OA6 -; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "C25",
+   "type": "C",
+   "nodes": [
+    "n6",
+    "o6"
+   ],
+   "value": "10p",
+   "note": "C25 10 pF, OA6 - to OA6 out; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "R85",
+   "type": "R",
+   "nodes": [
+    "vp24",
+    "s_p"
+   ],
+   "value": "2.2k",
+   "note": "R85 2.2K, +24 V to OA6 pin 7; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "R86",
+   "type": "R",
+   "nodes": [
+    "s_p",
+    "t6"
+   ],
+   "value": "2.2k",
+   "note": "R86 2.2K; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "R87",
+   "type": "R",
+   "nodes": [
+    "t6",
+    "b14"
+   ],
+   "value": "5.6k",
+   "note": "R87 5.6K to Q14's base; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "C27",
+   "type": "C",
+   "nodes": [
+    "t6",
+    "e14"
+   ],
+   "value": "22u",
+   "note": "C27 22 uF 16 V bootstrap, + at R86/R87, - at Q14's emitter; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "C34",
+   "type": "C",
+   "nodes": [
+    "s_p",
+    "s_m"
+   ],
+   "value": "1u",
+   "note": "C34 1 uF 50 V across OA6's supply pins (+ at pin 7); crop (2150,1080) 2.5x"
+  },
+  {
+   "ref": "R95",
+   "type": "R",
+   "nodes": [
+    "s_m",
+    "vm24"
+   ],
+   "value": "2.2k",
+   "note": "R95 2.2K, OA6 pin 4 to -24 V; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "R94",
+   "type": "R",
+   "nodes": [
+    "s_m",
+    "u6"
+   ],
+   "value": "2.2k",
+   "note": "R94 2.2K; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "R91",
+   "type": "R",
+   "nodes": [
+    "u6",
+    "b8"
+   ],
+   "value": "5.6k",
+   "note": "R91 5.6K to Q8's base; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "C28",
+   "type": "C",
+   "nodes": [
+    "e8",
+    "u6"
+   ],
+   "value": "22u",
+   "note": "C28 22 uF 16 V bootstrap, + at Q8's emitter; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "C24",
+   "type": "C",
+   "nodes": [
+    "s_m",
+    "0"
+   ],
+   "value": "1n",
+   "note": "C24 1 nF, OA6 pin 4 to the ground bus; crop (2150,1640) 1.8x"
+  },
+  {
+   "ref": "CR14",
+   "type": "D",
+   "nodes": [
+    "b14",
+    "o6"
+   ],
+   "model": "1N4148",
+   "note": "CR14 1N4148, Q14 base to OA6 out; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "CR16",
+   "type": "D",
+   "nodes": [
+    "o6",
+    "b8"
+   ],
+   "model": "1N4148",
+   "note": "CR16 1N4148, OA6 out to Q8 base; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "CR15",
+   "type": "D",
+   "nodes": [
+    "m",
+    "b14"
+   ],
+   "model": "1N4148",
+   "note": "CR15 1N4148, output node to Q14 base (B-E reverse clamp); crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "CR17",
+   "type": "D",
+   "nodes": [
+    "b8",
+    "m"
+   ],
+   "model": "1N4148",
+   "note": "CR17 1N4148, Q8 base to the output node; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "Q14",
+   "type": "npn",
+   "nodes": [
+    "vp24",
+    "b14",
+    "e14"
+   ],
+   "model": "BC341",
+   "note": "Q14 BC341 (heatsink), collector +24 V; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "R88",
+   "type": "R",
+   "nodes": [
+    "e14",
+    "m"
+   ],
+   "value": "22",
+   "note": "R88 22 ohm; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "Q8",
+   "type": "pnp",
+   "nodes": [
+    "vm24",
+    "b8",
+    "e8"
+   ],
+   "model": "BC361",
+   "note": "Q8 BC361 (heatsink), collector -24 V; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "R90",
+   "type": "R",
+   "nodes": [
+    "e8",
+    "m"
+   ],
+   "value": "22",
+   "note": "R90 22 ohm; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "R89",
+   "type": "R",
+   "nodes": [
+    "m",
+    "out"
+   ],
+   "value": "22",
+   "note": "R89 22 ohm to P3-2 SIG OUT; crops (2150,1000) 1.6x, (2650,1000) 1.6x, (2150,1080) 2.5x, (2150,1370) 1.6x, (2700,1370) 1.6x"
+  },
+  {
+   "ref": "RLOAD",
+   "type": "R",
+   "nodes": [
+    "out",
+    "0"
+   ],
+   "value": "10k",
+   "note": "10 kOhm bridging load on P3-2 (A), as the 1176 netlist"
+  },
+  {
+   "ref": "R97",
+   "type": "R",
+   "nodes": [
+    "vp24",
+    "j9"
+   ],
+   "value": "1k",
+   "note": "R97 1K from the +24 V node; crops (2480,1560) 1.8x, (2700,1370) 1.6x, (3100,1700) 1.5x"
+  },
+  {
+   "ref": "R96",
+   "type": "R",
+   "nodes": [
+    "j9",
+    "0"
+   ],
+   "value": "10k",
+   "note": "R96 10K to ground; crops (2480,1560) 1.8x, (2700,1370) 1.6x, (3100,1700) 1.5x"
+  },
+  {
+   "ref": "CR18",
+   "type": "D",
+   "nodes": [
+    "j9",
+    "e9"
+   ],
+   "model": "1N4148",
+   "note": "CR18 (note 1B: diodes are 1N4148); crops (2480,1560) 1.8x, (2700,1370) 1.6x, (3100,1700) 1.5x"
+  },
+  {
+   "ref": "C30",
+   "type": "C",
+   "nodes": [
+    "e9",
+    "0"
+   ],
+   "value": "100u",
+   "note": "C30 100 uF 25 V, + at Q9's emitter; crops (2480,1560) 1.8x, (2700,1370) 1.6x, (3100,1700) 1.5x"
+  },
+  {
+   "ref": "R99",
+   "type": "R",
+   "nodes": [
+    "vp24",
+    "b9"
+   ],
+   "value": "10k",
+   "note": "R99 10K, +24 V to Q9's base; crops (2480,1560) 1.8x, (2700,1370) 1.6x, (3100,1700) 1.5x"
+  },
+  {
+   "ref": "Q9",
+   "type": "pnp",
+   "nodes": [
+    "q9c",
+    "b9",
+    "e9"
+   ],
+   "model": "BC261",
+   "note": "Q9 BC261; crops (2480,1560) 1.8x, (2700,1370) 1.6x, (3100,1700) 1.5x"
+  },
+  {
+   "ref": "C29",
+   "type": "C",
+   "nodes": [
+    "vp24",
+    "q9c"
+   ],
+   "value": "1u",
+   "note": "C29 1 uF 250 V; crops (2480,1560) 1.8x, (2700,1370) 1.6x, (3100,1700) 1.5x"
+  },
+  {
+   "ref": "R98",
+   "type": "R",
+   "nodes": [
+    "vm24",
+    "q9c"
+   ],
+   "value": "1Meg",
+   "note": "R98 1M from -24 V; crops (2480,1560) 1.8x, (2700,1370) 1.6x, (3100,1700) 1.5x"
+  },
+  {
+   "ref": "R101",
+   "type": "R",
+   "nodes": [
+    "q9c",
+    "gl"
+   ],
+   "value": "3.3Meg",
+   "note": "R101 3.3M 10 % to the clamp gates; crops (2480,1560) 1.8x, (2700,1370) 1.6x, (3100,1700) 1.5x"
+  },
+  {
+   "ref": "R100",
+   "type": "R",
+   "nodes": [
+    "out",
+    "r100b"
+   ],
+   "value": "15Meg",
+   "note": "R100 15M 10 % from the drain bus (P3-2) ...; crops (2480,1560) 1.8x, (2700,1370) 1.6x, (3100,1700) 1.5x"
+  },
+  {
+   "ref": "C31",
+   "type": "C",
+   "nodes": [
+    "r100b",
+    "gl"
+   ],
+   "value": "3.3n",
+   "note": "... in series with C31 3.3 nF to the gate line; crops (2480,1560) 1.8x, (2700,1370) 1.6x, (3100,1700) 1.5x"
+  },
+  {
+   "ref": "Q10",
+   "type": "njf",
+   "nodes": [
+    "out",
+    "gl",
+    "0"
+   ],
+   "model": "KE4858",
+   "note": "Q10 KE4858 (2N4858), drain on P3-2, source to the ground bus, 'OUTPUT CLAMP' (off with the gate line at -24 V); crops (2480,1560) 1.8x, (2700,1370) 1.6x, (3100,1700) 1.5x"
+  },
+  {
+   "ref": "Q11",
+   "type": "njf",
+   "nodes": [
+    "out",
+    "gl",
+    "0"
+   ],
+   "model": "KE4858",
+   "note": "Q11 KE4858 (2N4858), drain on P3-2, source to the ground bus, 'OUTPUT CLAMP' (off with the gate line at -24 V); crops (2480,1560) 1.8x, (2700,1370) 1.6x, (3100,1700) 1.5x"
+  },
+  {
+   "ref": "Q12",
+   "type": "njf",
+   "nodes": [
+    "out",
+    "gl",
+    "0"
+   ],
+   "model": "KE4858",
+   "note": "Q12 KE4858 (2N4858), drain on P3-2, source to the ground bus, 'OUTPUT CLAMP' (off with the gate line at -24 V); crops (2480,1560) 1.8x, (2700,1370) 1.6x, (3100,1700) 1.5x"
+  },
+  {
+   "ref": "Q13",
+   "type": "njf",
+   "nodes": [
+    "out",
+    "gl",
+    "0"
+   ],
+   "model": "KE4858",
+   "note": "Q13 KE4858 (2N4858), drain on P3-2, source to the ground bus, 'OUTPUT CLAMP' (off with the gate line at -24 V); crops (2480,1560) 1.8x, (2700,1370) 1.6x, (3100,1700) 1.5x"
+  },
+  {
+   "ref": "M2",
+   "type": "sub",
+   "nodes": [
+    "rms_in",
+    "0",
+    "rms_sym",
+    "vp15",
+    "vm15",
+    "rms_out"
+   ],
+   "of": "rms208",
+   "note": "M2 'RMS (208)' (dbx potted module; legend IN GND SYM / +V TRIM -V OUT CAP). OUT and CAP are taken as one node: R35 909K on OUT is 'matched with C15' on CAP (note 6, dwg 164001), which only makes sense if R35 supplies the timing current of C15; C15's + is on ground (the CAP sits below ground) and CR19 clamps OUT at +0.6 V, so the module's output falls with level. Modelled as subcircuit rms208 (see its notes). crop (180,940) 1.3x; pin legend (1960,520) 3x"
+  },
+  {
+   "ref": "R34",
+   "type": "pot",
+   "nodes": [
+    "vm15",
+    "r34w",
+    "vp15"
+   ],
+   "value": "50k",
+   "control": "symrms",
+   "note": "R34 50K 'SYM RMS' across +-15 V; crop (180,940) 1.3x; pin legend (1960,520) 3x"
+  },
+  {
+   "ref": "R37",
+   "type": "R",
+   "nodes": [
+    "r34w",
+    "rms_sym"
+   ],
+   "value": "1.5Meg",
+   "note": "R37 1.5M 10 % -> M2 SYM; crop (180,940) 1.3x; pin legend (1960,520) 3x"
+  },
+  {
+   "ref": "R35",
+   "type": "R",
+   "nodes": [
+    "vp15",
+    "rms_out"
+   ],
+   "value": "909k",
+   "tolerance": 0.01,
+   "note": "R35 909K 1 % (delta: matched with C15), +15 V to M2 OUT: the detector's timing current (crop (230,1060) 4x reads 909K); crop (180,940) 1.3x; pin legend (1960,520) 3x"
+  },
+  {
+   "ref": "C15",
+   "type": "C",
+   "nodes": [
+    "rms_out",
+    "0"
+   ],
+   "value": "22u",
+   "note": "C15 22 uF tantalum on M2 CAP, + to ground; C16 TRIM (select-on-test, parallel) and R36 TRIM (select-on-test, +15 V to the TRIM pin) have no value on the drawing and are not fitted; crop (180,940) 1.3x; pin legend (1960,520) 3x"
+  },
+  {
+   "ref": "CR19",
+   "type": "D",
+   "nodes": [
+    "rms_out",
+    "0"
+   ],
+   "model": "1N4148",
+   "note": "CR19, anode on M2 OUT, cathode on the M2 GND / C15+ line (ground via (788,960)); crop (180,1380) 2x"
+  },
+  {
+   "ref": "OA3B",
+   "type": "opamp",
+   "nodes": [
+    "rms_out",
+    "n3b",
+    "v3b",
+    "vp15",
+    "vm15"
+   ],
+   "model": "TL082",
+   "note": "OA3 second half (pins 5/6/7): + = M2 OUT; crop (180,1380) 2x"
+  },
+  {
+   "ref": "R67",
+   "type": "R",
+   "nodes": [
+    "n3b",
+    "v3b"
+   ],
+   "value": "1k",
+   "note": "R67 1K feedback; crop (180,1380) 2x"
+  },
+  {
+   "ref": "R63",
+   "type": "pot",
+   "nodes": [
+    "vm15",
+    "r63w",
+    "vp15"
+   ],
+   "value": "50k",
+   "control": "levelcal",
+   "note": "R63 50K LEVEL-CAL across +-15 V; crop (180,1380) 2x"
+  },
+  {
+   "ref": "R65",
+   "type": "R",
+   "nodes": [
+    "r63w",
+    "n3b"
+   ],
+   "value": "390k",
+   "note": "R65 390K from R63's wiper; crop (180,1380) 2x"
+  },
+  {
+   "ref": "R64",
+   "type": "R",
+   "nodes": [
+    "vm15",
+    "n3b"
+   ],
+   "value": "270k",
+   "note": "R64 TRIM (select-on-test) from -15 V: its value is not printed. Fitted (D) with R63 centred so that the 'end of R79' (OA3B's output) reads -0.011 V with 1.228 Vrms 100 Hz in, the dbx 160/161 alignment step; R66 TRIM (+15 V side) is then not fitted. crop (180,1380) 2x"
+  },
+  {
+   "ref": "R69",
+   "type": "R",
+   "nodes": [
+    "v3b",
+    "p5"
+   ],
+   "value": "5.49k",
+   "tolerance": 0.01,
+   "note": "R69 5.49K 1 %; crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "R70",
+   "type": "pot",
+   "nodes": [
+    "vm15",
+    "r70w",
+    "vp15"
+   ],
+   "value": "20k",
+   "taper": "B",
+   "control": "threshold",
+   "note": "R70 20K THRESHOLD (front panel, P4-5/6/9): C.W. end on +15 V (highest threshold), other end on -15 V; linear assumed (A); crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "R71",
+   "type": "R",
+   "nodes": [
+    "r70w",
+    "p5"
+   ],
+   "value": "523k",
+   "tolerance": 0.01,
+   "note": "R71 523K 1 % from R70's wiper; crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "R72",
+   "type": "R",
+   "nodes": [
+    "vm15",
+    "p5"
+   ],
+   "value": "909k",
+   "tolerance": 0.01,
+   "note": "R72 909K 1 % from R70's -15 V end; crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "OA5A",
+   "type": "opamp",
+   "nodes": [
+    "p5",
+    "f5",
+    "x5",
+    "vp15",
+    "vm15"
+   ],
+   "model": "JRC4558",
+   "note": "OA5 1/2 4558 (pins 3/2/1); crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "C33",
+   "type": "C",
+   "nodes": [
+    "x5",
+    "f5"
+   ],
+   "value": "100p",
+   "note": "C33 100 pF, OA5 out to OA5 -; crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "R74",
+   "type": "R",
+   "nodes": [
+    "x5",
+    "y5"
+   ],
+   "value": "1k",
+   "note": "R74 1K; crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "C18",
+   "type": "C",
+   "nodes": [
+    "y5",
+    "z5"
+   ],
+   "value": "10n",
+   "note": "C18 .01 uF 100 V; crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "CR13",
+   "type": "D",
+   "nodes": [
+    "z5",
+    "y5"
+   ],
+   "model": "1N4148",
+   "note": "CR13, anode on the R77/R78 node: conducts when OA5 swings negative (above threshold); crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "CR12",
+   "type": "D",
+   "nodes": [
+    "y5",
+    "r75t"
+   ],
+   "model": "1N4148",
+   "note": "CR12, anode on R74/C18; crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "R75",
+   "type": "R",
+   "nodes": [
+    "r75t",
+    "f5"
+   ],
+   "value": "100k",
+   "note": "R75 100K to OA5 -; crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "R77",
+   "type": "R",
+   "nodes": [
+    "z5",
+    "f5"
+   ],
+   "value": "10k",
+   "note": "R77 10K feedback from the output node to OA5 -; crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "R78",
+   "type": "R",
+   "nodes": [
+    "z5",
+    "0"
+   ],
+   "value": "100",
+   "note": "R78 100 ohm to the ground line (P4-4 line, (1027,1482)); dbx's 'approx 1/100 gain' on the positive side; crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "R73",
+   "type": "R",
+   "nodes": [
+    "vp15",
+    "p48"
+   ],
+   "value": "1.5k",
+   "note": "R73 1.5K from +15 V to P4-8; crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "CR10",
+   "type": "D",
+   "nodes": [
+    "p48",
+    "0"
+   ],
+   "model": "LED_RED",
+   "note": "CR10 BELOW LED (front panel via P4-8), cathode on the ground line; crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "CR6",
+   "type": "D",
+   "nodes": [
+    "p48",
+    "cr67"
+   ],
+   "model": "1N4148",
+   "note": "CR6; crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "CR7",
+   "type": "D",
+   "nodes": [
+    "cr67",
+    "x5"
+   ],
+   "model": "1N4148",
+   "note": "CR7: CR6+CR7 steal the BELOW LED's current when OA5 swings below about +0.5 V; crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "CR6L",
+   "type": "R",
+   "nodes": [
+    "p48",
+    "cr67"
+   ],
+   "value": "800Meg",
+   "note": "reverse leakage of CR6: 1N4148 IR 25 nA max at 20 V (800 MOhm). Below threshold CR6 and CR7 are both reverse-biased and their junction connects to nothing else, so only the leakage defines it (the engine diode has no leakage term; without these the node is singular and ngspice and the engine land on different points of it). Not a circuit part"
+  },
+  {
+   "ref": "CR7L",
+   "type": "R",
+   "nodes": [
+    "cr67",
+    "x5"
+   ],
+   "value": "800Meg",
+   "note": "reverse leakage of CR7: 1N4148 IR 25 nA max at 20 V (800 MOhm). Below threshold CR6 and CR7 are both reverse-biased and their junction connects to nothing else, so only the leakage defines it (the engine diode has no leakage term; without these the node is singular and ngspice and the engine land on different points of it). Not a circuit part"
+  },
+  {
+   "ref": "CR8",
+   "type": "D",
+   "nodes": [
+    "x5",
+    "cr89"
+   ],
+   "model": "1N4148",
+   "note": "CR8; crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "CR9",
+   "type": "D",
+   "nodes": [
+    "cr89",
+    "p47"
+   ],
+   "model": "1N4148",
+   "note": "CR9: CR8+CR9 lift P4-7 when OA5 is above about -0.5 V; crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "CR11",
+   "type": "D",
+   "nodes": [
+    "0",
+    "p47"
+   ],
+   "model": "LED_RED",
+   "note": "CR11 ABOVE LED (front panel via P4-7), anode on the ground line; crops (640,1400) 2x, (1040,1580) 2.6x, (880,1570) 3.5x, (560,1700) 2x"
+  },
+  {
+   "ref": "R68",
+   "type": "R",
+   "nodes": [
+    "p47",
+    "vm15"
+   ],
+   "value": "1.5k",
+   "note": "R68 1.5K, P4-7 to -15 V: its line crosses OA3B's output without a dot at (575,1782) and ends on CR9's cathode (crops (180,1680) 2.4x, (560,1700) 2x)"
+  },
+  {
+   "ref": "R40",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "p5b",
+    "z5"
+   ],
+   "value": "20k",
+   "taper": "B",
+   "control": "compression",
+   "note": "R40 20K COMPRESSION ('FRONT PANEL RATIO CONTROL', P4-2/3/4): top on the OA5A output node, C.C.W. end on the P4-4 ground line, wiper to OA5B +. Linear assumed (A); crops (1000,1050) 1.7x, (960,1280) 2.2x, (900,950) 0.9x"
+  },
+  {
+   "ref": "R41",
+   "type": "R",
+   "nodes": [
+    "z5",
+    "p5b"
+   ],
+   "value": "7.5k",
+   "note": "R41 7.5K, top of R40 to its wiper; crops (1000,1050) 1.7x, (960,1280) 2.2x, (900,950) 0.9x"
+  },
+  {
+   "ref": "R42",
+   "type": "R",
+   "nodes": [
+    "z5",
+    "r42b"
+   ],
+   "value": "2.4k",
+   "note": "R42 2.4K; crops (1000,1050) 1.7x, (960,1280) 2.2x, (900,950) 0.9x"
+  },
+  {
+   "ref": "R43",
+   "type": "pot",
+   "nodes": [
+    "r42b",
+    "p5b",
+    "p5b"
+   ],
+   "value": "50k",
+   "control": "cal41",
+   "note": "R43 50K '4:1 CAL', wired as a rheostat (wiper tied to its lower end and to R40's wiper); set so the dial's centre is 4:1 (A, see notes); crops (1000,1050) 1.7x, (960,1280) 2.2x, (900,950) 0.9x"
+  },
+  {
+   "ref": "OA5B",
+   "type": "opamp",
+   "nodes": [
+    "p5b",
+    "n5b",
+    "o5b",
+    "vp15",
+    "vm15"
+   ],
+   "model": "JRC4558",
+   "note": "OA5 second half (pins 5/6/7); crops (1000,1050) 1.7x, (960,1280) 2.2x, (900,950) 0.9x"
+  },
+  {
+   "ref": "R46",
+   "type": "R",
+   "nodes": [
+    "o5b",
+    "w5"
+   ],
+   "value": "4.7k",
+   "note": "R46 4.7K; crops (1000,1050) 1.7x, (960,1280) 2.2x, (900,950) 0.9x"
+  },
+  {
+   "ref": "R45",
+   "type": "R",
+   "nodes": [
+    "w5",
+    "n5b"
+   ],
+   "value": "10k",
+   "note": "R45 10K: unity follower with R46 inside the loop; crops (1000,1050) 1.7x, (960,1280) 2.2x, (900,950) 0.9x"
+  }
+ ],
+ "readouts": {
+  "gr": {
+   "law": "table",
+   "node": "w5",
+   "table": [
+    [
+     -0.6,
+     98.04
+    ],
+    [
+     0.0,
+     0.0
+    ]
+   ],
+   "note": "GR meter: OA5B's output node w5 (after R46) drives the VCA control port through R48 200 ohm into R30 200 ohm || the 24.9K from the GAIN CONTROL, i.e. 0.4983 of w5; at the 200's 3.05 mV/dB that is 163.4 dB per volt. Measured on this circuit (1 kHz, compression 0.5 and 1, threshold 0 and 0.5): GR = -163.4 * w5 within 0.05 dB from 2 to 59.5 dB. The GAIN CONTROL is not on w5, so the reading is compression only (the hardware's GAIN CHANGE meter has its own offset for the gain control, R51). Positive w5 (the 1/100 branch below threshold, up to +0.6 dB of gain at threshold CW) reads 0."
+  }
+ },
+ "probes": [
+  "out",
+  "oa3_o",
+  "oa4_o",
+  "rms_out",
+  "v3b",
+  "x5",
+  "z5",
+  "w5",
+  "ctl"
+ ]
+}

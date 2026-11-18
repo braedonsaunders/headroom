@@ -1,0 +1,15 @@
+# ngspice .op reference: test-compander v1 (node voltage)
+in  0.000000e+00
+vcc  1.500000e+01
+eg  1.800000e+00
+er  1.800000e+00
+ec  3.994644e-01
+einv  1.799970e+00
+eout  2.999950e+00
+cr3  1.799926e+00
+crin  1.800000e+00
+cc  3.994644e-01
+cg  1.800000e+00
+cinv  1.799926e+00
+cout  7.439693e+00
+cdc  4.619809e+00

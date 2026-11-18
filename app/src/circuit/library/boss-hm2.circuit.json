@@ -1,0 +1,1215 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "boss-hm2-heavy-metal",
+  "version": 1,
+  "name": "Boss HM-2 Heavy Metal",
+  "description": "Boss HM-2 Heavy Metal (1983) as drawn in the Roland service notes (first edition, 15 Dec 1983; the Hobby Hour PNG is a crop of the same sheet). Signal path: 2SK30A source-follower input buffer -> 2SK30A bypass switch Q4 (ON in the effect state) -> 2SC2240 booster Q6 (470k/100p collector-base feedback) -> 2SA970 PNP stage Q7 (R26 100k / R29 470k bias, collector straight into IC1b +) -> M5218L clipping amplifier IC1b with D3 one way and D4+D5 the other in its 220k/100p feedback and a 47n + 47k gain leg to DIST. DIST (VR4 250k, wiper grounded) sets both IC1b's gain leg (lug 3) and a 150 ohm + 10 uF shunt on Q6's collector (lug 1), so at 0 the pedal is quiet and cleaner, never silent. Then C12 / R23 / a series antiparallel D6-D7 pair / R30 / D8-D9 + 1n to ground -> IC1a buffer -> R54 3.3k into IC3a (non-inverting, R52 3.3k || 470p). COLOR MIX: VR2 (L) and VR3 (H), 10k each, both span IC3a's + and - inputs, their wipers feeding series gyrator resonators to AC ground: VR2 -> 87 Hz (1.5u, 330/100k/0.068u); VR3 -> 958 Hz (0.15u, 330/82k/6.8n) and 1278 Hz (0.1u, 330/100k/4.7n); clockwise boosts the band, counter-clockwise cuts it. -> LEVEL 10kA -> Q10 output switch (ON) -> 2SC945 emitter follower. Rebuilt to the drawing 2026-11-12 (VERIFY_BATCH_1 #6, CONTROL_AUDIT_FX 2.3/2.4): the DIST pot had been a volume control after the clipper (silent at 0), the gyrators were driven as band-pass sources whose outputs both COLOR MIX wipers shared, D4/D5 and D6/D7 were in the wrong place/direction, R10 was missing, Q7's bias and the IC1b + coupling had been re-invented, and Q10 was a source follower. The NORMAL/EFFECT FETs' logic (Q2/Q5/Q8/Q9), the CHECK LED and the battery protection are omitted: only the effect-on path is modelled.",
+  "sources": [
+    {
+      "title": "Boss HM-2 Service Notes, First Edition (Roland, Dec 15 1983): full circuit diagram, parts list (M5218L, 2SK30A-Y, 2SC2240-GR, 2SA970-GR, 2SC945-P, 1S2473, 1S188FM, S5500) and the waveform-check frequency table fL 90+/-10 Hz, fH1 950+/-50 Hz, fH2 1.3k+/-200 Hz",
+      "url": "https://www.synfo.nl/servicemanuals/Boss/BOSS_HM-2_SERVICE_NOTES.pdf"
+    },
+    {
+      "title": "Hobby Hour redrawn Boss HM-2 schematic (single page, same circuit, used to cross-read the volume-board gyrators and the COLOR MIX wiring)",
+      "url": "https://www.hobby-hour.com/electronics/s/schematics/boss-hm2-heavy-metal-schematic.png"
+    },
+    {
+      "title": "Muzique, 'Gyrators' bandpass EQ calculator: L = R1*R2*C2, f0 = 1/(2*pi*sqrt(L*C1)) - the relation used to check the three tone bands against the service-notes frequencies",
+      "url": "https://www.muzique.com/lab/gyrator.htm"
+    }
+  ],
+  "minRate": 176400,
+  "lte": {
+    "start": "bdf2",
+    "tol": 8
+  },
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 1.0
+  },
+  "oversampling": 2,
+  "newton": {"subPred": 26, "groups": {"IC1B": 5e-05}},
+  "solver": "auto",
+  "controls": [
+    {
+      "id": "distortion",
+      "label": "Distortion",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "distortion"
+      ],
+      "group": "Main",
+      "note": "VR4 250 kOhm D-taper (Boss 'D' law; modelled with the reverse-log C law). Wiper grounded: clockwise raises IC1b's gain and lifts the 150 ohm shunt on Q6's collector"
+    },
+    {
+      "id": "low",
+      "label": "Low",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "low"
+      ],
+      "group": "Main",
+      "note": "VR2 COLOR MIX 'L' 10 kOhm: clockwise boosts the 87 Hz resonator, counter-clockwise cuts it"
+    },
+    {
+      "id": "high",
+      "label": "High",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "high"
+      ],
+      "group": "Main",
+      "note": "VR3 COLOR MIX 'H' 10 kOhm: clockwise boosts the 958 Hz / 1278 Hz resonators, counter-clockwise cuts them"
+    },
+    {
+      "id": "level",
+      "label": "Level",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "level"
+      ],
+      "group": "Main",
+      "note": "VR1 10 kOhm A-taper output level"
+    },
+    {
+      "id": "stereo",
+      "label": "Stereo",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "CASSt"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Catalogue stereo parameter; the HM-2 is mono, stored only"
+    },
+    {
+      "id": "power",
+      "label": "On/Off",
+      "kind": "switch",
+      "default": 1.0,
+      "params": [
+        "Pwr"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Host handles bypass; stored only"
+    }
+  ],
+  "parts": [
+    {
+      "ref": "VBAT",
+      "type": "V",
+      "nodes": [
+        "vcc",
+        "0"
+      ],
+      "value": "9.0",
+      "label": "9 V battery / ACA adaptor (main board)"
+    },
+    {
+      "ref": "R10",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "r10"
+      ],
+      "value": "1k",
+      "label": "9 V rail decoupling series (R10 1k: feeds Q6's R17, Q7's R26/R28)",
+      "note": "boss-hm2-heavy-metal-schematic.png (520,40,560,90); was missing (the decoupled rail had been merged into 9 V)"
+    },
+    {
+      "ref": "C5",
+      "type": "C",
+      "nodes": [
+        "r10",
+        "0"
+      ],
+      "value": "47u",
+      "tolerance": 0.2,
+      "label": "9 V rail decoupling (47 uF/16 V, after R10)"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "vb"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "4.5 V bias divider top"
+    },
+    {
+      "ref": "R5",
+      "type": "R",
+      "nodes": [
+        "vb",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "4.5 V bias divider bottom"
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "vb",
+        "0"
+      ],
+      "value": "100u",
+      "tolerance": 0.2,
+      "label": "4.5 V rail reservoir (100 uF/16 V)"
+    },
+    {
+      "ref": "C25",
+      "type": "C",
+      "nodes": [
+        "vb",
+        "0"
+      ],
+      "value": "47u",
+      "tolerance": 0.2,
+      "label": "4.5 V rail bypass (47 uF/6.3 V)"
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "in",
+        "n1"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "Input series"
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "n1",
+        "g1"
+      ],
+      "value": "47n",
+      "tolerance": 0.1,
+      "label": "Input DC block"
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "g1",
+        "vb"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "Q1 gate bias to 4.5 V"
+    },
+    {
+      "ref": "Q1",
+      "type": "njf",
+      "nodes": [
+        "vcc",
+        "g1",
+        "s1"
+      ],
+      "model": "2SK30A",
+      "label": "Input source follower (2SK30A-Y)"
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "s1",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "Q1 source load"
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "s1",
+        "q4a"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Coupling into the bypass switch (1 uF/50 V)"
+    },
+    {
+      "ref": "R11",
+      "type": "R",
+      "nodes": [
+        "q4a",
+        "vb"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "Switch-node bias to 4.5 V"
+    },
+    {
+      "ref": "Q4",
+      "type": "R",
+      "nodes": [
+        "q4a",
+        "q4b"
+      ],
+      "value": "100",
+      "tolerance": 0.5,
+      "label": "Q4 2SK30A electronic bypass switch, ON (Rds-on)",
+      "note": "unverified: modelled as its channel resistance because the engine has no 'closed switch' part; the 2SK30A r(on) is a few hundred ohms, so the value only sets a sub-dB insertion loss. The NORMAL branch (Q5/Q2 shunt) is omitted: the effect-on path is the one modelled"
+    },
+    {
+      "ref": "R15",
+      "type": "R",
+      "nodes": [
+        "q4b",
+        "vb"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "Switch-node bias to 4.5 V"
+    },
+    {
+      "ref": "C6",
+      "type": "C",
+      "nodes": [
+        "q4b",
+        "n6"
+      ],
+      "value": "47n",
+      "tolerance": 0.1,
+      "label": "Coupling into the booster"
+    },
+    {
+      "ref": "R19",
+      "type": "R",
+      "nodes": [
+        "n6",
+        "b6"
+      ],
+      "value": "22k",
+      "tolerance": 0.05,
+      "label": "Q6 base series"
+    },
+    {
+      "ref": "R21",
+      "type": "R",
+      "nodes": [
+        "b6",
+        "0"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Q6 base bias to 4.5 V",
+      "note": "service-notes drawing: base to ground (the stage self-biases through R16 470k)"
+    },
+    {
+      "ref": "Q6",
+      "type": "npn",
+      "nodes": [
+        "c6",
+        "b6",
+        "e6"
+      ],
+      "model": "2SC2240",
+      "label": "Booster"
+    },
+    {
+      "ref": "R16",
+      "type": "R",
+      "nodes": [
+        "c6",
+        "b6"
+      ],
+      "value": "470k",
+      "tolerance": 0.05,
+      "label": "Q6 collector-base feedback"
+    },
+    {
+      "ref": "C10",
+      "type": "C",
+      "nodes": [
+        "c6",
+        "b6"
+      ],
+      "value": "100p",
+      "tolerance": 0.05,
+      "label": "Q6 feedback HF roll-off"
+    },
+    {
+      "ref": "R17",
+      "type": "R",
+      "nodes": [
+        "r10",
+        "c6"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "Q6 collector load"
+    },
+    {
+      "ref": "R18",
+      "type": "R",
+      "nodes": [
+        "e6",
+        "0"
+      ],
+      "value": "22",
+      "tolerance": 0.05,
+      "label": "Q6 emitter degeneration"
+    },
+    {
+      "ref": "R49",
+      "type": "R",
+      "nodes": [
+        "c6",
+        "n49"
+      ],
+      "value": "150",
+      "label": "DIST shunt from Q6's collector (R49 150)",
+      "note": "boss-hm2-heavy-metal-schematic.png (430,190,460,250); BOSS_HM-2_SERVICE_NOTES.pdf p.2 @200dpi rotated: R49 150 + C31 10/16 to volume-board pin 7 = VR4 lug 1"
+    },
+    {
+      "ref": "C31",
+      "type": "C",
+      "nodes": [
+        "n49",
+        "dA"
+      ],
+      "value": "10u",
+      "label": "DIST shunt coupling (C31 10 uF/16 V) to pin 7"
+    },
+    {
+      "ref": "C11",
+      "type": "C",
+      "nodes": [
+        "c6",
+        "n11"
+      ],
+      "value": "47n",
+      "tolerance": 0.1,
+      "label": "Coupling into the PNP stage"
+    },
+    {
+      "ref": "R22",
+      "type": "R",
+      "nodes": [
+        "n11",
+        "b7"
+      ],
+      "value": "22k",
+      "tolerance": 0.05,
+      "label": "Q7 base series"
+    },
+    {
+      "ref": "Q7",
+      "type": "pnp",
+      "nodes": [
+        "c7",
+        "b7",
+        "e7"
+      ],
+      "model": "2SA733",
+      "label": "PNP gain stage (2SA970-GR)"
+    },
+    {
+      "ref": "R28",
+      "type": "R",
+      "nodes": [
+        "r10",
+        "e7"
+      ],
+      "value": "120",
+      "tolerance": 0.05,
+      "label": "Q7 emitter resistor to the R10 rail"
+    },
+    {
+      "ref": "R26",
+      "type": "R",
+      "nodes": [
+        "r10",
+        "b7"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Q7 base bias from the R10 rail (R26 100k)",
+      "note": "boss-hm2-heavy-metal-schematic.png (630,100,660,180) and BOSS_HM-2_SERVICE_NOTES.pdf p.2 @200dpi rotated: R26 hangs from the R10/R28 rail to Q7's base. With R29 470k collector-base it biases the PNP's collector near mid-supply (it is the + input bias of IC1b)"
+    },
+    {
+      "ref": "R29",
+      "type": "R",
+      "nodes": [
+        "c7",
+        "b7"
+      ],
+      "value": "470k",
+      "tolerance": 0.05,
+      "label": "Q7 collector-base feedback (R29 470k)"
+    },
+    {
+      "ref": "C14",
+      "type": "C",
+      "nodes": [
+        "c7",
+        "b7"
+      ],
+      "value": "100p",
+      "tolerance": 0.1,
+      "label": "Q7 collector-base HF roll-off (C14 100p)"
+    },
+    {
+      "ref": "R27",
+      "type": "R",
+      "nodes": [
+        "c7",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "Q7 collector load"
+    },
+    {
+      "ref": "R25",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "c7"
+      ],
+      "value": "68k",
+      "tolerance": 0.05,
+      "label": "R25 68k from 9 V to Q7's collector / IC1b pin 5",
+      "note": "boss-hm2-heavy-metal-schematic.png (840,130,880,190) and BOSS_HM-2_SERVICE_NOTES.pdf p.2 @200dpi rotated: the 9 V arrow is on R25; Q7's collector drives IC1b + directly (no coupling capacitor)"
+    },
+    {
+      "ref": "IC1B",
+      "type": "opamp",
+      "nodes": [
+        "c7",
+        "fbn",
+        "o1b",
+        "vcc",
+        "0"
+      ],
+      "model": "M5218L",
+      "label": "Clipping amplifier IC1b"
+    },
+    {
+      "ref": "R20",
+      "type": "R",
+      "nodes": [
+        "fbn",
+        "o1b"
+      ],
+      "value": "220k",
+      "tolerance": 0.05,
+      "label": "Clip-stage feedback"
+    },
+    {
+      "ref": "C9",
+      "type": "C",
+      "nodes": [
+        "fbn",
+        "o1b"
+      ],
+      "value": "100p",
+      "tolerance": 0.1,
+      "label": "Clip-stage feedback HF roll-off"
+    },
+    {
+      "ref": "D3",
+      "type": "D",
+      "nodes": [
+        "fbn",
+        "o1b"
+      ],
+      "model": "1S2473",
+      "label": "Clip diode D3 (anode on pin 6)"
+    },
+    {
+      "ref": "D5",
+      "type": "D",
+      "nodes": [
+        "o1b",
+        "dm"
+      ],
+      "model": "1S188FM",
+      "label": "Clip diode D5 (anode on pin 7)",
+      "note": "boss-hm2-heavy-metal-schematic.png (600,120,700,170) at 8x: D4 and D5 both point toward pin 6, i.e. against D3 (they had been wired in D3's direction)"
+    },
+    {
+      "ref": "D4",
+      "type": "D",
+      "nodes": [
+        "dm",
+        "fbn"
+      ],
+      "model": "1S188FM",
+      "label": "Clip diode D4 (cathode on pin 6)"
+    },
+    {
+      "ref": "C22",
+      "type": "C",
+      "nodes": [
+        "fbn",
+        "n22"
+      ],
+      "value": "47n",
+      "tolerance": 0.1,
+      "label": "Clip-stage AC ground leg"
+    },
+    {
+      "ref": "R42",
+      "type": "R",
+      "nodes": [
+        "n22",
+        "dB"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "IC1b gain leg R42 47k to pin 10 = VR4 lug 3",
+      "note": "boss-hm2-heavy-metal-schematic.png (380,260,800,500) at 3.5x and BOSS_HM-2_SERVICE_NOTES.pdf p.2 @200dpi rotated: R42 goes to volume-board pin 10, not to ground"
+    },
+    {
+      "ref": "VR4",
+      "type": "pot",
+      "nodes": [
+        "dA",
+        "0",
+        "dB"
+      ],
+      "value": "250k",
+      "taper": "C",
+      "control": "distortion",
+      "label": "DIST VR4 250k D: wiper grounded, lug 1 on pin 7 (Q6 shunt), lug 3 on pin 10 (IC1b gain leg)",
+      "note": "boss-hm2-heavy-metal-schematic.png (380,260,800,500) at 3.5x; BOSS_HM-2_SERVICE_NOTES.pdf p.2 @200dpi rotated volume board: wiper (2) to ground, (1) pin 7, (3) pin 10. Clockwise moves the wiper toward lug 3: IC1b's gain rises (1+220k/(47k+R)) and the 150 ohm shunt on Q6's collector is lifted, so DIST 0 is a quiet, cleaner sound, never silence. Taper: the Boss 'D' law is modelled with the reverse-log C law (unverified)"
+    },
+    {
+      "ref": "C12",
+      "type": "C",
+      "nodes": [
+        "o1b",
+        "n12"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Clipping-stage output coupling (1 uF/50 V)"
+    },
+    {
+      "ref": "R23",
+      "type": "R",
+      "nodes": [
+        "n12",
+        "n23"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "Post-clip series"
+    },
+    {
+      "ref": "D6",
+      "type": "D",
+      "nodes": [
+        "n24",
+        "n23"
+      ],
+      "model": "S5500",
+      "label": "Series clip pair D6 (in line between R23 and R30)",
+      "note": "boss-hm2-heavy-metal-schematic.png (700,150,780,230) at 3.5x: D6/D7 are an antiparallel pair in series with the signal, not shunts to ground"
+    },
+    {
+      "ref": "D7",
+      "type": "D",
+      "nodes": [
+        "n23",
+        "n24"
+      ],
+      "model": "1S188FM",
+      "label": "Series clip pair D7 (antiparallel to D6)"
+    },
+    {
+      "ref": "R30",
+      "type": "R",
+      "nodes": [
+        "n24",
+        "n30"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "Post-clip series"
+    },
+    {
+      "ref": "D9",
+      "type": "D",
+      "nodes": [
+        "n30",
+        "0"
+      ],
+      "model": "1S2473",
+      "label": "Second clamp (1S2473)"
+    },
+    {
+      "ref": "D8",
+      "type": "D",
+      "nodes": [
+        "0",
+        "n30"
+      ],
+      "model": "1S2473",
+      "label": "Second clamp (1S2473, reverse)"
+    },
+    {
+      "ref": "C16",
+      "type": "C",
+      "nodes": [
+        "n30",
+        "0"
+      ],
+      "value": "1n",
+      "tolerance": 0.1,
+      "label": "Second clamp HF shunt"
+    },
+    {
+      "ref": "C15",
+      "type": "C",
+      "nodes": [
+        "n30",
+        "p1a"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Into the IC1a buffer (C15 1 uF/50 V)"
+    },
+    {
+      "ref": "R24",
+      "type": "R",
+      "nodes": [
+        "p1a",
+        "vb"
+      ],
+      "value": "68k",
+      "label": "IC1a + bias to 4.5 V (R24 68k)",
+      "note": "boss-hm2-heavy-metal-schematic.png (900,190,960,250)"
+    },
+    {
+      "ref": "IC1A",
+      "type": "opamp",
+      "nodes": [
+        "p1a",
+        "o1a",
+        "o1a",
+        "vcc",
+        "0"
+      ],
+      "model": "M5218L",
+      "label": "IC1a buffer (follower)"
+    },
+    {
+      "ref": "R54",
+      "type": "R",
+      "nodes": [
+        "o1a",
+        "n14"
+      ],
+      "value": "3.3k",
+      "label": "R54 3.3k from IC1a into IC3a + (pin 14)",
+      "note": "boss-hm2-heavy-metal-schematic.png (640,270,980,300)"
+    },
+    {
+      "ref": "IC3A",
+      "type": "opamp",
+      "nodes": [
+        "n14",
+        "n13",
+        "o3a",
+        "vcc",
+        "0"
+      ],
+      "model": "M5218L",
+      "label": "COLOR MIX amplifier IC3a (non-inverting, unity at flat)"
+    },
+    {
+      "ref": "R52",
+      "type": "R",
+      "nodes": [
+        "n13",
+        "o3a"
+      ],
+      "value": "3.3k",
+      "tolerance": 0.05,
+      "label": "IC3a feedback R52 3.3k"
+    },
+    {
+      "ref": "C33",
+      "type": "C",
+      "nodes": [
+        "n13",
+        "o3a"
+      ],
+      "value": "470p",
+      "tolerance": 0.1,
+      "label": "IC3a feedback C33 470p"
+    },
+    {
+      "ref": "VR2",
+      "type": "pot",
+      "nodes": [
+        "n14",
+        "n16",
+        "n13"
+      ],
+      "value": "10k",
+      "taper": "B",
+      "control": "low",
+      "label": "COLOR MIX L: VR2 10kG, lug 1 on pin 14 (IC3a +), lug 3 on pin 13 (IC3a -), wiper to the low resonator",
+      "note": "boss-hm2-heavy-metal-schematic.png (380,260,800,500) at 3.5x and BOSS_HM-2_SERVICE_NOTES.pdf p.2 @200dpi rotated: both COLOR MIX pots span pins 14-13; each wiper feeds its own series resonator (pin 16 = low, pin 15 = mid + high). Clockwise (toward IC3a -) boosts the band, counter-clockwise cuts it. Taper 'G' modelled linear (unverified)"
+    },
+    {
+      "ref": "VR3",
+      "type": "pot",
+      "nodes": [
+        "n14",
+        "n15",
+        "n13"
+      ],
+      "value": "10k",
+      "taper": "B",
+      "control": "high",
+      "label": "COLOR MIX H: VR3 10kG across pins 14-13, wiper to the mid + high resonators"
+    },
+    {
+      "ref": "C35",
+      "type": "C",
+      "nodes": [
+        "n16",
+        "xL"
+      ],
+      "value": "1.5u",
+      "tolerance": 0.2,
+      "label": "Low resonator series C35 1.5 uF (from VR2 wiper)",
+      "note": "boss-hm2-heavy-metal-schematic.png (470,480,760,720) at 4x: pin 16 -> C35 -> gyrator node; C30 from that node to the follower's +, R47 330 to its output, R51 100k + to 4.5 V. L = 330*100k*0.068u = 2.24 H, f0 = 87 Hz"
+    },
+    {
+      "ref": "C30",
+      "type": "C",
+      "nodes": [
+        "xL",
+        "pL"
+      ],
+      "value": "68n",
+      "tolerance": 0.1,
+      "label": "Low gyrator C30 0.068"
+    },
+    {
+      "ref": "R51",
+      "type": "R",
+      "nodes": [
+        "pL",
+        "vb"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Low gyrator R51 100k to 4.5 V"
+    },
+    {
+      "ref": "R47",
+      "type": "R",
+      "nodes": [
+        "xL",
+        "oL"
+      ],
+      "value": "330",
+      "tolerance": 0.05,
+      "label": "Low gyrator R47 330"
+    },
+    {
+      "ref": "IC3B",
+      "type": "opamp",
+      "nodes": [
+        "pL",
+        "oL",
+        "oL",
+        "vcc",
+        "0"
+      ],
+      "model": "M5218L",
+      "label": "Low gyrator follower IC3b"
+    },
+    {
+      "ref": "C28",
+      "type": "C",
+      "nodes": [
+        "n15",
+        "xM"
+      ],
+      "value": "0.15u",
+      "tolerance": 0.2,
+      "label": "Mid resonator series C28 0.15 uF (from VR3 wiper)",
+      "note": "L = 330*82k*6.8n = 0.184 H, f0 = 958 Hz"
+    },
+    {
+      "ref": "C27",
+      "type": "C",
+      "nodes": [
+        "xM",
+        "pM"
+      ],
+      "value": "6.8n",
+      "tolerance": 0.1,
+      "label": "Mid gyrator C27 0.0068"
+    },
+    {
+      "ref": "R43",
+      "type": "R",
+      "nodes": [
+        "pM",
+        "vb"
+      ],
+      "value": "82k",
+      "tolerance": 0.05,
+      "label": "Mid gyrator R43 82k to 4.5 V"
+    },
+    {
+      "ref": "R41",
+      "type": "R",
+      "nodes": [
+        "xM",
+        "oM"
+      ],
+      "value": "330",
+      "tolerance": 0.05,
+      "label": "Mid gyrator R41 330"
+    },
+    {
+      "ref": "IC2A",
+      "type": "opamp",
+      "nodes": [
+        "pM",
+        "oM",
+        "oM",
+        "vcc",
+        "0"
+      ],
+      "model": "M5218L",
+      "label": "Mid gyrator follower IC2a"
+    },
+    {
+      "ref": "C29",
+      "type": "C",
+      "nodes": [
+        "n15",
+        "xH"
+      ],
+      "value": "0.1u",
+      "tolerance": 0.2,
+      "label": "High resonator series C29 0.1 uF (also on VR3's wiper)",
+      "note": "L = 330*100k*4.7n = 0.155 H, f0 = 1278 Hz"
+    },
+    {
+      "ref": "C26",
+      "type": "C",
+      "nodes": [
+        "xH",
+        "pH"
+      ],
+      "value": "4.7n",
+      "tolerance": 0.1,
+      "label": "High gyrator C26 0.0047"
+    },
+    {
+      "ref": "R44",
+      "type": "R",
+      "nodes": [
+        "pH",
+        "vb"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "High gyrator R44 100k to 4.5 V"
+    },
+    {
+      "ref": "R45",
+      "type": "R",
+      "nodes": [
+        "xH",
+        "oH"
+      ],
+      "value": "330",
+      "tolerance": 0.05,
+      "label": "High gyrator R45 330"
+    },
+    {
+      "ref": "IC2B",
+      "type": "opamp",
+      "nodes": [
+        "pH",
+        "oH",
+        "oH",
+        "vcc",
+        "0"
+      ],
+      "model": "M5218L",
+      "label": "High gyrator follower IC2b"
+    },
+    {
+      "ref": "C34",
+      "type": "C",
+      "nodes": [
+        "o3a",
+        "n34"
+      ],
+      "value": "10u",
+      "tolerance": 0.2,
+      "label": "Level-stage output coupling (10 uF/16 V)"
+    },
+    {
+      "ref": "R53",
+      "type": "R",
+      "nodes": [
+        "n34",
+        "lt"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "Into the Level control"
+    },
+    {
+      "ref": "VR1",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "lw",
+        "lt"
+      ],
+      "value": "10k",
+      "taper": "A",
+      "control": "level",
+      "label": "LEVEL 10 kOhm A-taper"
+    },
+    {
+      "ref": "C32",
+      "type": "C",
+      "nodes": [
+        "lw",
+        "q10a"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Output switch coupling (C32 1 uF/50 V)"
+    },
+    {
+      "ref": "R50",
+      "type": "R",
+      "nodes": [
+        "q10a",
+        "vb"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "Q10 switch-node bias to 4.5 V (R50 1M)"
+    },
+    {
+      "ref": "Q10",
+      "type": "R",
+      "nodes": [
+        "q10a",
+        "q10b"
+      ],
+      "value": "100",
+      "label": "Q10 2SK30A electronic output switch, ON (channel resistance)",
+      "note": "boss-hm2-heavy-metal-schematic.png (850,320,1080,520) at 3x and BOSS_HM-2_SERVICE_NOTES.pdf p.2 @200dpi rotated: Q10 is the output half of the FET bypass pair; the signal runs through its channel (C32/R50 on one side, R48/C7 on the other) and its gate goes to D12 / the flip-flop. Modelled like Q4: the channel's on resistance (unverified: a few hundred ohms at most against 1 Mohm, sub-dB). It was a source follower with the signal on the gate"
+    },
+    {
+      "ref": "R48",
+      "type": "R",
+      "nodes": [
+        "q10b",
+        "vb"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "Q10 switch-node bias to 4.5 V (R48 1M)"
+    },
+    {
+      "ref": "C7",
+      "type": "C",
+      "nodes": [
+        "q10b",
+        "q3b"
+      ],
+      "value": "47n",
+      "tolerance": 0.1,
+      "label": "Coupling into the output emitter follower (C7 0.047)"
+    },
+    {
+      "ref": "R12",
+      "type": "R",
+      "nodes": [
+        "q3b",
+        "vb"
+      ],
+      "value": "470k",
+      "tolerance": 0.05,
+      "label": "Q3 base return",
+      "note": "base return to the 4.5 V bias (a return to ground leaves the output device cut off; the drawn value 470k sets Ie ~0.44 mA at hFE 250)"
+    },
+    {
+      "ref": "Q3",
+      "type": "npn",
+      "nodes": [
+        "vcc",
+        "q3b",
+        "q3e"
+      ],
+      "model": "2SC828",
+      "label": "Discrete output stage (2SC945)"
+    },
+    {
+      "ref": "R13",
+      "type": "R",
+      "nodes": [
+        "q3e",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "Q3 emitter load R13 10k",
+      "note": "boss-hm2-heavy-metal-schematic.png (900,400,1195,620) at 5x: R13 10K (was 6.8k)"
+    },
+    {
+      "ref": "R4",
+      "type": "R",
+      "nodes": [
+        "q3e",
+        "c3a"
+      ],
+      "value": "1k",
+      "tolerance": 0.05,
+      "label": "Output series"
+    },
+    {
+      "ref": "C3",
+      "type": "C",
+      "nodes": [
+        "c3a",
+        "out"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Output DC block (1 uF/50 V)"
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "out",
+        "0"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Output pull-down"
+    }
+  ],
+  "probes": [
+    "g1",
+    "s1",
+    "c6",
+    "c7",
+    "o1b",
+    "n23",
+    "n30",
+    "o1a",
+    "o3a",
+    "out"
+  ],
+  "layout": {},
+  "models": {
+    "M5218L": {
+      "kind": "opamp",
+      "level": 1,
+      "a0": 150000.0,
+      "gbw": 3000000.0,
+      "slew": 1000000.0,
+      "swing_hi": 1.5,
+      "swing_lo": 1.5,
+      "vhi": 9.0,
+      "vlo": 0.0,
+      "note": "Mitsubishi M5218L dual op-amp (HM-2 IC1-3): 4558-class - Av 1.5e5, GBW 3 MHz, SR 1 V/us, single 9 V supply, output swing 1.5 V from each rail. unverified: the M5218L datasheet is not to hand; 4558-class typicals used"
+    },
+    "1S2473": {
+      "kind": "diode",
+      "is": 2.52e-09,
+      "n": 1.752,
+      "rs": 0.568,
+      "note": "Hitachi 1S2473 silicon switching diode: no vendor card found, 1N914 card used (same 0.6-0.7 V class)"
+    },
+    "1S188FM": {
+      "kind": "diode",
+      "is": 4e-09,
+      "n": 1.9,
+      "rs": 0.8,
+      "note": "Toshiba 1S188FM silicon diode: no card found; slightly softer/higher-Rs than 1N914 (unverified), chosen so the anti-series pair clips a little above the 1S2473"
+    },
+    "S5500": {
+      "kind": "diode",
+      "is": 2.52e-09,
+      "n": 1.752,
+      "rs": 0.568,
+      "note": "Sanken S5500: no card found, 1N914 card used"
+    },
+    "2SC2240": {
+      "kind": "npn",
+      "is": 2e-14,
+      "bf": 400.0,
+      "br": 3.0,
+      "note": "Toshiba 2SC2240 low-noise NPN (HM-2 parts list). unverified: no vendor SPICE card; BF 400 inside the datasheet hFE range 200-700"
+    },
+    "2SA733": {
+      "kind": "pnp",
+      "is": 2e-14,
+      "bf": 250,
+      "br": 5,
+      "note": "stand-in for the HM-2's 2SA970-GR (not in the engine library): NEC 2SA733-P approximate EM set, hFE 200-400 matches the GR grade. unverified"
+    },
+    "2SC828": {
+      "kind": "npn",
+      "is": 1e-14,
+      "bf": 250,
+      "br": 4,
+      "vaf": 100,
+      "note": "stand-in for the HM-2's 2SC945-P output device (not in the engine library). unverified"
+    },
+    "2N5458": {
+      "kind": "njf",
+      "vto": -3.0,
+      "beta": 0.000667,
+      "lambda": 0.01,
+      "is": 1e-14,
+      "n": 1.0,
+      "cgs": 4.5e-12,
+      "cgd": 1.5e-12,
+      "note": "stand-in for the HM-2's 2SK30A-Y: the engine library's 2N5458 Shichman-Hodges card. unverified: the 2SK30A-Y is a lower-IDSS part, so this model is hotter than the real JFET"
+    },
+    "2SK30A": {
+      "kind": "njf",
+      "vto": -1.5,
+      "beta": 0.000889,
+      "lambda": 0.008,
+      "is": 1e-14,
+      "n": 1.0,
+      "cgs": 3.5e-12,
+      "cgd": 1.2e-12,
+      "note": "Toshiba 2SK30A-Y (HM-2 parts list: Q1/Q4/Q5/Q10): Y-grade IDSS 1.2-3.0 mA, VGS(off) -0.8 to -3.0 V; card takes the middle IDSS 2.0 mA / Vp -1.5 V so BETA = IDSS/Vp^2 = 0.889 mA/V^2 and gm0 = 2*IDSS/|Vp| = 2.67 mS. unverified: LAMBDA, IS and the capacitances are datasheet-typical rather than measured"
+    }
+  },
+  "cuts": []
+}

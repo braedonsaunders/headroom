@@ -1,0 +1,1319 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "hiwatt-dr103",
+ "version": 1,
+ "name": "Hiwatt DR103 Custom 100 (1970 Partridge)",
+ "description": "Hiwatt DR103 Custom 100: Partridge-era four-input preamp (two channels, shared V1 cathode), V2 mixer pair with a common 100 kOhm plate load, the Hiwatt TMB tone stack, a 220 kOhm Master Volume, V3a recovery and V3b fixed-bias cathode-follower reference, the Hiwatt fixed-bias long-tailed-pair phase inverter (82 kOhm/91 kOhm plates, 22 kOhm tail, 10 kOhm feedback from the 16 Ohm tap, 1 nF/100 kOhm/470 Ohm/100 nF/470 Ohm/10 nF presence network), and four EL34s in parallel push-pull with 22 kOhm grid stoppers, 100 kOhm grid leaks to a -38 V bias rail, 100 Ohm screen stoppers from a 470 Ohm screen bus, and a Partridge TH7549/2 output transformer (Raa 1750 Ohm, 16/8/4 Ohm taps, feedback from the 16 Ohm tap) into a 16 Ohm Hiwatt SE4123-class cab. Supply: Partridge TH7548/5-class PT (350 VAC HT, 50 VAC bias) into a 1N5408 bridge, a 2x220 uF/350 V series reservoir, standby, 100 Ohm 5 W to the screen feed, 470 Ohm 10 W to the screen bus, 1 kOhm to HT3, a 2x50 uF/450 V + 220 uF/350 V series HT3 filter with 220 kOhm balancing, and a -38 V bias supply. Mains 230 Vrms 50 Hz.",
+ "sources": [
+  {
+   "title": "Hiwatt DR103 Preamp Circuit Diagram, factory sheet, drawn 19/05/95 Issue 4, S/No. AB0309 onwards (Audio Brothers/Biacrown owners manual): V1-V4 = ECC83, 220k plate loads, shared 1k5/100uF V1 cathode, 100k V2 common plate load, 1k cathodes with one 47n bypass, Hiwatt TMB stack values, 220k master, 100k/1k5 V3a, 100k/1M/220k V3b reference, 82k/91k PI, 22k tail, 2k2, 10k feedback, 100k presence + 100n + 470R + 10n",
+   "url": "https://schematicheaven.net/newamps/hiwatt_100w_dr103.pdf"
+  },
+  {
+   "title": "Hiwatt DR103 Output Stage Circuit Diagram, factory sheet, drawn 25/04/94 Issue 1: four EL34, 22k grid stoppers, 100k grid leaks to BIAS, 100R screen stoppers, 470R 10W screen feed from H.T. SUPPLY 2, Partridge TH7549/2 with 16/8/4 Ohm taps and a feedback terminal",
+   "url": "https://hiwatt.org/Schematics/DR_100wOutput.pdf"
+  },
+  {
+   "title": "Hiwatt DR103 Power Supply Circuit Diagram, factory sheet, drawn 22/11/94 Issue 3: Partridge TH7548/5, 1N5408 bridge, 2x220 uF/350 V reservoir with 220k balancing, 100R 5W, 470R 10W, 1k 1W, 2x50 uF/450 V + 220 uF/350 V stack, 220k/220k balance, 1k/1N5408/100uF/47k bias to -38 V",
+   "url": "https://schematicheaven.net/newamps/hiwatt_100w_dr103.pdf"
+  },
+  {
+   "title": "Mark Huss, Hiwatt 100 W Output Stage drawing v1.1 and 100 W Power Supply drawing v1.3 (Partridge TG7549/TH7549, TG9302/TH7548, 460 V HT1, -38 V bias), and Mid-70s Four-Input Preamp drawing rev 1.4 (Hiwatt TMB stack, 220k master, V3a/V3b, fixed-bias PI)",
+   "url": "https://hiwatt.org/tech2.html"
+  },
+  {
+   "title": "Richard Kuehnel, Amp Books, 'Hiwatt Fixed-Bias Phase Inverter': cathode-follower reference 1M/220k and 220k cathode, LTP grids at 73 V through 100k and 1M, 22k tail, 10k feedback in parallel with 2.2k, 82k/91k plates, presence network 1n/100k/470R/100n plus fixed 470R/10n",
+   "url": "https://ampbooks.com/mobile/classic-circuits/hiwatt-phase-inverter/"
+  },
+  {
+   "title": "Mark Huss, Hiwatt technical page: DR103 Partridge output transformer primary impedance 1750 Ohm, -3 dB 3.6 Hz to 112 kHz; DR103 power transformer 350 VAC @ 300 mA HT, 50 VAC @ 50 mA bias; DR201 Partridge primary DCR about 36 Ohm; classic valve line-up V1-V3 ECC83, V4 ECC81",
+   "url": "https://hiwatt.org/tech.html"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "spk",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 40.0,
+  "note": "40 V RMS is 100 W into 16 Ohm; the final level is a listening-review decision"
+ },
+ "oversampling": 2,
+ "minRate": 176400,
+ "lte": {"start": "bdf2", "tol": 8},
+ "solver": "auto",
+ "cuts": [
+  "hra",
+  "hrb",
+  "raw",
+  "ht1",
+  "htb",
+  "ht3",
+  "rm",
+  "rl"
+ ],
+ "models": {
+  "1N5408": {
+   "kind": "diode",
+   "is": 1e-08,
+   "n": 1.8,
+   "rs": 0.02,
+   "note": "3 A / 1000 V silicon rectifier, datasheet-class SPICE card (IS/N/RS approximate; forward drop 0.8-1.0 V at the supply currents)"
+  }
+ },
+ "controls": [
+  {
+   "id": "normal",
+   "label": "Normal Volume",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "nv"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "470 kOhm log Normal channel volume; top from V1a's 22 nF coupler, wiper to V2a"
+  },
+  {
+   "id": "brilliant",
+   "label": "Brilliant Volume",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "bv"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "470 kOhm log Brilliant channel volume; top from V1b's 1000 pF coupler, wiper to V2b"
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "tr"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "220 kOhm linear treble pot in the Hiwatt TMB stack"
+  },
+  {
+   "id": "middle",
+   "label": "Middle",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "md"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "100 kOhm linear middle pot, a rheostat between the 22 kOhm and the bass node with the 1000 pF across it: CCW = 0 Ohm (deep mid scoop near 600-900 Hz), CW = 100 kOhm (mids filled in, +15 dB at 900 Hz)"
+  },
+  {
+   "id": "bass",
+   "label": "Bass",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "bs"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "470 kOhm log bass pot wired as a rheostat with the wiper tied to the top lug"
+  },
+  {
+   "id": "presence",
+   "label": "Presence",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "pr"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "100 kOhm linear presence pot in the PI feedforward/feedback network"
+  },
+  {
+   "id": "master",
+   "label": "Master Volume",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Mst"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "220 kOhm audio-taper master volume after the tone stack"
+  },
+  {
+   "id": "bias",
+   "label": "Bias",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Bi"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "The factory bias supply is fixed at -38 V with no trim; stored only (the catalogue Bi control has no part on the drawings)"
+  },
+  {
+   "id": "pw",
+   "label": "Power",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Pw",
+    "Pwr"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Host-side power scaling; stored only"
+  },
+  {
+   "id": "variac",
+   "label": "VAC",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Var"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "No variac in a stock DR103; stored only"
+  },
+  {
+   "id": "sag",
+   "label": "Sag",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Sg"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Sag emerges from the partridge PT/100 W supply; stored only"
+  },
+  {
+   "id": "response",
+   "label": "Response",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Rsp"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "No counterpart; stored only"
+  },
+  {
+   "id": "stereo",
+   "label": "Stereo",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "CASSt"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Stored only"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VHA",
+   "type": "V",
+   "nodes": [
+    "ha",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "495.0",
+    "freq": 50,
+    "phase": 90
+   },
+   "label": "HT secondary half (350 Vrms, 495 V peak), phase A",
+   "note": "The DR103 uses a 1N5408 bridge on one 350 VAC winding; a floating winding cannot be expressed with ground-referenced V sources, so the bridge is modelled as the equivalent two-diode full-wave from anti-phase sources of the full-winding peak (the JCM800/5E3 convention). One diode drop instead of two."
+  },
+  {
+   "ref": "VHB",
+   "type": "V",
+   "nodes": [
+    "hb",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "495.0",
+    "freq": 50,
+    "phase": 270
+   },
+   "label": "HT secondary half, phase B"
+  },
+  {
+   "ref": "RPTA",
+   "type": "R",
+   "nodes": [
+    "ha",
+    "hra"
+   ],
+   "value": "20",
+   "label": "HT winding + reflected primary resistance (A), unverified typical"
+  },
+  {
+   "ref": "RPTB",
+   "type": "R",
+   "nodes": [
+    "hb",
+    "hrb"
+   ],
+   "value": "20",
+   "label": "HT winding + reflected primary resistance (B), unverified typical"
+  },
+  {
+   "ref": "D1",
+   "type": "D",
+   "nodes": [
+    "hra",
+    "raw"
+   ],
+   "model": "1N5408",
+   "label": "HT rectifier A"
+  },
+  {
+   "ref": "D2",
+   "type": "D",
+   "nodes": [
+    "hrb",
+    "raw"
+   ],
+   "model": "1N5408",
+   "label": "HT rectifier B"
+  },
+  {
+   "ref": "CR1",
+   "type": "C",
+   "nodes": [
+    "raw",
+    "0"
+   ],
+   "value": "110u",
+   "tolerance": 0.2,
+   "label": "Reservoir 2x220 uF 350 V in series = 110 uF",
+   "note": "The drawn series pair is a voltage-rating arrangement; its midpoint is not used elsewhere, so the equivalent 110 uF is modelled as one capacitor. The 2x220k balance/bleed is kept as 440k."
+  },
+  {
+   "ref": "RBR",
+   "type": "R",
+   "nodes": [
+    "raw",
+    "0"
+   ],
+   "value": "440k",
+   "label": "Reservoir balance/bleed 2x220 k in series"
+  },
+  {
+   "ref": "RSTB",
+   "type": "R",
+   "nodes": [
+    "raw",
+    "ht1"
+   ],
+   "value": "0.1",
+   "label": "Standby switch (closed; 0.1 Ohm link)"
+  },
+  {
+   "ref": "RD1",
+   "type": "R",
+   "nodes": [
+    "ht1",
+    "htb"
+   ],
+   "value": "100",
+   "tolerance": 0.05,
+   "label": "HT1 to HT2 dropper 100 Ohm 5 W"
+  },
+  {
+   "ref": "RD2",
+   "type": "R",
+   "nodes": [
+    "htb",
+    "scr"
+   ],
+   "value": "470",
+   "tolerance": 0.05,
+   "label": "Screen feed 470 Ohm 10 W"
+  },
+  {
+   "ref": "RD3",
+   "type": "R",
+   "nodes": [
+    "htb",
+    "ht3"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "HT2 to HT3 dropper 1 k 1 W"
+  },
+  {
+   "ref": "C50",
+   "type": "C",
+   "nodes": [
+    "htb",
+    "0"
+   ],
+   "value": "68.75u",
+   "tolerance": 0.2,
+   "label": "HT2/HT3 filter: 2x50 uF 450 V (parallel) in series with 220 uF 350 V = 68.75 uF",
+   "note": "The drawn series stack (100 uF + 220 uF) is a voltage-rating arrangement; its midpoint is set by 2x220k and is not used elsewhere, so the equivalent capacitance is modelled. The balancing divider is kept as 440k."
+  },
+  {
+   "ref": "RB5",
+   "type": "R",
+   "nodes": [
+    "htb",
+    "0"
+   ],
+   "value": "440k",
+   "label": "HT2/HT3 stack balance/bleed 2x220 k in series"
+  },
+  {
+   "ref": "RD4",
+   "type": "R",
+   "nodes": [
+    "ht3",
+    "rm"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Preamp dropper HT3 to rail M 10 k 2 W"
+  },
+  {
+   "ref": "C32",
+   "type": "C",
+   "nodes": [
+    "rm",
+    "0"
+   ],
+   "value": "32u",
+   "tolerance": 0.2,
+   "label": "Rail M 32 uF 450 V"
+  },
+  {
+   "ref": "RD5",
+   "type": "R",
+   "nodes": [
+    "rm",
+    "rl"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Preamp dropper rail M to rail L 10 k 2 W"
+  },
+  {
+   "ref": "C16",
+   "type": "C",
+   "nodes": [
+    "rl",
+    "0"
+   ],
+   "value": "16u",
+   "tolerance": 0.2,
+   "label": "Rail L 16 uF 350 V"
+  },
+  {
+   "ref": "RINN",
+   "type": "R",
+   "nodes": [
+    "in",
+    "g1a"
+   ],
+   "value": "68k",
+   "tolerance": 0.05,
+   "label": "Normal High input grid stopper (Low jack network omitted)"
+  },
+  {
+   "ref": "RGNN",
+   "type": "R",
+   "nodes": [
+    "g1a",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "Normal input grid leak"
+  },
+  {
+   "ref": "RINB",
+   "type": "R",
+   "nodes": [
+    "in",
+    "g1b"
+   ],
+   "value": "68k",
+   "tolerance": 0.05,
+   "label": "Brilliant High input grid stopper (Low jack network omitted)"
+  },
+  {
+   "ref": "RGNB",
+   "type": "R",
+   "nodes": [
+    "g1b",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "Brilliant input grid leak"
+  },
+  {
+   "ref": "V1A",
+   "type": "triode",
+   "nodes": [
+    "p1a",
+    "g1a",
+    "k1"
+   ],
+   "model": "12AX7",
+   "label": "V1A Normal channel first stage"
+  },
+  {
+   "ref": "V1B",
+   "type": "triode",
+   "nodes": [
+    "p1b",
+    "g1b",
+    "k1"
+   ],
+   "model": "12AX7",
+   "label": "V1B Brilliant channel first stage"
+  },
+  {
+   "ref": "RL1A",
+   "type": "R",
+   "nodes": [
+    "rl",
+    "p1a"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "V1A plate load 220 k"
+  },
+  {
+   "ref": "RL1B",
+   "type": "R",
+   "nodes": [
+    "rl",
+    "p1b"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "V1B plate load 220 k"
+  },
+  {
+   "ref": "RK1",
+   "type": "R",
+   "nodes": [
+    "k1",
+    "0"
+   ],
+   "value": "1k5",
+   "tolerance": 0.05,
+   "label": "V1 shared cathode 1.5 k"
+  },
+  {
+   "ref": "CK1",
+   "type": "C",
+   "nodes": [
+    "k1",
+    "0"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "V1 shared cathode bypass 100 uF 16 V"
+  },
+  {
+   "ref": "CC1N",
+   "type": "C",
+   "nodes": [
+    "p1a",
+    "cna"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Normal coupling 22 nF 400 V"
+  },
+  {
+   "ref": "CC1B",
+   "type": "C",
+   "nodes": [
+    "p1b",
+    "cba"
+   ],
+   "value": "1n",
+   "tolerance": 0.1,
+   "label": "Brilliant coupling 1000 pF 400 V"
+  },
+  {
+   "ref": "VOLN",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "g2a",
+    "cna"
+   ],
+   "value": "470k",
+   "taper": "A",
+   "control": "normal",
+   "label": "Normal Volume 470 k log"
+  },
+  {
+   "ref": "VOLB",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "g2b",
+    "cba"
+   ],
+   "value": "470k",
+   "taper": "A",
+   "control": "brilliant",
+   "label": "Brilliant Volume 470 k log"
+  },
+  {
+   "ref": "V2A",
+   "type": "triode",
+   "nodes": [
+    "p2",
+    "g2a",
+    "k2a"
+   ],
+   "model": "12AX7",
+   "label": "V2A Normal mixer"
+  },
+  {
+   "ref": "V2B",
+   "type": "triode",
+   "nodes": [
+    "p2",
+    "g2b",
+    "k2b"
+   ],
+   "model": "12AX7",
+   "label": "V2B Brilliant mixer"
+  },
+  {
+   "ref": "RP2",
+   "type": "R",
+   "nodes": [
+    "rm",
+    "p2"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "V2 common plate load 100 k"
+  },
+  {
+   "ref": "RK2A",
+   "type": "R",
+   "nodes": [
+    "k2a",
+    "0"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "V2A cathode 1 k (unbypassed)"
+  },
+  {
+   "ref": "RK2B",
+   "type": "R",
+   "nodes": [
+    "k2b",
+    "0"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "V2B cathode 1 k"
+  },
+  {
+   "ref": "CK2B",
+   "type": "C",
+   "nodes": [
+    "k2b",
+    "0"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "V2B cathode bypass 47 nF"
+  },
+  {
+   "ref": "CTS1",
+   "type": "C",
+   "nodes": [
+    "p2",
+    "tsa"
+   ],
+   "value": "1n",
+   "tolerance": 0.1,
+   "label": "Tone stack treble cap 1000 pF"
+  },
+  {
+   "ref": "CTS2",
+   "type": "C",
+   "nodes": [
+    "tsa",
+    "tsb"
+   ],
+   "value": "220p",
+   "tolerance": 0.1,
+   "label": "Tone stack treble cap 220 pF"
+  },
+  {
+   "ref": "RTS1",
+   "type": "R",
+   "nodes": [
+    "tsa",
+    "tsc"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "Tone stack 220 k"
+  },
+  {
+   "ref": "RTS2",
+   "type": "R",
+   "nodes": [
+    "tsc",
+    "tse"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "Tone stack 22 k"
+  },
+  {
+   "ref": "RTS3",
+   "type": "R",
+   "nodes": [
+    "p2",
+    "tsd"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Tone stack slope 100 k"
+  },
+  {
+   "ref": "TREB",
+   "type": "pot",
+   "nodes": [
+    "tse",
+    "tw",
+    "tsb"
+   ],
+   "value": "220k",
+   "taper": "B",
+   "control": "treble",
+   "label": "Treble 220 k lin"
+  },
+  {
+   "ref": "MID",
+   "type": "pot",
+   "nodes": [
+    "tsf",
+    "tse",
+    "tse"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "middle",
+   "label": "Middle 100 k lin, wired as a rheostat: wiper strapped to the top lug (the 22 k / node E), bottom lug to the bass-top node (tsf); CW = full 100 k (Huss drawing's rotation arrow). Every archived copy draws the strap (1995 Issue 4 p.4 raster 740,560,960,830; Issue 2 AB manual p.9; AB_DR103; 2001 redraw; Huss v1a/v2)"
+  },
+  {
+   "ref": "CMID",
+   "type": "C",
+   "nodes": [
+    "tse",
+    "tsf"
+   ],
+   "value": "1n",
+   "tolerance": 0.1,
+   "label": "Tone stack middle cap 1000 pF, across the Middle rheostat (node E to the bass-top node tsf), as every archived copy draws it"
+  },
+  {
+   "ref": "BASS",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "tsf",
+    "tsf"
+   ],
+   "value": "470k",
+   "taper": "A",
+   "control": "bass",
+   "label": "Bass 470 k log, wiper tied to the top lug"
+  },
+  {
+   "ref": "CB1",
+   "type": "C",
+   "nodes": [
+    "tsd",
+    "tsf"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "Tone stack bass cap 47 nF"
+  },
+  {
+   "ref": "CB2",
+   "type": "C",
+   "nodes": [
+    "tsd",
+    "0"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "Tone stack bass cap 47 nF to ground"
+  },
+  {
+   "ref": "RTM",
+   "type": "R",
+   "nodes": [
+    "tw",
+    "mt"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "Treble wiper to Master 22 k"
+  },
+  {
+   "ref": "MASTER",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mvw",
+    "mt"
+   ],
+   "value": "220k",
+   "taper": "A",
+   "control": "master",
+   "label": "Master Volume 220 k audio"
+  },
+  {
+   "ref": "V3A",
+   "type": "triode",
+   "nodes": [
+    "p3a",
+    "mvw",
+    "k3a"
+   ],
+   "model": "12AX7",
+   "label": "V3A recovery stage (grid on the Master wiper)"
+  },
+  {
+   "ref": "RL3",
+   "type": "R",
+   "nodes": [
+    "rm",
+    "p3a"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "V3A plate load 100 k"
+  },
+  {
+   "ref": "RK3",
+   "type": "R",
+   "nodes": [
+    "k3a",
+    "0"
+   ],
+   "value": "1k5",
+   "tolerance": 0.05,
+   "label": "V3A cathode 1.5 k (unbypassed on the factory sheet)"
+  },
+  {
+   "ref": "V3B",
+   "type": "triode",
+   "nodes": [
+    "rm",
+    "g3b",
+    "kcf2"
+   ],
+   "model": "12AX7",
+   "label": "V3B fixed-bias cathode follower (PI voltage reference)"
+  },
+  {
+   "ref": "RG3B1",
+   "type": "R",
+   "nodes": [
+    "rm",
+    "g3b"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "V3B grid divider 1 M from rail M"
+  },
+  {
+   "ref": "RG3B2",
+   "type": "R",
+   "nodes": [
+    "g3b",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "V3B grid divider 220 k to ground"
+  },
+  {
+   "ref": "RKCF2",
+   "type": "R",
+   "nodes": [
+    "kcf2",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "V3B cathode load 220 k"
+  },
+  {
+   "ref": "V4A",
+   "type": "triode",
+   "nodes": [
+    "pa1",
+    "g4a",
+    "k4"
+   ],
+   "model": "12AX7",
+   "label": "V4A phase inverter (driven side)"
+  },
+  {
+   "ref": "V4B",
+   "type": "triode",
+   "nodes": [
+    "pb1",
+    "g4b",
+    "k4"
+   ],
+   "model": "12AX7",
+   "label": "V4B phase inverter (feedback side)"
+  },
+  {
+   "ref": "RLA",
+   "type": "R",
+   "nodes": [
+    "ht3",
+    "pa1"
+   ],
+   "value": "82k",
+   "tolerance": 0.05,
+   "label": "PI plate load 82 k"
+  },
+  {
+   "ref": "RLB",
+   "type": "R",
+   "nodes": [
+    "ht3",
+    "pb1"
+   ],
+   "value": "91k",
+   "tolerance": 0.05,
+   "label": "PI plate load 91 k"
+  },
+  {
+   "ref": "RTAIL",
+   "type": "R",
+   "nodes": [
+    "k4",
+    "jpi"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "PI tail 22 k"
+  },
+  {
+   "ref": "RT2",
+   "type": "R",
+   "nodes": [
+    "jpi",
+    "0"
+   ],
+   "value": "2k2",
+   "tolerance": 0.05,
+   "label": "PI tail 2.2 k to ground"
+  },
+  {
+   "ref": "RNFB",
+   "type": "R",
+   "nodes": [
+    "spk",
+    "jpi"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Global feedback 10 k from the 16 Ohm tap"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "p3a",
+    "g4a"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "V3A plate to PI grid 22 nF 400 V"
+  },
+  {
+   "ref": "RG4A",
+   "type": "R",
+   "nodes": [
+    "kcf2",
+    "g4a"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "PI V4A grid reference 100 k to the V3B cathode"
+  },
+  {
+   "ref": "RG4B",
+   "type": "R",
+   "nodes": [
+    "kcf2",
+    "g4b"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "PI V4B grid reference 1 M to the V3B cathode"
+  },
+  {
+   "ref": "C9",
+   "type": "C",
+   "nodes": [
+    "g4b",
+    "jpi"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "PI V4B feedback injection 100 nF 160 V"
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "p3a",
+    "prt"
+   ],
+   "value": "1n",
+   "tolerance": 0.1,
+   "label": "Presence feed 1000 pF 400 V"
+  },
+  {
+   "ref": "PRES",
+   "type": "pot",
+   "nodes": [
+    "prt",
+    "prw",
+    "prb"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "presence",
+   "label": "Presence 100 k lin",
+   "note": "Presence 100 k lin. Lugs (fixed 2026-11-11, control audit): the factory sheet does not number the lugs; the clockwise end is the 100 nF / feedback-junction side (prb), as the Amp Books Hiwatt PI analysis states (wiper fully right = 470 R against the 0.1 uF = treble boost) and the owner manual requires (presence gives an extremely bright sound at the upper end). It was wired the other way round, so up removed highs (-15.5 dB at 8 kHz)."
+  },
+  {
+   "ref": "RPG",
+   "type": "R",
+   "nodes": [
+    "prw",
+    "0"
+   ],
+   "value": "470",
+   "tolerance": 0.05,
+   "label": "Presence wiper 470 Ohm"
+  },
+  {
+   "ref": "C12",
+   "type": "C",
+   "nodes": [
+    "prb",
+    "jpi"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "Presence to feedback junction 100 nF 400 V"
+  },
+  {
+   "ref": "RPD",
+   "type": "R",
+   "nodes": [
+    "jpi",
+    "pd"
+   ],
+   "value": "470",
+   "tolerance": 0.05,
+   "label": "Feedback shunt 470 Ohm"
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "pd",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "Feedback shunt 10 nF 400 V"
+  },
+  {
+   "ref": "C13",
+   "type": "C",
+   "nodes": [
+    "pa1",
+    "ga"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "PI output 1 coupling 47 nF 400 V"
+  },
+  {
+   "ref": "C14",
+   "type": "C",
+   "nodes": [
+    "pb1",
+    "gb"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "PI output 2 coupling 47 nF 400 V"
+  },
+  {
+   "ref": "RGL1",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "bias"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "V5/V6 grid leak 100 k to bias"
+  },
+  {
+   "ref": "RGL2",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "bias"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "V7/V8 grid leak 100 k to bias"
+  },
+  {
+   "ref": "RS5",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "g5"
+   ],
+   "value": "11k",
+   "tolerance": 0.05,
+   "label": "V5 grid stopper 22 k",
+   "note": "pair of 22k folded with the output tubes"
+  },
+  {
+   "ref": "RS7",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "g7"
+   ],
+   "value": "11k",
+   "tolerance": 0.05,
+   "label": "V7 grid stopper 22 k",
+   "note": "pair of 22k folded with the output tubes"
+  },
+  {
+   "ref": "RSC5",
+   "type": "R",
+   "nodes": [
+    "scr",
+    "s5"
+   ],
+   "value": "50",
+   "tolerance": 0.05,
+   "label": "V5 screen stopper 100 Ohm",
+   "note": "pair of 100 folded with the output tubes"
+  },
+  {
+   "ref": "RSC7",
+   "type": "R",
+   "nodes": [
+    "scr",
+    "s7"
+   ],
+   "value": "50",
+   "tolerance": 0.05,
+   "label": "V7 screen stopper 100 Ohm",
+   "note": "pair of 100 folded with the output tubes"
+  },
+  {
+   "ref": "V5",
+   "type": "pentode",
+   "nodes": [
+    "pa",
+    "s5",
+    "g5",
+    "0"
+   ],
+   "model": "EL34",
+   "label": "V5 EL34 phase A",
+   "parallel": 2,
+   "note": "V5 + V6: two matched tubes in parallel (folded; their grid stoppers and screen resistors are halved, grid caps doubled)"
+  },
+  {
+   "ref": "V7",
+   "type": "pentode",
+   "nodes": [
+    "pb",
+    "s7",
+    "g7",
+    "0"
+   ],
+   "model": "EL34",
+   "label": "V7 EL34 phase B",
+   "parallel": 2,
+   "note": "V7 + V8: two matched tubes in parallel (folded; their grid stoppers and screen resistors are halved, grid caps doubled)"
+  },
+  {
+   "ref": "OT",
+   "type": "transformer",
+   "nodes": [
+    "pa",
+    "ht1",
+    "ht1",
+    "pb",
+    "spk",
+    "0"
+   ],
+   "turns": [
+    1,
+    1,
+    0.19121
+   ],
+   "r": [
+    18,
+    18,
+    0.2
+   ],
+   "leak": [
+    "2.5m",
+    "2.5m",
+    0
+   ],
+   "lm": 100,
+   "lsat": 6,
+   "label": "Partridge TH7549/2 output transformer",
+   "note": "Raa 1750 Ohm (Huss), 16 Ohm tap turns 2*sqrt(16/1750); primary DCR 18 Ohm per half (DR201 Partridge measured about 36 Ohm total); leakage 2.5 mH per half from the 112 kHz -3 dB bandwidth; lm/lsat typical-class and unverified"
+  },
+  {
+   "ref": "CWA",
+   "type": "C",
+   "nodes": [
+    "pa",
+    "cwa"
+   ],
+   "value": "470p",
+   "label": "OT half-primary winding capacitance (A)"
+  },
+  {
+   "ref": "RCWA",
+   "type": "R",
+   "nodes": [
+    "cwa",
+    "ht1"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (A)"
+  },
+  {
+   "ref": "CWB",
+   "type": "C",
+   "nodes": [
+    "pb",
+    "cwb"
+   ],
+   "value": "470p",
+   "label": "OT half-primary winding capacitance (B)"
+  },
+  {
+   "ref": "RCWB",
+   "type": "R",
+   "nodes": [
+    "cwb",
+    "ht1"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (B)"
+  },
+  {
+   "ref": "SPK",
+   "type": "sub",
+   "of": "lib:spk-12in-16ohm-british",
+   "nodes": [
+    "spk",
+    "0"
+   ],
+   "label": "Hiwatt SE4123-class 16 Ohm 4x12 cab (single Thiele-Small equivalent)"
+  },
+  {
+   "ref": "VBIAS",
+   "type": "V",
+   "nodes": [
+    "bias",
+    "0"
+   ],
+   "value": "-38",
+   "label": "Bias supply filter node (-38 V)",
+   "note": "The factory PSU sheet prints -38 V after the 1k / 1N5408 / 100 uF 63 V / 47 k bias rectifier off the 50 VAC bias winding. Modelled as the printed filter node, as the JCM800/Plexi/AB763 netlists do, because a negative-peak rectifier is not charged at the mains-crest operating point used by --settle 0. The real network is in the notes."
+  }
+ ],
+ "probes": [
+  "g1a",
+  "p1a",
+  "k1",
+  "p2",
+  "p3a",
+  "g4a",
+  "g4b",
+  "pa1",
+  "pb1",
+  "ga",
+  "gb",
+  "pa",
+  "scr",
+  "ht1",
+  "bias",
+  "spk"
+ ]
+}

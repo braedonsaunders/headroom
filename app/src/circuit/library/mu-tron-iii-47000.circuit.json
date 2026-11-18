@@ -1,0 +1,866 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "mu-tron-iii-47000",
+  "version": 1,
+  "name": "Musitronics Mu-Tron III Envelope Filter (catalogue 47000)",
+  "description": "Musitronics Mu-Tron III envelope-controlled state-variable filter, wired from R. G. Keen's GEO 'Neutron' design (the schematic General Guitar Gadgets sells as its Mu-Tron III replica) with GGG's 2014 BOM values. Input: J1 into the 1 MOhm reverse-log Gain pot (VR1) used as a rheostat, R1 3k3 and C1 4.7 uF into an inverting stage IC1B (R3 120 kOhm, C3 10 pF; + input on R2 120 kOhm with C2 0.1 uF) whose gain runs from 36 down to 0.12. The filter is a three-op-amp state variable: IC1A is the difference amplifier (R7 22 kOhm local feedback, R6 22 kOhm from IC2A's output, both 22 kOhm so V(hp) = 2*V(+) - V(lp)) whose + input is the summing node R4 4k7 (drive) and R5 12 kOhm + the 150 kOhm log Peak pot (VR2, rheostat from the band-pass output) - that loop is the damping, Q = 1 + (12k + Rp)/4k7; IC2B integrates the high-pass output through R8 220 kOhm in parallel with LDR a and C6 1.8 nF (C5 2.2 nF switched in parallel by the Range pole a); IC2A integrates the band-pass output through R9 220 kOhm in parallel with LDR b and C8 1.8 nF (C7 2.2 nF on Range pole b). Both LDRs see one LED (the original's custom dual-photocell module). Mode: a three-position rotary (Sw4) picking lp / bp / hp into C14 15 uF NP and R21 560 Ohm. Detector: IC1B's output also feeds C4 2.2 uF into R10 22 kOhm (R11 12 kOhm in parallel in the Down direction, Sw3 pole a) and the precision rectifier IC3B (R12 1 MOhm on the + input, R13 1 MOhm feedback, D1 1N914 clamp, D2 1N914 into R14 330 Ohm and C9 4.7 uF with R15 47 kOhm to -9 V, which sets the release). The LED driver IC3A takes the envelope on its + input (Up) or a 3.6 V bias from R18 180 kOhm / R19 120 kOhm (Down) on Sw3 pole b, with R16 120 kOhm from the envelope to its - input and R17 120 kOhm from the LED cathode, so the LED current is (V+ * 2 - V(env) - V(k))/120k and is set by Rx 560 Ohm to ground; Up gives I = V(env)/Rx, Down gives I = (7.2 V - V(env))/Rx. Supply: +8.98 V / -8.4 V from the pedal's own 9 V input (Q1 2N3906 power switch) and ICL7660 charge pump, wired as the two ideal rails those two produce; C15/C17/C18 are fitted as drawn. See the notes for why the switch and the pump are not netlisted.",
+  "sources": [
+    {
+      "title": "J. D. Sleep, General Guitar Gadgets, 'Musitronics Mu-Tron III Envelope Filter' schematic, version 2014-10-12, read at 300-1600 dpi together with the parts-layout/wiring sheet (version 2017-07-25) and the BOM: every resistor, capacitor, pot, IC and diode value used here; the three switch networks (Sw2 Range, Sw3 Drive/Sweep Direction, Sw4 Mode) were resolved from the schematic and the layout sheet jointly",
+      "url": "https://generalguitargadgets.com/pdf/ggg_neutron_sc.pdf"
+    },
+    {
+      "title": "J. D. Sleep, General Guitar Gadgets, Neutron Bill of Materials, version 2014-10-12 (R1 3k3 ... R21 560, Rx 'see instructions'; C1 4.7 uF tantalum, C2 0.1 uF, C3 10 pF, C4 2.2 uF, C5/C7 0.0022 uF, C6/C8 0.0018 uF, C9 4.7 uF, C10/C11 4.7 uF, C12/C13 0.1 uF, C14 15 uF NP, C15-C17 10 uF, C18 100 uF; IC1-3 TL072, IC4 7660, D1/D2 1N914, D3 LED, Q1 2N3906, VR1 1 M reverse log, VR2 150 k log, Sw2/Sw3 DPDT, Sw4 3-way rotary)",
+      "url": "https://generalguitargadgets.com/pdf/ggg_neutron_bom.pdf"
+    },
+    {
+      "title": "R. G. Keen, 'Neutron Filter, a Mutron III Workalike', GEO Design 117 v1.01d (8-page design document, the source GGG's project page names): 'C6 and C8 (1.8nF) capacitors in the feedback path of U2b and U2a and the variable resistances in parallel with R8 and R9 ... determine the frequency. The Range switch ... adds an extra 2.2nF (C5 and C7) capacitor in parallel with each of the 1.8nF feedback capacitors when the range switch is in the low position'; U1b gain ~40 to 1/8; U1a/U2b/U2a = the state variable filter; Peak 'adds a bit of positive feedback'; U3b precision rectifier + C9 envelope capacitor; U3a drives the LED 'in current mode, with the current through it sensed by Rx'; 'Up/Down ... changes U3a from an inverter to a follower and changing its DC bias level'; Rx 'start with about 560 ohms ... less than 4.7K'",
+      "url": "https://generalguitargadgets.com/wp-content/uploads/neutron_filter.pdf"
+    },
+    {
+      "title": "J. D. Sleep, General Guitar Gadgets, Neutron parts layout / wiring diagram, version 2017-07-25 (used to confirm the two-pole Range switch, the two-pole Direction switch and the three-position Mode switch wiring)",
+      "url": "https://generalguitargadgets.com/pdf/ggg_neutron_lo.pdf"
+    },
+    {
+      "title": "Catalogue unit 47000 control list: S Sens, UD Direction, R Range, P Res, M Mode alias real parts (VR1, Sw3, Sw2, VR2, Sw4). A Attack, l Release, o Offset, e Mix and SC Sidechain are the legacy behavioural model's parameters: a Mu-Tron III has no attack, release, offset, mix or sidechain control (the release is R15/C9 and the attack is R14/C9), so they are legacyOnly",
+      "url": "localhost: app/src/generated/ComponentCatalog.hpp kParams_47000"
+    }
+  ],
+  "minRate": 176400,
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 1.0
+  },
+  "oversampling": 2,
+  "solver": "auto",
+  "models": {
+    "MT3_LED": {
+      "kind": "led",
+      "is": 2.7551e-09,
+      "n": 3.9696,
+      "rs": 0,
+      "iref": 0.01,
+      "tau_light": 0.0001,
+      "note": "the optical emitter. The original is a custom Musitronics module (one LED, two LDRs) that is no longer made; GGG's own build notes give four substitutes (two H11F3, a dual-LDR module, two single vactrols, or discrete LDRs with a high-brightness green LED) and say to fit Rx to the part you use. This card is the VTL5C3/2 LED of Parker and D'Angelo (DAFx-13) from the engine library, used unchanged: the current through the LED is set by the IC3A feedback loop and Rx, not by the diode card, so Vf only matters where the op-amp saturates (a green LED sits ~0.2 V higher, i.e. a few per cent less current at the saturated end)"
+    },
+    "MT3_LDR": {
+      "kind": "cds",
+      "rdark": 10000000.0,
+      "ron": 1000.0,
+      "gamma": 1.0,
+      "kr": 230,
+      "tau_l": 2.0,
+      "tau_h": 0,
+      "mh": 0,
+      "mr": 0,
+      "note": "unverified fit: the engine library's VTL5C3_CELL card (10 kOhm / 1 kOhm / 500 Ohm at 1 / 10 / 40 mA, dark 10 MOhm, 2.5 ms on / 35 ms off) used unchanged for both cells. The original dual-photocell's law is not published and GGG's substitute list spans CLM6000 / NSL32 / VTL5C3 class parts; this card is the middle of that class. The cell is faster (2.5 ms / 35 ms) than the envelope network (R14 C9 1.5 ms attack, R15 C9 0.22 s release), so the pedal's time constants come from the circuit, not from the cell"
+    },
+    "2N3906_MT": {
+      "kind": "pnp",
+      "is": 1.41e-15,
+      "bf": 180.7,
+      "br": 4.977,
+      "note": "Fairchild/ON 2N3906 card (the engine library entry), used as the reverse-polarity / power switch Q1; only its saturation drop matters here"
+    }
+  },
+  "controls": [
+    {
+      "id": "sens",
+      "label": "Gain (Sensitivity)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "S"
+      ],
+      "group": "Main",
+      "note": "VR1 1 MOhm reverse-log pot used as a rheostat: jack tip on one end, wiper through R1 3k3 into C1, other end open on the sheet (tied to the wiper here, electrically identical). 0 = 1 MOhm, IC1B gain 120k/(3k3+1M) = 0.12; 1 = 0 Ohm, gain 120k/3.3k = 36.4 (GEO doc: ~40 down to 1/8). Log-spaced gain, so the taper is 'A' with the pot inverted"
+    },
+    {
+      "id": "res",
+      "label": "Peak (Resonance)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "P"
+      ],
+      "paramRange": [
+        0.0,
+        0.99193
+      ],
+      "group": "Main",
+      "note": "VR2 150 kOhm log pot as a rheostat between R5 12 kOhm and the band-pass output: this is the state-variable filter's damping resistor. Q = 1 + (12k + Rp)/4k7, i.e. 3.6 at 0 through 6.7 at half track (log taper, 15 kOhm) to 35.5 at 150 kOhm"
+    },
+    {
+      "id": "range",
+      "label": "Range",
+      "kind": "switch",
+      "default": 0,
+      "params": [
+        "R"
+      ],
+      "group": "Main",
+      "note": "Sw2 DPDT, both poles used: 0 = High (C5/C7 2.2 nF open, each integrator runs on its 1.8 nF only), 1 = Low (C5 and C7 switched in parallel, 4.0 nF, halving the cutoff). No default on the pedal; 0 = High as drawn"
+    },
+    {
+      "id": "direction",
+      "label": "Direction",
+      "kind": "switch",
+      "default": 0,
+      "params": [
+        "UD"
+      ],
+      "group": "Main",
+      "note": "Sw3 DPDT, both poles used. 0 = Up: the envelope goes to the IC3A + input (follower) and the LED current is V(env)/Rx, so the filter opens as the note gets louder. 1 = Down: the + input is the 3.6 V R18/R19 bias (inverter) and the current is (7.2 V - V(env))/Rx, so the filter closes; R11 12 kOhm is also switched in parallel with R10 22 kOhm on pole a, which raises the rectifier gain from 45 to 129 for that direction"
+    },
+    {
+      "id": "mode",
+      "label": "Mode",
+      "kind": "selector",
+      "default": 0.0,
+      "options": [
+        "Low Pass",
+        "Band Pass",
+        "High Pass"
+      ],
+      "params": [
+        "M"
+      ],
+      "paramRange": [
+        0.0,
+        0.785
+      ],
+      "group": "Main",
+      "note": "Sw4 three-position rotary: IC2A's output (low pass), IC2B's (band pass) or IC1A's (high pass) into C14 15 uF NP and R21 560 Ohm"
+    },
+    {
+      "id": "attack",
+      "label": "Attack",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "A"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No attack control on a Mu-Tron III: the attack is fixed by R14 330 Ohm into C9 4.7 uF (1.6 ms). Stored only"
+    },
+    {
+      "id": "release",
+      "label": "Release",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "l"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No release control: the release is R15 47 kOhm from C9 to -9 V (0.22 s, in practice a near-linear 40 V/s discharge). Stored only"
+    },
+    {
+      "id": "offset",
+      "label": "Offset",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "o"
+      ],
+      "paramRange": [
+        0.0,
+        0.67266
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No offset control on the pedal. The only fixed offsets are the 3.6 V R18/R19 bias on the Down direction and the 0 V reference of the rectifier. Stored only"
+    },
+    {
+      "id": "mix",
+      "label": "Mix",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "e"
+      ],
+      "paramRange": [
+        0.23711,
+        1.0
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No dry/wet mix: the output is whichever filter output the Mode switch selects. Stored only"
+    },
+    {
+      "id": "sidechain",
+      "label": "Sidechain",
+      "kind": "continuous",
+      "default": 0,
+      "params": [
+        "SC"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No sidechain input on the pedal: the detector is fed from IC1B's output through C4 and cannot be re-routed. Stored only"
+    },
+    {
+      "id": "power",
+      "label": "On/Off",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "Pwr"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Host bypass. Sw1 (3PDT), its wiring and the D3 panel indicator LED are the pedal's own true-bypass hardware, outside the audio path; Q1 is the DC-jack switch and stays closed"
+    }
+  ],
+  "parts": [
+    {
+      "ref": "VCC",
+      "type": "V",
+      "nodes": [
+        "vcc9",
+        "0"
+      ],
+      "value": "8.98",
+      "label": "+9 V rail: a 9 V input through Q1 2N3906, which R20 4k7 holds on while the input jack's ring is grounded. Modelled as the rail it produces (Q1 saturates at Vce 0.02 V); see the notes for why the switch itself is not netlisted"
+    },
+    {
+      "ref": "VEE",
+      "type": "V",
+      "nodes": [
+        "vee9",
+        "0"
+      ],
+      "value": "-8.4",
+      "label": "-9 V rail: IC4 ICL7660 inverting the +9 V rail, about 0.99x minus the 60 Ohm output resistance at 8 mA. Modelled as a fixed rail (the engine has no charge pump); its ~10 kHz switching ripple is not modelled"
+    },
+    {
+      "ref": "C18",
+      "type": "C",
+      "nodes": [
+        "vcc9",
+        "0"
+      ],
+      "value": "100u",
+      "label": "Rail reservoir"
+    },
+    {
+      "ref": "C15",
+      "type": "C",
+      "nodes": [
+        "vcc9",
+        "0"
+      ],
+      "value": "10u",
+      "label": "Rail bypass (ICL7660 V+ pin)"
+    },
+    {
+      "ref": "C17",
+      "type": "C",
+      "nodes": [
+        "vee9",
+        "0"
+      ],
+      "value": "10u",
+      "label": "Rail bypass on the -9 V rail (ICL7660 VOUT pin)"
+    },
+    {
+      "ref": "VR1",
+      "type": "pot",
+      "nodes": [
+        "in",
+        "gw",
+        "gw"
+      ],
+      "value": "1M",
+      "taper": "A",
+      "invert": true,
+      "control": "sens",
+      "label": "Gain 1 MOhm reverse log (sensitivity)"
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "gw",
+        "c1n"
+      ],
+      "value": "3k3",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "c1n",
+        "u1bn"
+      ],
+      "value": "4.7u",
+      "label": "Input coupling (tantalum)"
+    },
+    {
+      "ref": "IC1B",
+      "type": "opamp",
+      "nodes": [
+        "u1bp",
+        "u1bn",
+        "d1",
+        "vcc9",
+        "vee9"
+      ],
+      "model": "TL072",
+      "label": "IC1B input gain stage (pins 5/6/7)"
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "u1bn",
+        "d1"
+      ],
+      "value": "120k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C3",
+      "type": "C",
+      "nodes": [
+        "u1bn",
+        "d1"
+      ],
+      "value": "10p"
+    },
+    {
+      "ref": "R2",
+      "type": "R",
+      "nodes": [
+        "u1bp",
+        "0"
+      ],
+      "value": "120k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "u1bp",
+        "0"
+      ],
+      "value": "0.1u"
+    },
+    {
+      "ref": "R4",
+      "type": "R",
+      "nodes": [
+        "d1",
+        "nsum"
+      ],
+      "value": "4k7",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R5",
+      "type": "R",
+      "nodes": [
+        "nsum",
+        "npeak"
+      ],
+      "value": "12k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "VR2",
+      "type": "pot",
+      "nodes": [
+        "npeak",
+        "bp",
+        "bp"
+      ],
+      "value": "150k",
+      "taper": "A",
+      "control": "res",
+      "label": "Peak 150 kOhm log (state-variable damping)"
+    },
+    {
+      "ref": "IC1A",
+      "type": "opamp",
+      "nodes": [
+        "nsum",
+        "nhpi",
+        "hp",
+        "vcc9",
+        "vee9"
+      ],
+      "model": "TL072",
+      "label": "IC1A difference amplifier, high-pass output (pins 3/2/1)"
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "nhpi",
+        "hp"
+      ],
+      "value": "22k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "nhpi",
+        "lp"
+      ],
+      "value": "22k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "hp",
+        "bpin"
+      ],
+      "value": "220k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "LDR1",
+      "type": "cds",
+      "nodes": [
+        "hp",
+        "bpin"
+      ],
+      "light": "L1",
+      "model": "MT3_LDR",
+      "label": "OC1/LDRa first photocell, in parallel with R8"
+    },
+    {
+      "ref": "IC2B",
+      "type": "opamp",
+      "nodes": [
+        "0",
+        "bpin",
+        "bp",
+        "vcc9",
+        "vee9"
+      ],
+      "model": "TL072",
+      "label": "IC2B first integrator, band-pass output (pins 5/6/7)"
+    },
+    {
+      "ref": "C6",
+      "type": "C",
+      "nodes": [
+        "bpin",
+        "bp"
+      ],
+      "value": "1.8n"
+    },
+    {
+      "ref": "C5",
+      "type": "C",
+      "nodes": [
+        "bpin",
+        "c5r"
+      ],
+      "value": "2.2n"
+    },
+    {
+      "ref": "SW2A",
+      "type": "switch",
+      "nodes": [
+        "c5r",
+        "bp"
+      ],
+      "control": "range",
+      "label": "Range pole a (closed = Low)"
+    },
+    {
+      "ref": "R9",
+      "type": "R",
+      "nodes": [
+        "bp",
+        "lpin"
+      ],
+      "value": "220k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "LDR2",
+      "type": "cds",
+      "nodes": [
+        "bp",
+        "lpin"
+      ],
+      "light": "L1",
+      "model": "MT3_LDR",
+      "label": "OC1/LDRb second photocell, in parallel with R9"
+    },
+    {
+      "ref": "IC2A",
+      "type": "opamp",
+      "nodes": [
+        "0",
+        "lpin",
+        "lp",
+        "vcc9",
+        "vee9"
+      ],
+      "model": "TL072",
+      "label": "IC2A second integrator, low-pass output (pins 3/2/1)"
+    },
+    {
+      "ref": "C8",
+      "type": "C",
+      "nodes": [
+        "lpin",
+        "lp"
+      ],
+      "value": "1.8n"
+    },
+    {
+      "ref": "C7",
+      "type": "C",
+      "nodes": [
+        "lpin",
+        "c7r"
+      ],
+      "value": "2.2n"
+    },
+    {
+      "ref": "SW2B",
+      "type": "switch",
+      "nodes": [
+        "c7r",
+        "lp"
+      ],
+      "control": "range",
+      "label": "Range pole b (closed = Low)"
+    },
+    {
+      "ref": "SW4A",
+      "type": "switch",
+      "nodes": [
+        "lp",
+        "mout"
+      ],
+      "control": "mode",
+      "positions": [
+        0
+      ],
+      "label": "Mode: Low Pass"
+    },
+    {
+      "ref": "SW4B",
+      "type": "switch",
+      "nodes": [
+        "bp",
+        "mout"
+      ],
+      "control": "mode",
+      "positions": [
+        1
+      ],
+      "label": "Mode: Band Pass"
+    },
+    {
+      "ref": "SW4C",
+      "type": "switch",
+      "nodes": [
+        "hp",
+        "mout"
+      ],
+      "control": "mode",
+      "positions": [
+        2
+      ],
+      "label": "Mode: High Pass"
+    },
+    {
+      "ref": "C14",
+      "type": "C",
+      "nodes": [
+        "mout",
+        "outp"
+      ],
+      "value": "15u",
+      "label": "Output coupling, non-polar 15 uF"
+    },
+    {
+      "ref": "R21",
+      "type": "R",
+      "nodes": [
+        "outp",
+        "out"
+      ],
+      "value": "560",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "d1",
+        "det"
+      ],
+      "value": "2.2u",
+      "label": "Detector feed from the gain stage (before the filter)"
+    },
+    {
+      "ref": "R10",
+      "type": "R",
+      "nodes": [
+        "det",
+        "rdet"
+      ],
+      "value": "22k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R11",
+      "type": "R",
+      "nodes": [
+        "r11n",
+        "rdet"
+      ],
+      "value": "12k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "SW3A",
+      "type": "switch",
+      "nodes": [
+        "det",
+        "r11n"
+      ],
+      "control": "direction",
+      "label": "Direction pole a: closed = Down (R11 in parallel with R10)"
+    },
+    {
+      "ref": "IC3B",
+      "type": "opamp",
+      "nodes": [
+        "r12n",
+        "rdet",
+        "o3b",
+        "vcc9",
+        "vee9"
+      ],
+      "model": "TL072",
+      "label": "IC3B precision rectifier (pins 5/6/7)"
+    },
+    {
+      "ref": "R12",
+      "type": "R",
+      "nodes": [
+        "r12n",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R13",
+      "type": "R",
+      "nodes": [
+        "rdet",
+        "renv"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "Rectifier feedback, taken after D2 from the envelope node"
+    },
+    {
+      "ref": "D1",
+      "type": "D",
+      "nodes": [
+        "rdet",
+        "o3b"
+      ],
+      "model": "1N914",
+      "label": "1N914 clamp: keeps the rectifier out of saturation on the other half cycle"
+    },
+    {
+      "ref": "D2",
+      "type": "D",
+      "nodes": [
+        "o3b",
+        "renv"
+      ],
+      "model": "1N914",
+      "label": "1N914 rectifier output"
+    },
+    {
+      "ref": "R14",
+      "type": "R",
+      "nodes": [
+        "renv",
+        "c9n"
+      ],
+      "value": "330",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C9",
+      "type": "C",
+      "nodes": [
+        "c9n",
+        "0"
+      ],
+      "value": "4.7u",
+      "label": "Envelope capacitor"
+    },
+    {
+      "ref": "R15",
+      "type": "R",
+      "nodes": [
+        "c9n",
+        "vee9"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "Envelope discharge to -9 V: 0.22 s, near-linear"
+    },
+    {
+      "ref": "R18",
+      "type": "R",
+      "nodes": [
+        "vcc9",
+        "vbias"
+      ],
+      "value": "180k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R19",
+      "type": "R",
+      "nodes": [
+        "vbias",
+        "0"
+      ],
+      "value": "120k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "SW3B1",
+      "type": "switch",
+      "nodes": [
+        "vbias",
+        "u3ap"
+      ],
+      "control": "direction",
+      "label": "Direction pole b: closed = Down (3.6 V bias on the + input, inverter)"
+    },
+    {
+      "ref": "SW3B2",
+      "type": "switch",
+      "nodes": [
+        "c9n",
+        "u3ap"
+      ],
+      "control": "direction",
+      "invert": true,
+      "label": "Direction pole b: closed = Up (envelope on the + input, follower)"
+    },
+    {
+      "ref": "R16",
+      "type": "R",
+      "nodes": [
+        "c9n",
+        "u3an"
+      ],
+      "value": "120k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R17",
+      "type": "R",
+      "nodes": [
+        "u3an",
+        "lk"
+      ],
+      "value": "120k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "IC3A",
+      "type": "opamp",
+      "nodes": [
+        "u3ap",
+        "u3an",
+        "o3a",
+        "vcc9",
+        "vee9"
+      ],
+      "model": "TL072",
+      "label": "IC3A LED driver, current-mode (pins 3/2/1)"
+    },
+    {
+      "ref": "LED1",
+      "type": "led",
+      "nodes": [
+        "o3a",
+        "lk"
+      ],
+      "light": "L1",
+      "model": "MT3_LED",
+      "label": "OC1/LED the optical emitter"
+    },
+    {
+      "ref": "RX",
+      "type": "R",
+      "nodes": [
+        "lk",
+        "0"
+      ],
+      "value": "4k7",
+      "tolerance": 0.05,
+      "label": "Rx LED current scaling resistor: 4.7 kOhm, the top of the GEO doc range (see notes)"
+    }
+  ],
+  "probes": [
+    "in",
+    "gw",
+    "d1",
+    "nsum",
+    "hp",
+    "bp",
+    "lp",
+    "mout",
+    "out",
+    "det",
+    "rdet",
+    "renv",
+    "c9n",
+    "u3ap",
+    "lk",
+    "vcc9",
+    "vee9",
+    "L1",
+    "LDR1#n",
+    "LDR2#n"
+  ],
+  "readouts": {
+    "envelope": "c9n",
+    "light": "L1",
+    "led_current": "lk"
+  },
+  "layout": {
+    "columns": {
+      "in": 0,
+      "d1": 2,
+      "hp": 4,
+      "bp": 6,
+      "lp": 8,
+      "out": 12
+    },
+    "rows": {
+      "vcc9": 0,
+      "vee9": 12
+    }
+  }
+}

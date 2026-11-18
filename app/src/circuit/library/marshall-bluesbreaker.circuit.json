@@ -1,0 +1,472 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "marshall-bluesbreaker",
+ "version": 1,
+ "name": "Marshall Bluesbreaker (original 1991-1999 pedal)",
+ "description": "Marshall Bluesbreaker overdrive pedal (first version, 1991-1999; reissued 2023) as traced in the General Guitar Gadgets 'Blues Breaker (Original Wiring)' schematic (JD Sleep, 2003). Input: R1 2.2 MΩ pull-down at the jack, C1 10 nF, R4 1 MΩ to Vref into IC1a +. IC1a non-inverting stage: − leg R2 4.7 kΩ ∥ (C2 10 nF + R3 3.3 kΩ) to a node returned to Vref by C3 10 nF; feedback = the Gain pot section between the − input and the wiper (wiper on the op-amp output) with C4 47 pF; the rest of the Gain pot (wiper to the far end) is in series with the signal into C6 220 nF, R8 4.7 kΩ, C7 220 nF, R7 4.7 kΩ, so one 100 kΩ linear track raises the stage-1 gain and lowers the series loss into stage 2 together. IC1b inverting stage (+ on Vref): R10 220 kΩ feedback in parallel with R11 6.8 kΩ in series with two strings of two 1N4148-class diodes in antiparallel (soft clipping at about ±1.2 V across the diodes). Tone: R9 1 kΩ into a 25 kΩ linear pot whose far end returns to Vref through C8 10 nF; wiper → R12 6.8 kΩ → C9 10 nF to Vref and the 100 kΩ log Volume pot (foot on Vref), C10 0.1 µF to the output with R13 1 MΩ. Supply: 9 V battery through the series polarity diode D5 1N4001 to VCC with C5 47 µF (unverified position); Vref = R14/R5 47 kΩ divider with C11 100 µF. Effect-on state of the original DPDT wiring (in bypass the switch also grounds the inter-stage node; not modelled).",
+ "sources": [
+  {
+   "title": "General Guitar Gadgets / JD Sleep, 'Blues Breaker (Original Wiring)' schematic, revision 2003-03-04 (every value and connection in this file); reproduced in the Tagboard Effects comments",
+   "url": "https://1.bp.blogspot.com/-a9F3cPJg3Ic/Wq234jJ9JxI/AAAAAAAAD9I/3rmQH5ljh9AKN4szF8upZRI-rCItSRhGgCLcBGAs/s400/1366373077_bluesbreaker_sc1.gif"
+  },
+  {
+   "title": "General Guitar Gadgets, 'Marshall Bluesbreaker Clone Kit' project page (original black Bluesbreaker; original and true-bypass schematics)",
+   "url": "https://generalguitargadgets.com/effects-projects/distortion/bluesbreaker/"
+  },
+  {
+   "title": "Tagboard Effects, 'Marshall Bluesbreaker' (layout and builder comments confirming the C6 → R8 → C7 → R7 220n/4k7/220n/4k7 inter-stage network, C3 to the 4.5 V rail, R1 2M2)",
+   "url": "https://tagboardeffects.blogspot.com/2012/02/marshall-bluesbreaker.html"
+  },
+  {
+   "title": "ToneGeek, 'Marshall Bluesbreaker mods' (stock op-amp JRC072BD; photo of the four stock MA856 diodes)",
+   "url": "http://www.tonegeek.com/musicgear/pedals/marshall-bluesbreaker-mods.php"
+  },
+  {
+   "title": "General Guitar Gadgets, MBB bill of materials v2019July17 (designators matching the original-wiring schematic; C5 47 µF aluminium electrolytic, C11 100 µF) and MBB instructions (D5 protection-diode drop; IC voltage chart: supply 8.8 V, pin 8 8.8 V, pins 1/2/5/6/7 4.3 V)",
+   "url": "https://generalguitargadgets.com/pdf/ggg_mbb_bom.pdf"
+  },
+  {
+   "title": "EMS Audio Electronics, 'Marshall Blues Breaker Manual & Assembly Guide' (D5 1N4001 battery-reversal diode; the 1992 original used a 1N4007 and has another 100 µF across one divider resistor)",
+   "url": "https://www.mikrocontroller.net/attachment/267490/EMS_kit_Marshall_Blues_Breaker.pdf"
+  },
+  {
+   "title": "PedalPCB forum, 'Blue Breaker weird question / comparison' (original: two 47K resistors with two 100 µF caps for Vref)",
+   "url": "https://forum.pedalpcb.com/threads/blue-breaker-weird-question-comparison.3076/"
+  },
+  {
+   "title": "TI TL072 datasheet (library model TL072)",
+   "url": "https://www.ti.com/lit/ds/symlink/tl072.pdf"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "out",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 1.0
+ },
+ "oversampling": 2,
+ "minRate": 352800,
+ "solver": "auto",
+ "cuts": [
+  "vref",
+  "vcc"
+ ],
+ "controls": [
+  {
+   "id": "gain",
+   "label": "Gain",
+   "kind": "continuous",
+   "default": 0.5,
+   "group": "Main",
+   "note": "100 kΩ linear pot: pin 1 on the IC1a − input, wiper on the IC1a output, pin 3 into C6. Clockwise = more feedback resistance (more stage-1 gain) and less series resistance into stage 2",
+   "params": [
+    "gain"
+   ]
+  },
+  {
+   "id": "tone",
+   "label": "Tone",
+   "kind": "continuous",
+   "default": 0.5,
+   "group": "Main",
+   "note": "25 kΩ linear pot: pin 3 on R9 (clockwise = brighter), pin 1 through C8 10 nF to Vref, wiper into R12 6.8 kΩ / C9 10 nF",
+   "params": [
+    "tone"
+   ]
+  },
+  {
+   "id": "volume",
+   "label": "Volume",
+   "kind": "continuous",
+   "default": 0.5,
+   "group": "Main",
+   "note": "100 kΩ log pot, foot on Vref, wiper through C10 0.1 µF to the output",
+   "params": [
+    "volume"
+   ]
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VCC",
+   "type": "V",
+   "nodes": [
+    "v9",
+    "0"
+   ],
+   "value": "9",
+   "label": "9 V battery / adapter",
+   "note": "Ideal source at the battery snap / DC jack, ahead of the polarity diode D5"
+  },
+  {
+   "ref": "D5",
+   "type": "D",
+   "nodes": [
+    "v9",
+    "vcc"
+   ],
+   "model": "1N4001",
+   "label": "Series polarity-protection diode D5",
+   "note": "GGG 'Original Wiring' schematic: 1N4001 in series from the battery + to the circuit's VCC (the GGG instructions note the 'voltage drop ... due to the protection diode (D5)'). The EMS kit guide says the 1992 original used a 1N4007 (same library card; only the reverse rating differs)"
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "vcc",
+    "0"
+   ],
+   "value": "47u",
+   "tolerance": 0.2,
+   "label": "VCC filter (after D5)",
+   "note": "unverified: value and position. The GGG MBB bill of materials (whose designators match the original-wiring schematic: R5/R14 47k divider, C11 100 µF) lists C5 47 µF aluminium electrolytic, the only part of that list not otherwise placed in this netlist; it is assumed to be the VCC-to-ground filter after D5. The EMS kit guide and Aion FX instead describe the original's supply as only the 47k/47k divider with a 100 µF across each resistor (see notes)"
+  },
+  {
+   "ref": "R14",
+   "type": "R",
+   "nodes": [
+    "vcc",
+    "vref"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "Vref divider"
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "vref",
+    "0"
+   ],
+   "value": "47k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "vref",
+    "0"
+   ],
+   "value": "100u",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "in",
+    "0"
+   ],
+   "value": "2.2M",
+   "tolerance": 0.05,
+   "label": "Input pull-down"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "in",
+    "p1"
+   ],
+   "value": "10n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "p1",
+    "vref"
+   ],
+   "value": "1M",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "IC1A",
+   "type": "opamp",
+   "nodes": [
+    "p1",
+    "m",
+    "o1",
+    "vcc",
+    "0"
+   ],
+   "model": "TL072",
+   "label": "Stage 1 (non-inverting)",
+   "note": "Stock part JRC072BD per ToneGeek; library TL072 used"
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "m",
+    "lg"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "m",
+    "q"
+   ],
+   "value": "3.3k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "q",
+    "lg"
+   ],
+   "value": "10n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "lg",
+    "vref"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "note": "GGG draws C3 to Vref; a Tagboard commenter suggests ground. Vref as drawn"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "m",
+    "o1"
+   ],
+   "value": "47p",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "GAIN",
+   "type": "pot",
+   "nodes": [
+    "m",
+    "o1",
+    "g3"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "gain",
+   "label": "Gain"
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "g3",
+    "n8"
+   ],
+   "value": "220n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "n8",
+    "s"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C7",
+   "type": "C",
+   "nodes": [
+    "s",
+    "n7"
+   ],
+   "value": "220n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "n7",
+    "t"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "IC1B",
+   "type": "opamp",
+   "nodes": [
+    "vref",
+    "t",
+    "o2",
+    "vcc",
+    "0"
+   ],
+   "model": "TL072",
+   "label": "Stage 2 (inverting, diode feedback)"
+  },
+  {
+   "ref": "R10",
+   "type": "R",
+   "nodes": [
+    "t",
+    "o2"
+   ],
+   "value": "220k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "t",
+    "u"
+   ],
+   "value": "6.8k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "D1",
+   "type": "D",
+   "nodes": [
+    "u",
+    "dm1"
+   ],
+   "model": "1N4148",
+   "note": "unverified: GGG draws 4 x 1N4148; ToneGeek's photo shows MA856 (Panasonic silicon switching diodes) in the stock pedal"
+  },
+  {
+   "ref": "D2",
+   "type": "D",
+   "nodes": [
+    "dm1",
+    "o2"
+   ],
+   "model": "1N4148"
+  },
+  {
+   "ref": "D3",
+   "type": "D",
+   "nodes": [
+    "o2",
+    "dm2"
+   ],
+   "model": "1N4148"
+  },
+  {
+   "ref": "D4",
+   "type": "D",
+   "nodes": [
+    "dm2",
+    "u"
+   ],
+   "model": "1N4148"
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "o2",
+    "t9"
+   ],
+   "value": "1k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "TONE",
+   "type": "pot",
+   "nodes": [
+    "t8",
+    "tw",
+    "t9"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "tone",
+   "label": "Tone"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "t8",
+    "vref"
+   ],
+   "value": "10n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R12",
+   "type": "R",
+   "nodes": [
+    "tw",
+    "x"
+   ],
+   "value": "6.8k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C9",
+   "type": "C",
+   "nodes": [
+    "x",
+    "vref"
+   ],
+   "value": "10n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "VOLUME",
+   "type": "pot",
+   "nodes": [
+    "vref",
+    "vw",
+    "x"
+   ],
+   "value": "100k",
+   "taper": "A",
+   "control": "volume",
+   "label": "Volume"
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "vw",
+    "out"
+   ],
+   "value": "100n",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R13",
+   "type": "R",
+   "nodes": [
+    "out",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05
+  }
+ ],
+ "probes": [
+  "vcc",
+  "vref",
+  "o1",
+  "s",
+  "o2",
+  "u",
+  "x",
+  "out"
+ ],
+ "layout": {}
+}

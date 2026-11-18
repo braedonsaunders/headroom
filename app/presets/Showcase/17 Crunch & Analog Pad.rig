@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Crunch &amp; Analog Pad</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Crunch &amp; Analog Pad" preset-author="Headroom" preset-comment="Plexi crunch with a TS in front, and a warm analog pad underneath following your chords. Blend with Guitar ↔ Pad."/>
+<rack>
+<non-fix-components>
+  <component id="7000">
+    <component-audio version="1">
+      <parameters num-parameters="1">
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="15000">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.6"/>
+        <parameter id="Tn" value="0.71848"/>
+        <parameter id="Dr" value="0.35"/>
+        <parameter id="Lmp" value="0.5"/>
+        <parameter id="Bs" value="0.5"/>
+        <parameter id="Cl" value="0.5"/>
+        <parameter id="Br" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="34000">
+    <component-audio version="1">
+      <parameters num-parameters="14">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V1" value="0.62"/>
+        <parameter id="V2" value="0"/>
+        <parameter id="B" value="0.28"/>
+        <parameter id="M" value="0.6364"/>
+        <parameter id="T" value="0.835"/>
+        <parameter id="Pr" value="1"/>
+        <parameter id="Pw" value="0"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0"/>
+        <parameter id="Bi" value="1"/>
+        <parameter id="G4M" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.6284"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="11"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="8000">
+    <component-audio version="1">
+      <parameters num-parameters="1">
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="900001">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="mode" value="0"/>
+        <parameter id="sens" value="0.55"/>
+        <parameter id="bend" value="2"/>
+        <parameter id="low" value="40"/>
+        <parameter id="high" value="88"/>
+        <parameter id="vel" value="0.5"/>
+        <parameter id="thru" value="1"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="900003">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="tone" value="0.5"/>
+        <parameter id="attack" value="0.65"/>
+        <parameter id="release" value="0.65"/>
+        <parameter id="vibrato" value="0"/>
+        <parameter id="follow" value="0.6"/>
+        <parameter id="level" value="0.365"/>
+        <parameter id="mix" value="1"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="sound" value="12"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="9000">
+    <component-audio version="1">
+      <parameters num-parameters="6">
+        <parameter id="PanA" value="0.5"/>
+        <parameter id="PanB" value="0.5"/>
+        <parameter id="XFade" value="0.5"/>
+        <parameter id="DM" value="0.5"/>
+        <parameter id="iP" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="155000">
+    <component-audio version="1">
+      <parameters num-parameters="39">
+        <parameter id="P0" value="0.046078"/>
+        <parameter id="S1" value="0.376471"/>
+        <parameter id="S7" value="0.309804"/>
+        <parameter id="S2" value="0.617647"/>
+        <parameter id="B3" value="0.49875"/>
+        <parameter id="M4" value="0.5725"/>
+        <parameter id="C9" value="0.716667"/>
+        <parameter id="H5" value="0.47875"/>
+        <parameter id="T11" value="0"/>
+        <parameter id="M8" value="0"/>
+        <parameter id="M12" value="1"/>
+        <parameter id="D13" value="0.14"/>
+        <parameter id="D6" value="1"/>
+        <parameter id="R10" value="0.45"/>
+        <parameter id="S30" value="0.895616"/>
+        <parameter id="W31" value="0.426667"/>
+        <parameter id="E14" value="0"/>
+        <parameter id="E18" value="0.023489"/>
+        <parameter id="E15" value="0"/>
+        <parameter id="E19" value="0.035332"/>
+        <parameter id="E16" value="0"/>
+        <parameter id="E20" value="0.086337"/>
+        <parameter id="E17" value="0"/>
+        <parameter id="E21" value="0.070621"/>
+        <parameter id="E22" value="0"/>
+        <parameter id="E26" value="0.141103"/>
+        <parameter id="E23" value="0"/>
+        <parameter id="E27" value="0.101938"/>
+        <parameter id="I44" value="0.5"/>
+        <parameter id="O45" value="0.7878"/>
+        <parameter id="S32" value="0"/>
+        <parameter id="I36" value="0"/>
+        <parameter id="I37" value="0"/>
+        <parameter id="O38" value="0"/>
+        <parameter id="O39" value="0"/>
+        <parameter id="P40" value="0"/>
+        <parameter id="P41" value="0"/>
+        <parameter id="Q48" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="9000" target-number="1" target-name="XFade" min-value="0.15" max-value="0.85" controller-name="Guitar ↔ Pad"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="34000" target-number="1" target-name="V1" min-value="0.3" max-value="0.9" controller-name="Drive"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="900003" target-number="1" target-name="attack" min-value="0.2" max-value="0.95" controller-name="Pad Swell"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="155000" target-number="1" target-name="D13" min-value="0" max-value="0.4" controller-name="Hall"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+</headroom-preset>

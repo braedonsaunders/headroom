@@ -1,0 +1,2536 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "ehx-deluxe-memory-man",
+  "version": 1,
+  "name": "Electro-Harmonix Deluxe Memory Man (5-knob, 2 × MN3005)",
+  "description": "EHX Deluxe Memory Man with Chorus/Vibrato, 5-knob EH-7850 circuit (1978-84, two MN3005 = 8192 stages, CD4047 clock, NE570 compander), positive ground on a single −15.7 V rail. Audio, LFO and clock values from the legible EC2000 reissue reference drawing (New Sensor 1995, the same two-MN3005 circuit), each checked against the 1978 EH-7850 factory drawing; supply from the EH-7850 drawing (transformer, W02M bridge, 220 µF, 2N6111 pass transistor, zener reference). Path: IC1A inverting LEVEL amp → R4/C4 pre-emphasis summed with the FEEDBACK return → IC1B ×2 → NE570 ch. 1 compressor (CRECT 1 µF) → IC3A ×2 Sallen-Key (24k/51k, 16k, 2 × 2.7 nF) → 1k/33 nF → MN3005 #1 (BIAS 1 via 82k) → 2 × 2.4k / 100k → IC3B inverting GAIN 1 (DC bias = BIAS 2) → MN3005 #2 → BAL 5k / 100k → IC6A GAIN 2 (680k in) → IC6B ×2.37 Sallen-Key (2 × 16k, 2 × 2.7 nF) → 470/47 nF → IC7A ×1.38 Sallen-Key (15k, 16k, 2 × 2.7 nF) → NE570 ch. 2 expander (CRECT 1 µF, 1.5 MΩ, 11k, 7.5k) → IC7B (−0.75, HF roll-off) → BLEND. LFO: IC8 comparator (910k / 120k) + integrator (910k; 2.2 µF chorus, 0.47 µF vibrato) → depth pot → R59/C41 → varicap 1N4001 (D3) coupled by 2 × 1 nF across the CD4047's 240 pF timing cap. The clock VCO (CD4047 + R61 + DELAY + varicap network) runs at 8–125 kHz, above the engine's Nyquist, and is the bbd clock table fitted in ngspice (notes).",
+  "sources": [
+    {
+      "title": "Electro-Harmonix, 'Deluxe Memory Man w/ Chorus/Vibrato EH-7850' factory schematic (hand drawing, 1978; CD4049 clock buffer 'omitted after 12/15/78'), as published by David Morrin",
+      "url": "https://davidmorrin.com/img/notes/eh-7850-schematic.jpg"
+    },
+    {
+      "title": "David Morrin, 'EH 7850 Deluxe Memory Man with Chorus/Vibrato' (single −15.7 V rail; Chorus/Vibrato switch changes the LFO cap; the depth knob is an attenuator from the LFO to the 4047 clock)",
+      "url": "https://davidmorrin.com/notes/effects/delay/eh-7850/"
+    },
+    {
+      "title": "David Morrin, 'EH 7850 Calibration' (edited 8/1/78 Howard Davis procedure: clock period 120–140 µs at DELAY CW and 8–10 µs CCW, chorus just under 1 Hz with ≈ 10 % period swing, vibrato ≈ 4 Hz, NE570 pin levels, BIAS/GAIN/BAL steps)",
+      "url": "https://sites.google.com/site/davidmorrinoldsite/home/trouble/troubleeffects/electro-harmonix-memory-man/eh-7850-calibration"
+    },
+    {
+      "title": "David Morrin, 'Electro Harmonix Memory Man' overview (5-knob EH 7850 / 1343B / 7850C / EC 2000 use MN3005; CD4047 clock; NE570 or NE571 compander)",
+      "url": "https://sites.google.com/site/davidmorrinoldsite/home/trouble/troubleeffects/electro-harmonix-memory-man"
+    },
+    {
+      "title": "New Sensor Corp., 'Deluxe Memory Man EC2000' reissue schematic Rev. A (reference drawing 9/7/95, 2 × MN3005, NE570, CD4047, LM7915; annotated clock period 8 µs at VR4 CCW, 100 µs at CW), via SynthXL",
+      "url": "https://www.synthxl.com/wp-content/uploads/2020/07/Electro-Harmonix-Deluxe-Memory-Man-Delay-Reissue-Rev.A-Schematic.pdf"
+    },
+    {
+      "title": "Electro-Harmonix, Deluxe Memory Man operating instructions (controls; Blend centre = equal levels; 24 V adaptor on the reissue), via SynthXL",
+      "url": "https://www.synthxl.com/wp-content/uploads/2020/07/Electro-harmonix-deluxe-memory-man-operating-instruction.pdf"
+    },
+    {
+      "title": "madbeanpedals, 'Total Recall' (Deluxe Memory Man clone) build document: BOM cross-check (27k, 7k5, 240 pF, 15k/3k3/13k, 910k ×2, 120k), ≈ 550 ms maximum delay, positive ground, trimmer functions (secondary)",
+      "url": "https://www.madbeanpedals.com/projects/_folders/Delay/pdf/Total%20Recall.pdf"
+    },
+    {
+      "title": "Texas Instruments (Harris) CD4047B data sheet SCHS044C: pinout, astable connections (4,5,6,14 to VDD; 7,8,9,12 to VSS), tA(Q) = 4.40 RC, tA(osc) = 2.20 RC, Q = oscillator ÷ 2, RC-common protection network",
+      "url": "https://www.ti.com/lit/ds/symlink/cd4047b.pdf"
+    },
+    {
+      "title": "Panasonic MN3005 data sheet (Xvive reissue): 4096 stages, VDD −15 V, VGG = VDD + 1, input bias −5…−10 V, fcp 10–100 kHz, 2800 pF clock-pin capacitance",
+      "url": "https://xvive.com/audio/wp-content/uploads/sites/2/2021/11/Xvive_MN3005_BBD_DATASHEET.pdf"
+    },
+    {
+      "title": "Philips NE570/571 product data and AN174 (compressor/expander application, CRECT τ = 10 kΩ·CRECT, output DC = (1 + RDC/30k)·VREF)",
+      "url": "https://aionfx.com/app/files/datasheets/philips-ne570-ne571-sa571.pdf"
+    },
+    {
+      "title": "Diodes Inc. / Fairchild 1N4001 SPICE model (IS 14.11n, N 1.984, RS 33.89m, CJO 25.89p, M 0.44, VJ 0.3245, TT 5.7u) used for the varicap D3 in the ngspice VCO fit",
+      "url": "https://www.diodes.com/assets/Spice-Models/Discrete-Prodcut-Groups/Standard-and-Fast-Recovery-Rectifiers/1N4001.spice.txt"
+    },
+    {
+      "title": "Headroom Wave C device research (MN3005 window, compander laws)",
+      "url": "work/circuit-netlists/wave-c/DEVICES.md"
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 1.0
+  },
+  "oversampling": 1,
+  "solver": "auto",
+  "models": {
+    "2N6111": {
+      "kind": "pnp",
+      "is": 1e-12,
+      "bf": 70,
+      "br": 4,
+      "note": "unverified: generic power-PNP Ebers–Moll values (2N6111 is a 30 V / 7 A TO-220 PNP, hFE 30–150); only its emitter-follower drop matters"
+    }
+  },
+  "controls": [
+    {
+      "id": "level",
+      "label": "Level",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "lvl"
+      ],
+      "group": "Main",
+      "note": "VR1 1 MΩ log rheostat in IC1A's feedback (input gain −0.22 … −10.2). Drives the dry path too; high settings overdrive the 4558 (the OVERLOAD LED lights). Legacy 'Input'"
+    },
+    {
+      "id": "blend",
+      "label": "Blend",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "m"
+      ],
+      "group": "Main",
+      "note": "VR2 10 kΩ linear between the dry node (C3/R28) and the wet node (C18); centre = equal levels (manual). Legacy 'Mix'"
+    },
+    {
+      "id": "feedback",
+      "label": "Feedback",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "f"
+      ],
+      "group": "Main",
+      "note": "VR3 10 kΩ log: expander output → C22 0.47 µF → R35 1k (C24 47 nF) → pot → C5 22 nF → R5 100 kΩ into IC1B's + input. Runaway oscillation near full (1978 procedure step 7)"
+    },
+    {
+      "id": "delay",
+      "label": "Delay",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "d"
+      ],
+      "group": "Main",
+      "note": "VR4 100 kΩ linear rheostat in series with R61 5.6 kΩ between CD4047 pins 2 and 3: the clock's timing resistor (clockwise = longer delay, ~35 ms to ~520 ms across 8192 stages). Drives the 2-D VCO table clock.byControl fitted in ngspice. Legacy 'Time'"
+    },
+    {
+      "id": "depth",
+      "label": "Chorus/Vibrato",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "i"
+      ],
+      "group": "Main",
+      "note": "VR5 100 kΩ linear from reference C to the LFO triangle; wiper → R59 7.5k → C41 2.2 µF → varicap D3 bias (node q, the clock control). Legacy 'Depth'"
+    },
+    {
+      "id": "mode",
+      "label": "Chorus / Vibrato",
+      "kind": "switch",
+      "default": 0,
+      "params": [
+        "cv"
+      ],
+      "group": "Main",
+      "note": "S2 selects the integrator cap: 0 = CHORUS (C39 2.2 µF, ≈ 0.9 Hz), 1 = VIBRATO (C40 0.47 µF, ≈ 4 Hz). Legacy 'Mode'"
+    },
+    {
+      "id": "bias1",
+      "label": "BIAS 1 (internal)",
+      "kind": "continuous",
+      "default": 0.47,
+      "params": [],
+      "group": "Internal",
+      "note": "VR6 100 kΩ trim, BBD-1 input DC. Factory: 'maximum unclipped signal'; 0.47 puts the input at −7.8 V, the centre of the library MN3005 window (−11 … −4.6 V) and the datasheet curve bias"
+    },
+    {
+      "id": "gain1",
+      "label": "GAIN 1 (internal)",
+      "kind": "continuous",
+      "default": 0.64,
+      "params": [],
+      "group": "Internal",
+      "note": "VR7 100 kΩ trim; 0.64 = unity BBD-to-BBD (1978 step 5)"
+    },
+    {
+      "id": "bal",
+      "label": "BAL (internal)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Internal",
+      "note": "VR10 5 kΩ trim between BBD-2's outputs; factory: minimum clock residue. The engine's bbd has no clock feedthrough yet, so it only sets the OUT1/OUT2 weighting"
+    },
+    {
+      "id": "bias2",
+      "label": "BIAS 2 (internal)",
+      "kind": "continuous",
+      "default": 0.47,
+      "params": [],
+      "group": "Internal",
+      "note": "VR8 100 kΩ trim, BBD-2 input DC through U2B (−7.8 V at 0.47)"
+    },
+    {
+      "id": "gain2",
+      "label": "GAIN 2 (internal)",
+      "kind": "continuous",
+      "default": 0.57,
+      "params": [],
+      "group": "Internal",
+      "note": "VR9 100 kΩ trim; 0.57 makes the expander input level equal the compressor output (1978 step 5)"
+    },
+    {
+      "id": "sync",
+      "label": "Sync",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "s"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No tempo sync in the Deluxe Memory Man; stored only"
+    },
+    {
+      "id": "rateSync",
+      "label": "Rate Sync",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "sl"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No tempo sync; stored only"
+    },
+    {
+      "id": "led",
+      "label": "LED",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "l"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Indicator state; the pilot and overload LEDs are not controls. Stored only"
+    },
+    {
+      "id": "ledInactive",
+      "label": "LED Inactive",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "il"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Indicator state; stored only"
+    },
+    {
+      "id": "treble",
+      "label": "Treble",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "t"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No tone controls on the 5-knob unit (filters are fixed); stored only"
+    },
+    {
+      "id": "bass",
+      "label": "Bass",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "b"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No tone controls; stored only"
+    },
+    {
+      "id": "acceleration",
+      "label": "Acceleration",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "a"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No such control; stored only"
+    },
+    {
+      "id": "chorusRate",
+      "label": "Chorus Rate",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "cr"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No rate knob: the chorus rate is fixed by C39 / R57 / R56 / R58 (≈ 0.9 Hz); stored only"
+    },
+    {
+      "id": "vibratoRate",
+      "label": "Vibrato Rate",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "vr"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No rate knob: the vibrato rate is fixed by C40 (≈ 4 Hz); stored only"
+    },
+    {
+      "id": "tapTempo",
+      "label": "Tap Tempo",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "tp"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No tap tempo; stored only"
+    },
+    {
+      "id": "mute",
+      "label": "Mute",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "mt"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No mute; the footswitch bypass is the host bypass (Pwr); stored only"
+    },
+    {"id": "power", "label": "On/Off", "kind": "switch", "default": 1.0, "params": ["Pwr"], "legacyOnly": true, "group": "Legacy", "note": "Host handles bypass; stored only"}
+  ],
+  "cuts": [
+    "a",
+    "b"
+  ],
+  "parts": [
+    {
+      "ref": "VREG",
+      "type": "V",
+      "nodes": [
+        "vreg",
+        "0"
+      ],
+      "value": "-15.75",
+      "label": "LM7915 / regulated −15.7 V supply",
+      "note": "EC2000 Rev. A uses an LM7915 regulator fed by a 24 V wall transformer (EH-7850 uses a 2N6111 PNP series-pass emitter follower set to −15.7 V). Modelled as the regulated DC source behind RREG 2 Ω into C_A 100 µF and R52 10 Ω / C37 100 µF"
+    },
+    {
+      "ref": "RREG",
+      "type": "R",
+      "nodes": [
+        "vreg",
+        "a"
+      ],
+      "value": "2",
+      "label": "Regulator output resistance",
+      "note": "unverified: small output / pass resistance ahead of the 100 µF rail-A decoupling cap"
+    },
+    {
+      "ref": "C_A",
+      "type": "C",
+      "nodes": [
+        "a",
+        "0"
+      ],
+      "value": "100u",
+      "tolerance": 0.2,
+      "label": "Rail A decoupling",
+      "note": "unverified: value from the EH-7850 drawing ('100µf' at point A); EC2000 has 1 µF (C35) here"
+    },
+    {
+      "ref": "R52",
+      "type": "R",
+      "nodes": [
+        "a",
+        "b"
+      ],
+      "value": "10",
+      "tolerance": 0.05,
+      "label": "10 Ω to the op-amp rail B"
+    },
+    {
+      "ref": "C37",
+      "type": "C",
+      "nodes": [
+        "b",
+        "0"
+      ],
+      "value": "100u",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "R50",
+      "type": "R",
+      "nodes": [
+        "a",
+        "vc"
+      ],
+      "value": "100k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R51",
+      "type": "R",
+      "nodes": [
+        "vc",
+        "0"
+      ],
+      "value": "100k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C36",
+      "type": "C",
+      "nodes": [
+        "vc",
+        "0"
+      ],
+      "value": "1u",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "R53",
+      "type": "R",
+      "nodes": [
+        "a",
+        "vc"
+      ],
+      "value": "13k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R54",
+      "type": "R",
+      "nodes": [
+        "vc",
+        "vl"
+      ],
+      "value": "3.3k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R55",
+      "type": "R",
+      "nodes": [
+        "vl",
+        "0"
+      ],
+      "value": "15k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C38",
+      "type": "C",
+      "nodes": [
+        "vc",
+        "0"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "note": "EC2000 reference network: C (bias of U1A, U3A, the depth pot, C41 and the varicap return) = −9.0 V; L (LFO comparator and integrator reference) = −7.4 V. The EH-7850 drawing shows the same 15k / 3.3k / 13k chain (unverified that R50/R51 are also on the 1978 board; it has local 300k/300k and 240k/240k dividers at IC1A and IC6a instead)"
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "in",
+        "0"
+      ],
+      "value": "2.2M",
+      "tolerance": 0.05,
+      "label": "Input to G",
+      "note": "EC2000 R1 2.2 MΩ; the EH-7850 drawing shows 1 MΩ"
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "in",
+        "i1"
+      ],
+      "value": "100n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R2",
+      "type": "R",
+      "nodes": [
+        "i1",
+        "u1an"
+      ],
+      "value": "100k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "u1an",
+        "lv"
+      ],
+      "value": "22k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "VR1",
+      "type": "pot",
+      "nodes": [
+        "lv",
+        "u1ao",
+        "u1ao"
+      ],
+      "value": "1M",
+      "taper": "A",
+      "control": "level",
+      "label": "LEVEL (1 MΩ log)",
+      "note": "Rheostat in U1A's feedback: gain −(22k + VR1)/100k = −0.22 … −10.2. Clockwise = more gain (the drawing marks CW); it also boosts the dry path and overdrives the stage, as the manual and the 1978 procedure describe"
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "u1an",
+        "u1ao"
+      ],
+      "value": "27p",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "U1A",
+      "type": "opamp",
+      "nodes": [
+        "vc",
+        "u1an",
+        "u1ao",
+        "0",
+        "b"
+      ],
+      "model": "JRC4558",
+      "label": "IC1A 4558 inverting LEVEL amp",
+      "note": "4558 on G (pin 8) and rail B (pin 4); + input on reference C"
+    },
+    {
+      "ref": "C3",
+      "type": "C",
+      "nodes": [
+        "u1ao",
+        "dry"
+      ],
+      "value": "47u",
+      "tolerance": 0.2,
+      "label": "Dry coupling 47 µF"
+    },
+    {
+      "ref": "R28",
+      "type": "R",
+      "nodes": [
+        "dry",
+        "0"
+      ],
+      "value": "47k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R4",
+      "type": "R",
+      "nodes": [
+        "u1ao",
+        "u1bp"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Pre-emphasis / feedback sum"
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "u1ao",
+        "u1bp"
+      ],
+      "value": "1.2n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R5",
+      "type": "R",
+      "nodes": [
+        "u1bp",
+        "fbc"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Feedback injection"
+    },
+    {
+      "ref": "C5",
+      "type": "C",
+      "nodes": [
+        "fbc",
+        "fbw"
+      ],
+      "value": "22n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "U1B",
+      "type": "opamp",
+      "nodes": [
+        "u1bp",
+        "u1bn",
+        "u1bo",
+        "0",
+        "b"
+      ],
+      "model": "JRC4558",
+      "label": "IC1B ×2 buffer"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "u1bo",
+        "u1bn"
+      ],
+      "value": "200k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "u1bn",
+        "u1bg"
+      ],
+      "value": "200k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C17",
+      "type": "C",
+      "nodes": [
+        "u1bg",
+        "0"
+      ],
+      "value": "1u",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "C7",
+      "type": "C",
+      "nodes": [
+        "u1bo",
+        "cr3"
+      ],
+      "value": "220n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "IC2A",
+      "type": "sub",
+      "nodes": [
+        "crin",
+        "ccr",
+        "crin",
+        "cinv",
+        "cr3",
+        "cout",
+        "0",
+        "b"
+      ],
+      "of": "lib:ne570",
+      "label": "NE570 ch. 1 compressor (pins 2+3, 1, 5, 6, 7; VCC pin 13 = G, GND pin 4 = rail B)",
+      "note": "Datasheet compressor: ΔG cell and rectifier in the op-amp feedback via C8. THD-trim pin 8 is unconnected on the board"
+    },
+    {
+      "ref": "R9",
+      "type": "R",
+      "nodes": [
+        "cr3",
+        "cinv"
+      ],
+      "value": "68k",
+      "tolerance": 0.05,
+      "note": "68 kΩ from the R3 pin to INV IN (parallel to the internal 20 kΩ R3) on both drawings"
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "cout",
+        "cdc"
+      ],
+      "value": "68k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R11",
+      "type": "R",
+      "nodes": [
+        "cdc",
+        "cinv"
+      ],
+      "value": "68k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C9",
+      "type": "C",
+      "nodes": [
+        "cdc",
+        "0"
+      ],
+      "value": "10u",
+      "tolerance": 0.2,
+      "note": "DC feedback 2 × 68k with 10 µF centre decoupling: output DC = (1 + 136k/30k)·1.8 V above pin 4 ≈ −5.7 V"
+    },
+    {
+      "ref": "C8",
+      "type": "C",
+      "nodes": [
+        "cout",
+        "crin"
+      ],
+      "value": "4.7u",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "C6",
+      "type": "C",
+      "nodes": [
+        "ccr",
+        "b"
+      ],
+      "value": "1u",
+      "tolerance": 0.1,
+      "label": "CRECT 1 µF 10 % (τ = 10 kΩ·1 µF = 10 ms)"
+    },
+    {
+      "ref": "R10",
+      "type": "R",
+      "nodes": [
+        "cout",
+        "f1"
+      ],
+      "value": "24k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R12",
+      "type": "R",
+      "nodes": [
+        "f1",
+        "0"
+      ],
+      "value": "51k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C10",
+      "type": "C",
+      "nodes": [
+        "f1",
+        "u2ao"
+      ],
+      "value": "2.7n",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R13",
+      "type": "R",
+      "nodes": [
+        "f1",
+        "u2ap"
+      ],
+      "value": "16k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C11",
+      "type": "C",
+      "nodes": [
+        "u2ap",
+        "0"
+      ],
+      "value": "2.7n",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "U2A",
+      "type": "opamp",
+      "nodes": [
+        "u2ap",
+        "u2an",
+        "u2ao",
+        "0",
+        "b"
+      ],
+      "model": "JRC4558",
+      "label": "IC3A Sallen-Key ×2 (anti-alias)"
+    },
+    {
+      "ref": "R14",
+      "type": "R",
+      "nodes": [
+        "u2ao",
+        "u2an"
+      ],
+      "value": "33k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R15",
+      "type": "R",
+      "nodes": [
+        "u2an",
+        "0"
+      ],
+      "value": "33k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R18",
+      "type": "R",
+      "nodes": [
+        "u2ao",
+        "ol1"
+      ],
+      "value": "11k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C12",
+      "type": "C",
+      "nodes": [
+        "ol1",
+        "olb"
+      ],
+      "value": "1u",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "R19",
+      "type": "R",
+      "nodes": [
+        "olb",
+        "0"
+      ],
+      "value": "22k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "Q1",
+      "type": "pnp",
+      "nodes": [
+        "olc",
+        "olb",
+        "0"
+      ],
+      "model": "2N3906",
+      "label": "Overload LED driver 2N5087",
+      "note": "unverified: 2N5087 (EHX: '2N5087 or 309') modelled with the library 2N3906; it only loads U2A through 11 kΩ + 1 µF"
+    },
+    {
+      "ref": "LED1",
+      "type": "D",
+      "nodes": [
+        "olc",
+        "oll"
+      ],
+      "model": "LED_RED",
+      "label": "Overload LED"
+    },
+    {
+      "ref": "R17",
+      "type": "R",
+      "nodes": [
+        "oll",
+        "a"
+      ],
+      "value": "820",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R16",
+      "type": "R",
+      "nodes": [
+        "u2ao",
+        "bi1"
+      ],
+      "value": "1k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C13",
+      "type": "C",
+      "nodes": [
+        "bi1",
+        "0"
+      ],
+      "value": "33n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "C14",
+      "type": "C",
+      "nodes": [
+        "bi1",
+        "bbd1in"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "1 µF NP"
+    },
+    {
+      "ref": "R21",
+      "type": "R",
+      "nodes": [
+        "a",
+        "vgg1"
+      ],
+      "value": "6.8k",
+      "tolerance": 0.05,
+      "label": "VGG divider (≈ −14.7 V)"
+    },
+    {
+      "ref": "VR6",
+      "type": "pot",
+      "nodes": [
+        "vgg1",
+        "b1w",
+        "0"
+      ],
+      "value": "100k",
+      "taper": "B",
+      "control": "bias1",
+      "label": "BIAS 1 trim (TRIM 1)",
+      "note": "Wiper sets the BBD-1 input DC through R20; 0.5 = −7.36 V, inside the MN3005 −5…−10 V window"
+    },
+    {
+      "ref": "R20",
+      "type": "R",
+      "nodes": [
+        "b1w",
+        "bbd1in"
+      ],
+      "value": "82k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "IC4",
+      "type": "bbd",
+      "nodes": [
+        "bbd1in",
+        "b1o1",
+        "b1o2",
+        "q"
+      ],
+      "model": "MN3005",
+      "clock": {
+        "points": [
+          [
+            -11.506,
+            12180.3
+          ],
+          [
+            -10.506,
+            13035.1
+          ],
+          [
+            -9.756,
+            13703.1
+          ],
+          [
+            -9.006,
+            14369.9
+          ],
+          [
+            -8.256,
+            15075.7
+          ],
+          [
+            -7.506,
+            15832.3
+          ],
+          [
+            -6.756,
+            16637.8
+          ],
+          [
+            -6.006,
+            17483.7
+          ]
+        ],
+        "byControl": {
+          "control": "delay",
+          "note": "2-D VCO law fcp(V(q), delay) fitted in ngspice from the CD4047B astable + R61 5.6k + VR4 100k DELAY rheostat + 1N4001 varicap D3 across 240 pF",
+          "rows": [
+            {
+              "at": 0,
+              "points": [
+                [
+                  -11.506,
+                  97633.4
+                ],
+                [
+                  -10.506,
+                  100528.8
+                ],
+                [
+                  -9.756,
+                  102901.8
+                ],
+                [
+                  -9.006,
+                  105420.7
+                ],
+                [
+                  -8.256,
+                  108168.9
+                ],
+                [
+                  -7.506,
+                  111170.4
+                ],
+                [
+                  -6.756,
+                  114217.8
+                ],
+                [
+                  -6.006,
+                  118206.1
+                ]
+              ]
+            },
+            {
+              "at": 0.125,
+              "points": [
+                [
+                  -11.506,
+                  35607.0
+                ],
+                [
+                  -10.506,
+                  36895.2
+                ],
+                [
+                  -9.756,
+                  37869.0
+                ],
+                [
+                  -9.006,
+                  38885.4
+                ],
+                [
+                  -8.256,
+                  39979.2
+                ],
+                [
+                  -7.506,
+                  41148.5
+                ],
+                [
+                  -6.756,
+                  42467.5
+                ],
+                [
+                  -6.006,
+                  43871.2
+                ]
+              ]
+            },
+            {
+              "at": 0.25,
+              "points": [
+                [
+                  -11.506,
+                  22437.6
+                ],
+                [
+                  -10.506,
+                  23414.8
+                ],
+                [
+                  -9.756,
+                  24156.9
+                ],
+                [
+                  -9.006,
+                  24935.2
+                ],
+                [
+                  -8.256,
+                  25802.5
+                ],
+                [
+                  -7.506,
+                  26683.7
+                ],
+                [
+                  -6.756,
+                  27609.1
+                ],
+                [
+                  -6.006,
+                  28651.7
+                ]
+              ]
+            },
+            {
+              "at": 0.375,
+              "points": [
+                [
+                  -11.506,
+                  16106.7
+                ],
+                [
+                  -10.506,
+                  16941.1
+                ],
+                [
+                  -9.756,
+                  17647.3
+                ],
+                [
+                  -9.006,
+                  18389.8
+                ],
+                [
+                  -8.256,
+                  19126.3
+                ],
+                [
+                  -7.506,
+                  19958.5
+                ],
+                [
+                  -6.756,
+                  20814.3
+                ],
+                [
+                  -6.006,
+                  21697.6
+                ]
+              ]
+            },
+            {
+              "at": 0.5,
+              "points": [
+                [
+                  -11.506,
+                  12180.3
+                ],
+                [
+                  -10.506,
+                  13035.1
+                ],
+                [
+                  -9.756,
+                  13703.1
+                ],
+                [
+                  -9.006,
+                  14369.9
+                ],
+                [
+                  -8.256,
+                  15075.7
+                ],
+                [
+                  -7.506,
+                  15832.3
+                ],
+                [
+                  -6.756,
+                  16637.8
+                ],
+                [
+                  -6.006,
+                  17483.7
+                ]
+              ]
+            },
+            {
+              "at": 0.625,
+              "points": [
+                [
+                  -11.506,
+                  9705.5
+                ],
+                [
+                  -10.506,
+                  10403.9
+                ],
+                [
+                  -9.756,
+                  11022.2
+                ],
+                [
+                  -9.006,
+                  11643.9
+                ],
+                [
+                  -8.256,
+                  12315.3
+                ],
+                [
+                  -7.506,
+                  13050.7
+                ],
+                [
+                  -6.756,
+                  13846.6
+                ],
+                [
+                  -6.006,
+                  14611.8
+                ]
+              ]
+            },
+            {
+              "at": 0.75,
+              "points": [
+                [
+                  -11.506,
+                  8027.7
+                ],
+                [
+                  -10.506,
+                  8630.2
+                ],
+                [
+                  -9.756,
+                  9164.2
+                ],
+                [
+                  -9.006,
+                  9722.9
+                ],
+                [
+                  -8.256,
+                  10320.3
+                ],
+                [
+                  -7.506,
+                  11010.5
+                ],
+                [
+                  -6.756,
+                  11755.3
+                ],
+                [
+                  -6.006,
+                  12563.4
+                ]
+              ]
+            },
+            {
+              "at": 0.875,
+              "points": [
+                [
+                  -11.506,
+                  6869.0
+                ],
+                [
+                  -10.506,
+                  7400.4
+                ],
+                [
+                  -9.756,
+                  7841.7
+                ],
+                [
+                  -9.006,
+                  8338.8
+                ],
+                [
+                  -8.256,
+                  8898.5
+                ],
+                [
+                  -7.506,
+                  9500.3
+                ],
+                [
+                  -6.756,
+                  10185.4
+                ],
+                [
+                  -6.006,
+                  10907.0
+                ]
+              ]
+            },
+            {
+              "at": 1.0,
+              "points": [
+                [
+                  -11.506,
+                  6014.8
+                ],
+                [
+                  -10.506,
+                  6480.9
+                ],
+                [
+                  -9.756,
+                  6860.2
+                ],
+                [
+                  -9.006,
+                  7302.1
+                ],
+                [
+                  -8.256,
+                  7784.6
+                ],
+                [
+                  -7.506,
+                  8351.0
+                ],
+                [
+                  -6.756,
+                  8954.6
+                ],
+                [
+                  -6.006,
+                  9625.4
+                ]
+              ]
+            }
+          ]
+        }
+      },
+      "label": "MN3005 #1 (4096 stages)",
+      "note": "Pins: 7 IN, 4 OUT1, 3 OUT2, 1 VSS = G, 5 VDD = rail A (−15.7 V), 8 VGG = R21/VR6 node (≈ −14.7 V), 2/6 clocks from CD4047 pins 10/11 (unbuffered after 12/15/78). Supply pins are not modelled"
+    },
+    {
+      "ref": "R23",
+      "type": "R",
+      "nodes": [
+        "b1o1",
+        "s1"
+      ],
+      "value": "2.4k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R22",
+      "type": "R",
+      "nodes": [
+        "b1o2",
+        "s1"
+      ],
+      "value": "2.4k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R24",
+      "type": "R",
+      "nodes": [
+        "s1",
+        "0"
+      ],
+      "value": "100k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C15",
+      "type": "C",
+      "nodes": [
+        "s1",
+        "g1a"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "1 µF NP (EH-7850: 2 × 2.2 µF back-to-back)"
+    },
+    {
+      "ref": "R25",
+      "type": "R",
+      "nodes": [
+        "g1a",
+        "u2bn"
+      ],
+      "value": "100k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R26",
+      "type": "R",
+      "nodes": [
+        "u2bn",
+        "g1t"
+      ],
+      "value": "39k",
+      "tolerance": 0.05,
+      "note": "unverified: the EC2000 drawing joins R26 at the C15/R25 node; the EH-7850 drawing joins the 39k at the inverting input (standard inverting amp, gain −(39k + VR7)/100k). The EH-7850 topology is used: the EC2000 one would give a gain near 30"
+    },
+    {
+      "ref": "VR7",
+      "type": "pot",
+      "nodes": [
+        "g1t",
+        "u2bo",
+        "u2bo"
+      ],
+      "value": "100k",
+      "taper": "B",
+      "control": "gain1",
+      "label": "GAIN 1 trim (TRIM 2)",
+      "note": "Rheostat: 0.64 gives −1.03 (unity BBD-to-BBD with the 2.4k/100k summing loss), the 1978 procedure's 'set for unity'"
+    },
+    {
+      "ref": "R63",
+      "type": "R",
+      "nodes": [
+        "a",
+        "vgg2"
+      ],
+      "value": "6.8k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "VR8",
+      "type": "pot",
+      "nodes": [
+        "vgg2",
+        "b2w",
+        "0"
+      ],
+      "value": "100k",
+      "taper": "B",
+      "control": "bias2",
+      "label": "BIAS 2 trim (TRIM 4)",
+      "note": "Wiper is U2B's + input: BBD-2 input DC = wiper voltage (DC-coupled)"
+    },
+    {
+      "ref": "U2B",
+      "type": "opamp",
+      "nodes": [
+        "b2w",
+        "u2bn",
+        "u2bo",
+        "0",
+        "b"
+      ],
+      "model": "JRC4558",
+      "label": "IC3B inverting gain recovery, drives BBD 2 directly"
+    },
+    {
+      "ref": "IC5",
+      "type": "bbd",
+      "nodes": [
+        "u2bo",
+        "b2o1",
+        "b2o2",
+        "q"
+      ],
+      "model": "MN3005",
+      "clock": {
+        "points": [
+          [
+            -11.506,
+            12180.3
+          ],
+          [
+            -10.506,
+            13035.1
+          ],
+          [
+            -9.756,
+            13703.1
+          ],
+          [
+            -9.006,
+            14369.9
+          ],
+          [
+            -8.256,
+            15075.7
+          ],
+          [
+            -7.506,
+            15832.3
+          ],
+          [
+            -6.756,
+            16637.8
+          ],
+          [
+            -6.006,
+            17483.7
+          ]
+        ],
+        "byControl": {
+          "control": "delay",
+          "note": "2-D VCO law fcp(V(q), delay) fitted in ngspice from the CD4047B astable + R61 5.6k + VR4 100k DELAY rheostat + 1N4001 varicap D3 across 240 pF",
+          "rows": [
+            {
+              "at": 0,
+              "points": [
+                [
+                  -11.506,
+                  97633.4
+                ],
+                [
+                  -10.506,
+                  100528.8
+                ],
+                [
+                  -9.756,
+                  102901.8
+                ],
+                [
+                  -9.006,
+                  105420.7
+                ],
+                [
+                  -8.256,
+                  108168.9
+                ],
+                [
+                  -7.506,
+                  111170.4
+                ],
+                [
+                  -6.756,
+                  114217.8
+                ],
+                [
+                  -6.006,
+                  118206.1
+                ]
+              ]
+            },
+            {
+              "at": 0.125,
+              "points": [
+                [
+                  -11.506,
+                  35607.0
+                ],
+                [
+                  -10.506,
+                  36895.2
+                ],
+                [
+                  -9.756,
+                  37869.0
+                ],
+                [
+                  -9.006,
+                  38885.4
+                ],
+                [
+                  -8.256,
+                  39979.2
+                ],
+                [
+                  -7.506,
+                  41148.5
+                ],
+                [
+                  -6.756,
+                  42467.5
+                ],
+                [
+                  -6.006,
+                  43871.2
+                ]
+              ]
+            },
+            {
+              "at": 0.25,
+              "points": [
+                [
+                  -11.506,
+                  22437.6
+                ],
+                [
+                  -10.506,
+                  23414.8
+                ],
+                [
+                  -9.756,
+                  24156.9
+                ],
+                [
+                  -9.006,
+                  24935.2
+                ],
+                [
+                  -8.256,
+                  25802.5
+                ],
+                [
+                  -7.506,
+                  26683.7
+                ],
+                [
+                  -6.756,
+                  27609.1
+                ],
+                [
+                  -6.006,
+                  28651.7
+                ]
+              ]
+            },
+            {
+              "at": 0.375,
+              "points": [
+                [
+                  -11.506,
+                  16106.7
+                ],
+                [
+                  -10.506,
+                  16941.1
+                ],
+                [
+                  -9.756,
+                  17647.3
+                ],
+                [
+                  -9.006,
+                  18389.8
+                ],
+                [
+                  -8.256,
+                  19126.3
+                ],
+                [
+                  -7.506,
+                  19958.5
+                ],
+                [
+                  -6.756,
+                  20814.3
+                ],
+                [
+                  -6.006,
+                  21697.6
+                ]
+              ]
+            },
+            {
+              "at": 0.5,
+              "points": [
+                [
+                  -11.506,
+                  12180.3
+                ],
+                [
+                  -10.506,
+                  13035.1
+                ],
+                [
+                  -9.756,
+                  13703.1
+                ],
+                [
+                  -9.006,
+                  14369.9
+                ],
+                [
+                  -8.256,
+                  15075.7
+                ],
+                [
+                  -7.506,
+                  15832.3
+                ],
+                [
+                  -6.756,
+                  16637.8
+                ],
+                [
+                  -6.006,
+                  17483.7
+                ]
+              ]
+            },
+            {
+              "at": 0.625,
+              "points": [
+                [
+                  -11.506,
+                  9705.5
+                ],
+                [
+                  -10.506,
+                  10403.9
+                ],
+                [
+                  -9.756,
+                  11022.2
+                ],
+                [
+                  -9.006,
+                  11643.9
+                ],
+                [
+                  -8.256,
+                  12315.3
+                ],
+                [
+                  -7.506,
+                  13050.7
+                ],
+                [
+                  -6.756,
+                  13846.6
+                ],
+                [
+                  -6.006,
+                  14611.8
+                ]
+              ]
+            },
+            {
+              "at": 0.75,
+              "points": [
+                [
+                  -11.506,
+                  8027.7
+                ],
+                [
+                  -10.506,
+                  8630.2
+                ],
+                [
+                  -9.756,
+                  9164.2
+                ],
+                [
+                  -9.006,
+                  9722.9
+                ],
+                [
+                  -8.256,
+                  10320.3
+                ],
+                [
+                  -7.506,
+                  11010.5
+                ],
+                [
+                  -6.756,
+                  11755.3
+                ],
+                [
+                  -6.006,
+                  12563.4
+                ]
+              ]
+            },
+            {
+              "at": 0.875,
+              "points": [
+                [
+                  -11.506,
+                  6869.0
+                ],
+                [
+                  -10.506,
+                  7400.4
+                ],
+                [
+                  -9.756,
+                  7841.7
+                ],
+                [
+                  -9.006,
+                  8338.8
+                ],
+                [
+                  -8.256,
+                  8898.5
+                ],
+                [
+                  -7.506,
+                  9500.3
+                ],
+                [
+                  -6.756,
+                  10185.4
+                ],
+                [
+                  -6.006,
+                  10907.0
+                ]
+              ]
+            },
+            {
+              "at": 1.0,
+              "points": [
+                [
+                  -11.506,
+                  6014.8
+                ],
+                [
+                  -10.506,
+                  6480.9
+                ],
+                [
+                  -9.756,
+                  6860.2
+                ],
+                [
+                  -9.006,
+                  7302.1
+                ],
+                [
+                  -8.256,
+                  7784.6
+                ],
+                [
+                  -7.506,
+                  8351.0
+                ],
+                [
+                  -6.756,
+                  8954.6
+                ],
+                [
+                  -6.006,
+                  9625.4
+                ]
+              ]
+            }
+          ]
+        }
+      },
+      "label": "MN3005 #2 (4096 stages)",
+      "note": "Same pinout and clock phases as IC4"
+    },
+    {
+      "ref": "VR10",
+      "type": "pot",
+      "nodes": [
+        "b2o2",
+        "balw",
+        "b2o1"
+      ],
+      "value": "5k",
+      "taper": "B",
+      "control": "bal",
+      "label": "BAL trim (TRIM 3)",
+      "note": "5 kΩ between OUT2 and OUT1; wiper is the summed output (clock cancellation)"
+    },
+    {
+      "ref": "R27",
+      "type": "R",
+      "nodes": [
+        "balw",
+        "0"
+      ],
+      "value": "100k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C33",
+      "type": "C",
+      "nodes": [
+        "balw",
+        "g2a"
+      ],
+      "value": "220n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R48",
+      "type": "R",
+      "nodes": [
+        "g2a",
+        "u3an"
+      ],
+      "value": "680k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R47",
+      "type": "R",
+      "nodes": [
+        "u3an",
+        "g2t"
+      ],
+      "value": "100k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "VR9",
+      "type": "pot",
+      "nodes": [
+        "g2t",
+        "u3ao",
+        "u3ao"
+      ],
+      "value": "100k",
+      "taper": "B",
+      "control": "gain2",
+      "label": "GAIN 2 trim (TRIM 5)",
+      "note": "Gain −(100k + VR9)/680k = 0.15…0.29; 0.57 makes the expander input equal the compressor output (1978 step 5) with the ×2.37 and ×1.39 filter stages"
+    },
+    {
+      "ref": "U3A",
+      "type": "opamp",
+      "nodes": [
+        "vc",
+        "u3an",
+        "u3ao",
+        "0",
+        "b"
+      ],
+      "model": "JRC4558",
+      "label": "IC6A gain recovery 2"
+    },
+    {
+      "ref": "R46",
+      "type": "R",
+      "nodes": [
+        "u3ao",
+        "f2"
+      ],
+      "value": "16k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C31",
+      "type": "C",
+      "nodes": [
+        "f2",
+        "u3bo"
+      ],
+      "value": "2.7n",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R45",
+      "type": "R",
+      "nodes": [
+        "f2",
+        "u3bp"
+      ],
+      "value": "16k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C32",
+      "type": "C",
+      "nodes": [
+        "u3bp",
+        "0"
+      ],
+      "value": "2.7n",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "U3B",
+      "type": "opamp",
+      "nodes": [
+        "u3bp",
+        "u3bn",
+        "u3bo",
+        "0",
+        "b"
+      ],
+      "model": "JRC4558",
+      "label": "IC6B Sallen-Key ×2.37"
+    },
+    {
+      "ref": "R43",
+      "type": "R",
+      "nodes": [
+        "u3bo",
+        "u3bn"
+      ],
+      "value": "33.2k",
+      "tolerance": 0.01
+    },
+    {
+      "ref": "R44",
+      "type": "R",
+      "nodes": [
+        "u3bn",
+        "u3bg"
+      ],
+      "value": "24.3k",
+      "tolerance": 0.01
+    },
+    {
+      "ref": "C30",
+      "type": "C",
+      "nodes": [
+        "u3bg",
+        "0"
+      ],
+      "value": "4.7u",
+      "tolerance": 0.2,
+      "note": "EH-7850: 5 µF"
+    },
+    {
+      "ref": "R42",
+      "type": "R",
+      "nodes": [
+        "u3bo",
+        "f3"
+      ],
+      "value": "470",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C29",
+      "type": "C",
+      "nodes": [
+        "f3",
+        "0"
+      ],
+      "value": "47n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R41",
+      "type": "R",
+      "nodes": [
+        "f3",
+        "f4"
+      ],
+      "value": "15k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C27",
+      "type": "C",
+      "nodes": [
+        "f4",
+        "u4ao"
+      ],
+      "value": "2.7n",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R40",
+      "type": "R",
+      "nodes": [
+        "f4",
+        "u4ap"
+      ],
+      "value": "16k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C28",
+      "type": "C",
+      "nodes": [
+        "u4ap",
+        "0"
+      ],
+      "value": "2.7n",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "U4A",
+      "type": "opamp",
+      "nodes": [
+        "u4ap",
+        "u4an",
+        "u4ao",
+        "0",
+        "b"
+      ],
+      "model": "JRC4558",
+      "label": "IC7A Sallen-Key ×1.38"
+    },
+    {
+      "ref": "R38",
+      "type": "R",
+      "nodes": [
+        "u4ao",
+        "u4an"
+      ],
+      "value": "15k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R39",
+      "type": "R",
+      "nodes": [
+        "u4an",
+        "u4ag"
+      ],
+      "value": "39k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C26",
+      "type": "C",
+      "nodes": [
+        "u4ag",
+        "0"
+      ],
+      "value": "4.7u",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "C25",
+      "type": "C",
+      "nodes": [
+        "u4ao",
+        "xin"
+      ],
+      "value": "4.7u",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "IC2B",
+      "type": "sub",
+      "nodes": [
+        "xin",
+        "xcr",
+        "xin",
+        "xinv",
+        "xr3",
+        "xout",
+        "0",
+        "b"
+      ],
+      "of": "lib:ne570",
+      "label": "NE570 ch. 2 expander (pins 15+14, 16, 12, 11, 10)",
+      "note": "C16 3.9 nF on the THD-trim pin 9 (EC2000) is not connectable: lib:ne570 does not bring out THD trim"
+    },
+    {
+      "ref": "C23",
+      "type": "C",
+      "nodes": [
+        "xcr",
+        "b"
+      ],
+      "value": "1u",
+      "tolerance": 0.1,
+      "label": "CRECT 1 µF 10 %"
+    },
+    {
+      "ref": "R36",
+      "type": "R",
+      "nodes": [
+        "xcr",
+        "b"
+      ],
+      "value": "1.5M",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R37",
+      "type": "R",
+      "nodes": [
+        "xinv",
+        "b"
+      ],
+      "value": "11k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R34",
+      "type": "R",
+      "nodes": [
+        "xr3",
+        "xout"
+      ],
+      "value": "7.5k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R33",
+      "type": "R",
+      "nodes": [
+        "xout",
+        "u4bp"
+      ],
+      "value": "100k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C21",
+      "type": "C",
+      "nodes": [
+        "u4bp",
+        "0"
+      ],
+      "value": "1u",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "R32",
+      "type": "R",
+      "nodes": [
+        "xout",
+        "u4bn"
+      ],
+      "value": "240k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R31",
+      "type": "R",
+      "nodes": [
+        "u4bo",
+        "u4bn"
+      ],
+      "value": "180k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C19",
+      "type": "C",
+      "nodes": [
+        "u4bo",
+        "u4bn"
+      ],
+      "value": "150p",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R30",
+      "type": "R",
+      "nodes": [
+        "u4bo",
+        "u4bz"
+      ],
+      "value": "330k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C20",
+      "type": "C",
+      "nodes": [
+        "u4bz",
+        "u4bn"
+      ],
+      "value": "120p",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "U4B",
+      "type": "opamp",
+      "nodes": [
+        "u4bp",
+        "u4bn",
+        "u4bo",
+        "0",
+        "b"
+      ],
+      "model": "JRC4558",
+      "label": "IC7B output stage (−0.75, DC servo via R33/C21)"
+    },
+    {
+      "ref": "C18",
+      "type": "C",
+      "nodes": [
+        "u4bo",
+        "wet"
+      ],
+      "value": "22u",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "C22",
+      "type": "C",
+      "nodes": [
+        "xout",
+        "fb1"
+      ],
+      "value": "470n",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "R35",
+      "type": "R",
+      "nodes": [
+        "fb1",
+        "fbn"
+      ],
+      "value": "1k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C24",
+      "type": "C",
+      "nodes": [
+        "fbn",
+        "0"
+      ],
+      "value": "47n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "VR3",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "fbw",
+        "fbn"
+      ],
+      "value": "10k",
+      "taper": "A",
+      "control": "feedback",
+      "label": "FEEDBACK (10 kΩ log)"
+    },
+    {
+      "ref": "VR2",
+      "type": "pot",
+      "nodes": [
+        "dry",
+        "mixw",
+        "wet"
+      ],
+      "value": "10k",
+      "taper": "B",
+      "control": "blend",
+      "label": "BLEND (10 kΩ lin)",
+      "note": "unverified: rotation sense assumed (clockwise = wet)"
+    },
+    {
+      "ref": "R29",
+      "type": "R",
+      "nodes": [
+        "mixw",
+        "out"
+      ],
+      "value": "150",
+      "tolerance": 0.05,
+      "label": "Output 150 Ω (footswitch in effect position)"
+    },
+    {
+      "ref": "RLOAD",
+      "type": "R",
+      "nodes": [
+        "out",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "Amplifier input",
+      "note": "Not in the pedal: a 1 MΩ amp input as the output load"
+    },
+    {
+      "ref": "U5A",
+      "type": "opamp",
+      "nodes": [
+        "lfop",
+        "vl",
+        "lsq",
+        "0",
+        "a"
+      ],
+      "model": "JRC4558",
+      "label": "IC8A comparator"
+    },
+    {
+      "ref": "R56",
+      "type": "R",
+      "nodes": [
+        "lsq",
+        "lfop"
+      ],
+      "value": "910k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R58",
+      "type": "R",
+      "nodes": [
+        "ltri",
+        "lfop"
+      ],
+      "value": "120k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "U5B",
+      "type": "opamp",
+      "nodes": [
+        "vl",
+        "lfon",
+        "ltri",
+        "0",
+        "a"
+      ],
+      "model": "JRC4558",
+      "label": "IC8B integrator"
+    },
+    {
+      "ref": "R57",
+      "type": "R",
+      "nodes": [
+        "lsq",
+        "lfon"
+      ],
+      "value": "910k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C39",
+      "type": "C",
+      "nodes": [
+        "lfon",
+        "c39b"
+      ],
+      "value": "2.2u",
+      "tolerance": 0.1,
+      "label": "Chorus cap 2.2 µF NP",
+      "note": "EH-7850: 2 × 4.7 µF tantalum back-to-back (2.35 µF)"
+    },
+    {
+      "ref": "S2C",
+      "type": "switch",
+      "nodes": [
+        "c39b",
+        "ltri"
+      ],
+      "control": "mode",
+      "invert": true,
+      "label": "CHORUS/VIBRATO (chorus throw)"
+    },
+    {
+      "ref": "C40",
+      "type": "C",
+      "nodes": [
+        "lfon",
+        "c40b"
+      ],
+      "value": "470n",
+      "tolerance": 0.1,
+      "label": "Vibrato cap 0.47 µF",
+      "note": "EH-7850: back-to-back 1 µF tantalum"
+    },
+    {
+      "ref": "S2V",
+      "type": "switch",
+      "nodes": [
+        "c40b",
+        "ltri"
+      ],
+      "control": "mode",
+      "label": "CHORUS/VIBRATO (vibrato throw)"
+    },
+    {
+      "ref": "VKICK",
+      "type": "V",
+      "nodes": [
+        "kick",
+        "0"
+      ],
+      "value": "-7.2",
+      "ac": {
+        "amplitude": "10m",
+        "freq": 1.0,
+        "phase": 0
+      },
+      "label": "LFO start kick",
+      "note": "Simulation aid, not in the unit: 10 mV at 1 Hz through 10 MΩ into the comparator + input starts the relaxation oscillator from the DC point. Centred on the switching reference (vl = −7.20 V): a 0 V kick drew 0.72 µA through RKICK and shifted both Schmitt thresholds by +85 mV of triangle (2026-11-10 fix)"
+    },
+    {
+      "ref": "RKICK",
+      "type": "R",
+      "nodes": [
+        "kick",
+        "lfop"
+      ],
+      "value": "10M",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "VR5",
+      "type": "pot",
+      "nodes": [
+        "vc",
+        "lw",
+        "ltri"
+      ],
+      "value": "100k",
+      "taper": "B",
+      "control": "depth",
+      "label": "CHORUS/VIBRATO depth (100 kΩ lin)"
+    },
+    {
+      "ref": "R59",
+      "type": "R",
+      "nodes": [
+        "lw",
+        "q"
+      ],
+      "value": "7.5k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C41",
+      "type": "C",
+      "nodes": [
+        "q",
+        "vc"
+      ],
+      "value": "2.2u",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "RPUMP",
+      "type": "R",
+      "nodes": [
+        "q",
+        "vpump"
+      ],
+      "value": "83k",
+      "tolerance": 0.05,
+      "label": "Clock-rate D3 pump (equivalent)",
+      "note": "Not a schematic part: the DC equivalent of the current the clock-rate swing pumps through the varicap D3 into R60 and node Q (ngspice: 55–67 µA at Q − C = 0, falling 12 µA/V, nearly independent of DELAY). The engine cannot produce it because the clock runs above its Nyquist. Fitted Thevenin: 83 kΩ to C + 5.56 V"
+    },
+    {
+      "ref": "VPUMP",
+      "type": "V",
+      "nodes": [
+        "vpump",
+        "0"
+      ],
+      "value": "-3.45",
+      "label": "Pump equivalent source (C + 5.56 V)"
+    }
+  ],
+  "probes": [
+    "u1ao",
+    "cout",
+    "bbd1in",
+    "u2bo",
+    "balw",
+    "xin",
+    "xout",
+    "wet",
+    "out",
+    "q",
+    "ltri",
+    "a"
+  ],
+  "readouts": {
+    "lfo": "q"
+  }
+}

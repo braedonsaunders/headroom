@@ -1,0 +1,2457 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "peavey-5150-134000",
+ "version": 2,
+ "name": "Peavey 5150 Block Letter (134000)",
+ "description": "Peavey EVH 5150 'Block Letter', catalogue unit 134000, from the 1992 Peavey drawing set (CB #98002910, CODE 8150510): input stage V1A, the K4A rhythm/lead input pads, the CLEAN PRE and LEAD PRE gain pots, V1B / V2A cold clipper / V2B / V5B / V5A, the K4A-K4B-K1A-K1B relay channel switching, the three-band tone stack with the K1B mid shift, the CLEAN/ULTRA POST gain, the effects loop cathode follower V3B and recovery V3A, the V4 long-tail-pair inverter, four 6L6GC with the SR2873 plate clamps, the 1.7 k output transformer into an 8 ohm cab,, and the negative feedback from the 8 ohm tap through R56 39K and the series RESONANCE element (C12 || VR8) into the PRESENCE shunt (C8 || C62 + VR9) and C30 into the bottom of the inverter tail (R51 10K / R57 4.7K), with C31 tying the V4A grid to that node. R85 220K and R81 2.2M on sheet 1 are not feedback parts. The effects path is the 1992 drawing's (Addendum 9 in work/circuit-netlists/wave-e/peavey-5150-block-letter.notes.md): HIGH wiper -> VR6 CLEAN POST / VR7 ULTRA POST, K2B picks the wiper -> the CLAMP node (R81 2.2M; Q7 J174 mute JFET with its gate at +22 V through R84 1M / C55 .1; CR21/CR22 1N4148 to the 24 V rails) -> C52 .022 -> V3B cathode follower (R79 bootstrapped) -> C53 .33 / R103 100K / C65 .33 / R33 100K -> K3B/K3A at rest (the unpatched loop: the RETURN jack's tip switch makes the energized state the same circuit) -> R85 220K -> C11 .047 -> V3A grid with R26 1M. The CLAMP mute trigger (TRIG, R83, C54, MAC97) is open at idle and is not modelled. The relay coils and the 24 V coil rail are not in the audio path and are modelled as the switches they drive.",
+ "sources": [
+  {
+   "title": "Peavey EVH 120 PREAMP BD schematic set, CB #98002910, code 8150510, date 5-FEB-92, sheets 1-3 of 3 (sheet 1 preamp board, sheet 2 inverter + bias + HT supply, sheet 3 power amp board)",
+   "url": "https://el34world.com/charts/Schematics/files/Peavey/5150_evh.pdf",
+   "note": "AUTHORITATIVE for unit 134000. 1-bit 300 dpi scans, portrait scans of landscape drawings: page 1 is 2328x3105, page 2 2352x3189, page 3 2472x3525; every page was rotated 90 deg before reading. Values were read at 1:1 and at 2.2x-10x on crops, never from a downscale."
+  },
+  {
+   "title": "Peavey EVH 5150 schematic, page 5 of 5 (the complete folded sheet, 4760x3122)",
+   "url": "https://el34world.com/charts/Schematics/files/Peavey/Peavey_evh5150.pdf",
+   "note": "A LATER Peavey revision with different designators and a different tone stack (C12 .0033 / C8 .01 / C62 .033 / VR9 10K PRES against the 1992 board's C11/C59/C18/C21). Used ONLY as a geometric cross-check at 8x where the 1992 sheet's junction dots merge: the preamp stages, the K4A/K4B/K1A contact geometry and the power amp agree between the two."
+  },
+  {
+   "title": "EVH 5150 redraw, `VH 5150 COMBO`, Peavey drawing 99505263 REV A (4290x3060, via blueguitar.org / Wayback 2006-05-15, file evh_5150.gif)",
+   "url": "https://web.archive.org/web/20060515114546id_/http://www.blueguitar.org/new/schem/peavey/evh_5150.gif",
+   "note": "A THIRD revision. Used only where the 1992 board's tone-stack junction dots merge (the addendum-4 read: three series branches between two vertical rails, slope R, the K1B mid shift) and for the presence/resonance block (R108 39K / C61 .0033 || VR8 1M || C63 .033 || C64 .01 / VR10 10K), whose values agree with the 1992 board's block."
+  }
+ ],
+ "minRate": 176400,
+ "lte": {
+  "start": "bdf2",
+  "tol": 16
+ },
+ "multirate": {
+  "rates": {
+   "V5": 32
+  },
+  "events": true,
+  "note": "Event-local oversampling (docs §10.48, §10.62): base 192 kHz, 8 substeps (1.536 MHz) on every LTE event. With 4 substeps (768 kHz) the knees' integration error folds about 768 kHz at -55.5 dB (aliasing gate, own-mains mask, 0.5 FS; harmonic 270 at 15 kHz); with 8: -66.3 / -68.2 / -67.6 dB at 0.25 / 0.5 / 1.0 FS. Band-limited ngspice truth (p5150v2bl), audio band, lead / rock DI: spk 0.308 / 0.667 -> 0.274 / 0.602 %, p4a 0.220 / 0.491 -> 0.107 / 0.262 %"
+ },
+ "newton": {
+  "groups": {
+   "V5": 1e-4
+  },
+  "substeps": 10,
+  "note": "Event substeps (docs §10.64): the tube ports of every LTE substep converge at 10x the full step's tube tolerance (1e-2); every other port and the full step keep theirs (all ports at 10x fail the clamp network's SPICE gate). T/8 substep Newton 1.84 -> 1.60 iterations; 9900X real / driven -2.6 / -2.9 %, block p99 -4.4 % (M4 Pro instructions mean / p99 -3.1 / -5.3 %). Band-limited ngspice truth unchanged to the 4th digit (audio, lead / rock DI: spk 0.274 / 0.602 %, p4a 0.107 / 0.262 %); aliasing within 0.5 dB of 1x on both tones (2900 Hz -66.8 / -68.1 / -67.3, 3130 Hz -65.3 / -65.2 / -55.8 dB). CE_SUBTOL=1 restores 1x."
+ },
+ "io": {
+  "input": "in",
+  "output": "spk",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 110.0,
+  "note": "outputVoltsPerFS = 1.5 x the 73.2 V peak measured at the speaker with the Lead channel dimed (channel=Lead, lead=1, post=1, 220 Hz, 30 mV in, 176.4 kHz, 4 s, last 2 s; 34.0 V RMS; every knob at 1 gives 73.4 V pk). Re-measured 2026-11-15 after the loop path was re-traced to the 1992 drawing and the CLAMP network's static parts added (notes Addendum 9); was 104 (69.5 V pk)."
+ },
+ "oversampling": 4,
+ "solver": "auto",
+ "cuts": [
+  "hra",
+  "hrb",
+  "plates",
+  "plmid",
+  "screens",
+  "scmid",
+  "v3",
+  "v2",
+  "v1"
+ ],
+ "models": {
+  "SR2873": {
+   "kind": "diode",
+   "is": 2.52e-09,
+   "n": 1.752,
+   "rs": 0.568,
+   "note": "SR2873 = 1N5406-class 3 A 600 V fast-recovery rectifier used here as a plate clamp. No published SPICE card; the 1N400x-class card the library already uses for 1N4001 is fitted, which is what matters for a clamp that only conducts on flyback."
+  },
+  "J174": {
+   "kind": "pjf",
+   "vto": -7.0,
+   "beta": 0.001,
+   "lambda": 0.01,
+   "is": 1e-14,
+   "n": 1.0,
+   "cgs": 5.5e-12,
+   "cgd": 5.5e-12,
+   "note": "J174 P-channel (onsemi J174-J177 datasheet: VGS(off) +5 ... +10 V, IDSS 20-135 mA, rDS(on) <= 85 ohm): SPICE vto -7 (centre), beta 1 mA/V^2 -> IDSS 49 mA, rDS(on) 1/(2 beta |vto|) = 71 ohm; Cgs = Cgd = 5.5 pF, the Calogic J174 sheet's Csg(off) / Cdg(off) at VGS 10 V. Same convention as the J175 card in ssl-4000g-bus-comp-130000."
+  }
+ },
+ "controls": [
+  {
+   "id": "rhythm",
+   "label": "Rhythm",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "R0"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "Rhythm channel pre gain: VR1 CLEAN PRE 1M-A (Peavey 1M5XA3)"
+  },
+  {
+   "id": "lead",
+   "label": "Lead",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "L1"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "Lead channel pre gain: VR2 LEAD PRE 1M-A (Peavey 1M5XA3)"
+  },
+  {
+   "id": "bass",
+   "label": "Bass",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "B2"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "VR3 1M-A LOW"
+  },
+  {
+   "id": "mid",
+   "label": "Mid",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "M3"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "VR4 50K-B MID"
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "T4"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "VR5 250K-B HIGH"
+  },
+  {
+   "id": "post",
+   "label": "Post Gain",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "P5"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "VR7 ULTRA POST (Lead) and VR6 CLEAN POST (Rhythm), 1M-A each, both on the HIGH wiper; K2B picks the wiper. One catalogue Post Gain drives both."
+  },
+  {
+   "id": "resonance",
+   "label": "Resonance",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "R6"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "VR8 1M-A rheostat across C12 .0068, in series in the feedback path (0 at CCW, 1M at CW): up = less low-frequency feedback = more bass"
+  },
+  {
+   "id": "presence",
+   "label": "Presence",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "P7"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "VR9 10K-A rheostat in series with C8 || C62 (133 nF) shunting the feedback node (10K at CCW, 0 at CW): up = less treble feedback = more treble"
+  },
+  {
+   "id": "channel",
+   "label": "Channel",
+   "kind": "selector",
+   "default": 1.0,
+   "options": [
+    "Rhythm",
+    "Lead"
+   ],
+   "params": [
+    "L13"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "Rhythm/Lead relay select: K4A (input pad), K4B (clean-pot shunt), K1A (clean mixer) and K1B (mid shift). Index 0 = Rhythm (relays at rest), index 1 = Lead (relays energized)."
+  },
+  {
+   "id": "higain",
+   "label": "Hi Gain",
+   "kind": "selector",
+   "default": 1.0,
+   "options": [
+    "Crunch",
+    "Hi Gain"
+   ],
+   "params": [
+    "H14"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "S1C: Hi Gain connects the lead pad output (C10) to the Clean pre pot top"
+  },
+  {
+   "id": "bright",
+   "label": "Bright",
+   "kind": "switch",
+   "default": 0.0,
+   "params": [
+    "B15"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "S2B: bright capacitor across the Clean pre pot top section"
+  },
+  {
+   "id": "p8",
+   "label": "Power",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "P8"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Host-side / stored only: no part on the 5150 Block Letter's circuit."
+  },
+  {
+   "id": "v9",
+   "label": "VAC",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "V9"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Host-side / stored only: no part on the 5150 Block Letter's circuit."
+  },
+  {
+   "id": "s10",
+   "label": "Sag",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "S10"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Host-side / stored only: no part on the 5150 Block Letter's circuit."
+  },
+  {
+   "id": "r11",
+   "label": "Response",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "R11"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Host-side / stored only: no part on the 5150 Block Letter's circuit."
+  },
+  {
+   "id": "b12",
+   "label": "Bias",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "B12"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Host-side / stored only: no part on the 5150 Block Letter's circuit."
+  },
+  {
+   "id": "c16",
+   "label": "Crunch",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "C16"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Stored only. The Block Letter's single rhythm boost switch (S1, 'Crunch') is the higain selector (H14); there is no second switch on the drawing."
+  },
+  {
+   "id": "r17",
+   "label": "Rhythm Lamp",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "R17"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Channel LED; stored only"
+  },
+  {
+   "id": "l18",
+   "label": "Lead Lamp",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "L18"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "Channel LED; stored only"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VHA",
+   "type": "V",
+   "nodes": [
+    "ha",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "495.0",
+    "freq": 60,
+    "phase": 90
+   },
+   "label": "HT secondary (equivalent half, 495 V peak = 350 Vrms)",
+   "note": "unverified: the PT's HT winding voltage is not on any of the three drawings (they give part numbers 70518727/70519027 only). 350 Vrms is fitted so the settled PLATE rail lands on the schematic's ~490 V, which is the value the rail chain is drawn around. The drawn rectifier is a 4 x 1N4007 bridge with the winding floating and the reservoir return at ground; the two anti-phase source + two-diode form used here is the project's equivalent of that bridge (JCM800/5E3/SLO convention) - one diode drop instead of two."
+  },
+  {
+   "ref": "VHB",
+   "type": "V",
+   "nodes": [
+    "hb",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "495.0",
+    "freq": 60,
+    "phase": 270
+   },
+   "label": "HT secondary (equivalent half), phase B"
+  },
+  {
+   "ref": "RPTA",
+   "type": "R",
+   "nodes": [
+    "ha",
+    "hra"
+   ],
+   "value": "15",
+   "tolerance": 0.05,
+   "label": "HT winding + reflected primary resistance (A), unverified typical"
+  },
+  {
+   "ref": "RPTB",
+   "type": "R",
+   "nodes": [
+    "hb",
+    "hrb"
+   ],
+   "value": "15",
+   "tolerance": 0.05,
+   "label": "HT winding + reflected primary resistance (B), unverified typical"
+  },
+  {
+   "ref": "DRA",
+   "type": "D",
+   "nodes": [
+    "hra",
+    "plates"
+   ],
+   "model": "1N4001",
+   "label": "bridge rectifier (4 x 1N4007 on the drawing; 1N4001 model)"
+  },
+  {
+   "ref": "DRB",
+   "type": "D",
+   "nodes": [
+    "hrb",
+    "plates"
+   ],
+   "model": "1N4001",
+   "label": "bridge rectifier (4 x 1N4007 on the drawing; 1N4001 model)"
+  },
+  {
+   "ref": "C34",
+   "type": "C",
+   "nodes": [
+    "plates",
+    "plmid"
+   ],
+   "value": "330u",
+   "tolerance": 0.2,
+   "label": "330 uF/350 V reservoir, upper half (C34)"
+  },
+  {
+   "ref": "C38",
+   "type": "C",
+   "nodes": [
+    "plmid",
+    "0"
+   ],
+   "value": "330u",
+   "tolerance": 0.2,
+   "label": "330 uF/350 V reservoir, lower half (C38)"
+  },
+  {
+   "ref": "R62",
+   "type": "R",
+   "nodes": [
+    "plates",
+    "plmid"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "220k 1 W balancing resistor across C34"
+  },
+  {
+   "ref": "R64",
+   "type": "R",
+   "nodes": [
+    "plmid",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "220k 1 W balancing resistor across C38"
+  },
+  {
+   "ref": "R210",
+   "type": "R",
+   "nodes": [
+    "plates",
+    "screens"
+   ],
+   "value": "400",
+   "tolerance": 0.1,
+   "label": "400 ohm 10 W 5% (R210 400W10FP) plate-to-screen dropper",
+   "note": "Read on sheet 3 as R210 400W10FP between the standby switch output (J7) and the screen rail; sheet 2 shows PLATE and SCREEN as separate rails with no resistor between them, which is what places R210 here rather than in the main B+."
+  },
+  {
+   "ref": "C35",
+   "type": "C",
+   "nodes": [
+    "screens",
+    "scmid"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "100 uF/350 V screen reservoir, upper half (C35)"
+  },
+  {
+   "ref": "C39",
+   "type": "C",
+   "nodes": [
+    "scmid",
+    "0"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "100 uF/350 V screen reservoir, lower half (C39)"
+  },
+  {
+   "ref": "R63",
+   "type": "R",
+   "nodes": [
+    "screens",
+    "scmid"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "220k 1 W balancing resistor across C35"
+  },
+  {
+   "ref": "R65",
+   "type": "R",
+   "nodes": [
+    "scmid",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "220k 1 W balancing resistor across C39"
+  },
+  {
+   "ref": "R59",
+   "type": "R",
+   "nodes": [
+    "screens",
+    "v3"
+   ],
+   "value": "4k",
+   "tolerance": 0.05,
+   "label": "4k 5 W (R59 4KW5) screen-to-V3 dropper"
+  },
+  {
+   "ref": "C36",
+   "type": "C",
+   "nodes": [
+    "v3",
+    "0"
+   ],
+   "value": "47u",
+   "tolerance": 0.2,
+   "label": "47 uF/500 V on the V3 rail (C36 47A500)"
+  },
+  {
+   "ref": "R60",
+   "type": "R",
+   "nodes": [
+    "v3",
+    "v2"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "22k 1 W (R60 22KW1) V3-to-V2 dropper"
+  },
+  {
+   "ref": "C37",
+   "type": "C",
+   "nodes": [
+    "v2",
+    "0"
+   ],
+   "value": "22u",
+   "tolerance": 0.2,
+   "label": "22 uF/450 V on the V2 rail (C37 22A450)"
+  },
+  {
+   "ref": "R61",
+   "type": "R",
+   "nodes": [
+    "v2",
+    "v1"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "10k 1 W (R61 10KW1) V2-to-V1 dropper"
+  },
+  {
+   "ref": "C33",
+   "type": "C",
+   "nodes": [
+    "v1",
+    "0"
+   ],
+   "value": "22u",
+   "tolerance": 0.2,
+   "label": "22 uF/450 V on the V1 rail (C33)"
+  },
+  {
+   "ref": "VBIAS",
+   "type": "V",
+   "nodes": [
+    "bias",
+    "0"
+   ],
+   "value": "-47",
+   "label": "Bias supply filter node (-52 V)",
+   "note": "The drawing's bias network (CR12 1N4003, C40-C43 .1/250, R66 2.7k trim, R67 1k, R68 15k, C44 .1/50, J80) is modelled as the filter node it produces, as the JCM800/Plexi/AB763/SLO netlists do. -52 V is fitted so the four 6L6GC idle near 25 mA at the settled screen/plate rails; the drawing gives no voltage chart for this amp."
+  },
+  {
+   "ref": "R27",
+   "type": "R",
+   "nodes": [
+    "in",
+    "in_a"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "R27 22K high-gain input stopper (J37)"
+  },
+  {
+   "ref": "C20",
+   "type": "C",
+   "nodes": [
+    "in_a",
+    "0"
+   ],
+   "value": "39p",
+   "tolerance": 0.1,
+   "label": "C20 39 pF input RF shunt"
+  },
+  {
+   "ref": "C15",
+   "type": "C",
+   "nodes": [
+    "in_a",
+    "g1a_n"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "C15 .1 uF/250 V input coupling",
+   "note": "Read as `1R250NY` = .1 uF 250 V mylar."
+  },
+  {
+   "ref": "R25",
+   "type": "R",
+   "nodes": [
+    "g1a_n",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "R25 1 M grid leak"
+  },
+  {
+   "ref": "R22",
+   "type": "R",
+   "nodes": [
+    "g1a_n",
+    "g1a"
+   ],
+   "value": "68k",
+   "tolerance": 0.05,
+   "label": "R22 68K V1A grid stopper"
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "v1",
+    "p1a"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R2 220K V1A plate load"
+  },
+  {
+   "ref": "V1A",
+   "type": "triode",
+   "nodes": [
+    "p1a",
+    "g1a",
+    "k1a"
+   ],
+   "model": "12AX7",
+   "label": "V1A input stage"
+  },
+  {
+   "ref": "R12",
+   "type": "R",
+   "nodes": [
+    "k1a",
+    "0"
+   ],
+   "value": "1k82",
+   "tolerance": 0.05,
+   "label": "R12 1.82K V1A cathode",
+   "note": "The drawn value reads `1.82K` and the 1:1 crop is unambiguous; 1.8k is the standard part."
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "k1a",
+    "0"
+   ],
+   "value": "1u",
+   "tolerance": 0.2,
+   "label": "C3 1 uF/50 V NP cathode bypass (`1A50NP`)"
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "p1a",
+    "ka4"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C6 .022 uF/400 V V1A plate coupling into relay K4A"
+  },
+  {
+   "ref": "SW_K4A3",
+   "type": "switch",
+   "nodes": [
+    "ka4",
+    "k4a3"
+   ],
+   "control": "channel",
+   "positions": [
+    0
+   ],
+   "label": "K4A pin 2-3 (rest, Rhythm): C6 into the 470K/270pF pad"
+  },
+  {
+   "ref": "SW_K4A4",
+   "type": "switch",
+   "nodes": [
+    "ka4",
+    "k4a4"
+   ],
+   "control": "channel",
+   "positions": [
+    1
+   ],
+   "label": "K4A pin 2-4 (energized, Lead): C6 into the 2.2M/470pF pad"
+  },
+  {
+   "ref": "C51",
+   "type": "C",
+   "nodes": [
+    "k4a3",
+    "lr"
+   ],
+   "value": "270p",
+   "tolerance": 0.1,
+   "label": "C51 270 pF rhythm pad, in parallel with R19"
+  },
+  {
+   "ref": "R19",
+   "type": "R",
+   "nodes": [
+    "k4a3",
+    "lr"
+   ],
+   "value": "470k",
+   "tolerance": 0.05,
+   "label": "R19 470K rhythm pad"
+  },
+  {
+   "ref": "C13",
+   "type": "C",
+   "nodes": [
+    "k4a4",
+    "ll"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "C13 470 pF lead pad, in parallel with R43"
+  },
+  {
+   "ref": "R43",
+   "type": "R",
+   "nodes": [
+    "k4a4",
+    "ll"
+   ],
+   "value": "2.2M",
+   "tolerance": 0.05,
+   "label": "R43 2.2M lead pad"
+  },
+  {
+   "ref": "R21",
+   "type": "R",
+   "nodes": [
+    "lr",
+    "v1t"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "R21 1M rhythm pad series resistor into the Clean pre pot top"
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "ll",
+    "s10"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "C10 470 pF lead pad series capacitor"
+  },
+  {
+   "ref": "R75",
+   "type": "R",
+   "nodes": [
+    "v1t",
+    "s10"
+   ],
+   "value": "2.2M",
+   "tolerance": 0.05,
+   "label": "R75 2.2M bridging the lead pad output to the Clean pre pot top"
+  },
+  {
+   "ref": "SW_S1C",
+   "type": "switch",
+   "nodes": [
+    "s10",
+    "v1t"
+   ],
+   "control": "higain",
+   "positions": [
+    1
+   ],
+   "label": "S1C pin 11-10: Hi Gain connects the lead pad output to the pot top",
+   "note": "S1C is the front-panel CRUNCH/HI GAIN wafer. Terminal 11 is the common and rests on pin 12 (drawn N/C); pin 10 is the lead-pad side. positions [1] = closed in Hi Gain."
+  },
+  {
+   "ref": "SW_K4B",
+   "type": "switch",
+   "nodes": [
+    "v1t",
+    "k4bc"
+   ],
+   "control": "channel",
+   "positions": [
+    0
+   ],
+   "label": "K4B pin 7-6 (rest, Rhythm): 39K + .1 uF shunt on the Clean pre pot top; opens in Lead",
+   "note": "Both throws of this pole (5 and 7) are drawn wired to the same node in BOTH the 1992 sheet (measured at 1 px: the U-shaped wire from pin 5 joins the vertical that carries pin 7) and the later Peavey page 5 (same, at 8x). The pole therefore opens the shunt when energized; that is modelled, not a guess about which node each throw reaches."
+  },
+  {
+   "ref": "R23",
+   "type": "R",
+   "nodes": [
+    "k4bc",
+    "c63n"
+   ],
+   "value": "39k",
+   "tolerance": 0.05,
+   "label": "R23 39K rhythm shunt resistor"
+  },
+  {
+   "ref": "C63",
+   "type": "C",
+   "nodes": [
+    "c63n",
+    "0"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "C63 .1 uF/16 V rhythm shunt DC block"
+  },
+  {
+   "ref": "VR1",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "v1w",
+    "v1t"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "rhythm",
+   "label": "VR1 CLEAN PRE 1M-A gain pot",
+   "note": "Peavey pot part 1M5XA3 / POT0752. Terminals as drawn: 2 = top, 3 = wiper, 1 = bottom (ground)."
+  },
+  {
+   "ref": "C27",
+   "type": "C",
+   "nodes": [
+    "v1t",
+    "v1w"
+   ],
+   "value": "180p",
+   "tolerance": 0.1,
+   "label": "C27 180 pF bright cap across the Clean pre pot top section",
+   "note": "The 1992 board's glyph reads C27 160PF; the later Peavey page 5 prints 180PF and the redraw 100PF. 180 pF is shipped - it is the value two of the three renderings' neighbours support and the difference is inaudible next to the 39K shunt. Flagged, not silently chosen."
+  },
+  {
+   "ref": "SW_K1A",
+   "type": "switch",
+   "nodes": [
+    "v1w",
+    "k1a2"
+   ],
+   "control": "channel",
+   "positions": [
+    0
+   ],
+   "label": "K1A pin 3-2 (rest, Rhythm): Clean pre wiper into the 470K mixer; opens in Lead",
+   "note": "Pin 4 is drawn wired back to the common 3, so this pole also mutes the clean path when energized."
+  },
+  {
+   "ref": "R24",
+   "type": "R",
+   "nodes": [
+    "k1a2",
+    "mix"
+   ],
+   "value": "470k",
+   "tolerance": 0.05,
+   "label": "R24 470K Clean pre mixer resistor into the V1B grid node"
+  },
+  {
+   "ref": "R29",
+   "type": "R",
+   "nodes": [
+    "v1t",
+    "p29"
+   ],
+   "value": "470k",
+   "tolerance": 0.05,
+   "label": "R29 470K lead pre input resistor"
+  },
+  {
+   "ref": "C17",
+   "type": "C",
+   "nodes": [
+    "v1t",
+    "p29"
+   ],
+   "value": "2n2",
+   "tolerance": 0.1,
+   "label": "C17 .0022 uF across R29"
+  },
+  {
+   "ref": "VR2",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "v2w",
+    "p29"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "lead",
+   "label": "VR2 LEAD PRE 1M-A gain pot",
+   "note": "Peavey pot 1M5XA3 / POT0752. Terminals: 2 = top (R29/C17 node), 3 = wiper, 1 = bottom (ground)."
+  },
+  {
+   "ref": "SW_K2A",
+   "type": "switch",
+   "nodes": [
+    "v2w",
+    "mix"
+   ],
+   "control": "channel",
+   "positions": [
+    1
+   ],
+   "label": "K2A: gates the Lead pre wiper into the V1B mixer node (closed in Lead)",
+   "note": "INFERRED, and the one contact in this netlist that is not read off a drawing. The board carries four audio relay poles besides K4A/K4B/K1A/K1B (K2A, K2B, K3A, K3B); they sit in the coil-drive block on sheet 1 that the notes list as unresolved. Leaving the lead wiper permanently on the mixer was measured and is wrong: both gain knobs then fight over one node (with the Lead knob at 0.5 the Rhythm knob moved the output only 15.0 -> 16.5 V, i.e. it did not work). Gating the lead wiper with K2A on the Channel control is the minimum change that makes the two catalogue gain controls independent, and it is what the relay count and the amp's documented channel behaviour require. Flagged in the notes."
+  },
+  {
+   "ref": "C19",
+   "type": "C",
+   "nodes": [
+    "p29",
+    "v2w"
+   ],
+   "value": "1n",
+   "tolerance": 0.1,
+   "label": "C19 .001 uF across the top section of the lead pre pot"
+  },
+  {
+   "ref": "R40",
+   "type": "R",
+   "nodes": [
+    "p29",
+    "v2w"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "R40 1M across the top section of the lead pre pot",
+   "note": "C19/R40 are drawn between the pot's top (pin 2) and its WIPER, in both the 1992 sheet and the redraw (which prints the same pair as C22/R37). Read twice, 1 px run-length on the 1992 sheet's pot geometry."
+  },
+  {
+   "ref": "R82",
+   "type": "R",
+   "nodes": [
+    "mix",
+    "g1b"
+   ],
+   "value": "470k",
+   "tolerance": 0.05,
+   "label": "R82 470K into the V1B grid"
+  },
+  {
+   "ref": "RLEAK",
+   "type": "R",
+   "nodes": [
+    "mix",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "V1B grid leak at the mixer node",
+   "note": "The drawing's grid leak at this node is not legible on any rendering (the mixer node is a junction of the K1A contact, R24 and the lead wiper). 1M is fitted so the V1B grid has a DC path; the DC operating point is what it sets, and it is disclosed here rather than left floating."
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "v1",
+    "p1b"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "R3 100K V1B plate load"
+  },
+  {
+   "ref": "V1B",
+   "type": "triode",
+   "nodes": [
+    "p1b",
+    "g1b",
+    "k1b"
+   ],
+   "model": "12AX7",
+   "label": "V1B second gain stage"
+  },
+  {
+   "ref": "R17",
+   "type": "R",
+   "nodes": [
+    "k1b",
+    "0"
+   ],
+   "value": "1k82",
+   "tolerance": 0.05,
+   "label": "R17 1.82K V1B cathode"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "k1b",
+    "0"
+   ],
+   "value": "1u",
+   "tolerance": 0.2,
+   "label": "C4 1 uF/50 V NP V1B cathode bypass"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "p1b",
+    "n2a"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C2 .022 uF/400 V V1B to V2A coupling"
+  },
+  {
+   "ref": "R6",
+   "type": "R",
+   "nodes": [
+    "n2a",
+    "g2a"
+   ],
+   "value": "470k",
+   "tolerance": 0.05,
+   "label": "R6 470K V2A grid"
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "g2a",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "R9 1M V2A grid leak"
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "v1",
+    "p2a"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "R1 100K V2A plate load"
+  },
+  {
+   "ref": "V2A",
+   "type": "triode",
+   "nodes": [
+    "p2a",
+    "g2a",
+    "k2a"
+   ],
+   "model": "12AX7",
+   "label": "V2A cold clipper (39K unbypassed)"
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "k2a",
+    "0"
+   ],
+   "value": "39k",
+   "tolerance": 0.05,
+   "label": "R15 39K unbypassed V2A cathode (cold clipper)",
+   "note": "39K unbypassed is the cold-clipper bias: the drawing prints 39K and it reads cleanly at 1:1."
+  },
+  {
+   "ref": "C49",
+   "type": "C",
+   "nodes": [
+    "k2a",
+    "0"
+   ],
+   "value": "1n",
+   "tolerance": 0.1,
+   "label": "C49 .001 uF across the cold-clipper cathode",
+   "note": "Small bypass across R15 on the drawing; it trims the top end of the cold-clipper stage."
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "p2a",
+    "n2b"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C1 .022 uF/400 V V2A to V2B coupling"
+  },
+  {
+   "ref": "C48",
+   "type": "C",
+   "nodes": [
+    "n2b",
+    "0"
+   ],
+   "value": "1n",
+   "tolerance": 0.1,
+   "label": "C48 .001 uF shunt at the V2A output"
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "n2b",
+    "0"
+   ],
+   "value": "330k",
+   "tolerance": 0.05,
+   "label": "R11 330K shunt at the V2A output"
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "n2b",
+    "g2b"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R7 220K into the V2B grid"
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "v2",
+    "p2b"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R4 220K V2B plate load"
+  },
+  {
+   "ref": "V2B",
+   "type": "triode",
+   "nodes": [
+    "p2b",
+    "g2b",
+    "k2b"
+   ],
+   "model": "12AX7",
+   "label": "V2B gain stage"
+  },
+  {
+   "ref": "R13",
+   "type": "R",
+   "nodes": [
+    "k2b",
+    "0"
+   ],
+   "value": "1k82",
+   "tolerance": 0.05,
+   "label": "R13 1.82K V2B cathode"
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "k2b",
+    "0"
+   ],
+   "value": "1u",
+   "tolerance": 0.2,
+   "label": "C5 1 uF/50 V NP V2B cathode bypass"
+  },
+  {
+   "ref": "R32",
+   "type": "R",
+   "nodes": [
+    "p2b",
+    "c57n"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "R32 1M V2B output series resistor"
+  },
+  {
+   "ref": "C57",
+   "type": "C",
+   "nodes": [
+    "c57n",
+    "g5b"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C57 .022 uF/400 V into the V5B grid"
+  },
+  {
+   "ref": "R101",
+   "type": "R",
+   "nodes": [
+    "g5b",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "R101 100K V5B grid leak"
+  },
+  {
+   "ref": "R96",
+   "type": "R",
+   "nodes": [
+    "v2",
+    "p5b"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R96 220K V5B plate load"
+  },
+  {
+   "ref": "V5B",
+   "type": "triode",
+   "nodes": [
+    "p5b",
+    "g5b",
+    "k5b"
+   ],
+   "model": "12AX7",
+   "label": "V5B gain stage"
+  },
+  {
+   "ref": "R102",
+   "type": "R",
+   "nodes": [
+    "k5b",
+    "0"
+   ],
+   "value": "2k2",
+   "tolerance": 0.05,
+   "label": "R102 2.2K unbypassed V5B cathode"
+  },
+  {
+   "ref": "R87",
+   "type": "R",
+   "nodes": [
+    "p5b",
+    "c56n"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "R87 1M V5B output series resistor"
+  },
+  {
+   "ref": "C56",
+   "type": "C",
+   "nodes": [
+    "c56n",
+    "nb2"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C56 .022 uF/400 V into the V5A grid node"
+  },
+  {
+   "ref": "R91",
+   "type": "R",
+   "nodes": [
+    "nb2",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "R91 1M V5A grid leak"
+  },
+  {
+   "ref": "R88",
+   "type": "R",
+   "nodes": [
+    "nb3",
+    "nb2"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "R88 1M local feedback resistor from the V5A plate node back to its grid"
+  },
+  {
+   "ref": "R86",
+   "type": "R",
+   "nodes": [
+    "v2",
+    "p5a"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "R86 100K V5A plate load"
+  },
+  {
+   "ref": "V5A",
+   "type": "triode",
+   "nodes": [
+    "p5a",
+    "nb2",
+    "k5a"
+   ],
+   "model": "12AX7",
+   "label": "V5A last preamp stage",
+   "note": "R88 1M and R91 1M meet at the grid: R91 to ground, R88 from the plate coupling node nb3 = the local feedback shelf the drawing labels \"To Tone Stack\"."
+  },
+  {
+   "ref": "R93",
+   "type": "R",
+   "nodes": [
+    "k5a",
+    "0"
+   ],
+   "value": "2k2",
+   "tolerance": 0.05,
+   "label": "R93 2.2K unbypassed V5A cathode"
+  },
+  {
+   "ref": "C58",
+   "type": "C",
+   "nodes": [
+    "p5a",
+    "nb3"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C58 .022 uF/400 V V5A plate coupling to the tone-stack driver node"
+  },
+  {
+   "ref": "R89",
+   "type": "R",
+   "nodes": [
+    "nb3",
+    "0"
+   ],
+   "value": "470k",
+   "tolerance": 0.05,
+   "label": "R89 470K shunt at the tone-stack input node",
+   "note": "Drawn as a 470 K shunt from the V5A output node; with R88 it forms the local feedback shelf around V5A that the drawing labels 'To Tone Stack'."
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "nb3",
+    "tt"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "C11 470 pF treble cap"
+  },
+  {
+   "ref": "C59",
+   "type": "C",
+   "nodes": [
+    "nb3",
+    "tt"
+   ],
+   "value": "100p",
+   "tolerance": 0.1,
+   "label": "C59 100 pF treble cap, in parallel with C11 (= 570 pF)",
+   "note": "The redraw prints the second cap as 1000PF and the 1992 board as 100 pF. The 1992 board is the authoritative revision for unit 134000, so 100 pF is shipped. A 10x error here would move the treble corner by an octave with every numeric gate still passing, so it is flagged rather than silently resolved. 470 pF || 100 pF = 570 pF total treble cap."
+  },
+  {
+   "ref": "R28",
+   "type": "R",
+   "nodes": [
+    "nb3",
+    "ns"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "R28 47K slope resistor"
+  },
+  {
+   "ref": "C18",
+   "type": "C",
+   "nodes": [
+    "ns",
+    "tb"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C18 .022 uF bass cap"
+  },
+  {
+   "ref": "C21",
+   "type": "C",
+   "nodes": [
+    "ns",
+    "mw"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C21 .022 uF mid cap"
+  },
+  {
+   "ref": "VR5",
+   "type": "pot",
+   "nodes": [
+    "tb",
+    "tw",
+    "tt"
+   ],
+   "value": "250k",
+   "taper": "B",
+   "control": "treble",
+   "label": "VR5 250K-B HIGH (treble) pot"
+  },
+  {
+   "ref": "VR3",
+   "type": "pot",
+   "nodes": [
+    "mb",
+    "tb",
+    "tb"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "bass",
+   "label": "VR3 1M-A LOW (bass) pot, wired as a rheostat",
+   "note": "The 1992 board prints 1M-A; the redraw prints the same 1M-A (`POTB311 1M5KA`)."
+  },
+  {
+   "ref": "VR4",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mw",
+    "mb"
+   ],
+   "value": "50k",
+   "taper": "B",
+   "control": "mid",
+   "label": "VR4 50K-B MID pot",
+   "note": "The 1992 board prints 50K-B; the redraw prints 50K-L. The taper letter is flagged, the value is not."
+  },
+  {
+   "ref": "R24M",
+   "type": "R",
+   "nodes": [
+    "mb",
+    "rmid"
+   ],
+   "value": "33k",
+   "tolerance": 0.05,
+   "label": "R24 33K mid-ground resistor (Rhythm/Lead mid shift)"
+  },
+  {
+   "ref": "SW_K1B",
+   "type": "switch",
+   "nodes": [
+    "rmid",
+    "0"
+   ],
+   "control": "channel",
+   "positions": [
+    1
+   ],
+   "label": "K1B: shorts the 33K mid-ground resistor in Lead (the Rhythm/Lead mid shift)",
+   "note": "The redraw shows R5 33K (1992: R24 33K) hanging off the mid pot's bottom into K1B (common 6, rest 7 to ground). The 1992 board's K1B contact set is in the same place but its dots merge at 3105 px, so the throw assignment here is taken from the redraw: Rhythm = 33K in circuit, Lead = 33K shorted."
+  },
+  {
+   "ref": "VR7",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "post_wu",
+    "tw"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "post",
+   "label": "VR7 ULTRA POST 1M-A (1MAVB): pin 2 on the HIGH wiper, pin 1 to ground, wiper -> K2B pin 5",
+   "note": "5150_evh.pdf p1@300 1680,1180,2200,1720: VR5's wiper (3) runs straight to VR7 pin 2 and down to VR6 pin 2 (junction dot at (2068,1277)); no coupling cap between them (the .022 C21 nearby is the mid-leg cap). Was: both pots in parallel behind an undrawn 22n (CPOST) with their wipers tied."
+  },
+  {
+   "ref": "VR6",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "post_wc",
+    "tw"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "post",
+   "label": "VR6 CLEAN POST 1M-A (1MAVB): pin 2 on the HIGH wiper, pin 1 to ground, wiper -> K2B pin 6",
+   "note": "The catalogue has one Post Gain (P5), so both pots follow it; K2B picks which wiper drives the loop."
+  },
+  {
+   "ref": "SW_K2B5",
+   "type": "switch",
+   "nodes": [
+    "post_wu",
+    "clamp"
+   ],
+   "control": "channel",
+   "positions": [
+    1
+   ],
+   "label": "K2B pin 7-5 (energized, Lead): ULTRA POST wiper to the K2B common",
+   "note": "p1@300 2250,1120,2600,1480: common pin 7 at (2335,1356), blade resting toward pin 6 (rest = CLEAN POST), pin 5 = VR7 wiper. K2 is taken as energized in Lead, the same coil as the inferred SW_K2A; with one Post control on both pots the choice is inaudible either way."
+  },
+  {
+   "ref": "SW_K2B6",
+   "type": "switch",
+   "nodes": [
+    "post_wc",
+    "clamp"
+   ],
+   "control": "channel",
+   "positions": [
+    0
+   ],
+   "label": "K2B pin 7-6 (rest, Rhythm): CLEAN POST wiper to the K2B common"
+  },
+  {
+   "ref": "R81",
+   "type": "R",
+   "nodes": [
+    "clamp",
+    "0"
+   ],
+   "value": "2.2M",
+   "tolerance": 0.05,
+   "label": "R81 2.2M from the K2B common / CLAMP node to ground",
+   "note": "p1@300 2250,1120,2600,1480: R81 pin 1 on the K2B-common line (dot (2393,1355)), pin 2 to the chassis-ground node at VR9 pin 2. The C52 coupling's DC reference."
+  },
+  {
+   "ref": "C52",
+   "type": "C",
+   "nodes": [
+    "clamp",
+    "g3b"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C52 .022/400 from the K2B common (CLAMP node) to NEXT4 = the V3B grid",
+   "note": "p1@300 1650,940,2300,1400: C52 right plate -> (2391,1207) -> down to the CLAMP dot (2393,1247) and K2B pin 7; left plate -> x 2057 -> up to J89 (NEXT4). Sheet 2 p2@300 100,250,700,1100: NEXT4 -> V3B grid pin 7, R79 1M to the R80/R16 junction. Nothing else is on this path: the send pad the earlier build used (R75 2.2K series / R109 100K shunt; its note called it -33 dB, as wired it was -0.2 dB) comes from the combo redraw (evh_5150.gif); the 1992 board's last ref is R103 and its R75 is the 2.2M in the K4 pad. R104 100K is the PREAMP OUT jack feed from NEXT1 (p1@300 80,1500,1000,2000), not a send part."
+  },
+  {
+   "ref": "C53",
+   "type": "C",
+   "nodes": [
+    "k3b",
+    "fs1"
+   ],
+   "value": "330n",
+   "tolerance": 0.1,
+   "label": "C53 .33/400 from NEXT5 (V3B cathode) - loop send network",
+   "note": "p1@300 1980,980,2480,1200 and 2250,1120,2600,1480: J90 (NEXT5) -> right along y 1012 -> down x 2281 (crosses the R26 line at (2281,1130) without a dot) -> right along y 1186 -> down x 2441 to C53's top plate. Sheet 2: NEXT5 = the V3B cathode (pin 8) above R80. VERIFY_BATCH_7 called this chain a relay clamp network outside the audio path; the trace says otherwise."
+  },
+  {
+   "ref": "R103",
+   "type": "R",
+   "nodes": [
+    "fs1",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "R103 100K shunt at the C53/C65 junction (p1@300 2050,1000,2620,1800: dot (2445,1503))"
+  },
+  {
+   "ref": "C65",
+   "type": "C",
+   "nodes": [
+    "fs1",
+    "fs2"
+   ],
+   "value": "330n",
+   "tolerance": 0.1,
+   "label": "C65 .33/400 into the K3B common"
+  },
+  {
+   "ref": "R33",
+   "type": "R",
+   "nodes": [
+    "fs2",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "R33 100K shunt at the K3B common (pin 7, dot (2445,1603))"
+  },
+  {
+   "ref": "R85",
+   "type": "R",
+   "nodes": [
+    "fs2",
+    "0"
+   ],
+   "value": "220K",
+   "tolerance": 0.05,
+   "label": "R85 220K shunt at the K3A common, to the chassis-ground node at VR9 pin 2",
+   "note": "K3B 7-6 (rest) -> K3A 3-2 (rest) joins R33's node to R85's: p1@300 2420,1400,2700,1650 (K3A common pin 2 at (2525,1455), blade toward pin 3 (2565,1475); pin 3 -> x 2617 -> K3B pin 6 (2565,1623); K3B common pin 7 (2527,1603)). Energized, K3B 7-5 -> J53/J54 (SEND tip) and K3A 2-4 -> J51/J52 (RETURN tip); with nothing in the RETURN jack its tip switch (pin 2 ts) closes onto the SEND tip line (p1@300 2700,1380,3060,1700), so with the loop unpatched the two states are the same circuit. Modelled as the joined node fs2."
+  },
+  {
+   "ref": "C11L",
+   "type": "C",
+   "nodes": [
+    "fs2",
+    "g3a"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "C11 .047/400 (sheet ref C11; 'C11' in this file is the tone stack's 470p) from the K3A common to NEXT6 = the V3A grid",
+   "note": "p1@300 2150,900,2550,1180: C11 left plate on the dot (2312,1130) = R26 pin 2 = the line up to J30 (NEXT6); right plate -> x 2471 -> R85 pin 1 (dot (2471,1276)) -> K3A pin 2."
+  },
+  {
+   "ref": "R26",
+   "type": "R",
+   "nodes": [
+    "g3a",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "R26 1M V3A grid leak (NEXT6 node to the ground dot at R24/R94, p1@300 1650,940,2300,1400)"
+  },
+  {
+   "ref": "Q7",
+   "type": "pjf",
+   "nodes": [
+    "clamp",
+    "q7g",
+    "0"
+   ],
+   "model": "J174",
+   "label": "Q7 J174 CLAMP mute JFET: pin 1 on the CLAMP line (K2B common), pin 3 to ground, gate on R84/C55",
+   "note": "p2@300 2050,900,3000,1350. Idle: the MAC97 (CR23) is off, so the gate sits at +22 V through R84 1M with C55 .1 to ground and the P-channel JFET is pinched off for CLAMP below about +22 V - |VGS(off)| (~+15 V with this card). A TRIG pulse fires the triac, grounds the gate and shorts CLAMP for ~0.1 s (R84 x C55). TRIG, R83 47, C54 .1 and the triac are open at idle and are not modelled; the static parts are, because the post wiper reaches them (notes Addendum 9 \u00a73)."
+  },
+  {
+   "ref": "R84",
+   "type": "R",
+   "nodes": [
+    "v22",
+    "q7g"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "R84 1M from +22V to the Q7 gate"
+  },
+  {
+   "ref": "C55",
+   "type": "C",
+   "nodes": [
+    "q7g",
+    "0"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "C55 .1 (.1P10) Q7 gate to ground (via the MAC97 MT1 line)"
+  },
+  {
+   "ref": "CR21",
+   "type": "D",
+   "nodes": [
+    "clamp",
+    "v24p"
+   ],
+   "model": "1N4148",
+   "label": "CR21 1N4148: anode on CLAMP, cathode to 24V+ (p2@300 2730,830,2980,1200)"
+  },
+  {
+   "ref": "CR22",
+   "type": "D",
+   "nodes": [
+    "v24n",
+    "clamp"
+   ],
+   "model": "1N4148",
+   "label": "CR22 1N4148: anode on 24V-, cathode on CLAMP"
+  },
+  {
+   "ref": "V24P",
+   "type": "V",
+   "nodes": [
+    "v24p",
+    "0"
+   ],
+   "value": "24",
+   "label": "24V+ low-voltage rail (label value; sheet 2 C44 4700u/35V)",
+   "note": "unverified: the drawing prints the rail name, not a measured voltage."
+  },
+  {
+   "ref": "V24N",
+   "type": "V",
+   "nodes": [
+    "v24n",
+    "0"
+   ],
+   "value": "-24",
+   "label": "24V- low-voltage rail (label value; sheet 2 C46 2200u/35V)"
+  },
+  {
+   "ref": "V22",
+   "type": "V",
+   "nodes": [
+    "v22",
+    "0"
+   ],
+   "value": "22",
+   "label": "+22V relay/clamp supply (label value)"
+  },
+  {
+   "ref": "R79",
+   "type": "R",
+   "nodes": [
+    "g3b",
+    "k3b_n"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "R79 1M V3B grid leak to the R80/R16 junction"
+  },
+  {
+   "ref": "V3B",
+   "type": "triode",
+   "nodes": [
+    "v2",
+    "g3b",
+    "k3b"
+   ],
+   "model": "12AX7",
+   "label": "V3B cathode follower (loop buffer), plate tied to the V2 rail"
+  },
+  {
+   "ref": "R80",
+   "type": "R",
+   "nodes": [
+    "k3b",
+    "k3b_n"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "R80 1K V3B cathode resistor"
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "k3b_n",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "R16 100K V3B cathode resistor (with R80: 1K of DC bias, 101K of AC load)"
+  },
+  {
+   "ref": "R51",
+   "type": "R",
+   "nodes": [
+    "pig",
+    "nfba"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "R51 10K 1 W inverter tail resistor, grid-return node to the feedback node",
+   "note": "R51 10KW1 pin 2 is on the R50/R52/R53 junction and pin 1 on the C31/R57/C30 hub (5150_evh.pdf p2@300 838,100,2038,1150). The V3A cathode carries only R14 3.3K and C61 .0047 to ground (same crop); the earlier k3a -> nfba placement fed the V3A cathode into the tail and is gone. (crop frame: the pdftoppm -r 300 render of the page as stored, before the 90 deg rotation used for reading; 2026-11-12 feedback/PI re-trace)"
+  },
+  {
+   "ref": "R56",
+   "type": "R",
+   "nodes": [
+    "spk",
+    "nfa"
+   ],
+   "value": "39k",
+   "tolerance": 0.05,
+   "label": "R56 39K feedback series resistor: 8 ohm tap (FDBK J70/J71) to NEXT3 (J16/J34, the resonance node)",
+   "note": "R56 39K pin 1 on the J70/J71 FDBK pins only, pin 2 to NEXT3 (5150_evh.pdf p2@300 838,100,2038,1150, 5150_evh.pdf p2@300 1128,740,1288,1010); NEXT3 lands on sheet 1 at J16, paired with J34 = C12 / VR8 pin 1 (5150_evh.pdf p1@300 2545,820,3005,1100). The FEEDBACK line is the 8 ohm tap: on the sheet-2 output harness J99 (8 ohm) is wired to S3 pin 3, the J98/J101 FEEDBACK net, in every S3 position (5150_evh.pdf p2@300 2138,130,3038,620), and on sheet 3 FEDBACK leaves T2 on the W lead, the 8 OHM jack side, while the 4 OHM jack is on GN (5150_evh.pdf p3@300 2625,560,3325,1000). With the 8 ohm cab on the 8 ohm tap that is the speaker node. (crop frame: the pdftoppm -r 300 render of the page as stored, before the 90 deg rotation used for reading; 2026-11-12 feedback/PI re-trace)"
+  },
+  {
+   "ref": "C30C",
+   "type": "C",
+   "nodes": [
+    "nfba",
+    "nfb"
+   ],
+   "value": "22u",
+   "tolerance": 0.2,
+   "label": "C30 22 uF/25 V feedback injection cap: + on the tail-bottom node, - to NEXT2 (J17/J35, the presence/resonance node)",
+   "note": "C30 + (pin 1) on the R57/C31/R51 hub, pin 2 to NEXT2 (5150_evh.pdf p2@300 838,100,2038,1150, 5150_evh.pdf p2@300 1128,740,1288,1010). NEXT2 lands on sheet 1 at J17, paired with J35, the C8/C62/C12/VR8-pin-2 node (5150_evh.pdf p1@300 2545,820,3005,1100). The ref stays C30C only to keep the netlist ref unique against C30B (loop return). (crop frame: the pdftoppm -r 300 render of the page as stored, before the 90 deg rotation used for reading; 2026-11-12 feedback/PI re-trace)"
+  },
+  {
+   "ref": "R57",
+   "type": "R",
+   "nodes": [
+    "nfba",
+    "0"
+   ],
+   "value": "4k7",
+   "tolerance": 0.05,
+   "label": "R57 4.7K feedback node (bottom of the inverter tail) to ground",
+   "note": "R57 pin 1 is on the C31-bottom dot; the J70/J71 FDBK vertical crosses that line with no dot (5150_evh.pdf p2@300 1128,740,1288,1010). (crop frame: the pdftoppm -r 300 render of the page as stored, before the 90 deg rotation used for reading; 2026-11-12 feedback/PI re-trace)"
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "v2",
+    "p3a"
+   ],
+   "value": "68k",
+   "tolerance": 0.05,
+   "label": "R5 68K V3A plate load"
+  },
+  {
+   "ref": "V3A",
+   "type": "triode",
+   "nodes": [
+    "p3a",
+    "g3a",
+    "k3a"
+   ],
+   "model": "12AX7",
+   "label": "V3A recovery stage (cathode: R14 3.3K || C61 .0047 only)"
+  },
+  {
+   "ref": "R14",
+   "type": "R",
+   "nodes": [
+    "k3a",
+    "0"
+   ],
+   "value": "3k3",
+   "tolerance": 0.05,
+   "label": "R14 3.3K V3A cathode resistor",
+   "note": "The 1992 sheet reads R14 3.3K at 1:1 (an earlier pass recorded 2.2K); 3.3K is used."
+  },
+  {
+   "ref": "C61",
+   "type": "C",
+   "nodes": [
+    "k3a",
+    "0"
+   ],
+   "value": "4n7",
+   "tolerance": 0.1,
+   "label": "C61 .0047 uF V3A cathode bypass"
+  },
+  {
+   "ref": "C49B",
+   "type": "C",
+   "nodes": [
+    "p3a",
+    "n4b"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C49 .022 uF/400 V V3A plate coupling into the inverter"
+  },
+  {
+   "ref": "R48",
+   "type": "R",
+   "nodes": [
+    "n4b",
+    "g4b"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "R48 100K inverter grid stopper (V4B)"
+  },
+  {
+   "ref": "R46",
+   "type": "R",
+   "nodes": [
+    "v3",
+    "p4b"
+   ],
+   "value": "82k",
+   "tolerance": 0.05,
+   "label": "R46 82K V4B plate load"
+  },
+  {
+   "ref": "R58",
+   "type": "R",
+   "nodes": [
+    "v3",
+    "p4a"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "R58 100K V4A plate load"
+  },
+  {
+   "ref": "R50",
+   "type": "R",
+   "nodes": [
+    "n4b",
+    "pig"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "R50 1M V4B grid return (from the NEXT1/C49 node) to the grid-return node",
+   "note": "R50 1M from the NEXT1 node (C49, R48) to the R52/R53/R51 junction (5150_evh.pdf p2@300 838,100,2038,1150). (crop frame: the pdftoppm -r 300 render of the page as stored, before the 90 deg rotation used for reading; 2026-11-12 feedback/PI re-trace)"
+  },
+  {
+   "ref": "R52",
+   "type": "R",
+   "nodes": [
+    "pi_k",
+    "pig"
+   ],
+   "value": "470",
+   "tolerance": 0.05,
+   "label": "R52 470 inverter bias resistor, cathodes to the grid-return node",
+   "note": "R52 470 runs from the cathode-tie dot down to the R50/R53/R51 junction: it is the LTP bias resistor, not a V4A grid stopper (5150_evh.pdf p2@300 1608,480,1848,860, 5150_evh.pdf p2@300 838,100,2038,1150). (crop frame: the pdftoppm -r 300 render of the page as stored, before the 90 deg rotation used for reading; 2026-11-12 feedback/PI re-trace)"
+  },
+  {
+   "ref": "R53",
+   "type": "R",
+   "nodes": [
+    "g4a",
+    "pig"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "R53 1M V4A grid return to the grid-return node",
+   "note": "R53 1M from the R50/R52/R51 junction to the dot on the V4A grid (pin 2) lead (5150_evh.pdf p2@300 838,100,2038,1150). (crop frame: the pdftoppm -r 300 render of the page as stored, before the 90 deg rotation used for reading; 2026-11-12 feedback/PI re-trace)"
+  },
+  {
+   "ref": "C31",
+   "type": "C",
+   "nodes": [
+    "g4a",
+    "nfba"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "C31 .047 uF/400 V V4A grid to the feedback node (the second grid AC-referenced to the injected feedback)",
+   "note": "C31 runs from the R53/V4A-grid dot down to the hub dot it shares with R51 pin 1, R57 and C30 + (5150_evh.pdf p2@300 838,100,2038,1150, 5150_evh.pdf p2@300 1128,740,1288,1010). (crop frame: the pdftoppm -r 300 render of the page as stored, before the 90 deg rotation used for reading; 2026-11-12 feedback/PI re-trace)"
+  },
+  {
+   "ref": "V4B",
+   "type": "triode",
+   "nodes": [
+    "p4b",
+    "g4b",
+    "pi_k"
+   ],
+   "model": "12AX7",
+   "label": "V4B long-tail-pair inverter (drive side)"
+  },
+  {
+   "ref": "V4A",
+   "type": "triode",
+   "nodes": [
+    "p4a",
+    "g4a",
+    "pi_k"
+   ],
+   "model": "12AX7",
+   "label": "V4A long-tail-pair inverter (feedback side), grid AC-tied to the feedback node by C31",
+   "note": "Both inverter cathodes (pins 3 and 8) are tied inside the valve symbol and leave through one dot to R52: 5150_evh.pdf p2@300 1608,480,1848,860 and 5150_evh.pdf p2@300 838,100,2038,1150. Previously the V4A grid sat behind R52 470 as a \"grid stopper\" and the cathodes had an invented 1M grid-return pair and a 22 uF tail bypass. (crop frame: the pdftoppm -r 300 render of the page as stored, before the 90 deg rotation used for reading; 2026-11-12 feedback/PI re-trace)"
+  },
+  {
+   "ref": "C29",
+   "type": "C",
+   "nodes": [
+    "p4a",
+    "ga"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "C29 .047 uF/400 V inverter drive to the A-side grids"
+  },
+  {
+   "ref": "C28",
+   "type": "C",
+   "nodes": [
+    "p4b",
+    "gb"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "C28 .047 uF/400 V inverter drive to the B-side grids"
+  },
+  {
+   "ref": "R55",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "bias"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R55 220K A-side grid leak to the bias node"
+  },
+  {
+   "ref": "R54",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "bias"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R54 220K B-side grid leak to the bias node"
+  },
+  {
+   "ref": "R206",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "g5"
+   ],
+   "value": "1k1",
+   "tolerance": 0.05,
+   "label": "R206 2.2K output-tube grid stopper",
+   "note": "pair of 2k2 folded with the output tubes"
+  },
+  {
+   "ref": "R202",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "g6"
+   ],
+   "value": "1k1",
+   "tolerance": 0.05,
+   "label": "R202 2.2K output-tube grid stopper",
+   "note": "pair of 2k2 folded with the output tubes"
+  },
+  {
+   "ref": "C201",
+   "type": "C",
+   "nodes": [
+    "g5",
+    "0"
+   ],
+   "value": "200p",
+   "tolerance": 0.1,
+   "label": "C201 100 pF grid-to-cathode",
+   "note": "pair of 100p folded with the output tubes"
+  },
+  {
+   "ref": "C203",
+   "type": "C",
+   "nodes": [
+    "g6",
+    "0"
+   ],
+   "value": "200p",
+   "tolerance": 0.1,
+   "label": "C203 100 pF grid-to-cathode",
+   "note": "pair of 100p folded with the output tubes"
+  },
+  {
+   "ref": "R207",
+   "type": "R",
+   "nodes": [
+    "screens",
+    "s5"
+   ],
+   "value": "50",
+   "tolerance": 0.05,
+   "label": "R207 100 ohm 5 W output-tube screen stopper",
+   "note": "pair of 100 folded with the output tubes"
+  },
+  {
+   "ref": "R203",
+   "type": "R",
+   "nodes": [
+    "screens",
+    "s6"
+   ],
+   "value": "50",
+   "tolerance": 0.05,
+   "label": "R203 100 ohm 5 W output-tube screen stopper",
+   "note": "pair of 100 folded with the output tubes"
+  },
+  {
+   "ref": "V5",
+   "type": "pentode",
+   "nodes": [
+    "pa",
+    "s5",
+    "g5",
+    "kout"
+   ],
+   "model": "6L6GC",
+   "label": "V5 6L6GC (A side, with V7)",
+   "parallel": 2,
+   "note": "V5 + V7: two matched tubes in parallel (folded; their grid stoppers and screen resistors are halved, grid caps doubled)"
+  },
+  {
+   "ref": "V6",
+   "type": "pentode",
+   "nodes": [
+    "pb",
+    "s6",
+    "g6",
+    "kout"
+   ],
+   "model": "6L6GC",
+   "label": "V6 6L6GC (B side, with V8)",
+   "parallel": 2,
+   "note": "V6 + V8: two matched tubes in parallel (folded; their grid stoppers and screen resistors are halved, grid caps doubled)"
+  },
+  {
+   "ref": "R200",
+   "type": "R",
+   "nodes": [
+    "kout",
+    "0"
+   ],
+   "value": "100",
+   "tolerance": 0.05,
+   "label": "R200 100 ohm 1 W, one half of the 50 ohm common cathode resistor"
+  },
+  {
+   "ref": "R201",
+   "type": "R",
+   "nodes": [
+    "kout",
+    "0"
+   ],
+   "value": "100",
+   "tolerance": 0.05,
+   "label": "R201 100 ohm 1 W, second half of the 50 ohm common cathode resistor"
+  },
+  {
+   "ref": "C200",
+   "type": "C",
+   "nodes": [
+    "kout",
+    "0"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "C200 100 uF/25 V cathode bypass"
+  },
+  {
+   "ref": "CR200",
+   "type": "D",
+   "nodes": [
+    "0",
+    "pa"
+   ],
+   "model": "SR2873",
+   "label": "CR200 SR2873 plate clamp, cathode on the A-side plate, anode on the earthed rail"
+  },
+  {
+   "ref": "CR201",
+   "type": "D",
+   "nodes": [
+    "0",
+    "pb"
+   ],
+   "model": "SR2873",
+   "label": "CR201 SR2873 plate clamp, cathode on the B-side plate, anode on the earthed rail"
+  },
+  {
+   "ref": "OT",
+   "type": "transformer",
+   "nodes": [
+    "pa",
+    "plates",
+    "plates",
+    "pb",
+    "0",
+    "spk"
+   ],
+   "turns": [
+    1,
+    1,
+    0.1372
+   ],
+   "r": [
+    20,
+    20,
+    0.2
+   ],
+   "leak": [
+    "3m",
+    "3m",
+    0
+   ],
+   "lm": 80,
+   "lsat": 5,
+   "label": "T2 70500207 output transformer, 1.7 k plate-to-plate, 8 ohm and 4 ohm taps",
+   "note2": "Secondary PHASING: the 8 ohm winding is drawn with its grounded end on pin 5 and the hot end on pin 6 so that the feedback taken from it through R56 is NEGATIVE (the presence shelf raises the treble when it shunts the feedback, which only a negative loop does). The opposite phasing turns the loop positive and the amp bursts at low frequency.",
+   "note": "unverified: no source gives Raa or DCR for T2 70500207. 1.7 k p-p is the value the other Peavey 6L6 120 W netlists use; 8 ohm tap turns = 2*sqrt(8/1700), 4 ohm tap = 2*sqrt(4/1700). DCR 20 ohm per half, leakage 3 mH per half, lm 80 H and lsat 5 V s are typical 100 W-class values. Feedback is taken from the 8 ohm tap (the speaker node): sheet 2 wires J99 8 ohm to the FEEDBACK net in every S3 position (5150_evh.pdf p2@300 2138,130,3038,620) and sheet 3 takes FEDBACK off the W (8 OHM) lead (5150_evh.pdf p3@300 2625,560,3325,1000). The 4 ohm tap winding the netlist used to carry for the feedback is removed: with the cab on the 8 ohm tap nothing loads it. (crop frame: the pdftoppm -r 300 render of the page as stored, before the 90 deg rotation used for reading; 2026-11-12 feedback/PI re-trace)"
+  },
+  {
+   "ref": "SPK",
+   "type": "sub",
+   "of": "lib:spk-12in-8ohm-british",
+   "nodes": [
+    "spk",
+    "0"
+   ],
+   "label": "4x12-class 8 ohm cab (single Thiele-Small equivalent) on the 8 ohm tap"
+  },
+  {
+   "ref": "CWA",
+   "type": "C",
+   "nodes": [
+    "pa",
+    "cwa"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "Winding capacitance, A-side plate end"
+  },
+  {
+   "ref": "RCWA",
+   "type": "R",
+   "nodes": [
+    "cwa",
+    "plates"
+   ],
+   "value": "2k2",
+   "tolerance": 0.05,
+   "label": "Winding capacitance series loss, A-side"
+  },
+  {
+   "ref": "CWB",
+   "type": "C",
+   "nodes": [
+    "pb",
+    "cwb"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "Winding capacitance, B-side plate end"
+  },
+  {
+   "ref": "RCWB",
+   "type": "R",
+   "nodes": [
+    "cwb",
+    "plates"
+   ],
+   "value": "2k2",
+   "tolerance": 0.05,
+   "label": "Winding capacitance series loss, B-side"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "nfb",
+    "nv9"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "C8 .1 uF presence capacitor, J35 node to the presence-pot node",
+   "note": "Batch-7 fix (2026-11-12): the 1992 sheet prints C8 '.1P10' (= 0.1 uF), 5150_evh.pdf p1@300 2760,1090,2890,1130 (4x nearest), the same '.1P10' code the sheet uses for C63 (.1 uF, p1@300 640,1170,820,1220); it was 10n, the later revision's/redraw's .01. C62 .033 beside it is unchanged. Topology re-checked 2026-11-12: C8/C62 hang on the J35 node (NEXT2, the C30 side), after the series resonance element (5150_evh.pdf p1@300 2345,820,3065,1450)."
+  },
+  {
+   "ref": "C62",
+   "type": "C",
+   "nodes": [
+    "nfb",
+    "nv9"
+   ],
+   "value": "33n",
+   "tolerance": 0.1,
+   "label": "C62 .033 uF presence capacitor in parallel with C8"
+  },
+  {
+   "ref": "VR9",
+   "type": "pot",
+   "nodes": [
+    "nv9",
+    "nv9",
+    "0"
+   ],
+   "value": "10k",
+   "taper": "A",
+   "control": "presence",
+   "label": "VR9 PRESENCE 10K-A rheostat to ground",
+   "note": "Wiper (pin 3) strapped to pin 1 (the C8/C62 node), pin 2 to the chassis-ground node, CW arrow toward pin 2 (5150_evh.pdf p1@300 2725,1120,2955,1310): a two-terminal rheostat in series with C8 || C62 = 133 nF to ground, 10K at CCW and 0 at CW, so CW = more presence. 10KAVB = 10K audio taper; the log end is pin 1 (CCW), so the series resistance stays above ~6.7K to 0.75 of travel and the shelf comes in over the top quarter of rotation. This is the drawn part and wiring, not a modelling choice. (crop frame: the pdftoppm -r 300 render of the page as stored, before the 90 deg rotation used for reading; 2026-11-12 feedback/PI re-trace)"
+  },
+  {
+   "ref": "C12",
+   "type": "C",
+   "nodes": [
+    "nfa",
+    "nfb"
+   ],
+   "value": "6n8",
+   "tolerance": 0.1,
+   "label": "C12 .0068 uF resonance capacitor, in series in the feedback path (J34 to J35), across VR8",
+   "note": "C12 .0068 from the J34 node to the J35 node, in parallel with VR8 (5150_evh.pdf p1@300 2345,820,3065,1450, 5150_evh.pdf p1@300 2545,1040,2765,1270): a series element of the feedback path, not a shunt to ground. (crop frame: the pdftoppm -r 300 render of the page as stored, before the 90 deg rotation used for reading; 2026-11-12 feedback/PI re-trace)"
+  },
+  {
+   "ref": "VR8",
+   "type": "pot",
+   "nodes": [
+    "nfa",
+    "nfb",
+    "nfb"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "resonance",
+   "label": "VR8 RESONANCE 1M-A rheostat across C12, in series in the feedback path",
+   "note": "Pin 1 on J34 (with C12), pin 2 on J35, wiper (pin 3) strapped to pin 2, and the CW arrow points at pin 2 (5150_evh.pdf p1@300 2545,1040,2765,1270). So the resistance across C12 is the pin1-wiper track, 0 at CCW and 1M at CW: turning it up opens the low-frequency feedback path through C12 (6.8 nF) and raises the low end, the bass shelf the 5150 manual describes. Peavey pin 1 = CCW, pin 2 = CW is the sheet-wide convention (VR7 ULTRA POST: pin 1 grounded, pin 2 = the hot end). (crop frame: the pdftoppm -r 300 render of the page as stored, before the 90 deg rotation used for reading; 2026-11-12 feedback/PI re-trace)"
+  },
+  {
+   "ref": "SW_S2B",
+   "type": "switch",
+   "nodes": [
+    "v1t",
+    "sb_c"
+   ],
+   "control": "bright",
+   "positions": [
+    1
+   ],
+   "label": "S2B BRIGHT: 470 pF across the Clean pre pot top section",
+   "note": "The 1992 board draws S2 near the 470 pF/470 K pair at the Clean pre pot top; the wafer's audio contact is S2B. The bright capacitor's value (470 pF) and the exact node pair are the reading recorded in the notes: Bright = 470 pF into the pot top, Norm = 470 K."
+  },
+  {
+   "ref": "C_BR",
+   "type": "C",
+   "nodes": [
+    "sb_c",
+    "v1w"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "Bright capacitor 470 pF"
+  }
+ ],
+ "probes": [
+  "g1a",
+  "p1a",
+  "ka4",
+  "lr",
+  "ll",
+  "v1t",
+  "v1w",
+  "mix",
+  "g1b",
+  "p1b",
+  "p2a",
+  "p2b",
+  "p5b",
+  "p5a",
+  "nb3",
+  "tw",
+  "post_w",
+  "clamp",
+  "fs2",
+  "g3b",
+  "k3b",
+  "g3a",
+  "p3a",
+  "g4b",
+  "g4a",
+  "p4a",
+  "p4b",
+  "ga",
+  "gb",
+  "pa",
+  "pb",
+  "v1",
+  "v2",
+  "v3",
+  "screens",
+  "bias",
+  "spk",
+  "n2"
+ ]
+}

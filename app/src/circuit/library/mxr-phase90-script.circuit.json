@@ -1,0 +1,106 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "mxr-phase90-script",
+  "version": 1,
+  "name": "MXR Phase 90 (1974 script logo)",
+  "description": "MXR Phase 90, script-logo circuit (no R28 feedback resistor, no C11 Miller cap): six single LM741 op-amps on a 9 V battery. U1a unity-gain input buffer (R3 10 kΩ / C5 10 nF / R14 470 kΩ to Vref); four inverting all-pass stages U2a/U2d/U2c/U2b (10 kΩ / 10 kΩ, 47 nF into the + input, 24 kΩ to Vref in parallel with a 2N5952 JFET voltage-controlled resistor, source at Vref); PNP 2N4125 shunt-feedback mixer (R16 dry / R8 wet 150 kΩ into the base, R7 150 kΩ base-collector, R4 56 kΩ collector load, emitter at Vref) and C2 47 nF / R2 150 kΩ output network. LFO: U1b relaxation oscillator (R19 150 kΩ / R21 470 kΩ hysteresis around Vref, R24 150 kΩ + C7 10 nF into the − input) charging C10 15 µF through the 500 kΩ reverse-log Speed rheostat R36; the C10 triangle reaches the four JFET gates through R22 3.9 MΩ, summed with the 250 kΩ bias trimmer wiper through R20 1 MΩ and filtered by C4 47 nF to Vref. Vref is the 5.1 V zener D2 fed by R15 10 kΩ (ideal source here: the engine has no zener model). The R28 24 kΩ block-logo feedback resistor is not fitted (script circuit).",
+  "sources": [
+    { "title": "ElectroSmash, 'MXR Phase 90 Analysis' (script-logo study; block-logo designators): BOM (C1,C2,C3,C4,C6,C9 47 nF; C5 0.01 µF; C7 0.01 µF; C8,C10 15 µF; D1 1N914; D2 5.1 V zener; Q1 2N4125; Q2-Q5 2N5952; Rtrimmer 250 kΩ; R1,R3,R5,R10,R11,R12,R13,R15,R17,R18 10 kΩ; R2,R7,R8,R16,R19,R24 150 kΩ; R4 56 kΩ; R6,R23,R25,R26,R28 24 kΩ; R14,R21,R36 470 kΩ; R20 1 MΩ; R22 3.9 MΩ), block diagrams for the power supply, input buffer, shifting stages, LFO and output mixer, the R28 position (stage-4 output to stage-2 − input), script = 6 single 741s, no R28", "url": "https://www.electrosmash.com/mxr-phase90" },
+    { "title": "ElectroSmash archive mirror of the same article (MAS Effects)", "url": "https://electrosmash.mas-effects.com/mxr-phase90.html" },
+    { "title": "R. Giampiccolo, S. Del Moro, C. Eutizi, M. Massimi, O. Massi, A. Bernardini, 'Wave Digital Model of the MXR Phase 90 based on a Time-Varying Resistor Approximation of JFET Elements' (DAFx), companion LTspice schematic MXRphase90.asc: audio-path values and topology cross-check (U5 input buffer, R3 10k, C5 0.01µ, R14 470k, four 10k/10k/47n/24k/2N5952 stages, R8/R16/R7 150k, Q1 2N4125, R4 56k, C2 47n, R2 150k, Vref 5.1 V)", "url": "https://github.com/polimi-ispl/mxrphase90" },
+    { "title": "David Morrin, 'MXR Phase 90' repair notes: script unit with all LM741 op-amps, 200 kΩ FET bias trimmer with 1 MΩ series resistor, 150 kΩ mixer shunt feedback", "url": "https://sites.google.com/site/davidmorrinoldsite/home/trouble/troubleeffects/mxr-phase-90" },
+    { "title": "National Semiconductor 2N4125 SPICE card (IS 1.41f BF 85.04 BR 5.576 VAF 18.7 CJE 8.063p CJC 9.728p), as distributed in the LTspice standard.bjt library (licence not stated; quoted as a factual parameter set)", "url": "https://github.com/polimi-ispl/mxrphase90/blob/main/LTspice/standard.bjt" },
+    { "title": "DIYstompboxes, 'MXR Phase 45/90 and the function of its LFO' (Mark Hammer et al.): single-cap relaxation LFO, rate set by the speed pot and series resistance, 3M9 (older schematics 3M3) sets the sweep depth with the trimmer feeding through 1 MΩ; stock speed pot 500 kΩ reverse log", "url": "https://www.diystompboxes.com/smfforum/index.php?topic=86113.0" },
+    { "title": "Aion FX 'Zenith' (Phase 90 adaptation) documentation: 15 µF timing capacitor, SPEED 500kC", "url": "https://aionfx.com/app/files/docs/zenith_documentation.pdf" },
+    { "title": "Central Semiconductor 2N5949-2N5953 datasheet (2N5952: IDSS 4-8 mA, VGS(off) -1.3 to -3.5 V); library model derivation in work/circuit-netlists/wave-b/JFET.md" }
+  ],
+  "io": { "input": "in", "output": "out", "inputVoltsPerFS": 1.0, "outputVoltsPerFS": 1.0 },
+  "oversampling": 1,
+  "solver": "auto",
+  "models": {
+    "2N4125": { "kind": "pnp", "is": 1.41e-15, "bf": 85.04, "br": 5.576, "vaf": 18.7, "cje": 8.063e-12, "cjc": 9.728e-12, "note": "National Semiconductor 2N4125 SPICE card (LTspice standard.bjt): IS 1.41f BF 85.04 BR 5.576 VAF 18.7 CJE 8.063p CJC 9.728p; RB 10 / RE 0.15 / RC 2.5, TF/TR and junction grading omitted" }
+  },
+  "controls": [
+    { "id": "speed", "label": "Speed", "kind": "continuous", "default": 0.5, "params": ["p"], "group": "Main", "note": "R36: 500 kΩ reverse-log (C) pot wired as a rheostat between U1b's output and C10; clockwise = less resistance = faster. Legacy 'Rate'" },
+    { "id": "bias", "label": "Bias trim (internal)", "kind": "continuous", "default": 0.5, "params": [], "group": "Internal", "note": "Rtrimmer 250 kΩ linear trimpot from Vref (5.1 V) to ground; its wiper feeds the JFET gates through R20 1 MΩ (DC gate ≈ 0.80·Vwiper + 1.04 V). Sets where the 0.15-0.33 V LFO sweep sits on the 2N5952 curves. The factory trims each matched set by ear/scope; 0.5 puts the slow-speed sweep from just above pinch-off (gate 2.95 V) to 3.28 V with the library 2N5952 (VTO −2.2 V): first notch ≈ 250 Hz → 1.4 kHz. Below ≈ 0.44 the JFETs stay cut off (static notches 56 / 356 Hz); above ≈ 0.6 the sweep is small and high" },
+    { "id": "sync", "label": "Sync", "kind": "continuous", "default": 0.5, "params": ["s"], "legacyOnly": true, "group": "Legacy", "note": "Tempo sync has no part in the Phase 90; stored for preset round-trip only" },
+    { "id": "notches", "label": "Notches", "kind": "continuous", "default": 0.0, "paramRange": [2, 8], "params": ["n"], "legacyOnly": true, "group": "Legacy", "note": "Legacy 2-8 notch-count parameter. The Phase 90 has four all-pass stages (two notches) and no switch; stored only" },
+    { "id": "color", "label": "Color", "kind": "continuous", "default": 0.5, "params": ["c"], "legacyOnly": true, "group": "Legacy", "note": "No Color control on the script Phase 90 (the nearest hardware feature is the later block-logo R28 feedback resistor, not fitted to the script circuit); stored only" },
+    { "id": "led", "label": "LED", "kind": "continuous", "default": 0.5, "params": ["l"], "legacyOnly": true, "group": "Legacy", "note": "The 1974 script unit has no LED; stored only" },
+    { "id": "invert", "label": "Invert", "kind": "continuous", "default": 0.0, "params": ["i"], "legacyOnly": true, "group": "Legacy", "note": "No invert switch in the circuit; stored only" },
+    { "id": "rotate", "label": "Rotate", "kind": "continuous", "default": 0.5, "params": ["o"], "legacyOnly": true, "group": "Legacy", "note": "No LFO-phase control in the circuit; stored only" },
+    { "id": "mix", "label": "Mix", "kind": "continuous", "default": 0.5, "params": ["x"], "legacyOnly": true, "group": "Legacy", "note": "The dry/wet ratio is fixed by R16 = R8 = 150 kΩ (50/50); no control. Stored only" },
+    { "id": "depth", "label": "Depth", "kind": "continuous", "default": 0.5, "params": ["r"], "legacyOnly": true, "group": "Legacy", "note": "The sweep depth is fixed by R22 3.9 MΩ / R20 1 MΩ; no control. Stored only" },
+    { "id": "freq", "label": "Freq", "kind": "continuous", "default": 0.5, "params": ["e"], "legacyOnly": true, "group": "Legacy", "note": "No front-panel frequency control on the Phase 90. Its nearest circuit meaning is the internal bias trimmer (control bias), but legacy values below ≈ 0.44 would park the JFETs in cut-off and silence the sweep, so it is stored only" }
+  ],
+  "cuts": [
+    { "node": "vbias", "loads": ["Q2", "Q3", "Q4", "Q5"] }
+  ],
+  "parts": [
+    { "ref": "VBAT", "type": "V", "nodes": ["vcc", "0"], "value": "9", "label": "9 V battery" },
+    { "ref": "VREF", "type": "V", "nodes": ["vref", "0"], "value": "5.1", "label": "Vref (D2 5.1 V zener)", "note": "Ideal 5.1 V node standing in for the zener D2 fed by R15 10 kΩ and decoupled by C8 15 µF. The engine has no zener (reverse-breakdown) diode model. D1 1N914 (reverse-polarity clamp across Vref, anode to ground) is reverse biased in normal use and omitted" },
+    { "ref": "R15", "type": "R", "nodes": ["vcc", "vref"], "value": "10k", "tolerance": 0.05, "note": "Zener feed resistor; with the ideal Vref source it only adds battery current" },
+    { "ref": "C8", "type": "C", "nodes": ["vref", "0"], "value": "15u", "tolerance": 0.2, "note": "Vref decoupling (inert across the ideal source)" },
+
+    { "ref": "TRIM", "type": "pot", "nodes": ["0", "trw", "vref"], "value": "250k", "taper": "B", "control": "bias", "label": "Rtrimmer (FET bias)", "note": "unverified: 250 kΩ per ElectroSmash's BOM; Morrin's script-era unit had a 200 kΩ trimmer. Linear trimmer across Vref and ground (pin order assumed: clockwise = higher gate voltage)" },
+    { "ref": "R20", "type": "R", "nodes": ["trw", "vbias"], "value": "1M", "tolerance": 0.05 },
+    { "ref": "C4", "type": "C", "nodes": ["vbias", "vref"], "value": "47n", "tolerance": 0.1, "note": "Gate-line filter to Vref (ElectroSmash power-supply drawing). With R20 ∥ R22 (≈ 0.8 MΩ) it is a 4.3 Hz low-pass, which is why the sweep depth falls at high Speed" },
+
+    { "ref": "U1B", "type": "opamp", "nodes": ["lfop", "lfon", "lfosq", "vcc", "0"], "model": "LM741", "label": "LFO (Schmitt relaxation oscillator)", "note": "Script units: TI uA741CP / National LM741 single op-amps (ElectroSmash, Morrin)" },
+    { "ref": "R19", "type": "R", "nodes": ["vref", "lfop"], "value": "150k", "tolerance": 0.05 },
+    { "ref": "R21", "type": "R", "nodes": ["lfop", "lfosq"], "value": "470k", "tolerance": 0.05, "note": "Positive feedback: thresholds Vref ± 0.24·(Vout − Vref)" },
+    { "ref": "R24", "type": "R", "nodes": ["tri", "lfon"], "value": "150k", "tolerance": 0.05 },
+    { "ref": "C7", "type": "C", "nodes": ["lfon", "lfosq"], "value": "10n", "tolerance": 0.1 },
+    { "ref": "R36", "type": "pot", "nodes": ["lfosq", "lfosq", "spd"], "value": "500k", "taper": "C", "control": "speed", "label": "Speed", "note": "Rheostat on the wiper-to-pin-3 segment: R = 500k·(1 − t(x)); with the C (reverse-log) taper R falls from 500 kΩ (slow) to the end resistance (fast). ElectroSmash labels it R36 470K; the stock part is a 500 kΩ reverse-log pot (DIYstompboxes, Aion Zenith BOM)" },
+    { "ref": "RSPD", "type": "R", "nodes": ["spd", "tri"], "value": "4k7", "note": "unverified: NOT on the schematic. Stands in for the speed pot's end (residual) resistance plus the 741's output current limit, which the engine's op-amp and pot models lack (pot end resistance is 1 Ω in the engine). Without it the LFO runs at tens of Hz at full Speed; 4.7 kΩ gives ≈ 10 Hz, the maximum reported for the pedal (Fender forum emulation: 0.15-10 Hz). Remove when the engine models pot end resistance / op-amp current limit" },
+    { "ref": "C10", "type": "C", "nodes": ["tri", "0"], "value": "15u", "tolerance": 0.2, "note": "LFO timing capacitor (tantalum). Some 1975 units measured 10 µF (DIYstompboxes)" },
+    { "ref": "R22", "type": "R", "nodes": ["tri", "vbias"], "value": "3.9M", "tolerance": 0.05, "note": "Sweep-depth resistor. Older schematics show 3.3 MΩ (unverified which value the earliest script units carried)" },
+    { "ref": "VKICK", "type": "V", "nodes": ["kick", "0"], "value": "0", "ac": { "amplitude": "1m", "freq": 1.0, "phase": 0 }, "label": "LFO start kick", "note": "Simulation aid, not in the pedal: the DC operating point puts the relaxation oscillator on its unstable balance (all nodes at Vref); 1 mV through 10 MΩ into the + input starts it, as power-on transients do in the hardware" },
+    { "ref": "RKICK", "type": "R", "nodes": ["kick", "lfop"], "value": "10M" },
+
+    { "ref": "R3", "type": "R", "nodes": ["in", "i1"], "value": "10k", "tolerance": 0.05 },
+    { "ref": "C5", "type": "C", "nodes": ["i1", "bufp"], "value": "10n", "tolerance": 0.1 },
+    { "ref": "R14", "type": "R", "nodes": ["bufp", "vref"], "value": "470k", "tolerance": 0.05 },
+    { "ref": "U1A", "type": "opamp", "nodes": ["bufp", "dry", "dry", "vcc", "0"], "model": "LM741", "label": "Input buffer" },
+
+    { "ref": "R1", "type": "R", "nodes": ["dry", "a1n"], "value": "10k", "tolerance": 0.05 },
+    { "ref": "R5", "type": "R", "nodes": ["a1n", "s1"], "value": "10k", "tolerance": 0.05 },
+    { "ref": "C1", "type": "C", "nodes": ["dry", "a1p"], "value": "47n", "tolerance": 0.1 },
+    { "ref": "R6", "type": "R", "nodes": ["a1p", "vref"], "value": "24k", "tolerance": 0.05 },
+    { "ref": "Q2", "type": "njf", "nodes": ["a1p", "vbias", "vref"], "model": "2N5952", "label": "VCR 1", "note": "Drain at the + input, source at Vref (the channel is symmetric). Factory parts were matched sets (VGS(off) spread -1.3 to -3.5 V on the datasheet); all four use the same library model here" },
+    { "ref": "U2A", "type": "opamp", "nodes": ["a1p", "a1n", "s1", "vcc", "0"], "model": "LM741", "label": "All-pass 1" },
+
+    { "ref": "R11", "type": "R", "nodes": ["s1", "a2n"], "value": "10k", "tolerance": 0.05 },
+    { "ref": "R10", "type": "R", "nodes": ["a2n", "s2"], "value": "10k", "tolerance": 0.05 },
+    { "ref": "C3", "type": "C", "nodes": ["s1", "a2p"], "value": "47n", "tolerance": 0.1 },
+    { "ref": "R25", "type": "R", "nodes": ["a2p", "vref"], "value": "24k", "tolerance": 0.05 },
+    { "ref": "Q3", "type": "njf", "nodes": ["a2p", "vbias", "vref"], "model": "2N5952", "label": "VCR 2" },
+    { "ref": "U2D", "type": "opamp", "nodes": ["a2p", "a2n", "s2", "vcc", "0"], "model": "LM741", "label": "All-pass 2" },
+
+    { "ref": "R12", "type": "R", "nodes": ["s2", "a3n"], "value": "10k", "tolerance": 0.05 },
+    { "ref": "R13", "type": "R", "nodes": ["a3n", "s3"], "value": "10k", "tolerance": 0.05 },
+    { "ref": "C6", "type": "C", "nodes": ["s2", "a3p"], "value": "47n", "tolerance": 0.1 },
+    { "ref": "R26", "type": "R", "nodes": ["a3p", "vref"], "value": "24k", "tolerance": 0.05 },
+    { "ref": "Q4", "type": "njf", "nodes": ["a3p", "vbias", "vref"], "model": "2N5952", "label": "VCR 3" },
+    { "ref": "U2C", "type": "opamp", "nodes": ["a3p", "a3n", "s3", "vcc", "0"], "model": "LM741", "label": "All-pass 3" },
+
+    { "ref": "R17", "type": "R", "nodes": ["s3", "a4n"], "value": "10k", "tolerance": 0.05 },
+    { "ref": "R18", "type": "R", "nodes": ["a4n", "s4"], "value": "10k", "tolerance": 0.05 },
+    { "ref": "C9", "type": "C", "nodes": ["s3", "a4p"], "value": "47n", "tolerance": 0.1 },
+    { "ref": "R23", "type": "R", "nodes": ["a4p", "vref"], "value": "24k", "tolerance": 0.05 },
+    { "ref": "Q5", "type": "njf", "nodes": ["a4p", "vbias", "vref"], "model": "2N5952", "label": "VCR 4" },
+    { "ref": "U2B", "type": "opamp", "nodes": ["a4p", "a4n", "s4", "vcc", "0"], "model": "LM741", "label": "All-pass 4" },
+
+
+    { "ref": "R16", "type": "R", "nodes": ["dry", "mb"], "value": "150k", "tolerance": 0.05, "label": "Dry mix" },
+    { "ref": "R8", "type": "R", "nodes": ["s4", "mb"], "value": "150k", "tolerance": 0.05, "label": "Wet mix" },
+    { "ref": "Q1", "type": "pnp", "nodes": ["mc", "mb", "vref"], "model": "2N4125", "label": "Mixer (shunt-feedback common emitter)" },
+    { "ref": "R7", "type": "R", "nodes": ["mb", "mc"], "value": "150k", "tolerance": 0.05 },
+    { "ref": "R4", "type": "R", "nodes": ["mc", "0"], "value": "56k", "tolerance": 0.05 },
+    { "ref": "C2", "type": "C", "nodes": ["mc", "out"], "value": "47n", "tolerance": 0.1 },
+    { "ref": "R2", "type": "R", "nodes": ["out", "0"], "value": "150k", "tolerance": 0.05 }
+  ],
+  "readouts": {"lfo": "tri"},
+  "probes": ["dry", "s2", "s4", "mc", "out", "vbias", "tri", "lfosq"],
+  "layout": {}
+}

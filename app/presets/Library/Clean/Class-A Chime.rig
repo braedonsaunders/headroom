@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Class-A Chime</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Class-A Chime" preset-author="Headroom" preset-comment="Chiming British class-A clean: a small top-boost EL84 combo with the brilliance up and the cut low, so open chords sparkle with harmonic shimmer and just a hint of compression, plus a short plate. Arpeggios and ringing open strings shine; push Volume for a little bloom." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="176000">
+    <component-audio version="1">
+      <parameters num-parameters="11">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="volume" value="0.48"/>
+        <parameter id="cut" value="0.25"/>
+        <parameter id="depth" value="0"/>
+        <parameter id="brillianceFrequency" value="0.5"/>
+        <parameter id="vibratoSpeed" value="0.5"/>
+        <parameter id="tremoloSpeed" value="0.5"/>
+        <parameter id="brilliance" value="0.62"/>
+        <parameter id="effectsSelector" value="0"/>
+        <parameter id="tempoSync" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.9112"/>
+        <parameter id="c" value="0.45"/>
+        <parameter id="Cab" value="0"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="127000">
+    <component-audio version="1">
+      <parameters num-parameters="4">
+        <parameter id="S1" value="2"/>
+        <parameter id="M2" value="0.13"/>
+        <parameter id="M3" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="176000" target-number="1" target-name="volume" min-value="0.3" max-value="0.6" controller-name="Volume"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="176000" target-number="1" target-name="brilliance" min-value="0.35" max-value="0.85" controller-name="Brilliance"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="176000" target-number="1" target-name="cut" min-value="0" max-value="0.6" controller-name="Cut"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="127000" target-number="1" target-name="M2" min-value="0" max-value="0.35" controller-name="Plate"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="clean-class-a-chime" category="Clean" order="200" instrument="guitar" style="British Pop">
+  <description>Chiming British class-A clean: a small top-boost EL84 combo with the brilliance up and the cut low, so open chords sparkle with harmonic shimmer and just a hint of compression, plus a short plate. Arpeggios and ringing open strings shine; push Volume for a little bloom.</description>
+  <tags><tag>Clean</tag><tag>British Pop</tag><tag>Class-A</tag><tag>Chime</tag><tag>Plate Reverb</tag></tags>
+  <sources>
+    <source url="https://en.wikipedia.org/wiki/Vox_AC30" title="Vox AC30 (Wikipedia)"/>
+    <source url="https://www.musicradar.com/how-to/how-to-get-classic-vox-ac30-tones-using-guitar-modelling" title="MusicRadar: how to get classic AC30 tones using guitar modelling"/>
+    <source url="https://faderandknob.com/blog/vox-ac30-settings-guide" title="Fader &amp; Knob: AC30 settings from jangle to crunch"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

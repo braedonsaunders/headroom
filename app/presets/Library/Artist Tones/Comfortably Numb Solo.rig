@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Comfortably Numb Solo</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Comfortably Numb Solo" preset-author="Headroom" preset-comment="Singing, sustaining fuzz lead after the closing solo: a ram's-head-style fuzz into a moderately driven 100-watt British head and 4x12, a slow rotating speaker blended underneath, a long low-level echo and a big hall." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="43000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V" value="0.6"/>
+        <parameter id="S" value="0.62"/>
+        <parameter id="T" value="0.55"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="B" value="0.5"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="7000">
+    <component-audio version="1">
+      <parameters num-parameters="1">
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="87000">
+    <component-audio version="1">
+      <parameters num-parameters="14">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Mst" value="0.7"/>
+        <parameter id="nv" value="0.5"/>
+        <parameter id="bv" value="0.3"/>
+        <parameter id="bs" value="0.45"/>
+        <parameter id="md" value="0.62"/>
+        <parameter id="tr" value="0.55"/>
+        <parameter id="pr" value="0.5"/>
+        <parameter id="Pw" value="0.5"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bi" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.5"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="5"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="8000">
+    <component-audio version="1">
+      <parameters num-parameters="1">
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="30000">
+    <component-audio version="1">
+      <parameters num-parameters="19">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.4"/>
+        <parameter id="Br" value="1"/>
+        <parameter id="Bs" value="0.4"/>
+        <parameter id="Md" value="0.4"/>
+        <parameter id="Tr" value="0.5"/>
+        <parameter id="Vr" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bia" value="0.5"/>
+        <parameter id="Hz" value="0.5"/>
+        <parameter id="RvL" value="0.5"/>
+        <parameter id="RvOn" value="0"/>
+        <parameter id="RvTm" value="0.5"/>
+        <parameter id="RvSz" value="0.5"/>
+        <parameter id="ViInt" value="0.5"/>
+        <parameter id="ViSpd" value="0.5"/>
+        <parameter id="ViOn" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="31000">
+    <component-audio version="1">
+      <parameters num-parameters="15">
+        <parameter id="SF" value="0"/>
+        <parameter id="B" value="0.5"/>
+        <parameter id="P" value="0.5"/>
+        <parameter id="D" value="0.5"/>
+        <parameter id="TS" value="0.5"/>
+        <parameter id="TF" value="0.5"/>
+        <parameter id="TA" value="0.5"/>
+        <parameter id="TSp" value="0.5"/>
+        <parameter id="BS" value="0.5"/>
+        <parameter id="BF" value="0.5"/>
+        <parameter id="BA" value="0.5"/>
+        <parameter id="BSp" value="0.5"/>
+        <parameter id="CTn" value="0.5"/>
+        <parameter id="Wt" value="1"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="9000">
+    <component-audio version="1">
+      <parameters num-parameters="6">
+        <parameter id="PanA" value="0.5"/>
+        <parameter id="PanB" value="0.5"/>
+        <parameter id="XFade" value="0.42"/>
+        <parameter id="DM" value="0.5"/>
+        <parameter id="iP" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="158000">
+    <component-audio version="1">
+      <parameters num-parameters="38">
+        <parameter id="mix" value="0.16"/>
+        <parameter id="input" value="0.7224"/>
+        <parameter id="output" value="0.633"/>
+        <parameter id="pandry" value="0.5"/>
+        <parameter id="panwet" value="0.5"/>
+        <parameter id="stereowidth" value="0.5"/>
+        <parameter id="stereomode" value="0.5"/>
+        <parameter id="timemode" value="1"/>
+        <parameter id="time" value="0.5714"/>
+        <parameter id="feedback" value="0.38"/>
+        <parameter id="style" value="0.5"/>
+        <parameter id="ana_bbdtype" value="0.5"/>
+        <parameter id="modern_sat" value="0.5"/>
+        <parameter id="modern_depth" value="0"/>
+        <parameter id="modern_rate" value="0.5"/>
+        <parameter id="modern_stereo" value="0.5"/>
+        <parameter id="diff_amount" value="0.5"/>
+        <parameter id="diff_size" value="0.5"/>
+        <parameter id="diff_movement" value="0.5"/>
+        <parameter id="diff_dense" value="0.5"/>
+        <parameter id="ana_depth" value="0.5"/>
+        <parameter id="ana_rate" value="0.5"/>
+        <parameter id="ana_stereo" value="0.5"/>
+        <parameter id="tape_sat" value="0.5"/>
+        <parameter id="tape_age" value="0.5"/>
+        <parameter id="tape_wowflut" value="0.5"/>
+        <parameter id="tape_noise" value="0.5"/>
+        <parameter id="vd_quality" value="0.5"/>
+        <parameter id="vd_depth" value="0.5"/>
+        <parameter id="vd_rate" value="0.5"/>
+        <parameter id="vd_stereo" value="0.5"/>
+        <parameter id="locut" value="0.5"/>
+        <parameter id="hicut" value="0.45"/>
+        <parameter id="duckingamount" value="0"/>
+        <parameter id="duckingsensitivity" value="0.5"/>
+        <parameter id="duckingrelease" value="0.5"/>
+        <parameter id="duckingmeter" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="132000">
+    <component-audio version="1">
+      <parameters num-parameters="5">
+        <parameter id="M0" value="0.18"/>
+        <parameter id="D1" value="0.5"/>
+        <parameter id="S2" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="S3" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="155000">
+    <component-audio version="1">
+      <parameters num-parameters="39">
+        <parameter id="P0" value="0.5"/>
+        <parameter id="S1" value="0.5"/>
+        <parameter id="S7" value="0.5"/>
+        <parameter id="S2" value="0.5"/>
+        <parameter id="B3" value="0.5"/>
+        <parameter id="M4" value="0.5"/>
+        <parameter id="C9" value="0.5"/>
+        <parameter id="H5" value="0.5"/>
+        <parameter id="T11" value="0.5"/>
+        <parameter id="M8" value="0.5"/>
+        <parameter id="M12" value="0.5"/>
+        <parameter id="D13" value="0.2"/>
+        <parameter id="D6" value="0.5"/>
+        <parameter id="R10" value="0.5"/>
+        <parameter id="S30" value="0.5"/>
+        <parameter id="W31" value="0.5"/>
+        <parameter id="E14" value="0.5"/>
+        <parameter id="E18" value="0.5"/>
+        <parameter id="E15" value="0.5"/>
+        <parameter id="E19" value="0.5"/>
+        <parameter id="E16" value="0.5"/>
+        <parameter id="E20" value="0.5"/>
+        <parameter id="E17" value="0.5"/>
+        <parameter id="E21" value="0.5"/>
+        <parameter id="E22" value="0.5"/>
+        <parameter id="E26" value="0.5"/>
+        <parameter id="E23" value="0.5"/>
+        <parameter id="E27" value="0.5"/>
+        <parameter id="I44" value="0.5"/>
+        <parameter id="O45" value="0"/>
+        <parameter id="S32" value="0.5"/>
+        <parameter id="I36" value="0"/>
+        <parameter id="I37" value="0"/>
+        <parameter id="O38" value="0"/>
+        <parameter id="O39" value="0"/>
+        <parameter id="P40" value="0"/>
+        <parameter id="P41" value="0"/>
+        <parameter id="Q48" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="43000" target-number="1" target-name="S" min-value="0.3" max-value="0.9" controller-name="Fuzz"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="43000" target-number="1" target-name="T" min-value="0.3" max-value="0.8" controller-name="Fuzz Tone"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="9000" target-number="1" target-name="XFade" min-value="0" max-value="0.6" controller-name="Rotary Blend"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="158000" target-number="1" target-name="mix" min-value="0" max-value="0.4" controller-name="Echo"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="155000" target-number="1" target-name="D13" min-value="0" max-value="0.45" controller-name="Hall"/></connection-data>
+  <connection-data><target controller-slot-id="5" component-id="87000" target-number="1" target-name="md" min-value="0.3" max-value="0.9" controller-name="Amp Mids"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-tempo bpm="125.000"/>
+<headroom-library version="1" id="numb-solo" category="Artist Tones" order="10" instrument="guitar" style="Classic Rock">
+  <description>Singing, sustaining fuzz lead after the closing solo: a ram's-head-style fuzz into a moderately driven 100-watt British head and 4x12, a slow rotating speaker blended underneath, a long low-level echo and a big hall.</description>
+  <tags><tag>Artist Tones</tag><tag>Classic Rock</tag><tag>Prog</tag><tag>Lead</tag><tag>Fuzz</tag><tag>Rotary</tag><tag>Delay</tag></tags>
+  <inspired-by artist="David Gilmour (Pink Floyd)" song="Comfortably Numb" album="The Wall" part="Second (outro) solo" year="1979"/>
+  <sources>
+    <source url="https://www.guitarworld.com/features/the-secrets-behind-david-gilmours-tone-on-pink-floyds-comfortably-numb" title="Guitar World: the secrets behind David Gilmour's tone on Comfortably Numb"/>
+    <source url="http://www.kitrae.net/music/Music_mp3_Comfortably_Numb_Sound.html" title="Kit Rae: Comfortably Numb solo gear and sound analysis"/>
+    <source url="https://reverb.com/news/how-to-nail-gilmours-comfortably-numb-solo" title="Reverb: How to nail Gilmour's Comfortably Numb solo"/>
+    <source url="https://en.wikipedia.org/wiki/Comfortably_Numb" title="Comfortably Numb (Wikipedia)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

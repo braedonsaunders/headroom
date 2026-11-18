@@ -1,0 +1,89 @@
+# Headroom release content: ALLOWLIST. check-bundle.sh fails on any staged file that matches no line here,
+# and on anything in its built-in denylists (bundle-denylist.txt: untracked local files, DI recordings, research scratch) even if a
+# line here would allow it.
+#
+# Globs are matched against paths relative to the staged root; '*' also crosses '/'. Staged roots:
+#   macOS    Headroom.app/                 (data under Contents/Resources/app, Contents/app -> Resources/app)
+#   Windows  the {app} folder Inno Setup installs: Headroom.exe + app\...
+#   Linux    the DESTDIR/AppDir prefix: usr/bin/headroom + usr/share/headroom/app/...
+# Every data tree mirrors the source layout under "app/", so the engine's repo-root-relative lookups
+# (app/presets/Showcase, app/presets/Library, app/resources/models, app/ui) work unchanged.
+
+# ── executables and bundle plumbing ──
+Contents/Info.plist
+Contents/PkgInfo
+Contents/MacOS/Headroom
+Contents/_CodeSignature/CodeResources
+Contents/Resources/Headroom.icns
+Contents/app
+Headroom.exe
+WebView2Loader.dll
+usr/bin/headroom
+bin/headroom
+AppRun
+AppRun.wrapped
+.DirIcon
+headroom.desktop
+headroom.png
+headroom.svg
+# AppImage: shared libraries linuxdeploy bundles (GTK/WebKitGTK stack); the denylist still applies.
+usr/lib/*
+usr/share/glib-2.0/schemas/*
+usr/share/doc/*/copyright
+apprun-hooks/*
+
+# ── UI (HTML/JS/CSS + illustrated unit faces) ──
+*app/ui/index.html
+*app/ui/assets/*.js
+*app/ui/assets/*.css
+*app/ui/assets/*.svg
+*app/ui/assets/*.json
+*app/ui/assets/*.png
+*app/ui/assets/*.woff2
+Contents/Resources/ui/index.html
+Contents/Resources/ui/assets/*.js
+Contents/Resources/ui/assets/*.css
+Contents/Resources/ui/assets/*.svg
+Contents/Resources/ui/assets/*.json
+Contents/Resources/ui/assets/*.png
+Contents/Resources/ui/assets/*.woff2
+
+# ── Headroom's own rigs (plain Headroom XML, Headroom table ids) ──
+*app/presets/Showcase/*.rig
+*app/presets/Library/*.rig
+
+# ── models and brand art ──
+*app/resources/models/guitar_midi.hgnn
+*app/resources/brand/*.svg
+*app/resources/brand/*.png
+*app/resources/Headroom.icns
+
+# ── NAM demo captures (MIT, NeuralAmpModelerCore) — the three seedDemos() copies ──
+*app/third_party/NeuralAmpModelerCore/example_models/A2.nam
+*app/third_party/NeuralAmpModelerCore/example_models/lstm.nam
+*app/third_party/NeuralAmpModelerCore/example_models/my_model.nam
+
+# ── licences / notices ──
+*app/licenses/*
+*LICENSE*
+*THIRD_PARTY_NOTICES*
+*usr/share/doc/headroom/*
+*share/doc/headroom/*
+
+# ── Linux desktop integration ──
+*share/applications/headroom.desktop
+*share/icons/hicolor/*/apps/headroom.png
+*share/icons/hicolor/*/apps/headroom.svg
+*share/metainfo/*.metainfo.xml
+
+# ── DAW plugins (when staged) ──
+*Headroom.vst3/*
+*Headroom.component/*
+
+# ── NOT shipped (documented here; bundle-denylist.txt via check-bundle.sh enforces it) ──
+#   extracted/**            Untracked local files
+#   app/samples/di/**       DI tracks: research datasets with non-redistributable licences; the CC BY
+#                           folders and the "original" top-level DIs need a provenance check + SOURCES.md
+#                           attribution before they could be allowlisted.
+#   app/samples/processed/  renders of the above
+#   work/**                 research scratch

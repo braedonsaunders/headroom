@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Brown Sound Lead</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Brown Sound Lead" preset-author="Headroom" preset-comment="Late-70s 'brown sound': a 100-watt Plexi with every knob up and the mains voltage dropped, so it sags and sings without fizz. A flanger is ready on a macro for the swooshing riffs, a short echo adds air and a small chamber sits on the side. Tap, dive and pick hard." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="74000">
+    <component-audio version="1">
+      <parameters num-parameters="10">
+        <parameter id="s" value="0"/>
+        <parameter id="c" value="0.6"/>
+        <parameter id="r" value="0.6"/>
+        <parameter id="a" value="0.25"/>
+        <parameter id="m" value="0.5"/>
+        <parameter id="l" value="0.5"/>
+        <parameter id="i" value="0"/>
+        <parameter id="o" value="0.5"/>
+        <parameter id="x" value="0"/>
+        <parameter id="Pwr" value="0"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="92000">
+    <component-audio version="1">
+      <parameters num-parameters="13">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V1" value="0.92"/>
+        <parameter id="V2" value="0.6"/>
+        <parameter id="B" value="0.35"/>
+        <parameter id="M" value="0.7"/>
+        <parameter id="T" value="0.8"/>
+        <parameter id="Pr" value="0.75"/>
+        <parameter id="Pw" value="0.5"/>
+        <parameter id="Var" value="0.35"/>
+        <parameter id="Sg" value="0.6"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="Bi" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.9838"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="3"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="158000">
+    <component-audio version="1">
+      <parameters num-parameters="38">
+        <parameter id="mix" value="0.14"/>
+        <parameter id="input" value="0.7224"/>
+        <parameter id="output" value="0.7224"/>
+        <parameter id="pandry" value="0.5"/>
+        <parameter id="panwet" value="0.5"/>
+        <parameter id="stereowidth" value="0.5"/>
+        <parameter id="stereomode" value="0.5"/>
+        <parameter id="timemode" value="0"/>
+        <parameter id="time" value="0.0968"/>
+        <parameter id="feedback" value="0.18"/>
+        <parameter id="style" value="0"/>
+        <parameter id="ana_bbdtype" value="0"/>
+        <parameter id="modern_sat" value="0.5"/>
+        <parameter id="modern_depth" value="0"/>
+        <parameter id="modern_rate" value="0.5"/>
+        <parameter id="modern_stereo" value="0.5"/>
+        <parameter id="diff_amount" value="0.5"/>
+        <parameter id="diff_size" value="0.5"/>
+        <parameter id="diff_movement" value="0.5"/>
+        <parameter id="diff_dense" value="0.5"/>
+        <parameter id="ana_depth" value="0.5"/>
+        <parameter id="ana_rate" value="0.5"/>
+        <parameter id="ana_stereo" value="0.5"/>
+        <parameter id="tape_sat" value="0.5"/>
+        <parameter id="tape_age" value="0.5"/>
+        <parameter id="tape_wowflut" value="0.5"/>
+        <parameter id="tape_noise" value="0.5"/>
+        <parameter id="vd_quality" value="0"/>
+        <parameter id="vd_depth" value="0.5"/>
+        <parameter id="vd_rate" value="0.5"/>
+        <parameter id="vd_stereo" value="0.5"/>
+        <parameter id="locut" value="0.5"/>
+        <parameter id="hicut" value="0.35"/>
+        <parameter id="duckingamount" value="0"/>
+        <parameter id="duckingsensitivity" value="0.5"/>
+        <parameter id="duckingrelease" value="0.5"/>
+        <parameter id="duckingmeter" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.2"/>
+        <parameter id="Tm" value="0.5"/>
+        <parameter id="Sz" value="0.6"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Chr" value="0.5"/>
+        <parameter id="iM" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="92000" target-number="1" target-name="V1" min-value="0.6" max-value="1" controller-name="Gain"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="92000" target-number="1" target-name="Var" min-value="0.15" max-value="0.7" controller-name="Variac Sag"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="74000" target-number="1" target-name="Pwr" min-value="0" max-value="1" controller-name="Flanger"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="158000" target-number="1" target-name="mix" min-value="0" max-value="0.35" controller-name="Echo"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.45" controller-name="Chamber"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="hg-brown-sound-lead" category="High Gain" order="40" instrument="guitar" style="Hard Rock">
+  <description>Late-70s 'brown sound': a 100-watt Plexi with every knob up and the mains voltage dropped, so it sags and sings without fizz. A flanger is ready on a macro for the swooshing riffs, a short echo adds air and a small chamber sits on the side. Tap, dive and pick hard.</description>
+  <tags><tag>High Gain</tag><tag>Hard Rock</tag><tag>70s</tag><tag>Lead</tag><tag>Plexi</tag><tag>Flanger</tag><tag>Echo</tag></tags>
+  <sources>
+    <source url="https://legendarytones.com/edward-van-halen-brown-sound/" title="Legendary Tones: Edward Van Halen's brown sound"/>
+    <source url="https://www.vhnd.com/2010/07/30/the-final-word-on-evh%E2%80%99s-vhi-setup/" title="VHND: The final word on EVH's VH I setup (Rudy Leiren)"/>
+    <source url="https://vintageking.com/blog/2018/03/van-halen" title="Vintage King: Recording Van Halen (Donn Landee)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

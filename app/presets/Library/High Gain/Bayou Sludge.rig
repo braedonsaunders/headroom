@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Bayou Sludge</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Bayou Sludge" preset-author="Headroom" preset-comment="Filthy Southern sludge: a metal pedal with its distortion at zero and level up, slamming a British valve head into heavy saturation, into a V30 4x12, dry. Mid-heavy, nasty and loud; downtune, hold the chord and let it howl into feedback." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="46000">
+    <component-audio version="1">
+      <parameters num-parameters="12">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V" value="0.85"/>
+        <parameter id="B" value="0.5"/>
+        <parameter id="M" value="0.5"/>
+        <parameter id="MF" value="0.5"/>
+        <parameter id="T" value="0.5"/>
+        <parameter id="D" value="0"/>
+        <parameter id="PB" value="0.5"/>
+        <parameter id="PQ" value="0.4836"/>
+        <parameter id="PM" value="0.2457"/>
+        <parameter id="PT" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="80000">
+    <component-audio version="1">
+      <parameters num-parameters="14">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="f" value="0.5"/>
+        <parameter id="b" value="0.6"/>
+        <parameter id="t" value="0.5"/>
+        <parameter id="p" value="0.5"/>
+        <parameter id="g" value="0.75"/>
+        <parameter id="m" value="0.6"/>
+        <parameter id="Pw" value="0"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0"/>
+        <parameter id="Bi" value="1"/>
+        <parameter id="Br" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.1109"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="12"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="80000" target-number="1" target-name="g" min-value="0.55" max-value="1" controller-name="Gain"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="46000" target-number="1" target-name="V" min-value="0.5" max-value="1" controller-name="Boost"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="46000" target-number="1" target-name="M" min-value="0.3" max-value="0.85" controller-name="Mids"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="80000" target-number="1" target-name="b" min-value="0.35" max-value="0.85" controller-name="Bass"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="80000" target-number="1" target-name="t" min-value="0.3" max-value="0.75" controller-name="Treble"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="hg-bayou-sludge" category="High Gain" order="130" instrument="guitar" style="Sludge">
+  <description>Filthy Southern sludge: a metal pedal with its distortion at zero and level up, slamming a British valve head into heavy saturation, into a V30 4x12, dry. Mid-heavy, nasty and loud; downtune, hold the chord and let it howl into feedback.</description>
+  <tags><tag>High Gain</tag><tag>Sludge</tag><tag>Rhythm</tag><tag>Mid-Heavy</tag><tag>Downtuned</tag><tag>Boosted</tag><tag>Dry</tag></tags>
+  <sources>
+    <source url="https://mixdownmag.com.au/features/gear-rundown-kirk-windstein-of-crowbar/" title="Mixdown: Gear rundown, Kirk Windstein of Crowbar"/>
+    <source url="https://orangeamps.com/articles/interview-kirk-windstein-of-crowbar-and-orange-amps/" title="Orange Amps: Interview, Kirk Windstein"/>
+    <source url="https://equipboard.com/pros/jimmy-bower" title="Equipboard: Jimmy Bower"/>
+    <source url="https://www.premierguitar.com/gear/reviews/melvins-buzz-osborne-tonal-triage" title="Premier Guitar: The Melvins' Buzz Osborne"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Funk Rhythm Snap</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Funk Rhythm Snap" preset-author="Headroom" preset-comment="Bright, tightly compressed chank for 16th-note funk and disco: a fast FET limiter feeds a clean blackface twin with treble high and bass low, blended with a crisp direct signal the way session players track it. No reverb, so every muted scratch stays tight. Neck/middle pickups; DI Blend sets the glassy edge." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="123000">
+    <component-audio version="1">
+      <parameters num-parameters="10">
+        <parameter id="I0" value="0.6"/>
+        <parameter id="R1" value="1"/>
+        <parameter id="A2" value="0.2"/>
+        <parameter id="R3" value="0.3"/>
+        <parameter id="O4" value="0.65"/>
+        <parameter id="D5" value="0.5"/>
+        <parameter id="S7" value="0.5"/>
+        <parameter id="VUMode" value="0"/>
+        <parameter id="VUM" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="7000">
+    <component-audio version="1">
+      <parameters num-parameters="1">
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="30000">
+    <component-audio version="1">
+      <parameters num-parameters="19">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.4"/>
+        <parameter id="Br" value="1"/>
+        <parameter id="Bs" value="0.38"/>
+        <parameter id="Md" value="0.45"/>
+        <parameter id="Tr" value="0.62"/>
+        <parameter id="Vr" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bia" value="0.5"/>
+        <parameter id="Hz" value="0.5"/>
+        <parameter id="RvL" value="0.5"/>
+        <parameter id="RvOn" value="0"/>
+        <parameter id="RvTm" value="0.5"/>
+        <parameter id="RvSz" value="0.5"/>
+        <parameter id="ViInt" value="0.5"/>
+        <parameter id="ViSpd" value="0.5"/>
+        <parameter id="ViOn" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.519"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="13"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="8000">
+    <component-audio version="1">
+      <parameters num-parameters="1">
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="32000">
+    <component-audio version="1">
+      <parameters num-parameters="13">
+        <parameter id="V" value="0"/>
+        <parameter id="mi" value="0.5"/>
+        <parameter id="ma" value="0.5"/>
+        <parameter id="r" value="0.5"/>
+        <parameter id="b1" value="0.15"/>
+        <parameter id="b2" value="0.5"/>
+        <parameter id="b3" value="0.4"/>
+        <parameter id="b4" value="0.5"/>
+        <parameter id="b5" value="0.5"/>
+        <parameter id="b6" value="0.5"/>
+        <parameter id="b7" value="0.2"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="b8" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="9000">
+    <component-audio version="1">
+      <parameters num-parameters="6">
+        <parameter id="PanA" value="0.5"/>
+        <parameter id="PanB" value="0.5"/>
+        <parameter id="XFade" value="0.22"/>
+        <parameter id="DM" value="0.5"/>
+        <parameter id="iP" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="26000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Vol" value="0.3871"/>
+        <parameter id="F1" value="0.5"/>
+        <parameter id="G1" value="0.5"/>
+        <parameter id="Q1" value="0.5"/>
+        <parameter id="F2" value="0.5"/>
+        <parameter id="G2" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="Q2" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="9000" target-number="1" target-name="XFade" min-value="0.15" max-value="0.65" controller-name="DI Blend"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="123000" target-number="1" target-name="I0" min-value="0.4" max-value="0.9" controller-name="Squeeze"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="30000" target-number="1" target-name="Tr" min-value="0.55" max-value="0.9" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="30000" target-number="1" target-name="Bs" min-value="0.15" max-value="0.55" controller-name="Bass"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="30000" target-number="1" target-name="Vol" min-value="0.3" max-value="0.5" controller-name="Amp Volume"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="clean-funk-snap" category="Clean" order="90" instrument="guitar" style="Funk">
+  <description>Bright, tightly compressed chank for 16th-note funk and disco: a fast FET limiter feeds a clean blackface twin with treble high and bass low, blended with a crisp direct signal the way session players track it. No reverb, so every muted scratch stays tight. Neck/middle pickups; DI Blend sets the glassy edge.</description>
+  <tags><tag>Clean</tag><tag>Funk</tag><tag>Compressed</tag><tag>Direct</tag><tag>Disco</tag></tags>
+  <sources>
+    <source url="https://www.guitarplayer.com/gear/i-only-play-one-guitar-nile-rodgers-riffs-on-his-famed-hitmaker" title="Guitar Player: Nile Rodgers on the Hitmaker (direct signal blended with the amp)"/>
+    <source url="https://gearspace.com/threads/clean-nile-rodgers-disco-tone-through-interface.1142699/" title="Gearspace: Nile Rodgers disco tone through an interface (DI, console, compressor)"/>
+    <source url="https://www.musicradar.com/news/cory-wong-the-key-to-it-all-the-starting-point-for-understanding-is-just-to-listen" title="MusicRadar: Cory Wong interview (position 4, always-on compressor, records DI)"/>
+    <source url="https://en.wikipedia.org/wiki/Jimmy_Nolen" title="Jimmy Nolen (Wikipedia)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

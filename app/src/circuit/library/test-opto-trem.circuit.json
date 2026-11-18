@@ -1,0 +1,17 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "test-opto-trem",
+  "version": 1,
+  "name": "Neon/LDR opto tremolo (validation circuit)",
+  "description": "6 Hz, ±150 V lamp drive into a neon lamp + CdS LDR ('roach'); the audio passes through 100 kΩ into the LDR shunt to ground. Exercises the neon strike, the light-state attack/release and the LDR conductance law.",
+  "sources": [ { "title": "Fender AB763 vibrato channel topology (neon + LDR shunt); LDR law approximate" } ],
+  "io": { "input": "in", "output": "out" },
+  "oversampling": 1,
+  "parts": [
+    { "ref": "VLFO", "type": "V", "nodes": ["lfo", "0"], "value": "0", "ac": { "amplitude": "150", "freq": 6, "phase": 0 } },
+    { "ref": "RS", "type": "R", "nodes": ["in", "out"], "value": "100k" },
+    { "ref": "LDR1", "type": "ldr", "nodes": ["out", "0", "lfo", "0"], "model": "FENDER_ROACH" },
+    { "ref": "RL", "type": "R", "nodes": ["out", "0"], "value": "1M" }
+  ],
+  "probes": ["out", "LDR1#light"]
+}

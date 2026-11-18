@@ -1,0 +1,1167 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "marshall-jh1-jackhammer",
+ "version": 1,
+ "name": "Marshall JH-1 Jackhammer",
+ "description": "Marshall JH-1 Jackhammer (1998) as drawn on Marshall's 'JH-1 MAIN UNIT DIAGRAM', Rev 2, 24.6.98 (MU.S01): single 9 V supply, REF = R7/R6 47K halves with C7 100 uF. IC1:A TL072 non-inverting stage with the GAIN pot's wiper on its output (feedback leg R10 2.2K + C8 to the J176 effect switch, on) -> the far end of the same pot feeds IC1:B (680K // 47 pF over R14 + R27 4.7K) -> R12 1K into the clipper: a pair of red LEDs always across node B, plus the 1N4148 pair (D CLIP) on SW2:A -> passive bass/treble stack (R2 6.8K, C3 22n, C2 220n, C1 22n, R8 1K, TREBLE B20K, BASS A100K rheostat) -> IC2:A make-up (x6.6, or x1.7 with SW2:B's C27/R30 leg in L CLIP) -> the CONTOUR section: IC3:B (x1.47) drives a Wien bridge (2 x 15 nF, the FREQ dual C100K plus 2.2K each) into IC3:A's + input while IC3:A inverts the dry signal through R9/R17 100K; CONTOUR mixes dry and IC3:A's output into IC3:B -> R25/R26 halving -> IC2:B multiple-feedback filter (R19 8.2K, C16 47n, C17 68n, R22 10K // C24 2n2, R20 100K, R23 47K, R24 1M // C23 47p) -> VOLUME B100K -> R29 10K / R31 47K -> C18 150n -> output (R16 1M). The footswitch (SW1) is the host bypass; the netlist is the effect position. Single factory source.",
+ "sources": [
+  {
+   "title": "Marshall Amplification, 'JH-1 MAIN UNIT DIAGRAM', Rev 2, 24.6.98, drawn by Surajit, filename MU.S01 (A2 vector CAD drawing, main / jack / control PCBs; print header 'Printed: 20 Feb 2001 10:53 v:\\pedals\\jh1.dia'). Archived copy (the live diystompboxes URL returns 403). Single source: the only other copy found (Scribd 587733953) is a printout of the same file",
+   "url": "https://web.archive.org/web/20250210065707id_/https://www.diystompboxes.com/pedals/schems/JH-1.pdf"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "out",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 1.0
+ },
+ "oversampling": 4,
+ "lte": {"start": "bdf2", "note": "LTE substeps start on BDF2 (docs §10.61). Engine 8x fine-step truth, audio band, lead / rock DI: 0.190 / 0.419 % -> 0.173 / 0.344 %; aliasing gate at 0.5 FS -31.6 -> -35.4 dB (every bin). CPU equal (9900X)"},
+ "solver": "auto",
+ "cuts": [
+  "vs",
+  "ref"
+ ],
+ "multirate": {
+  "rates": {
+   "VR1B": 8,
+   "C12": 16
+  },
+  "note": "Base 192 kHz; the IC1A / IC1B gain stages (VR1B) at 384 kHz and the LED / 1N4148 clipper group (C12) at 768 kHz (docs §10.62). At a 96 kHz base with C12 at 384 kHz the op-amp stages fold at -35.9 / -35.4 / -27.1 dB (aliasing gate, every bin, 0.25 / 0.5 / 1.0 FS); now -76.5 / -63.3 / -73.3 dB (C12 at 1.536 MHz: -78.7 / -76.3 / -76.3 dB, for +23 % CPU). A 192 kHz base, not more ladder levels: every half-band converter pair on the signal path costs truth through its phase (VR1B 8 and C12 32 on the 96 kHz base: 0.216 / 0.453 %). Engine 8x fine-step truth (band-limited), audio band, lead / rock DI: 0.172 / 0.344 -> 0.073 / 0.117 %"
+ },
+ "models": {
+  "TL072_9V": {
+   "kind": "opamp",
+   "level": 1,
+   "a0": 200000.0,
+   "gbw": 3000000.0,
+   "slew": 13000000.0,
+   "swing_hi": 1.5,
+   "swing_lo": 1.5,
+   "vhi": 9.0,
+   "vlo": 0.0,
+   "note": "TI TL072 (drawing: TL072 on IC1-IC3): AVD 200 V/mV, GBW 3 MHz, SR 13 V/us typ; supply pins +VS / -VS, output 1.5 V from each rail"
+  },
+  "1N4004": {
+   "kind": "diode",
+   "is": 1.411e-08,
+   "n": 1.984,
+   "rs": 0.03389,
+   "note": "1N4004 (drawing D1): same die as the 1N4001 (Diodes Inc. SPICE card IS=14.11n N=1.984 RS=33.89m), which differs only in PIV"
+  },
+  "J176": {
+   "kind": "pjf",
+   "vto": -2.0,
+   "beta": 0.0015,
+   "lambda": 0.01,
+   "is": 1.1e-13,
+   "cgs": 1.28e-11,
+   "cgd": 1.39e-11,
+   "note": "J176 P-channel switch JFET (drawing Q1). Approximate after the published vendor card (VTO about -2 V, BETA about 1.5 mA/V2, CGS 12.8 pF, CGD 13.9 pF); datasheet VGS(off) 1-4 V, rDS(on) <= 250 ohm. Here it only sits fully on (VGS = 0): about 170 ohm in series with R10 2.2K"
+  }
+ },
+ "controls": [
+  {
+   "id": "gain",
+   "label": "Gain",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "g"
+   ],
+   "group": "Main",
+   "note": "VR1:B B100K: the wiper drives IC1:A's output, the MIN end is its feedback leg and the far end feeds IC1:B through C10, so one turn raises IC1:A (x1 -> x46) and lowers IC1:B's input resistance (109 k -> 9.4 k into 680 k)"
+  },
+  {
+   "id": "volume",
+   "label": "Volume",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "v"
+   ],
+   "group": "Main",
+   "note": "VR1:A B100K across IC2:B's output and REF, wiper through R29 10K into R31 47K"
+  },
+  {
+   "id": "bass",
+   "label": "Bass",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "b"
+   ],
+   "group": "Main",
+   "note": "VR3:A A100K rheostat in the tone stack's bass leg (C2 / C1 / R8)"
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "t"
+   ],
+   "group": "Main",
+   "note": "VR3:B B20K between C3 and the bass network, wiper to IC2:A +. The drawing's MIN marker on VR3:B sits on the C3 end, which taken literally makes knob 0 the brightest setting (+4.4 dB at 8 kHz vs centre, knob 1 -8.4 dB). The other five pots' MIN markers all agree with the owner's manual, so the pot is inverted here (invert: true): 0 = least treble. Flagged in the notes"
+  },
+  {
+   "id": "contour",
+   "label": "Contour",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "c"
+   ],
+   "group": "Main",
+   "note": "VR2:A B100K mixes the dry signal (C15) and IC3:A's output (R18) into IC3:B; IC3:A's + input is the Wien network driven by IC3:B"
+  },
+  {
+   "id": "freq",
+   "label": "Freq",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "f"
+   ],
+   "group": "Main",
+   "note": "VR2:B/C dual C100K: both Wien-bridge resistances (15 nF series / 15 nF shunt) together"
+  },
+  {
+   "id": "mode",
+   "label": "Mode",
+   "kind": "selector",
+   "default": 0.5,
+   "params": [
+    "m"
+   ],
+   "group": "Main",
+   "options": [
+    "Overdrive",
+    "Distortion"
+   ],
+   "paramRange": [
+    0.0,
+    1.0
+   ],
+   "note": "Overdrive / Distortion (owner's manual; forum reports: LEDs in Overdrive, 1N4148s in Distortion). SW2 A/B (2-pole, throws 2/6 L CLIP, 3/7 D CLIP; throws 4/5 and 8/9 unused). L CLIP: the two red LEDs only, C27 4n7 // R30 33K across R5 (IC2:A x1.7). D CLIP: the 1N4148 pair in parallel with the LEDs, R5 // C22 only (IC2:A x6.6). Raw 0 / 1"
+  },
+  {
+   "id": "stereo",
+   "label": "Stereo",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "CASSt"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Host stereo/mono routing flag; the pedal is mono. Stored only"
+  },
+  {
+   "id": "power",
+   "label": "On/Off",
+   "kind": "switch",
+   "default": 1,
+   "params": [
+    "Pwr"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "SW1 (A: OP from IP or EFFECT; B: MUTE or LED line to -VS) is the host's unit bypass. The netlist models the effect position: Q1 on, MUTE open, LED3 lit. Stored only"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VBAT",
+   "type": "V",
+   "nodes": [
+    "v9",
+    "0"
+   ],
+   "value": "9",
+   "label": "9 V battery snap / DC1 adaptor jack (CON12 pin 3 +9V, -VS = battery negative = signal ground)"
+  },
+  {
+   "ref": "D1",
+   "type": "D",
+   "nodes": [
+    "v9",
+    "vs"
+   ],
+   "model": "1N4004",
+   "label": "D1 1N4004 series reverse-polarity diode -> +VS"
+  },
+  {
+   "ref": "C21",
+   "type": "C",
+   "nodes": [
+    "vs",
+    "0"
+   ],
+   "value": "47p",
+   "tolerance": 0.1,
+   "label": "C21 47pF/50V +VS decoupler"
+  },
+  {
+   "ref": "C20",
+   "type": "C",
+   "nodes": [
+    "vs",
+    "0"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "C20 100uF/16V +VS reservoir"
+  },
+  {
+   "ref": "C29",
+   "type": "C",
+   "nodes": [
+    "vs",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "C29 10n/50V +VS decoupler"
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "vs",
+    "ref"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "R7 47K REF divider top"
+  },
+  {
+   "ref": "R6",
+   "type": "R",
+   "nodes": [
+    "ref",
+    "0"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "R6 47K REF divider bottom"
+  },
+  {
+   "ref": "C7",
+   "type": "C",
+   "nodes": [
+    "ref",
+    "0"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "C7 100uF/16V REF reservoir"
+  },
+  {
+   "ref": "JC1",
+   "type": "C",
+   "nodes": [
+    "in",
+    "0"
+   ],
+   "value": "47p",
+   "tolerance": 0.1,
+   "label": "Jack PCB C1 47pF/50V input shunt (between ferrite beads L1 and L5; the beads carry no value and are wires at audio)"
+  },
+  {
+   "ref": "JR1",
+   "type": "R",
+   "nodes": [
+    "in",
+    "0"
+   ],
+   "value": "10M",
+   "tolerance": 0.05,
+   "label": "Jack PCB R1 10M input pull-down (IP)"
+  },
+  {
+   "ref": "R21",
+   "type": "R",
+   "nodes": [
+    "in",
+    "n21"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "R21 1K input series"
+  },
+  {
+   "ref": "C13",
+   "type": "C",
+   "nodes": [
+    "n21",
+    "p1"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "C13 10n/50V input coupling"
+  },
+  {
+   "ref": "R13",
+   "type": "R",
+   "nodes": [
+    "ref",
+    "p1"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "R13 1M bias from REF"
+  },
+  {
+   "ref": "D2",
+   "type": "D",
+   "nodes": [
+    "p1",
+    "vs"
+   ],
+   "model": "1N4148",
+   "label": "D2 1N4148 input clamp to +VS"
+  },
+  {
+   "ref": "D3",
+   "type": "D",
+   "nodes": [
+    "0",
+    "p1"
+   ],
+   "model": "1N4148",
+   "label": "D3 1N4148 input clamp to -VS"
+  },
+  {
+   "ref": "IC1A",
+   "type": "opamp",
+   "nodes": [
+    "p1",
+    "m1",
+    "o1",
+    "vs",
+    "0"
+   ],
+   "model": "TL072_9V",
+   "label": "IC1:A TL072 non-inverting gain stage"
+  },
+  {
+   "ref": "C9",
+   "type": "C",
+   "nodes": [
+    "m1",
+    "o1"
+   ],
+   "value": "100p",
+   "tolerance": 0.1,
+   "label": "C9 100pF/50V feedback"
+  },
+  {
+   "ref": "VR1B",
+   "type": "pot",
+   "nodes": [
+    "m1",
+    "o1",
+    "g3"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "gain",
+   "label": "VR1:B GAIN B100K (pin 4 MIN -> CON1.1 = IC1:A pin 2; wiper 5 -> CON1.2 = IC1:A out; pin 6 -> CON1.3 -> C10)"
+  },
+  {
+   "ref": "R10",
+   "type": "R",
+   "nodes": [
+    "m1",
+    "n10"
+   ],
+   "value": "2.2k",
+   "tolerance": 0.05,
+   "label": "R10 2.2K gain leg"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "n10",
+    "qd"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "C8 100n/50V gain-leg coupling"
+  },
+  {
+   "ref": "Q1",
+   "type": "pjf",
+   "nodes": [
+    "qd",
+    "0",
+    "0"
+   ],
+   "model": "J176",
+   "label": "Q1 J176 gain-leg switch (drain C8/R34, source -VS, gate = the LED line held at -VS by SW1:B in the effect position: on)"
+  },
+  {
+   "ref": "R34",
+   "type": "R",
+   "nodes": [
+    "qd",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "R34 100K Q1 drain-source"
+  },
+  {
+   "ref": "LED3",
+   "type": "D",
+   "nodes": [
+    "vs",
+    "led3k"
+   ],
+   "model": "LED_RED",
+   "label": "LED3 red 3 mm effect indicator (control PCB, CON7 pin 1 +VS / pin 2)"
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "led3k",
+    "0"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R15 4.7K LED3 current limit to the LED line (SW1:B closes it to -VS in the effect position)"
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "g3",
+    "n14"
+   ],
+   "value": "220n",
+   "tolerance": 0.1,
+   "label": "C10 220n/63V"
+  },
+  {
+   "ref": "R14",
+   "type": "R",
+   "nodes": [
+    "n14",
+    "mt"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R14 4.7K (MUTE line from SW1:B joins here; open in the effect position)"
+  },
+  {
+   "ref": "R27",
+   "type": "R",
+   "nodes": [
+    "mt",
+    "n27"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R27 4.7K"
+  },
+  {
+   "ref": "C14",
+   "type": "C",
+   "nodes": [
+    "n27",
+    "m2"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "C14 100n/50V"
+  },
+  {
+   "ref": "IC1B",
+   "type": "opamp",
+   "nodes": [
+    "ref",
+    "m2",
+    "o2",
+    "vs",
+    "0"
+   ],
+   "model": "TL072_9V",
+   "label": "IC1:B TL072 inverting gain stage, + at REF"
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "m2",
+    "o2"
+   ],
+   "value": "680k",
+   "tolerance": 0.05,
+   "label": "R11 680K feedback"
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "m2",
+    "o2"
+   ],
+   "value": "47p",
+   "tolerance": 0.1,
+   "label": "C11 47pF/50V feedback"
+  },
+  {
+   "ref": "C12",
+   "type": "C",
+   "nodes": [
+    "o2",
+    "n12"
+   ],
+   "value": "1u",
+   "tolerance": 0.2,
+   "label": "C12 1uF/50V electrolytic, + toward R12"
+  },
+  {
+   "ref": "R12",
+   "type": "R",
+   "nodes": [
+    "n12",
+    "nb"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "R12 1K into the clipper (node B)"
+  },
+  {
+   "ref": "LED1",
+   "type": "D",
+   "nodes": [
+    "nb",
+    "ref"
+   ],
+   "model": "LED_RED",
+   "label": "LED1 red 3 mm clipper, anode at node B, cathode to the REF bus"
+  },
+  {
+   "ref": "LED2",
+   "type": "D",
+   "nodes": [
+    "ref",
+    "nb"
+   ],
+   "model": "LED_RED",
+   "label": "LED2 red 3 mm clipper, anode at the REF bus, cathode at node B"
+  },
+  {
+   "ref": "SW2A",
+   "type": "switch",
+   "nodes": [
+    "nb",
+    "dsw"
+   ],
+   "control": "mode",
+   "positions": [
+    1
+   ],
+   "label": "SW2:A pole 1 (CON9.2 = node B) throw 3 D CLIP -> CON9.1 (throw 2 L CLIP open)"
+  },
+  {
+   "ref": "D4",
+   "type": "D",
+   "nodes": [
+    "dsw",
+    "ref"
+   ],
+   "model": "1N4148",
+   "label": "D4 1N4148 clipper (anode at CON9.1)"
+  },
+  {
+   "ref": "D5",
+   "type": "D",
+   "nodes": [
+    "ref",
+    "dsw"
+   ],
+   "model": "1N4148",
+   "label": "D5 1N4148 clipper (cathode at CON9.1)"
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "nb",
+    "x1"
+   ],
+   "value": "6.8k",
+   "tolerance": 0.05,
+   "label": "R2 6.8K"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "nb",
+    "t1"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C3 22n/50V treble cap -> CON2.1 (MIN)"
+  },
+  {
+   "ref": "VR3B",
+   "type": "pot",
+   "nodes": [
+    "t1",
+    "tw",
+    "t3"
+   ],
+   "value": "20k",
+   "taper": "B",
+   "control": "treble",
+   "invert": true,
+   "label": "VR3:B TREBLE B20K (pin 4 MIN -> CON2.1/C3; wiper 5 -> CON2.2 -> IC2:A +; pin 6 -> CON2.3)"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "x1",
+    "t3"
+   ],
+   "value": "220n",
+   "tolerance": 0.1,
+   "label": "C2 220n/63V"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "x1",
+    "t4"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C1 22n/50V"
+  },
+  {
+   "ref": "VR3A",
+   "type": "pot",
+   "nodes": [
+    "t4",
+    "t3",
+    "t3"
+   ],
+   "value": "100k",
+   "taper": "A",
+   "control": "bass",
+   "label": "VR3:A BASS A100K rheostat: pin 3 + wiper 2 -> CON3.1 (CON2.3 / C2), pin 1 MIN -> CON3.2 (C1 / R8)"
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "t4",
+    "ref"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "R8 1K to the REF bus"
+  },
+  {
+   "ref": "IC2A",
+   "type": "opamp",
+   "nodes": [
+    "tw",
+    "n2a",
+    "od",
+    "vs",
+    "0"
+   ],
+   "model": "TL072_9V",
+   "label": "IC2:A TL072 non-inverting (node D)"
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "od",
+    "n2a"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "R5 220K feedback"
+  },
+  {
+   "ref": "C22",
+   "type": "C",
+   "nodes": [
+    "od",
+    "n2a"
+   ],
+   "value": "2.2n",
+   "tolerance": 0.1,
+   "label": "C22 2.2n/50V feedback"
+  },
+  {
+   "ref": "R33",
+   "type": "R",
+   "nodes": [
+    "n2a",
+    "n33"
+   ],
+   "value": "39k",
+   "tolerance": 0.05,
+   "label": "R33 39K gain leg"
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "n33",
+    "ref"
+   ],
+   "value": "68n",
+   "tolerance": 0.1,
+   "label": "C6 68n/50V gain leg to the REF bus"
+  },
+  {
+   "ref": "SW2B",
+   "type": "switch",
+   "nodes": [
+    "od",
+    "sb"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "label": "SW2:B pole 10 (CON8.2) throw 6 L CLIP -> CON8.1 = node D (throw 7 D CLIP open)"
+  },
+  {
+   "ref": "C27",
+   "type": "C",
+   "nodes": [
+    "sb",
+    "n2a"
+   ],
+   "value": "4.7n",
+   "tolerance": 0.1,
+   "label": "C27 4.7n/50V (L CLIP feedback leg)"
+  },
+  {
+   "ref": "R30",
+   "type": "R",
+   "nodes": [
+    "sb",
+    "n2a"
+   ],
+   "value": "33k",
+   "tolerance": 0.05,
+   "label": "R30 33K (L CLIP feedback leg)"
+  },
+  {
+   "ref": "C15",
+   "type": "C",
+   "nodes": [
+    "od",
+    "s1"
+   ],
+   "value": "220n",
+   "tolerance": 0.1,
+   "label": "C15 220n/63V"
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "s1",
+    "m3"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "R9 100K"
+  },
+  {
+   "ref": "IC3A",
+   "type": "opamp",
+   "nodes": [
+    "vp",
+    "m3",
+    "o3a",
+    "vs",
+    "0"
+   ],
+   "model": "TL072_9V",
+   "label": "IC3:A TL072, - from R9, + from the Wien network"
+  },
+  {
+   "ref": "R17",
+   "type": "R",
+   "nodes": [
+    "m3",
+    "o3a"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "R17 100K feedback"
+  },
+  {
+   "ref": "C19",
+   "type": "C",
+   "nodes": [
+    "m3",
+    "o3a"
+   ],
+   "value": "47p",
+   "tolerance": 0.1,
+   "label": "C19 47pF/50V feedback"
+  },
+  {
+   "ref": "R18",
+   "type": "R",
+   "nodes": [
+    "o3a",
+    "c1"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "R18 100K -> CON4.1 (Contour MIN)"
+  },
+  {
+   "ref": "VR2A",
+   "type": "pot",
+   "nodes": [
+    "c1",
+    "cw",
+    "s1"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "contour",
+   "label": "VR2:A CONTOUR B100K (pin 1 MIN -> W1/CON4.1 = R18; wiper 2 -> W2/CON4.2 = IC3:B +; pin 3 -> W3/CON4.3 = C15/R9)"
+  },
+  {
+   "ref": "IC3B",
+   "type": "opamp",
+   "nodes": [
+    "cw",
+    "m4",
+    "o3b",
+    "vs",
+    "0"
+   ],
+   "model": "TL072_9V",
+   "label": "IC3:B TL072 non-inverting x1.47"
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "o3b",
+    "m4"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "R4 4.7K feedback"
+  },
+  {
+   "ref": "R28",
+   "type": "R",
+   "nodes": [
+    "m4",
+    "ref"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "R28 10K to the REF bus"
+  },
+  {
+   "ref": "C25",
+   "type": "C",
+   "nodes": [
+    "o3b",
+    "n25"
+   ],
+   "value": "15n",
+   "tolerance": 0.1,
+   "label": "C25 15n/50V Wien series C"
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "n25",
+    "f3"
+   ],
+   "value": "2.2k",
+   "tolerance": 0.05,
+   "label": "R1 2.2K Wien series R -> CON5.3"
+  },
+  {
+   "ref": "VR2B",
+   "type": "pot",
+   "nodes": [
+    "vp",
+    "vp",
+    "f3"
+   ],
+   "value": "100k",
+   "taper": "C",
+   "control": "freq",
+   "label": "VR2:B FREQ C100K (gang with VR2:C) rheostat: pin 4 MIN + wiper 5 -> VR2:C pin 7 / wiper 8 -> CON5.2 (IC3:A +), pin 6 -> CON5.3 (R1): the Wien series arm"
+  },
+  {
+   "ref": "VR2C",
+   "type": "pot",
+   "nodes": [
+    "vp",
+    "vp",
+    "f9"
+   ],
+   "value": "100k",
+   "taper": "C",
+   "control": "freq",
+   "label": "VR2:C FREQ C100K rheostat: pin 7 MIN + wiper 8 (joined where the wiper wire crosses the pin-7 bus, see the notes) -> CON5.2 = IC3:A + / C26; pin 9 -> CON5.1 = R3: the Wien shunt arm"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "f9",
+    "ref"
+   ],
+   "value": "2.2k",
+   "tolerance": 0.05,
+   "label": "R3 2.2K Wien shunt R to the REF bus"
+  },
+  {
+   "ref": "C26",
+   "type": "C",
+   "nodes": [
+    "vp",
+    "ref"
+   ],
+   "value": "15n",
+   "tolerance": 0.1,
+   "label": "C26 15n/50V Wien shunt C"
+  },
+  {
+   "ref": "R32",
+   "type": "R",
+   "nodes": [
+    "vp",
+    "ref"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "R32 1M IC3:A + bias"
+  },
+  {
+   "ref": "R25",
+   "type": "R",
+   "nodes": [
+    "o3a",
+    "ne"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "R25 1K (node E)"
+  },
+  {
+   "ref": "R26",
+   "type": "R",
+   "nodes": [
+    "ne",
+    "0"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "R26 1K node E to -VS"
+  },
+  {
+   "ref": "R19",
+   "type": "R",
+   "nodes": [
+    "ne",
+    "na"
+   ],
+   "value": "8.2k",
+   "tolerance": 0.05,
+   "label": "R19 8.2K"
+  },
+  {
+   "ref": "C16",
+   "type": "C",
+   "nodes": [
+    "na",
+    "nbb"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "C16 47n/50V"
+  },
+  {
+   "ref": "C17",
+   "type": "C",
+   "nodes": [
+    "na",
+    "nm"
+   ],
+   "value": "68n",
+   "tolerance": 0.1,
+   "label": "C17 68n/50V"
+  },
+  {
+   "ref": "R22",
+   "type": "R",
+   "nodes": [
+    "nm",
+    "o2b"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "R22 10K"
+  },
+  {
+   "ref": "C24",
+   "type": "C",
+   "nodes": [
+    "nm",
+    "o2b"
+   ],
+   "value": "2.2n",
+   "tolerance": 0.1,
+   "label": "C24 2.2n/50V (across R22: see the notes on the drawing's wire crossings)"
+  },
+  {
+   "ref": "R20",
+   "type": "R",
+   "nodes": [
+    "nm",
+    "nbb"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "R20 100K"
+  },
+  {
+   "ref": "R23",
+   "type": "R",
+   "nodes": [
+    "nbb",
+    "m5"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "R23 47K into IC2:B pin 6"
+  },
+  {
+   "ref": "R24",
+   "type": "R",
+   "nodes": [
+    "o2b",
+    "m5"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "R24 1M feedback"
+  },
+  {
+   "ref": "C23",
+   "type": "C",
+   "nodes": [
+    "o2b",
+    "m5"
+   ],
+   "value": "47p",
+   "tolerance": 0.1,
+   "label": "C23 47pF/50V feedback"
+  },
+  {
+   "ref": "IC2B",
+   "type": "opamp",
+   "nodes": [
+    "ref",
+    "m5",
+    "o2b",
+    "vs",
+    "0"
+   ],
+   "model": "TL072_9V",
+   "label": "IC2:B TL072, + at REF (node F)"
+  },
+  {
+   "ref": "VR1A",
+   "type": "pot",
+   "nodes": [
+    "ref",
+    "vw",
+    "o2b"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "volume",
+   "label": "VR1:A VOLUME B100K (pin 3 -> CON6.1 = node F; wiper 2 -> CON6.2 -> R29; pin 1 MIN -> CON6.3 = REF)"
+  },
+  {
+   "ref": "R29",
+   "type": "R",
+   "nodes": [
+    "vw",
+    "no"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "R29 10K"
+  },
+  {
+   "ref": "R31",
+   "type": "R",
+   "nodes": [
+    "no",
+    "ref"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "R31 47K to REF"
+  },
+  {
+   "ref": "C18",
+   "type": "C",
+   "nodes": [
+    "no",
+    "out"
+   ],
+   "value": "150n",
+   "tolerance": 0.1,
+   "label": "C18 150n/63V output coupling -> CON11.3 EFFECT -> SW1:A -> OP jack"
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "out",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "R16 1M output pull-down to -VS"
+  }
+ ],
+ "probes": [
+  "o1",
+  "o2",
+  "nb",
+  "od",
+  "o3a",
+  "o3b",
+  "o2b",
+  "out"
+ ],
+ "layout": {}
+}

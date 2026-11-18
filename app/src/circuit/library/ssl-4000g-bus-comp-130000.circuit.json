@@ -1,0 +1,2052 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "ssl-4000g-bus-comp-130000",
+ "version": 1,
+ "name": "SSL 4000 G quad bus compressor (82E26 x4 + 82E27)",
+ "description": "The SL651G master module's compressor as drawn on T82026.71.3 rev 6A (82E26 '651G QUAD BUS MIX AMPS + COMPRESSOR') and T82027.71.3 rev 4A (82E27 'COMPRESSOR, QUAD FADER/AUTO FADER'). Each bus card carries an audio dbx 202X (A1) and a side-chain 202X (A2) fed the same control plus the threshold offset; the side-chain VCA's output is full-wave rectified (T6/T7), shaped by the ratio network in T7's feedback, and diode-OR'd onto bus D (D6). 82E27 charges the selected release capacitor from D through the attack resistor, buffers it (T1) and sums it into line B (audio VCAs, with make-up) and line C (side-chain VCAs, with threshold). Left and right are the bus A and B cards in full; the quad C/D cards carry no signal and appear as their four 202X control ports on lines B and C. The netlist starts at the PRE COMP RETURN (the mix amplifier ahead of it is the bus summer) and ends at the card OUTPUT (pin 28) with the pre/post patch points normalled.",
+ "sources": [
+  {
+   "title": "Solid State Logic SL4000G Console Service Manual v1.1, PDF p.204: T82026.71.3 '651G QUAD BUS MIX AMPS + COMPRESSOR' rev 6A (21 Sep 92) - source of record for 82E26",
+   "url": "https://funkwerkes.com/web/wp-content/techdocs/MixedProAudio/SSL-4000G-Console-Service-Manual-v1_1.pdf"
+  },
+  {
+   "title": "Same manual, PDF p.206: T82027.71.3 'COMPRESSOR, QUAD FADER/AUTO FADER' rev 4A (26 Oct 92) - source of record for 82E27; pp.202/205 the edge-connector lists (A/B/C/D, ratio 37/38/39 = 10/4/2, attack 43-48, release 5-9)",
+   "url": "https://funkwerkes.com/web/wp-content/techdocs/MixedProAudio/SSL-4000G-Console-Service-Manual-v1_1.pdf"
+  },
+  {
+   "title": "K&A Electronics: SSL 82E26 (T82026.71 rev 8, 3.8.84 redrawn) and 82E27 (T82027.71 rev 8, Dec 85) - the E-series cards, cross-check of every side-chain and time-constant value",
+   "url": "http://www.ka-electronics.com/images/SSL/ssl_82E26.pdf"
+  },
+  {
+   "title": "gyraf: SSL 82E26 / 82E27 hand drawings (rev 6, E) and 'The SSL Mixbus Compressor Clone' (meter law ~50 uA/dB, threshold end marks +-15 dB, the 202XT's internal control buffer)",
+   "url": "https://gyraf.dk/gy_pd/ssl/ssl.html"
+  },
+  {
+   "title": "THAT Corporation 202XT/202XTC/202R data sheet rev 09/28/93: 202X-family control constant -20 dB/V, control port 822 ohm, input 1.25 k, sym port 51 ohm",
+   "url": "https://www.thatcorp.com/datashts/202data.pdf"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "inputR": "inr",
+  "output": "outl",
+  "outputR": "outr",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 1.0
+ },
+ "oversampling": 1,
+ "lte": {
+  "tol": 1000
+ },
+ "solver": "auto",
+ "models": {
+  "NE5534": {
+   "kind": "opamp",
+   "level": 1,
+   "a0": 100000.0,
+   "gbw": 10000000.0,
+   "slew": 13000000.0,
+   "swing_hi": 1.0,
+   "swing_lo": 1.0,
+   "vhi": 14.0,
+   "vlo": -14.0,
+   "note": "TI NE5534 datasheet: AVD 100 V/mV, GBW 10 MHz, slew 13 V/us (the card used by ssl-4000e-dynamics-133000). The 22p compensation caps (C28/C31/C32 on pins 5-8) are carried by gbw/slew: the 5-node card has no compensation pins."
+  },
+  "LF351": {
+   "kind": "opamp",
+   "level": 1,
+   "a0": 100000.0,
+   "gbw": 4000000.0,
+   "slew": 13000000.0,
+   "swing_hi": 1.5,
+   "swing_lo": 1.5,
+   "vhi": 13.5,
+   "vlo": -13.5,
+   "note": "National LF351 datasheet: AVOL 100 V/mV typ, GBW 4 MHz, SR 13 V/us, output swing +-13.5 V at +-15 V (1.5 V from each rail)."
+  },
+  "LF347": {
+   "kind": "opamp",
+   "level": 1,
+   "a0": 100000.0,
+   "gbw": 4000000.0,
+   "slew": 13000000.0,
+   "swing_hi": 1.5,
+   "swing_lo": 1.5,
+   "vhi": 13.5,
+   "vlo": -13.5,
+   "note": "National LF347 datasheet (one section): AVOL 100 V/mV typ, GBW 4 MHz, SR 13 V/us, swing +-13.5 V at +-15 V."
+  },
+  "1S44": {
+   "kind": "diode",
+   "is": 2.52e-09,
+   "n": 1.752,
+   "rs": 0.568,
+   "note": "SSL's standard small-signal diode (the 82E27 E-sheet labels D2/D7/D8/D9/D10/D11/D12 '1S44'; the G sheets leave the type off). No 1S44 SPICE card is published: the library's 1N914-class fit, as ssl-4000e-dynamics-133000 uses."
+  },
+  "ZENER_12V": {
+   "kind": "diode",
+   "is": 1e-14,
+   "n": 1.0,
+   "rs": 0.0,
+   "bv": 12.0,
+   "ibv": 0.005,
+   "nbv": 2.0,
+   "note": "D3 '12V' zener (82E27), the make-up reference. No part number printed: bv 12 V at 5 mA, nbv 2 (the 133000 convention, CIRCUIT_ENGINE 10.15). It runs at (18 - 0.6 - 12) / 4k7 = 1.1 mA."
+  },
+  "ZENER_1V4": {
+   "kind": "diode",
+   "is": 1e-14,
+   "n": 1.0,
+   "rs": 0.0,
+   "bv": 1.4,
+   "ibv": 0.005,
+   "nbv": 2.0,
+   "note": "D13 '1V4' (82E27) across the GR meter: bv 1.4 V at 5 mA, nbv 2 (the 133000 card for SSL's 1V4 part)."
+  },
+  "J112": {
+   "kind": "njf",
+   "vto": -3.0,
+   "beta": 0.0042,
+   "lambda": 0.01,
+   "is": 1e-14,
+   "n": 1.0,
+   "cgs": 7e-12,
+   "cgd": 7e-12,
+   "note": "J112 (Fairchild/ON J111-J113 datasheet): VGS(off) -1 ... -5 V (centre -3 V), rDS(on) <= 50 ohm -> beta = 1/(2 rDS |vto|) at 40 ohm; Ciss 28 pF max (split as an assumed 7/7 pF). A switch here: only its on-resistance and off-state matter."
+  },
+  "J175": {
+   "kind": "pjf",
+   "vto": -4.0,
+   "beta": 0.00125,
+   "lambda": 0.01,
+   "is": 1e-14,
+   "n": 1.0,
+   "cgs": 5e-12,
+   "cgd": 5e-12,
+   "note": "J175 P-channel (Fairchild/ON J174-J177 datasheet): VGS(off) +3 ... +6 V (SPICE vto -4), IDSS 7-60 mA (20 mA centre -> beta 1.25 mA/V^2), rDS(on) <= 125 ohm (model 100 ohm). A switch: on-resistance and off-state only."
+  },
+  "DBX202X_CORE": {
+   "kind": "vca",
+   "mvdb": 6.0,
+   "iq": 2e-05,
+   "vsym": 7.4e-06,
+   "rs": 0.0761,
+   "rd": 0.0,
+   "rsym": 51,
+   "rc": 0,
+   "icc": 0,
+   "note": "The Blackmer core inside the dbx 202X module: the library DBX202 card (6.0 mV/dB, sym port 51 ohm, vsym/rs fitted to THAT 202R THD) with rc 0, because the 202X's 822 ohm control port and its control buffer are explicit in the dbx202x subcircuit."
+  }
+ },
+ "subcircuits": {
+  "dbx202x": {
+   "pins": [
+    "in",
+    "out",
+    "vc",
+    "sym",
+    "gnd",
+    "vm",
+    "vp"
+   ],
+   "parts": [
+    {
+     "ref": "RIN",
+     "type": "R",
+     "nodes": [
+      "in",
+      "cin"
+     ],
+     "value": "1k25",
+     "note": "the 202X's internal input resistance: THAT 202XT (the 202X drop-in) RIN 1.18/1.25/1.32 k; dbx '202X vs 202C' note"
+    },
+    {
+     "ref": "RC",
+     "type": "R",
+     "nodes": [
+      "vc",
+      "gnd"
+     ],
+     "value": "822",
+     "note": "control-port impedance: THAT 202XT Rc 813/822/831 ohm at 27 C"
+    },
+    {
+     "ref": "EB",
+     "type": "vcvs",
+     "nodes": [
+      "ec",
+      "0",
+      "vc",
+      "gnd"
+     ],
+     "gain": 0.12,
+     "note": "the module's control buffer (gyraf: 'ten paralleled 2150s with a common low-impedance buffer for the control inputs'): a 202X is -20 dB/V at its VC pin (THAT 202XT gain-control constant 19.3/20/20.7 dB/V), the core 6.0 mV/dB, so 6.0/50 = 0.12"
+    },
+    {
+     "ref": "U",
+     "type": "vca",
+     "nodes": [
+      "cin",
+      "gnd",
+      "ec",
+      "sym",
+      "vm",
+      "gnd",
+      "vp",
+      "out"
+     ],
+     "model": "DBX202X_CORE"
+    }
+   ]
+  },
+  "card82e26": {
+   "pins": [
+    "src",
+    "out",
+    "B",
+    "Cn",
+    "Dn",
+    "A",
+    "vp18",
+    "vm18",
+    "vp15",
+    "vm15",
+    "vp12",
+    "vm12"
+   ],
+   "parts": [
+    {
+     "ref": "R57",
+     "type": "R",
+     "nodes": [
+      "src",
+      "p13"
+     ],
+     "value": "47R",
+     "note": "the normalled PRE COMP SEND 0 (pin 10) output resistor, T8's R57 47R: the patch normals send 10 -> return 13"
+    },
+    {
+     "ref": "R56",
+     "type": "R",
+     "nodes": [
+      "p12",
+      "0"
+     ],
+     "value": "10R",
+     "note": "PRE COMP SEND 180 (pin 9) = R56 10R to 0 V, normalled to RETURN 180 (pin 12)"
+    },
+    {
+     "ref": "R6",
+     "type": "R",
+     "nodes": [
+      "p12",
+      "p13"
+     ],
+     "value": "15K0"
+    },
+    {
+     "ref": "C3",
+     "type": "C",
+     "nodes": [
+      "p12",
+      "c3b"
+     ],
+     "value": "100u",
+     "note": "100U 25V"
+    },
+    {
+     "ref": "R7",
+     "type": "R",
+     "nodes": [
+      "c3b",
+      "t2m"
+     ],
+     "value": "30K1"
+    },
+    {
+     "ref": "C5",
+     "type": "C",
+     "nodes": [
+      "p13",
+      "c5b"
+     ],
+     "value": "100u",
+     "note": "100U 25V"
+    },
+    {
+     "ref": "R8",
+     "type": "R",
+     "nodes": [
+      "c5b",
+      "t2p"
+     ],
+     "value": "10K0"
+    },
+    {
+     "ref": "R9",
+     "type": "R",
+     "nodes": [
+      "t2p",
+      "0"
+     ],
+     "value": "10K0"
+    },
+    {
+     "ref": "C8",
+     "type": "C",
+     "nodes": [
+      "t2p",
+      "0"
+     ],
+     "value": "100p"
+    },
+    {
+     "ref": "R10",
+     "type": "R",
+     "nodes": [
+      "t2m",
+      "t2o"
+     ],
+     "value": "30K1"
+    },
+    {
+     "ref": "C7",
+     "type": "C",
+     "nodes": [
+      "t2m",
+      "t2o"
+     ],
+     "value": "33p"
+    },
+    {
+     "ref": "T2",
+     "type": "opamp",
+     "nodes": [
+      "t2p",
+      "t2m",
+      "t2o",
+      "vp18",
+      "vm18"
+     ],
+     "model": "NE5534",
+     "note": "5534 pre-comp return receiver, +-18 V: -1 from pin 12, +1 from pin 13"
+    },
+    {
+     "ref": "C9",
+     "type": "C",
+     "nodes": [
+      "t2o",
+      "c9b"
+     ],
+     "value": "220u",
+     "note": "220U 6V"
+    },
+    {
+     "ref": "R12",
+     "type": "R",
+     "nodes": [
+      "c9b",
+      "a1in"
+     ],
+     "value": "3K32",
+     "note": "SOT (select on test) in parallel: not fitted at nominal"
+    },
+    {
+     "ref": "XA1",
+     "type": "sub",
+     "of": "dbx202x",
+     "nodes": [
+      "a1in",
+      "a1out",
+      "a1vc",
+      "a1sym",
+      "0",
+      "vm15",
+      "vp15"
+     ],
+     "note": "A1 DBX202X VCA (pins IN 6, OUT 2, SYMM 3, VC 1, GND 5, V- 4, V+ 7), the bus's audio VCA"
+    },
+    {
+     "ref": "CA1",
+     "type": "C",
+     "nodes": [
+      "a1vc",
+      "0"
+     ],
+     "value": "100n",
+     "note": "'100NF' on A1's VC pin to 0 V (ECO 4K/989, rev 6A: '100NF CAPACITOR ADDED AT A1')"
+    },
+    {
+     "ref": "R13",
+     "type": "R",
+     "nodes": [
+      "B",
+      "a1vc"
+     ],
+     "value": "909R",
+     "note": "card pin 16 VCA CONTROL INPUT = 82E27 line B. R26 4K32 from pin 15 (VCA TRIM) to VC is not netlisted: pin 15 is the 6Tr/3Tr monitor option's trim, open in the bus-compressor wiring, so R26 carries no current"
+    },
+    {
+     "ref": "RV1",
+     "type": "pot",
+     "nodes": [
+      "vm15",
+      "rv1w",
+      "vp15"
+     ],
+     "value": "50K",
+     "taper": "B",
+     "control": "rv1",
+     "note": "RV1 50K DISTORTION NULL across +-15 V; mid travel = 0 V (the core card's vsym is already the trimmed residual)"
+    },
+    {
+     "ref": "R14",
+     "type": "R",
+     "nodes": [
+      "rv1w",
+      "a1sym"
+     ],
+     "value": "200K"
+    },
+    {
+     "ref": "R15",
+     "type": "R",
+     "nodes": [
+      "t3p",
+      "0"
+     ],
+     "value": "470R"
+    },
+    {
+     "ref": "T3",
+     "type": "opamp",
+     "nodes": [
+      "t3p",
+      "a1out",
+      "t3o",
+      "vp18",
+      "vm18"
+     ],
+     "model": "NE5534",
+     "note": "5534 I/V converter for A1"
+    },
+    {
+     "ref": "R16",
+     "type": "R",
+     "nodes": [
+      "a1out",
+      "t3o"
+     ],
+     "value": "4K53",
+     "note": "SOT in parallel: not fitted"
+    },
+    {
+     "ref": "C10",
+     "type": "C",
+     "nodes": [
+      "a1out",
+      "t3o"
+     ],
+     "value": "100p"
+    },
+    {
+     "ref": "R49",
+     "type": "R",
+     "nodes": [
+      "t3o",
+      "p19"
+     ],
+     "value": "47R",
+     "note": "POST COMP SEND 0 (pin 19); normalled to POST COMP RETURN 0 (pin 24)"
+    },
+    {
+     "ref": "R17",
+     "type": "R",
+     "nodes": [
+      "p20",
+      "0"
+     ],
+     "value": "10R",
+     "note": "POST COMP SEND 180 (pin 20); normalled to POST COMP RETURN 180 (pin 23)"
+    },
+    {
+     "ref": "R18",
+     "type": "R",
+     "nodes": [
+      "p20",
+      "p19"
+     ],
+     "value": "15K0"
+    },
+    {
+     "ref": "C11",
+     "type": "C",
+     "nodes": [
+      "p20",
+      "c11b"
+     ],
+     "value": "100u",
+     "note": "100U 25V"
+    },
+    {
+     "ref": "R19",
+     "type": "R",
+     "nodes": [
+      "c11b",
+      "t4m"
+     ],
+     "value": "30K1"
+    },
+    {
+     "ref": "C13",
+     "type": "C",
+     "nodes": [
+      "p19",
+      "c13b"
+     ],
+     "value": "100u",
+     "note": "100U 25V"
+    },
+    {
+     "ref": "R20",
+     "type": "R",
+     "nodes": [
+      "c13b",
+      "t4p"
+     ],
+     "value": "10K0"
+    },
+    {
+     "ref": "R21",
+     "type": "R",
+     "nodes": [
+      "t4p",
+      "0"
+     ],
+     "value": "10K0"
+    },
+    {
+     "ref": "C16",
+     "type": "C",
+     "nodes": [
+      "t4p",
+      "0"
+     ],
+     "value": "100p"
+    },
+    {
+     "ref": "R22",
+     "type": "R",
+     "nodes": [
+      "t4m",
+      "t4o"
+     ],
+     "value": "30K1"
+    },
+    {
+     "ref": "C15",
+     "type": "C",
+     "nodes": [
+      "t4m",
+      "t4o"
+     ],
+     "value": "33p"
+    },
+    {
+     "ref": "T4",
+     "type": "opamp",
+     "nodes": [
+      "t4p",
+      "t4m",
+      "t4o",
+      "vp18",
+      "vm18"
+     ],
+     "model": "NE5534",
+     "note": "5534 post-comp return receiver"
+    },
+    {
+     "ref": "R23",
+     "type": "R",
+     "nodes": [
+      "t4o",
+      "out"
+     ],
+     "value": "10R",
+     "note": "card OUTPUT (pin 28)"
+    },
+    {
+     "ref": "R11",
+     "type": "R",
+     "nodes": [
+      "t2o",
+      "scx"
+     ],
+     "value": "91K",
+     "note": "ECO 4K/921 rev 2A: 'R11 WAS 47K NOW 91K'"
+    },
+    {
+     "ref": "TR5",
+     "type": "njf",
+     "nodes": [
+      "scx",
+      "tr5g",
+      "scs"
+     ],
+     "model": "J112",
+     "note": "series side-chain switch, on with COMP IN"
+    },
+    {
+     "ref": "R60",
+     "type": "R",
+     "nodes": [
+      "A",
+      "tr5g"
+     ],
+     "value": "10M"
+    },
+    {
+     "ref": "TR4",
+     "type": "pjf",
+     "nodes": [
+      "scx",
+      "tr4g",
+      "0"
+     ],
+     "model": "J175",
+     "note": "shunt side-chain switch, on with COMP OUT"
+    },
+    {
+     "ref": "R29",
+     "type": "R",
+     "nodes": [
+      "A",
+      "d1a"
+     ],
+     "value": "100K"
+    },
+    {
+     "ref": "D1",
+     "type": "D",
+     "nodes": [
+      "d1a",
+      "tr4g"
+     ],
+     "model": "1S44"
+    },
+    {
+     "ref": "R28",
+     "type": "R",
+     "nodes": [
+      "A",
+      "vm18"
+     ],
+     "value": "100K",
+     "note": "pin 17 'A (Quad Compressor In/Out Switch)'"
+    },
+    {
+     "ref": "R30",
+     "type": "R",
+     "nodes": [
+      "scs",
+      "a2in"
+     ],
+     "value": "47K"
+    },
+    {
+     "ref": "XA2",
+     "type": "sub",
+     "of": "dbx202x",
+     "nodes": [
+      "a2in",
+      "a2out",
+      "a2vc",
+      "a2sym",
+      "0",
+      "vm15",
+      "vp15"
+     ],
+     "note": "A2 DBX202X, the side-chain VCA: the same control law as A1, plus the threshold offset on line C. Its SYMM pin 3 is unconnected on the sheet"
+    },
+    {
+     "ref": "R31",
+     "type": "R",
+     "nodes": [
+      "Cn",
+      "a2vc"
+     ],
+     "value": "909R",
+     "note": "card pin 33 = 82E27 line C (SIDECHAIN VCA'S)"
+    },
+    {
+     "ref": "R33",
+     "type": "R",
+     "nodes": [
+      "t5p",
+      "0"
+     ],
+     "value": "470R"
+    },
+    {
+     "ref": "T5",
+     "type": "opamp",
+     "nodes": [
+      "t5p",
+      "a2out",
+      "t5o",
+      "vp18",
+      "vm18"
+     ],
+     "model": "LF351",
+     "note": "LF351N I/V converter for A2"
+    },
+    {
+     "ref": "R32",
+     "type": "R",
+     "nodes": [
+      "a2out",
+      "t5o"
+     ],
+     "value": "33K"
+    },
+    {
+     "ref": "C17",
+     "type": "C",
+     "nodes": [
+      "a2out",
+      "t5o"
+     ],
+     "value": "22p"
+    },
+    {
+     "ref": "C18",
+     "type": "C",
+     "nodes": [
+      "t5o",
+      "sca"
+     ],
+     "value": "6u8",
+     "note": "6U8 35V, + to T5"
+    },
+    {
+     "ref": "R34",
+     "type": "R",
+     "nodes": [
+      "sca",
+      "t6m"
+     ],
+     "value": "20K"
+    },
+    {
+     "ref": "T6",
+     "type": "opamp",
+     "nodes": [
+      "0",
+      "t6m",
+      "t6o",
+      "vp18",
+      "vm18"
+     ],
+     "model": "LF351",
+     "note": "LF351N precision half-wave rectifier"
+    },
+    {
+     "ref": "D3",
+     "type": "D",
+     "nodes": [
+      "t6m",
+      "t6o"
+     ],
+     "model": "1S44"
+    },
+    {
+     "ref": "D2",
+     "type": "D",
+     "nodes": [
+      "t6o",
+      "hw"
+     ],
+     "model": "1S44"
+    },
+    {
+     "ref": "R35",
+     "type": "R",
+     "nodes": [
+      "t6m",
+      "hw"
+     ],
+     "value": "20K"
+    },
+    {
+     "ref": "R36",
+     "type": "R",
+     "nodes": [
+      "hw",
+      "t7m"
+     ],
+     "value": "10K"
+    },
+    {
+     "ref": "R37",
+     "type": "R",
+     "nodes": [
+      "sca",
+      "t7m"
+     ],
+     "value": "20K"
+    },
+    {
+     "ref": "T7",
+     "type": "opamp",
+     "nodes": [
+      "0",
+      "t7m",
+      "t7o",
+      "vp18",
+      "vm18"
+     ],
+     "model": "LF351",
+     "note": "LF351N full-wave summing stage; its feedback is the ratio network"
+    },
+    {
+     "ref": "D5",
+     "type": "D",
+     "nodes": [
+      "t7o",
+      "t7m"
+     ],
+     "model": "1S44"
+    },
+    {
+     "ref": "D4",
+     "type": "D",
+     "nodes": [
+      "nN",
+      "t7o"
+     ],
+     "model": "1S44"
+    },
+    {
+     "ref": "R38",
+     "type": "R",
+     "nodes": [
+      "t7m",
+      "nN"
+     ],
+     "value": "1M0"
+    },
+    {
+     "ref": "R39",
+     "type": "R",
+     "nodes": [
+      "nN",
+      "x38"
+     ],
+     "value": "510K"
+    },
+    {
+     "ref": "R43",
+     "type": "R",
+     "nodes": [
+      "x38",
+      "vm12"
+     ],
+     "value": "1M8"
+    },
+    {
+     "ref": "R40",
+     "type": "R",
+     "nodes": [
+      "nN",
+      "x39"
+     ],
+     "value": "270K"
+    },
+    {
+     "ref": "R44",
+     "type": "R",
+     "nodes": [
+      "x39",
+      "vm12"
+     ],
+     "value": "3M9"
+    },
+    {
+     "ref": "D7",
+     "type": "D",
+     "nodes": [
+      "x39",
+      "ny"
+     ],
+     "model": "1S44"
+    },
+    {
+     "ref": "R41",
+     "type": "R",
+     "nodes": [
+      "nN",
+      "ny"
+     ],
+     "value": "68K"
+    },
+    {
+     "ref": "R45",
+     "type": "R",
+     "nodes": [
+      "ny",
+      "vp12"
+     ],
+     "value": "620K"
+    },
+    {
+     "ref": "R42",
+     "type": "R",
+     "nodes": [
+      "x37",
+      "vm12"
+     ],
+     "value": "1M2"
+    },
+    {
+     "ref": "SR2",
+     "type": "switch",
+     "nodes": [
+      "t7m",
+      "x39"
+     ],
+     "control": "ratio",
+     "positions": [
+      0
+     ],
+     "note": "RATIO SWITCH pole 36 to pin 39 ('Ratio Sw 2')"
+    },
+    {
+     "ref": "SR4",
+     "type": "switch",
+     "nodes": [
+      "t7m",
+      "x38"
+     ],
+     "control": "ratio",
+     "positions": [
+      1
+     ],
+     "note": "pole 36 to pin 38 ('Ratio Sw 4')"
+    },
+    {
+     "ref": "SR10",
+     "type": "switch",
+     "nodes": [
+      "t7m",
+      "x37"
+     ],
+     "control": "ratio",
+     "positions": [
+      2
+     ],
+     "note": "pole 36 to pin 37 ('Ratio Sw 10')"
+    },
+    {
+     "ref": "D6",
+     "type": "D",
+     "nodes": [
+      "Dn",
+      "t7o"
+     ],
+     "model": "1S44",
+     "note": "D6 onto the common bus D (pin 42): the four cards' side chains are diode-OR'd, the most negative wins"
+    }
+   ]
+  },
+  "card82e26_idle": {
+   "pins": [
+    "B",
+    "Cn"
+   ],
+   "parts": [
+    {
+     "ref": "R13",
+     "type": "R",
+     "nodes": [
+      "B",
+      "a1vc"
+     ],
+     "value": "909R"
+    },
+    {
+     "ref": "RC1",
+     "type": "R",
+     "nodes": [
+      "a1vc",
+      "0"
+     ],
+     "value": "822",
+     "note": "A1 202X control-port impedance (THAT 202XT Rc 822 ohm)"
+    },
+    {
+     "ref": "CA1",
+     "type": "C",
+     "nodes": [
+      "a1vc",
+      "0"
+     ],
+     "value": "100n",
+     "note": "ECO 6A '100NF CAPACITOR ADDED AT A1'"
+    },
+    {
+     "ref": "R31",
+     "type": "R",
+     "nodes": [
+      "Cn",
+      "a2vc"
+     ],
+     "value": "909R"
+    },
+    {
+     "ref": "RC2",
+     "type": "R",
+     "nodes": [
+      "a2vc",
+      "0"
+     ],
+     "value": "822",
+     "note": "A2 202X control-port impedance"
+    }
+   ]
+  }
+ },
+ "controls": [
+  {
+   "id": "threshold",
+   "label": "Threshold",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "T0"
+   ],
+   "group": "Compressor",
+   "note": "THRESHOLD pot (pins 39/40/24) into T3 through R22 360k: it moves the side-chain VCAs' gain, i.e. the level the rectifier sees. 0 = ACW (-15 dB mark), 1 = CW (+15 dB mark, most compression). Pot value assumed 10K LIN (notes 4.4)"
+  },
+  {
+   "id": "makeup",
+   "label": "Make Up",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "M1"
+   ],
+   "group": "Compressor",
+   "note": "MAKE UP 25K LIN: the 12 V reference through R20 620k into T2B, i.e. a negative (gain) offset on the audio VCAs only. Measured 0 ... +13.3 dB"
+  },
+  {
+   "id": "attack",
+   "label": "Attack",
+   "kind": "selector",
+   "options": [
+    "0.1 ms",
+    "0.3 ms",
+    "1 ms",
+    "3 ms",
+    "10 ms",
+    "30 ms"
+   ],
+   "default": 0.4,
+   "paramRange": [
+    0,
+    5
+   ],
+   "params": [
+    "A2"
+   ],
+   "group": "Compressor",
+   "note": "ATTACK SWITCH: R1 820R / R2 2k7 / R3 8k2 / R4 27k / R5 82k / R6 270k from bus D into the selected release capacitor. Raw 0..5 = the six positions"
+  },
+  {
+   "id": "release",
+   "label": "Release",
+   "kind": "selector",
+   "options": [
+    "0.1 s",
+    "0.3 s",
+    "0.6 s",
+    "1.2 s",
+    "Auto"
+   ],
+   "default": 0.25,
+   "paramRange": [
+    0,
+    4
+   ],
+   "params": [
+    "R3"
+   ],
+   "group": "Compressor",
+   "note": "RELEASE SWITCH: 0.47u with R12 180k / R11 270k / R10 560k / R9 1M2, or AUTO = (R7 91k || C1 0.47u) + (R8 750k || C2 6.8u). Raw 0..4 = the five positions (a raw 5 clamps to Auto)"
+  },
+  {
+   "id": "ratio",
+   "label": "Ratio",
+   "kind": "selector",
+   "options": [
+    "2:1",
+    "4:1",
+    "10:1"
+   ],
+   "default": 0.5,
+   "paramRange": [
+    0,
+    2
+   ],
+   "params": [
+    "R4"
+   ],
+   "group": "Compressor",
+   "note": "RATIO SWITCH (pins 36-39 on every 82E26): selects T7's feedback network. Raw 0/1/2 = 2:1 / 4:1 / 10:1 (higher raw values clamp to 10:1)"
+  },
+  {
+   "id": "compin",
+   "label": "Comp In",
+   "kind": "switch",
+   "default": 1,
+   "params": [],
+   "face": true,
+   "group": "Compressor",
+   "note": "the panel's compressor IN button: line A to +18 V. OUT opens the side chain (TR5 off, TR4 on), shorts the timing node (T15) and removes the make-up reference (D2/D3)"
+  },
+  {
+   "id": "rv1l",
+   "label": "Distortion null L (RV1)",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Trims",
+   "note": "RV1 50K on the left card, mid = 0 V"
+  },
+  {
+   "id": "rv1r",
+   "label": "Distortion null R (RV1)",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Trims",
+   "note": "RV1 50K on the right card, mid = 0 V"
+  },
+  {
+   "id": "rv3",
+   "label": "VCA law (RV3)",
+   "kind": "continuous",
+   "default": 0.053,
+   "params": [],
+   "group": "Trims",
+   "note": "RV3 1K 'SET 5.2 VOLTS ON VCA' on 82E27; 0.053 = 53 ohm, RV3 + R72 = the E card's R51 100R (notes 4.3)"
+  },
+  {
+   "id": "link",
+   "label": "Link",
+   "kind": "continuous",
+   "default": 1.0,
+   "params": [
+    "L5"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "the quad compressor is always linked: the four cards' rectifiers are diode-OR'd onto bus D (D6) and one 82E27 drives every VCA. Stored only"
+  },
+  {
+   "id": "sidechain",
+   "label": "Sidechain",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "E6"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "the console's bus compressor has no side-chain filter or key input: the side chain is each bus's own signal through A2. Stored only"
+  },
+  {
+   "id": "dry",
+   "label": "Dry",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "D7"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "no wet/dry mix on the cards. Stored only"
+  },
+  {
+   "id": "output",
+   "label": "Output",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "W8"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "no output control on the cards (the bus level after the compressor is the master fader, i.e. console automation). Stored only"
+  },
+  {
+   "id": "vum",
+   "label": "VU Meter",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "VUM"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "meter telemetry; the GR meter is the readout. Stored only"
+  },
+  {
+   "id": "pwr",
+   "label": "On/Off",
+   "kind": "continuous",
+   "default": 1.0,
+   "params": [
+    "Pwr"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "host bypass. Stored only"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VP18",
+   "type": "V",
+   "nodes": [
+    "vp18",
+    "0"
+   ],
+   "value": "18",
+   "note": "+18 V console rail (pin 49 via R46 10R + C19; ideal)"
+  },
+  {
+   "ref": "VM18",
+   "type": "V",
+   "nodes": [
+    "vm18",
+    "0"
+   ],
+   "value": "-18",
+   "note": "-18 V console rail (pin 51; ideal)"
+  },
+  {
+   "ref": "VP15",
+   "type": "V",
+   "nodes": [
+    "vp15",
+    "0"
+   ],
+   "value": "15",
+   "note": "+15 V VCA rail (82E26 pin 31; T12 7815 on 82E27 is 'NOT FITTED' on the G card, so it comes from the console; ideal)"
+  },
+  {
+   "ref": "VM15",
+   "type": "V",
+   "nodes": [
+    "vm15",
+    "0"
+   ],
+   "value": "-15",
+   "note": "-15 V VCA rail (pin 32; ideal)"
+  },
+  {
+   "ref": "VP12",
+   "type": "V",
+   "nodes": [
+    "vp12",
+    "0"
+   ],
+   "value": "12",
+   "note": "+12 V from 82E27 T10 78L12 (pin 34; ideal regulator output)"
+  },
+  {
+   "ref": "VM12",
+   "type": "V",
+   "nodes": [
+    "vm12",
+    "0"
+   ],
+   "value": "-12",
+   "note": "-12 V from 82E27 T9 79L12 (pin 33; ideal)"
+  },
+  {
+   "ref": "SWIN",
+   "type": "switch",
+   "nodes": [
+    "vp18",
+    "nA"
+   ],
+   "control": "compin",
+   "note": "the panel COMP IN/OUT switch: IN connects line A to +18 V (82E26 E-sheet: '+18 -> COMP IN/OUT SW. 2a -> A'); OUT leaves A to the cards' R28 100K to -18 V"
+  },
+  {
+   "ref": "XL",
+   "type": "sub",
+   "of": "card82e26",
+   "nodes": [
+    "in",
+    "outl",
+    "nB",
+    "nC",
+    "nD",
+    "nA",
+    "vp18",
+    "vm18",
+    "vp15",
+    "vm15",
+    "vp12",
+    "vm12"
+   ],
+   "controls": {
+    "ratio": "ratio",
+    "rv1": "rv1l"
+   },
+   "note": "82E26 for bus A (left)"
+  },
+  {
+   "ref": "XR",
+   "type": "sub",
+   "of": "card82e26",
+   "nodes": [
+    "inr",
+    "outr",
+    "nB",
+    "nC",
+    "nD",
+    "nA",
+    "vp18",
+    "vm18",
+    "vp15",
+    "vm15",
+    "vp12",
+    "vm12"
+   ],
+   "controls": {
+    "ratio": "ratio",
+    "rv1": "rv1r"
+   },
+   "note": "82E26 for bus B (right)"
+  },
+  {
+   "ref": "XC",
+   "type": "sub",
+   "of": "card82e26_idle",
+   "nodes": [
+    "nB",
+    "nC"
+   ],
+   "note": "82E26 for quad bus C (no signal): its two VCA control ports on lines B and C"
+  },
+  {
+   "ref": "XD",
+   "type": "sub",
+   "of": "card82e26_idle",
+   "nodes": [
+    "nB",
+    "nC"
+   ],
+   "note": "82E26 for quad bus D (no signal)"
+  },
+  {
+   "ref": "R74",
+   "type": "R",
+   "nodes": [
+    "nA",
+    "t15g"
+   ],
+   "value": "10M"
+  },
+  {
+   "ref": "T15",
+   "type": "pjf",
+   "nodes": [
+    "tc",
+    "t15g",
+    "0"
+   ],
+   "model": "J175",
+   "note": "shorts the timing node with COMP OUT (ECO 4K/778: 'J175 AND R74 10M ADDED')"
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "nD",
+    "at0"
+   ],
+   "value": "820R",
+   "note": "ATTACK .1 ms (card pin 43)"
+  },
+  {
+   "ref": "SA0",
+   "type": "switch",
+   "nodes": [
+    "at0",
+    "tc"
+   ],
+   "control": "attack",
+   "positions": [
+    0
+   ],
+   "note": "front-panel ATTACK SWITCH, .1 ms; the pole is card pin 11 (RELEASE AND ATTACK POLES)"
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "nD",
+    "at1"
+   ],
+   "value": "2k7",
+   "note": "ATTACK .3 ms (card pin 44)"
+  },
+  {
+   "ref": "SA1",
+   "type": "switch",
+   "nodes": [
+    "at1",
+    "tc"
+   ],
+   "control": "attack",
+   "positions": [
+    1
+   ],
+   "note": "front-panel ATTACK SWITCH, .3 ms; the pole is card pin 11 (RELEASE AND ATTACK POLES)"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "nD",
+    "at2"
+   ],
+   "value": "8k2",
+   "note": "ATTACK 1 ms (card pin 45)"
+  },
+  {
+   "ref": "SA2",
+   "type": "switch",
+   "nodes": [
+    "at2",
+    "tc"
+   ],
+   "control": "attack",
+   "positions": [
+    2
+   ],
+   "note": "front-panel ATTACK SWITCH, 1 ms; the pole is card pin 11 (RELEASE AND ATTACK POLES)"
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "nD",
+    "at3"
+   ],
+   "value": "27k",
+   "note": "ATTACK 3 ms (card pin 46)"
+  },
+  {
+   "ref": "SA3",
+   "type": "switch",
+   "nodes": [
+    "at3",
+    "tc"
+   ],
+   "control": "attack",
+   "positions": [
+    3
+   ],
+   "note": "front-panel ATTACK SWITCH, 3 ms; the pole is card pin 11 (RELEASE AND ATTACK POLES)"
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "nD",
+    "at4"
+   ],
+   "value": "82k",
+   "note": "ATTACK 10 ms (card pin 47)"
+  },
+  {
+   "ref": "SA4",
+   "type": "switch",
+   "nodes": [
+    "at4",
+    "tc"
+   ],
+   "control": "attack",
+   "positions": [
+    4
+   ],
+   "note": "front-panel ATTACK SWITCH, 10 ms; the pole is card pin 11 (RELEASE AND ATTACK POLES)"
+  },
+  {
+   "ref": "R6",
+   "type": "R",
+   "nodes": [
+    "nD",
+    "at5"
+   ],
+   "value": "270k",
+   "note": "ATTACK 30 ms (card pin 48)"
+  },
+  {
+   "ref": "SA5",
+   "type": "switch",
+   "nodes": [
+    "at5",
+    "tc"
+   ],
+   "control": "attack",
+   "positions": [
+    5
+   ],
+   "note": "front-panel ATTACK SWITCH, 30 ms; the pole is card pin 11 (RELEASE AND ATTACK POLES)"
+  },
+  {
+   "ref": "R12",
+   "type": "R",
+   "nodes": [
+    "rl0",
+    "0"
+   ],
+   "value": "180k"
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "rl0",
+    "0"
+   ],
+   "value": "0u47",
+   "note": "0.47uF 50V"
+  },
+  {
+   "ref": "SL0",
+   "type": "switch",
+   "nodes": [
+    "tc",
+    "rl0"
+   ],
+   "control": "release",
+   "positions": [
+    0
+   ],
+   "note": "front-panel RELEASE SWITCH, .1 s (card pin 5)"
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "rl1",
+    "0"
+   ],
+   "value": "270k"
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "rl1",
+    "0"
+   ],
+   "value": "0u47",
+   "note": "0.47uF 50V"
+  },
+  {
+   "ref": "SL1",
+   "type": "switch",
+   "nodes": [
+    "tc",
+    "rl1"
+   ],
+   "control": "release",
+   "positions": [
+    1
+   ],
+   "note": "front-panel RELEASE SWITCH, .3 s (card pin 6)"
+  },
+  {
+   "ref": "R10",
+   "type": "R",
+   "nodes": [
+    "rl2",
+    "0"
+   ],
+   "value": "560k"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "rl2",
+    "0"
+   ],
+   "value": "0u47",
+   "note": "0.47uF 50V"
+  },
+  {
+   "ref": "SL2",
+   "type": "switch",
+   "nodes": [
+    "tc",
+    "rl2"
+   ],
+   "control": "release",
+   "positions": [
+    2
+   ],
+   "note": "front-panel RELEASE SWITCH, .6 s (card pin 7)"
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "rl3",
+    "0"
+   ],
+   "value": "1M2"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "rl3",
+    "0"
+   ],
+   "value": "0u47",
+   "note": "0.47uF 50V"
+  },
+  {
+   "ref": "SL3",
+   "type": "switch",
+   "nodes": [
+    "tc",
+    "rl3"
+   ],
+   "control": "release",
+   "positions": [
+    3
+   ],
+   "note": "front-panel RELEASE SWITCH, 1.2 s (card pin 8)"
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "rla",
+    "rlm"
+   ],
+   "value": "91k"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "rla",
+    "rlm"
+   ],
+   "value": "0u47",
+   "note": "0.47uF 50V"
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "rlm",
+    "0"
+   ],
+   "value": "750k"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "rlm",
+    "0"
+   ],
+   "value": "6u8",
+   "note": "6.8uF 35V"
+  },
+  {
+   "ref": "SL4",
+   "type": "switch",
+   "nodes": [
+    "tc",
+    "rla"
+   ],
+   "control": "release",
+   "positions": [
+    4
+   ],
+   "note": "RELEASE SWITCH AUTO (card pin 9): R7 91k || C1 0.47u in series with R8 750k || C2 6.8u, two time constants"
+  },
+  {
+   "ref": "R13",
+   "type": "R",
+   "nodes": [
+    "tc",
+    "0"
+   ],
+   "value": "3M3"
+  },
+  {
+   "ref": "T1",
+   "type": "opamp",
+   "nodes": [
+    "tc",
+    "t1m",
+    "tcb",
+    "vp18",
+    "vm18"
+   ],
+   "model": "LF351",
+   "note": "LF351N timing-node buffer"
+  },
+  {
+   "ref": "R14",
+   "type": "R",
+   "nodes": [
+    "tcb",
+    "t1m"
+   ],
+   "value": "470k"
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "tcb",
+    "mtr"
+   ],
+   "value": "2k0",
+   "note": "to PANEL METER -VE (pin 23)"
+  },
+  {
+   "ref": "D13",
+   "type": "D",
+   "nodes": [
+    "mtr",
+    "0"
+   ],
+   "model": "ZENER_1V4",
+   "note": "'D13 1V4' across the meter (pin 23 to 0 V)"
+  },
+  {
+   "ref": "RM",
+   "type": "R",
+   "nodes": [
+    "mtr",
+    "0"
+   ],
+   "value": "900",
+   "note": "(A) the GR meter movement (pin 23 to PANEL METER +VE pin 53 = 0 V): no movement data is published; 900 ohm makes gyraf's stated ~50 uA/dB into a 1 mA meter with R15 2k0. Display only"
+  },
+  {
+   "ref": "R17",
+   "type": "R",
+   "nodes": [
+    "vp12",
+    "th40"
+   ],
+   "value": "3k9",
+   "note": "THRESHOLD CW (pin 40)"
+  },
+  {
+   "ref": "R18",
+   "type": "R",
+   "nodes": [
+    "vm12",
+    "th39"
+   ],
+   "value": "3k9",
+   "note": "THRESHOLD ACW (pin 39)"
+  },
+  {
+   "ref": "VRT",
+   "type": "pot",
+   "nodes": [
+    "th39",
+    "thw",
+    "th40"
+   ],
+   "value": "10K",
+   "taper": "B",
+   "control": "threshold",
+   "note": "(A) front-panel THRESHOLD pot, off-card; value not printed on any sheet. 10K LIN puts its ends at +-6.74 V = +-14.5 dB of side-chain VCA gain against the panel's printed '+15dB' (CW) / '-15dB' (ACW) end marks (82E27 E sheet), with the four cards' 202X ports on line C"
+  },
+  {
+   "ref": "R22",
+   "type": "R",
+   "nodes": [
+    "thw",
+    "t3m"
+   ],
+   "value": "360k"
+  },
+  {
+   "ref": "R21",
+   "type": "R",
+   "nodes": [
+    "tcb",
+    "t3m"
+   ],
+   "value": "100k"
+  },
+  {
+   "ref": "R27",
+   "type": "R",
+   "nodes": [
+    "t3m",
+    "t3o"
+   ],
+   "value": "100k"
+  },
+  {
+   "ref": "T3",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "t3m",
+    "t3o",
+    "vp18",
+    "vm18"
+   ],
+   "model": "LF351",
+   "note": "LF351N side-chain VCA summing amplifier"
+  },
+  {
+   "ref": "R52",
+   "type": "R",
+   "nodes": [
+    "t3o",
+    "nC"
+   ],
+   "value": "100R",
+   "note": "RV4/R73 in parallel: 'NOT FITTED'"
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "nC",
+    "0"
+   ],
+   "value": "100n",
+   "note": "100nF 160V; line C = pin 32 SIDECHAIN VCA'S"
+  },
+  {
+   "ref": "D2",
+   "type": "D",
+   "nodes": [
+    "nA",
+    "d2k"
+   ],
+   "model": "1S44"
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "d2k",
+    "z12"
+   ],
+   "value": "4k7"
+  },
+  {
+   "ref": "D3",
+   "type": "D",
+   "nodes": [
+    "0",
+    "z12"
+   ],
+   "model": "ZENER_12V",
+   "note": "'D3 12V' zener: the make-up reference exists only with COMP IN"
+  },
+  {
+   "ref": "VRM",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "muw",
+    "z12"
+   ],
+   "value": "25K",
+   "taper": "B",
+   "control": "makeup",
+   "note": "front-panel MAKE UP 25K LIN: ACW pin 10 = 0 V, CW pin 21 = the 12 V reference, wiper pin 12"
+  },
+  {
+   "ref": "R20",
+   "type": "R",
+   "nodes": [
+    "muw",
+    "t2bm"
+   ],
+   "value": "620k"
+  },
+  {
+   "ref": "R53",
+   "type": "R",
+   "nodes": [
+    "0",
+    "t2am"
+   ],
+   "value": "10k",
+   "note": "MASTER FADER COMPUTER RETURN (pin 20), tied to 0 V: the master fader at its 0 dB end (wiper at 0 V, the '0' end on the 82E27 sheet). The fader's log law (T14/T2 top half) is console automation, not the compressor"
+  },
+  {
+   "ref": "R54",
+   "type": "R",
+   "nodes": [
+    "t2am",
+    "t2ao"
+   ],
+   "value": "10k"
+  },
+  {
+   "ref": "C13",
+   "type": "C",
+   "nodes": [
+    "t2am",
+    "t2ao"
+   ],
+   "value": "1u5",
+   "note": "1.5uF 50V"
+  },
+  {
+   "ref": "D12",
+   "type": "D",
+   "nodes": [
+    "t2ao",
+    "t2am"
+   ],
+   "model": "1S44"
+  },
+  {
+   "ref": "T2A",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "t2am",
+    "t2ao",
+    "vp18",
+    "vm18"
+   ],
+   "model": "LF347",
+   "note": "LF347 section (pins 8/9/10): the fader return inverter"
+  },
+  {
+   "ref": "R24",
+   "type": "R",
+   "nodes": [
+    "t2ao",
+    "t2bm"
+   ],
+   "value": "33k2"
+  },
+  {
+   "ref": "R19",
+   "type": "R",
+   "nodes": [
+    "tcb",
+    "t2bm"
+   ],
+   "value": "100k"
+  },
+  {
+   "ref": "R25",
+   "type": "R",
+   "nodes": [
+    "t2bm",
+    "t2bo"
+   ],
+   "value": "100k"
+  },
+  {
+   "ref": "T2B",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "t2bm",
+    "t2bo",
+    "vp18",
+    "vm18"
+   ],
+   "model": "LF347",
+   "note": "LF347 section (pins 12/13/14): the audio VCAs' summing amplifier"
+  },
+  {
+   "ref": "RV3",
+   "type": "pot",
+   "nodes": [
+    "t2bo",
+    "rv3w",
+    "rv3w"
+   ],
+   "value": "1K",
+   "taper": "B",
+   "control": "rv3",
+   "note": "RV3 1K 'SET 5.2 VOLTS ON VCA', wired as a rheostat (CW end on the wiper). Default 0.053 = 53 ohm, so RV3 + R72 = 100 ohm: the E-series card (K&A rev 8) has a fixed R51 100R here, the same as line C's R52 100R, i.e. audio and side-chain VCAs track. The 5.2 V procedure's test condition is not printed; read as 'fader at infinity, 5.2 V at the VC pins' it would give 115 ohm (notes 4.3)"
+  },
+  {
+   "ref": "R72",
+   "type": "R",
+   "nodes": [
+    "rv3w",
+    "nB"
+   ],
+   "value": "47R",
+   "note": "R51 in parallel: 'NOT FITTED'"
+  },
+  {
+   "ref": "C12",
+   "type": "C",
+   "nodes": [
+    "nB",
+    "0"
+   ],
+   "value": "100n",
+   "note": "100nF 160V; line B = pin 15 AUDIO VCA'S"
+  }
+ ],
+ "readouts": {
+  "gr": {
+   "law": "table",
+   "node": "tcb",
+   "table": [
+    [
+     -5.0,
+     38.53
+    ],
+    [
+     0.0009,
+     0.0
+    ]
+   ],
+   "note": "GR meter: the 82E27 meter is driven from T1's output (tcb) through R15 2k0, and the face reads the same node. The audio VCAs lose 7.705 dB per volt of tcb below its 0.9 mV rest (line B: T2B gain -1, RV3 + R72 = 100 ohm into the four cards' 909R + 822 ohm ports, 20 dB/V); measured on this circuit at 4.7 / 14.1 / 22.8 / 32.4 dB GR (1 kHz, 10:1) within 0.05 dB of the line. Make-up is not on tcb, so it reads compression only, as the hardware meter does."
+  }
+ },
+ "probes": [
+  "outl",
+  "outr",
+  "tcb",
+  "tc",
+  "nD",
+  "nB",
+  "nC",
+  "XL.t7o",
+  "XL.nN",
+  "XL.a1vc",
+  "XL.a2vc",
+  "XL.t5o"
+ ]
+}

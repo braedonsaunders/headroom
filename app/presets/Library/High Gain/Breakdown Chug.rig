@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Breakdown Chug</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Breakdown Chug" preset-author="Headroom" preset-comment="2000s metalcore rhythm: a hard gate and a drive-at-zero overdrive into a 120-watt lead channel with punchy mids, into a V30 4x12. Less gain than you would think and more mids, so drop-C chugs hit like a kick drum and the breakdown stops are dead silent." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="19000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="T" value="0.56"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="A" value="0.5"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="G" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="15000">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="1"/>
+        <parameter id="Tn" value="0.55"/>
+        <parameter id="Dr" value="0"/>
+        <parameter id="Lmp" value="0.5"/>
+        <parameter id="Bs" value="0.5"/>
+        <parameter id="Cl" value="0.5"/>
+        <parameter id="Br" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="134000">
+    <component-audio version="1">
+      <parameters num-parameters="21">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="R0" value="0.5"/>
+        <parameter id="L1" value="0.55"/>
+        <parameter id="B2" value="0.55"/>
+        <parameter id="M3" value="0.66"/>
+        <parameter id="T4" value="0.5"/>
+        <parameter id="P5" value="0.7"/>
+        <parameter id="R6" value="0.5"/>
+        <parameter id="P7" value="0.5"/>
+        <parameter id="P8" value="0"/>
+        <parameter id="V9" value="0.5"/>
+        <parameter id="S10" value="0.5"/>
+        <parameter id="R11" value="0.5"/>
+        <parameter id="B12" value="0.5"/>
+        <parameter id="L13" value="1"/>
+        <parameter id="H14" value="0"/>
+        <parameter id="B15" value="0"/>
+        <parameter id="C16" value="0"/>
+        <parameter id="R17" value="0.5"/>
+        <parameter id="L18" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.2495"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="12"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="134000" target-number="1" target-name="L1" min-value="0.35" max-value="0.85" controller-name="Gain"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="134000" target-number="1" target-name="M3" min-value="0.35" max-value="0.85" controller-name="Mids"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="134000" target-number="1" target-name="B2" min-value="0.25" max-value="0.75" controller-name="Bass"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="15000" target-number="1" target-name="Tn" min-value="0.35" max-value="0.8" controller-name="Boost Tone"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="19000" target-number="1" target-name="T" min-value="0.35" max-value="0.85" controller-name="Gate"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="hg-breakdown-chug" category="High Gain" order="170" instrument="guitar" style="Metalcore">
+  <description>2000s metalcore rhythm: a hard gate and a drive-at-zero overdrive into a 120-watt lead channel with punchy mids, into a V30 4x12. Less gain than you would think and more mids, so drop-C chugs hit like a kick drum and the breakdown stops are dead silent.</description>
+  <tags><tag>High Gain</tag><tag>Metalcore</tag><tag>Rhythm</tag><tag>Breakdown</tag><tag>Boosted</tag><tag>Gate</tag><tag>Drop Tuning</tag></tags>
+  <sources>
+    <source url="https://www.musicradar.com/guitarist/interview-adam-dutkiewicz-times-of-grace-killswitch-engage-361860" title="MusicRadar: Adam Dutkiewicz interview"/>
+    <source url="https://www.premierguitar.com/artists/killswitch-engage-ironhearts-redemption-and-big-digits" title="Premier Guitar: Killswitch Engage"/>
+    <source url="https://www.premierguitar.com/videos/rig-rundown/parkway-drive" title="Premier Guitar: Rig Rundown, Parkway Drive"/>
+    <source url="https://www.guitarworld.com/magazine/dear-guitar-hero-i-lay-dying-s-phil-sgrosso-and-nick-hipa-talk-gear-tattoos-sandwich-punching-and-more" title="Guitar World: Dear Guitar Hero, As I Lay Dying"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

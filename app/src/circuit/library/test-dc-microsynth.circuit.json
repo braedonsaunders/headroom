@@ -1,0 +1,2228 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "test-dc-microsynth",
+ "minRate": 176400,
+ "version": 1,
+ "name": "DC regression: EHX Micro Synthesizer (snapshot of the wave-e WIP netlist, ENGINE_QUEUE item 32)",
+ "description": "Frozen snapshot of work/circuit-netlists/wave-e/ehx-micro-synth-76000.wip.json as of the ENGINE_QUEUE item 32 report (2026-11-10), kept as the SPICE-export regression: its nodes \"nC2\" (VCF input RC) and \"nc2\" (the CD4013 latch Q) differ only in case, which plain SPICE folds into one node, shorting the filter onto the flip-flop; and its five CA3094 OTAs, whose output halves now mirror the abc diode current through a sense source. The engine DC is compared with ngspice .op on every node. Original description: 1978 EHX Guitar Micro Synthesizer: RC4558 preamp/700 Hz LPF, full-wave rectifier, smoothing+log envelope, trigger/stop/attack detectors, CA3094 square-wave voice, CD4013 trigger latch + divide-by-two, CA3094 sub-octave track-and-hold, 3-pole CA3094 ladder filter with resonance and CA3094 sweep, CA3094 VCA with attack-delay.",
+ "sources": [
+  {
+   "title": "Electro-Harmonix GUITAR MICRO SYNTHESIZER schematic, 3 sheets (D. Cockerell rev 12/12/78, drawn F.P. Hartery 1996)",
+   "url": "https://github.com/yuvadm/guitar-effects-schematics/blob/master/Guitar%20Synth%20and%20Misc%20Signal%20Shapers/Electro%20Harmonix%20Micro%20Synthesizer.pdf"
+  },
+  {
+   "title": "EHX XO Micro Synthesizer manual (control set and behaviour)",
+   "url": "https://www.ehx.com/wp-content/uploads/2021/01/micro-synth-manual.pdf"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "vcaout",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 1.0
+ },
+ "oversampling": 2,
+ "solver": "auto",
+ "models": {
+  "2N4302": {
+   "kind": "njf",
+   "vto": -0.8,
+   "beta": 0.0012,
+   "lambda": 0.02,
+   "note": "unverified generic 2N4302 N-JFET card (Vgs(off) -0.8 V, Idss ~1.5 mA class); no datasheet card existed"
+  },
+  "2N5087": {
+   "kind": "pnp",
+   "is": 6.734e-15,
+   "bf": 254.1,
+   "br": 2.683,
+   "vaf": 45.7,
+   "ise": 6.734e-15,
+   "ne": 1.741,
+   "cje": 7.5e-12,
+   "cjc": 6.2e-12,
+   "note": "Fairchild 2N5087 card (LTspice standard.bjt), as library/ehx-small-stone"
+  },
+  "2N5088": {
+   "kind": "npn",
+   "is": 1.4e-14,
+   "bf": 440,
+   "br": 2.0,
+   "vaf": 60,
+   "cje": 3e-12,
+   "cjc": 2e-12,
+   "note": "generic 2N5088 card (hFE 400-500 class); no published SPICE card located, flagged unverified"
+  },
+  "CA3094_Q_TYP": {
+   "kind": "npn",
+   "is": 1e-14,
+   "bf": 316,
+   "br": 1,
+   "cje": 2e-12,
+   "cjc": 1e-12,
+   "note": "CA3094 output Darlington die, as library/ehx-small-stone (composite hFE sqrt(1e5))"
+  }
+ },
+ "controls": [
+  {
+   "id": "pregain",
+   "label": "Pre-amp gain (internal trim)",
+   "default": 0.5,
+   "params": [],
+   "note": "value not printed on the drawing; 100k assumed, flagged"
+  },
+  {
+   "id": "squelch",
+   "label": "Squelch (internal trim)",
+   "default": 0.5,
+   "params": []
+  },
+  {
+   "id": "gtr",
+   "label": "Guitar",
+   "default": 0.5,
+   "params": [
+    "g"
+   ]
+  },
+  {
+   "id": "oct",
+   "label": "Octave",
+   "default": 0.5,
+   "params": [
+    "o"
+   ]
+  },
+  {
+   "id": "sqr",
+   "label": "Square wave",
+   "default": 0.5,
+   "params": [
+    "c"
+   ]
+  },
+  {
+   "id": "sub",
+   "label": "Sub-octave",
+   "default": 0.5,
+   "params": [
+    "s"
+   ]
+  },
+  {
+   "id": "trig",
+   "label": "Trigger",
+   "default": 0.5,
+   "params": [
+    "t"
+   ]
+  },
+  {
+   "id": "res",
+   "label": "Resonance",
+   "default": 0.0,
+   "params": [
+    "r"
+   ]
+  },
+  {
+   "id": "start",
+   "label": "Start freq",
+   "default": 0.5,
+   "params": [
+    "a"
+   ]
+  },
+  {
+   "id": "stop",
+   "label": "Stop freq",
+   "default": 0.5,
+   "params": [
+    "e"
+   ]
+  },
+  {
+   "id": "rate",
+   "label": "Sweep rate",
+   "default": 0.5,
+   "params": [
+    "w"
+   ]
+  },
+  {
+   "id": "delay",
+   "label": "Attack delay",
+   "default": 0.0,
+   "params": [
+    "d"
+   ]
+  }
+ ],
+ "parts": [
+  {
+   "ref": "V9",
+   "type": "V",
+   "nodes": [
+    "plus9",
+    "0"
+   ],
+   "value": "9"
+  },
+  {
+   "ref": "V10",
+   "type": "V",
+   "nodes": [
+    "neg10",
+    "0"
+   ],
+   "value": "-10"
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "in",
+    "0"
+   ],
+   "value": "68k"
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "in",
+    "np3"
+   ],
+   "value": "4k7"
+  },
+  {
+   "ref": "A2A",
+   "type": "opamp",
+   "nodes": [
+    "np3",
+    "np2",
+    "n1",
+    "plus9",
+    "neg10"
+   ],
+   "model": "JRC4558"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "pgb",
+    "r3m"
+   ],
+   "value": "10k"
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "r3m",
+    "0"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "P1",
+   "type": "pot",
+   "nodes": [
+    "pgb",
+    "np2",
+    "n1"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "pregain"
+  },
+  {
+   "ref": "R6",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "gtrw",
+    "n1"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "gtr"
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "gtrw",
+    "vcfIn"
+   ],
+   "value": "13k"
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "n1",
+    "lpf1"
+   ],
+   "value": "2k2"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "lpf1",
+    "0"
+   ],
+   "value": "100n",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "lpf1",
+    "lpf2"
+   ],
+   "value": "3k3"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "lpf2",
+    "n3"
+   ],
+   "value": "22n",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "lpf2",
+    "lpf3"
+   ],
+   "value": "33k"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "lpf3",
+    "0"
+   ],
+   "value": "2n2",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "A2B",
+   "type": "opamp",
+   "nodes": [
+    "lpf3",
+    "n3",
+    "n3",
+    "plus9",
+    "neg10"
+   ],
+   "model": "JRC4558"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "n3",
+    "nR"
+   ],
+   "value": "470n",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R10",
+   "type": "R",
+   "nodes": [
+    "nR",
+    "nX"
+   ],
+   "value": "10k"
+  },
+  {
+   "ref": "R13",
+   "type": "R",
+   "nodes": [
+    "nR",
+    "nZ"
+   ],
+   "value": "15k"
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "nX",
+    "nY"
+   ],
+   "value": "10k"
+  },
+  {
+   "ref": "D1",
+   "type": "D",
+   "nodes": [
+    "nX",
+    "dM"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "D2",
+   "type": "D",
+   "nodes": [
+    "dM",
+    "nY"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "A3B",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "nX",
+    "dM",
+    "plus9",
+    "neg10"
+   ],
+   "model": "JRC4558"
+  },
+  {
+   "ref": "R12",
+   "type": "R",
+   "nodes": [
+    "nY",
+    "nZ"
+   ],
+   "value": "7k5"
+  },
+  {
+   "ref": "A3A",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "nZ",
+    "nENV",
+    "plus9",
+    "neg10"
+   ],
+   "model": "JRC4558"
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "nZ",
+    "nENV"
+   ],
+   "value": "27k"
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "nZ",
+    "nENV"
+   ],
+   "value": "1n8",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "sqw",
+    "nZ"
+   ],
+   "value": "3.3M"
+  },
+  {
+   "ref": "R14",
+   "type": "pot",
+   "nodes": [
+    "neg10",
+    "sqw",
+    "plus9"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "squelch"
+  },
+  {
+   "ref": "C12",
+   "type": "C",
+   "nodes": [
+    "nENV",
+    "Cp"
+   ],
+   "value": "470n",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R26",
+   "type": "R",
+   "nodes": [
+    "Cp",
+    "0"
+   ],
+   "value": "820"
+  },
+  {
+   "ref": "C13",
+   "type": "C",
+   "nodes": [
+    "Cp",
+    "Co"
+   ],
+   "value": "82n",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R27",
+   "type": "R",
+   "nodes": [
+    "Co",
+    "0"
+   ],
+   "value": "4k7"
+  },
+  {
+   "ref": "R28",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "octw",
+    "Co"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "oct"
+  },
+  {
+   "ref": "R29",
+   "type": "R",
+   "nodes": [
+    "octw",
+    "vcfIn"
+   ],
+   "value": "8k2"
+  },
+  {
+   "ref": "R19",
+   "type": "R",
+   "nodes": [
+    "nENV",
+    "nA"
+   ],
+   "value": "560"
+  },
+  {
+   "ref": "C7",
+   "type": "C",
+   "nodes": [
+    "nA",
+    "0"
+   ],
+   "value": "4u7",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R20",
+   "type": "R",
+   "nodes": [
+    "nA",
+    "nB"
+   ],
+   "value": "3k3"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "nB",
+    "0"
+   ],
+   "value": "1u",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R21",
+   "type": "R",
+   "nodes": [
+    "nB",
+    "nC2"
+   ],
+   "value": "2k2"
+  },
+  {
+   "ref": "C9",
+   "type": "C",
+   "nodes": [
+    "nC2",
+    "0"
+   ],
+   "value": "470n",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R22",
+   "type": "R",
+   "nodes": [
+    "nC2",
+    "nD"
+   ],
+   "value": "22k"
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "nD",
+    "0"
+   ],
+   "value": "56n",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "A4B",
+   "type": "opamp",
+   "nodes": [
+    "nD",
+    "nA4Bm",
+    "nA4B",
+    "plus9",
+    "neg10"
+   ],
+   "model": "JRC4558"
+  },
+  {
+   "ref": "R23",
+   "type": "R",
+   "nodes": [
+    "nA4Bm",
+    "nA4B"
+   ],
+   "value": "47k"
+  },
+  {
+   "ref": "R24",
+   "type": "R",
+   "nodes": [
+    "nA4B",
+    "nL2"
+   ],
+   "value": "1k"
+  },
+  {
+   "ref": "A4A",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "nL2",
+    "nA4A",
+    "plus9",
+    "neg10"
+   ],
+   "model": "JRC4558"
+  },
+  {
+   "ref": "R25",
+   "type": "R",
+   "nodes": [
+    "nL2",
+    "neg10"
+   ],
+   "value": "22k"
+  },
+  {
+   "ref": "D4",
+   "type": "D",
+   "nodes": [
+    "dA",
+    "nL2"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "D5",
+   "type": "D",
+   "nodes": [
+    "dB",
+    "dA"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "D6",
+   "type": "D",
+   "nodes": [
+    "dC",
+    "dB"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "D7",
+   "type": "D",
+   "nodes": [
+    "nA4A",
+    "dC"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "nA4A",
+    "nTRIG"
+   ],
+   "value": "1u",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R30",
+   "type": "R",
+   "nodes": [
+    "nTRIG",
+    "0"
+   ],
+   "value": "2k2"
+  },
+  {
+   "ref": "R31",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "trigw",
+    "nTRIG"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "trig"
+  },
+  {
+   "ref": "A5B",
+   "type": "opamp",
+   "nodes": [
+    "nA",
+    "H",
+    "nA5B",
+    "plus9",
+    "neg10"
+   ],
+   "model": "JRC4558"
+  },
+  {
+   "ref": "D3",
+   "type": "D",
+   "nodes": [
+    "H",
+    "nA5B"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "R41",
+   "type": "R",
+   "nodes": [
+    "H",
+    "MODP"
+   ],
+   "value": "220"
+  },
+  {
+   "ref": "A5A",
+   "type": "opamp",
+   "nodes": [
+    "nA4B",
+    "na5am",
+    "Xsq",
+    "plus9",
+    "neg10"
+   ],
+   "model": "JRC4558"
+  },
+  {
+   "ref": "R42",
+   "type": "R",
+   "nodes": [
+    "na5am",
+    "neg10"
+   ],
+   "value": "820k"
+  },
+  {
+   "ref": "R43",
+   "type": "R",
+   "nodes": [
+    "na5am",
+    "0"
+   ],
+   "value": "1k"
+  },
+  {
+   "ref": "A6A",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "nA6Am",
+    "nA6A",
+    "plus9",
+    "neg10"
+   ],
+   "model": "JRC4558"
+  },
+  {
+   "ref": "R17",
+   "type": "R",
+   "nodes": [
+    "n3",
+    "c6a"
+   ],
+   "value": "2k7"
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "c6a",
+    "nA6Am"
+   ],
+   "value": "1u",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R18",
+   "type": "R",
+   "nodes": [
+    "nA6Am",
+    "nA6A"
+   ],
+   "value": "27k"
+  },
+  {
+   "ref": "A6B",
+   "type": "opamp",
+   "nodes": [
+    "MODP",
+    "nA6Bm",
+    "nA6B",
+    "plus9",
+    "neg10"
+   ],
+   "model": "JRC4558"
+  },
+  {
+   "ref": "C16",
+   "type": "C",
+   "nodes": [
+    "MODP",
+    "0"
+   ],
+   "value": "4u7",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R39",
+   "type": "R",
+   "nodes": [
+    "MODP",
+    "d8k"
+   ],
+   "value": "120k"
+  },
+  {
+   "ref": "R40",
+   "type": "R",
+   "nodes": [
+    "MODP",
+    "d9k"
+   ],
+   "value": "6k8"
+  },
+  {
+   "ref": "R38",
+   "type": "R",
+   "nodes": [
+    "nA6Bm",
+    "0"
+   ],
+   "value": "22k"
+  },
+  {
+   "ref": "Q1",
+   "type": "pnp",
+   "nodes": [
+    "nA8abc",
+    "nA6B",
+    "nA6Bm"
+   ],
+   "model": "2N5087"
+  },
+  {
+   "ref": "D8",
+   "type": "D",
+   "nodes": [
+    "Xsq",
+    "d8k"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "D9",
+   "type": "D",
+   "nodes": [
+    "nSTOP",
+    "d9k"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "D10",
+   "type": "D",
+   "nodes": [
+    "Xsq",
+    "Y6"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "D11",
+   "type": "D",
+   "nodes": [
+    "nSTOP",
+    "Y6"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "A8",
+   "type": "ota",
+   "nodes": [
+    "nA8o",
+    "nA8p",
+    "0",
+    "nA8abc",
+    "neg10",
+    "plus9"
+   ],
+   "model": "CA3094"
+  },
+  {
+   "ref": "C14",
+   "type": "C",
+   "nodes": [
+    "nA6A",
+    "a8i"
+   ],
+   "value": "1u",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R34",
+   "type": "R",
+   "nodes": [
+    "a8i",
+    "nA8p"
+   ],
+   "value": "2k7"
+  },
+  {
+   "ref": "C15",
+   "type": "C",
+   "nodes": [
+    "nA8p",
+    "0"
+   ],
+   "value": "47n",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R35",
+   "type": "R",
+   "nodes": [
+    "nA8p",
+    "0"
+   ],
+   "value": "10k"
+  },
+  {
+   "ref": "R36",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "sqw2",
+    "nA8o"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "sqr"
+  },
+  {
+   "ref": "R37",
+   "type": "R",
+   "nodes": [
+    "sqw2",
+    "vcfIn"
+   ],
+   "value": "13k"
+  },
+  {
+   "ref": "A7A",
+   "type": "opamp",
+   "nodes": [
+    "na7ap",
+    "trigw",
+    "nSTOP",
+    "plus9",
+    "neg10"
+   ],
+   "model": "JRC4558"
+  },
+  {
+   "ref": "R32",
+   "type": "R",
+   "nodes": [
+    "na7ap",
+    "neg10"
+   ],
+   "value": "390k"
+  },
+  {
+   "ref": "R33",
+   "type": "R",
+   "nodes": [
+    "na7ap",
+    "0"
+   ],
+   "value": "330"
+  },
+  {
+   "ref": "A7B",
+   "type": "opamp",
+   "nodes": [
+    "trigw",
+    "na7bm",
+    "n7",
+    "plus9",
+    "neg10"
+   ],
+   "model": "JRC4558"
+  },
+  {
+   "ref": "R44",
+   "type": "R",
+   "nodes": [
+    "na7bm",
+    "plus9"
+   ],
+   "value": "330k"
+  },
+  {
+   "ref": "R45",
+   "type": "R",
+   "nodes": [
+    "na7bm",
+    "0"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "R46",
+   "type": "R",
+   "nodes": [
+    "n3",
+    "n1a"
+   ],
+   "value": "3k3"
+  },
+  {
+   "ref": "R47",
+   "type": "R",
+   "nodes": [
+    "n1a",
+    "trigp"
+   ],
+   "value": "3k3"
+  },
+  {
+   "ref": "C17",
+   "type": "C",
+   "nodes": [
+    "n1a",
+    "0"
+   ],
+   "value": "3n3",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R50",
+   "type": "R",
+   "nodes": [
+    "0",
+    "x50"
+   ],
+   "value": "6k8"
+  },
+  {
+   "ref": "C18",
+   "type": "C",
+   "nodes": [
+    "x50",
+    "trigp"
+   ],
+   "value": "100n",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "A15B",
+   "type": "opamp",
+   "nodes": [
+    "trigp",
+    "nB15",
+    "nA15B",
+    "plus9",
+    "neg10"
+   ],
+   "model": "JRC4558"
+  },
+  {
+   "ref": "A16A",
+   "type": "opamp",
+   "nodes": [
+    "trigp",
+    "nB16",
+    "nA16A",
+    "plus9",
+    "neg10"
+   ],
+   "model": "JRC4558"
+  },
+  {
+   "ref": "D12",
+   "type": "D",
+   "nodes": [
+    "nB15",
+    "nA15B"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "D13",
+   "type": "D",
+   "nodes": [
+    "nA15B",
+    "nC15"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "R48",
+   "type": "R",
+   "nodes": [
+    "nC15",
+    "nB15"
+   ],
+   "value": "10k"
+  },
+  {
+   "ref": "R49",
+   "type": "R",
+   "nodes": [
+    "nC15",
+    "P15"
+   ],
+   "value": "220"
+  },
+  {
+   "ref": "C19",
+   "type": "C",
+   "nodes": [
+    "P15",
+    "0"
+   ],
+   "value": "4u7",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "A15A",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "P15",
+    "nA15A",
+    "plus9",
+    "neg10"
+   ],
+   "model": "JRC4558"
+  },
+  {
+   "ref": "R53",
+   "type": "R",
+   "nodes": [
+    "nA15A",
+    "flr"
+   ],
+   "value": "47k"
+  },
+  {
+   "ref": "D14",
+   "type": "D",
+   "nodes": [
+    "nA16A",
+    "nB16"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "D15",
+   "type": "D",
+   "nodes": [
+    "nC16",
+    "nA16A"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "R51",
+   "type": "R",
+   "nodes": [
+    "nC16",
+    "nB16"
+   ],
+   "value": "10k"
+  },
+  {
+   "ref": "R52",
+   "type": "R",
+   "nodes": [
+    "nC16",
+    "P16"
+   ],
+   "value": "220"
+  },
+  {
+   "ref": "C20",
+   "type": "C",
+   "nodes": [
+    "P16",
+    "0"
+   ],
+   "value": "4u7",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "A16B",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "P16",
+    "nA16B",
+    "plus9",
+    "neg10"
+   ],
+   "model": "JRC4558"
+  },
+  {
+   "ref": "R54",
+   "type": "R",
+   "nodes": [
+    "nA16B",
+    "fls"
+   ],
+   "value": "47k"
+  },
+  {
+   "ref": "A17B",
+   "type": "dff",
+   "nodes": [
+    "neg10",
+    "neg10",
+    "fls",
+    "flr",
+    "nc1",
+    "flq",
+    "0",
+    "neg10"
+   ],
+   "model": "CD4013B",
+   "note": "CD4013 half 2 used as the S-R latch: CLK and D strapped to -V; R<-R53<-A15A, S<-R54<-A16B (as drawn). vdd=0, vss=-V per the sheet's own note"
+  },
+  {
+   "ref": "A17A",
+   "type": "dff",
+   "nodes": [
+    "flqb",
+    "flq",
+    "neg10",
+    "neg10",
+    "nc2",
+    "flqb",
+    "0",
+    "neg10"
+   ],
+   "model": "CD4013B",
+   "note": "CD4013 half 1: divide-by-two, D<-own Qbar; CLK<-A17B Qbar"
+  },
+  {
+   "ref": "R55",
+   "type": "R",
+   "nodes": [
+    "flqb",
+    "nEdge"
+   ],
+   "value": "3k9",
+   "label": "A17A Q-bar edge differentiator into A18 (NOT the envelope node)",
+   "note": "The pass-8 transcription folded this onto the smoothing-chain output nD. They are two nodes: with them merged, A18 abc-junction current (~184 uA through R56 47k) clamps the envelope node to -0.63 V, which sits below A5A's -12 mV squelch reference and freezes the whole chain. Split, the envelope idles at +0.004 V and the squelch/Rate/Trigger chain works"
+  },
+  {
+   "ref": "C21",
+   "type": "C",
+   "nodes": [
+    "nEdge",
+    "neg10"
+   ],
+   "value": "100n",
+   "note": "drawing prints the value in microfarads",
+   "label": "edge-differentiator timing cap (A17A Q-bar, to -V)"
+  },
+  {
+   "ref": "R56",
+   "type": "R",
+   "nodes": [
+    "nEdge",
+    "a18abc"
+   ],
+   "value": "47k",
+   "label": "A18 track-and-hold Iabc feed (from the edge differentiator's node)"
+  },
+  {
+   "ref": "A18",
+   "type": "ota",
+   "nodes": [
+    "a18o",
+    "a18p",
+    "a18n",
+    "a18abc",
+    "neg10",
+    "plus9"
+   ],
+   "model": "CA3094"
+  },
+  {
+   "ref": "R57",
+   "type": "R",
+   "nodes": [
+    "n1",
+    "a18p"
+   ],
+   "value": "27k"
+  },
+  {
+   "ref": "R58",
+   "type": "R",
+   "nodes": [
+    "a18p",
+    "0"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "C22",
+   "type": "C",
+   "nodes": [
+    "a18o",
+    "0"
+   ],
+   "value": "3n3",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "Q2",
+   "type": "njf",
+   "nodes": [
+    "plus9",
+    "a18o",
+    "c23l"
+   ],
+   "model": "2N4302"
+  },
+  {
+   "ref": "R59",
+   "type": "R",
+   "nodes": [
+    "a18n",
+    "0"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "R60",
+   "type": "R",
+   "nodes": [
+    "a18n",
+    "c23l"
+   ],
+   "value": "27k"
+  },
+  {
+   "ref": "R62",
+   "type": "R",
+   "nodes": [
+    "c23l",
+    "neg10"
+   ],
+   "value": "12k"
+  },
+  {
+   "ref": "C23",
+   "type": "C",
+   "nodes": [
+    "c23l",
+    "c23r"
+   ],
+   "value": "1u",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R61",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "subw",
+    "c23r"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "sub"
+  },
+  {
+   "ref": "R63",
+   "type": "R",
+   "nodes": [
+    "subw",
+    "submix"
+   ],
+   "value": "10k"
+  },
+  {
+   "ref": "C24",
+   "type": "C",
+   "nodes": [
+    "submix",
+    "0"
+   ],
+   "value": "82n",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R64",
+   "type": "R",
+   "nodes": [
+    "submix",
+    "vcfIn"
+   ],
+   "value": "10k"
+  },
+  {
+   "ref": "R91",
+   "type": "R",
+   "nodes": [
+    "vcfIn",
+    "0"
+   ],
+   "value": "470"
+  },
+  {
+   "ref": "A10",
+   "type": "ota",
+   "nodes": [
+    "a10o",
+    "vcfIn",
+    "S",
+    "a10abc",
+    "neg10",
+    "plus9"
+   ],
+   "model": "CA3094"
+  },
+  {
+   "ref": "Q10A",
+   "type": "npn",
+   "nodes": [
+    "d10c",
+    "a10o",
+    "d10m"
+   ],
+   "model": "CA3094_Q_TYP",
+   "label": "CA3094 internal Q12, first Darlington die",
+   "note": "Datasheet schematic: base = pin 1 (the OTA output), collector -> pin 8 through the on-chip 2k, emitter = Q13 base"
+  },
+  {
+   "ref": "RI10A",
+   "type": "R",
+   "nodes": [
+    "plus9",
+    "d10c"
+   ],
+   "value": "2k",
+   "label": "CA3094 on-chip 2k from V+ to Q12 collector (the chip internal R1)"
+  },
+  {
+   "ref": "Q10B",
+   "type": "npn",
+   "nodes": [
+    "plus9",
+    "d10m",
+    "W"
+   ],
+   "model": "CA3094_Q_TYP",
+   "label": "CA3094 internal Q13, second Darlington die",
+   "note": "collector = pin 8 (wired to V+ on the board), emitter = pin 6 = the stage output"
+  },
+  {
+   "ref": "RI10B",
+   "type": "R",
+   "nodes": [
+    "d10m",
+    "W"
+   ],
+   "value": "47k",
+   "label": "CA3094 on-chip 47k (the chip internal R2)",
+   "note": "the datasheet draws R2 from Q13 base to V-; fitted base-emitter exactly as the library two-die pattern ehx-small-stone does (RI1B)"
+  },
+  {
+   "ref": "R75",
+   "type": "R",
+   "nodes": [
+    "a10abc",
+    "T"
+   ],
+   "value": "3k3"
+  },
+  {
+   "ref": "C25",
+   "type": "C",
+   "nodes": [
+    "a10o",
+    "0"
+   ],
+   "value": "3n3",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R76",
+   "type": "R",
+   "nodes": [
+    "W",
+    "neg10"
+   ],
+   "value": "8k2"
+  },
+  {
+   "ref": "R77",
+   "type": "R",
+   "nodes": [
+    "W",
+    "NF"
+   ],
+   "value": "47k"
+  },
+  {
+   "ref": "R78",
+   "type": "R",
+   "nodes": [
+    "NF",
+    "0"
+   ],
+   "value": "1k"
+  },
+  {
+   "ref": "R87",
+   "type": "R",
+   "nodes": [
+    "W",
+    "S"
+   ],
+   "value": "330k"
+  },
+  {
+   "ref": "R86",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "resw",
+    "W"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "res"
+  },
+  {
+   "ref": "R88",
+   "type": "R",
+   "nodes": [
+    "resw",
+    "S"
+   ],
+   "value": "47k"
+  },
+  {
+   "ref": "R89",
+   "type": "R",
+   "nodes": [
+    "W11",
+    "S"
+   ],
+   "value": "4k7"
+  },
+  {
+   "ref": "R90",
+   "type": "R",
+   "nodes": [
+    "S",
+    "0"
+   ],
+   "value": "1k"
+  },
+  {
+   "ref": "A11",
+   "type": "ota",
+   "nodes": [
+    "a11o",
+    "NF",
+    "0",
+    "a11abc",
+    "neg10",
+    "plus9"
+   ],
+   "model": "CA3094"
+  },
+  {
+   "ref": "Q11A",
+   "type": "npn",
+   "nodes": [
+    "d11c",
+    "a11o",
+    "d11m"
+   ],
+   "model": "CA3094_Q_TYP",
+   "label": "CA3094 internal Q12, first Darlington die",
+   "note": "Datasheet schematic: base = pin 1 (the OTA output), collector -> pin 8 through the on-chip 2k, emitter = Q13 base"
+  },
+  {
+   "ref": "RI11A",
+   "type": "R",
+   "nodes": [
+    "plus9",
+    "d11c"
+   ],
+   "value": "2k",
+   "label": "CA3094 on-chip 2k from V+ to Q12 collector (the chip internal R1)"
+  },
+  {
+   "ref": "Q11B",
+   "type": "npn",
+   "nodes": [
+    "plus9",
+    "d11m",
+    "W11"
+   ],
+   "model": "CA3094_Q_TYP",
+   "label": "CA3094 internal Q13, second Darlington die",
+   "note": "collector = pin 8 (wired to V+ on the board), emitter = pin 6 = the stage output"
+  },
+  {
+   "ref": "RI11B",
+   "type": "R",
+   "nodes": [
+    "d11m",
+    "W11"
+   ],
+   "value": "47k",
+   "label": "CA3094 on-chip 47k (the chip internal R2)",
+   "note": "the datasheet draws R2 from Q13 base to V-; fitted base-emitter exactly as the library two-die pattern ehx-small-stone does (RI1B)"
+  },
+  {
+   "ref": "R79",
+   "type": "R",
+   "nodes": [
+    "a11abc",
+    "T"
+   ],
+   "value": "3k3"
+  },
+  {
+   "ref": "C26",
+   "type": "C",
+   "nodes": [
+    "a11o",
+    "0"
+   ],
+   "value": "3n3",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R80",
+   "type": "R",
+   "nodes": [
+    "W11",
+    "neg10"
+   ],
+   "value": "8k2"
+  },
+  {
+   "ref": "R81",
+   "type": "R",
+   "nodes": [
+    "W11",
+    "NF2"
+   ],
+   "value": "47k"
+  },
+  {
+   "ref": "R82",
+   "type": "R",
+   "nodes": [
+    "NF2",
+    "0"
+   ],
+   "value": "1k"
+  },
+  {
+   "ref": "A12",
+   "type": "ota",
+   "nodes": [
+    "a12o",
+    "0",
+    "NF2",
+    "a12abc",
+    "neg10",
+    "plus9"
+   ],
+   "model": "CA3094",
+   "note": "Pins: out 1 (amp output), 3 (+) = 0 V, 2 (-) = the summing node NF2, abc 5, V- 4, V+ 7. Read at 3400 dpi: the symbol prints 2 above 3 with a drawn '-' on the upper lead and '+' on the lower; the lower (pin 3) lead turns down at u=668.9 into the ground triangle at v=362.6, and the upper (pin 2, '-') lead is the net at v=328.3 carrying R81 47k (from W11), R82 1k (to 0 V) and the u=644.4 drop to R85 47k from its own output W12. So A12 is an inverting amplifier, gain -R85/R81 = -1 (-6 dB/oct above 1/(2 pi R85 C27) = 1.03 kHz). The earlier assembly had pin 3 tied to R85 and pin 2 to the R81/R82 divider, i.e. the two input leads swapped, which is a positive-feedback latch: W12 sat at -10.000 V"
+  },
+  {
+   "ref": "Q12A",
+   "type": "npn",
+   "nodes": [
+    "d12c",
+    "a12o",
+    "d12m"
+   ],
+   "model": "CA3094_Q_TYP",
+   "label": "CA3094 internal Q12, first Darlington die",
+   "note": "Datasheet schematic: base = pin 1 (the OTA output), collector -> pin 8 through the on-chip 2k, emitter = Q13 base"
+  },
+  {
+   "ref": "RI12A",
+   "type": "R",
+   "nodes": [
+    "plus9",
+    "d12c"
+   ],
+   "value": "2k",
+   "label": "CA3094 on-chip 2k from V+ to Q12 collector (the chip internal R1)"
+  },
+  {
+   "ref": "Q12B",
+   "type": "npn",
+   "nodes": [
+    "plus9",
+    "d12m",
+    "W12"
+   ],
+   "model": "CA3094_Q_TYP",
+   "label": "CA3094 internal Q13, second Darlington die",
+   "note": "collector = pin 8 (wired to V+ on the board), emitter = pin 6 = the stage output"
+  },
+  {
+   "ref": "RI12B",
+   "type": "R",
+   "nodes": [
+    "d12m",
+    "W12"
+   ],
+   "value": "47k",
+   "label": "CA3094 on-chip 47k (the chip internal R2)",
+   "note": "the datasheet draws R2 from Q13 base to V-; fitted base-emitter exactly as the library two-die pattern ehx-small-stone does (RI1B)"
+  },
+  {
+   "ref": "R83",
+   "type": "R",
+   "nodes": [
+    "a12abc",
+    "T"
+   ],
+   "value": "3k3"
+  },
+  {
+   "ref": "C27",
+   "type": "C",
+   "nodes": [
+    "a12o",
+    "0"
+   ],
+   "value": "3n3",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "R84",
+   "type": "R",
+   "nodes": [
+    "W12",
+    "neg10"
+   ],
+   "value": "8k2"
+  },
+  {
+   "ref": "R85",
+   "type": "R",
+   "nodes": [
+    "W12",
+    "NF2"
+   ],
+   "value": "47k",
+   "label": "A12 feedback resistor (47k, pin 6 -> pin 2)"
+  },
+  {
+   "ref": "U9A",
+   "type": "opamp",
+   "nodes": [
+    "nstop2",
+    "n9a",
+    "n9a",
+    "plus9",
+    "neg10"
+   ],
+   "model": "JRC4558",
+   "note": "unity follower: pin 1 tied to pin 2; pin 3 (+) is the STOP FREQ pad (R66/R67), read at 3600 dpi"
+  },
+  {
+   "ref": "R65",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "stopw",
+    "neg10"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "stop"
+  },
+  {
+   "ref": "R66",
+   "type": "R",
+   "nodes": [
+    "stopw",
+    "nstop2"
+   ],
+   "value": "3k3",
+   "note": "Read at 3600 dpi (u 85..148 / v 250..320): the STOP FREQ pot R65 wiper -> R66 3.3k -> a junction with R67 820 to 0 V -> U9A pin 3. The first assembly had R66/R67 across the op-amp output node instead (a 4.2 mA load on a follower), which was the INFERRED wiring; this is the drawn one",
+   "label": "STOP FREQ pad (3.3k)"
+  },
+  {
+   "ref": "R67",
+   "type": "R",
+   "nodes": [
+    "nstop2",
+    "0"
+   ],
+   "value": "820",
+   "note": "Read at 3600 dpi with R66: R67 820 is the lower leg of the STOP pad, to 0 V",
+   "label": "STOP FREQ pad (820)"
+  },
+  {
+   "ref": "D16",
+   "type": "D",
+   "nodes": [
+    "r68a",
+    "n7"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "R68",
+   "type": "R",
+   "nodes": [
+    "r68a",
+    "q3e"
+   ],
+   "value": "1k"
+  },
+  {
+   "ref": "D17",
+   "type": "D",
+   "nodes": [
+    "d17a",
+    "n7"
+   ],
+   "model": "1N5235B"
+  },
+  {
+   "ref": "R69",
+   "type": "R",
+   "nodes": [
+    "d17a",
+    "iab"
+   ],
+   "value": "2k2"
+  },
+  {
+   "ref": "R70",
+   "type": "R",
+   "nodes": [
+    "plus9",
+    "iab"
+   ],
+   "value": "22M"
+  },
+  {
+   "ref": "Q3",
+   "type": "pnp",
+   "nodes": [
+    "startn",
+    "n9a",
+    "q3e"
+   ],
+   "model": "2N5087"
+  },
+  {
+   "ref": "R92",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "startw",
+    "neg10"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "start"
+  },
+  {
+   "ref": "R93",
+   "type": "R",
+   "nodes": [
+    "startw",
+    "nst"
+   ],
+   "value": "3k3"
+  },
+  {
+   "ref": "R94",
+   "type": "R",
+   "nodes": [
+    "nst",
+    "0"
+   ],
+   "value": "820"
+  },
+  {
+   "ref": "R95",
+   "type": "R",
+   "nodes": [
+    "nst",
+    "startn"
+   ],
+   "value": "4k7"
+  },
+  {
+   "ref": "A13",
+   "type": "ota",
+   "nodes": [
+    "a13o",
+    "n13p",
+    "startn",
+    "iab",
+    "neg10",
+    "plus9"
+   ],
+   "model": "CA3094",
+   "note": "Pins: out 1, + 3 = n13p (R71 680k to +V with R72 1k to 0 V, i.e. a +13 mV reference), - 2 = the START/STOP rail, abc 5, V- 4, V+ 7. Read at 4000 dpi (u 143..272 / v 348..370): the pin-2 lead turns down at u=267.1 onto the rail at v=357.4-357.7, which carries R95 4.7k (the START pad's R93/R94 divider), a junction dot at u=213.1 with a vertical up to Q3's collector, and turns up at u=270 into A13. So the - input is the START/STOP control node and Q3 is the reset switch that drives it above the +13 mV reference. The earlier 'inn = T' (follower) reading was the pass-8 error"
+  },
+  {
+   "ref": "Q13A",
+   "type": "npn",
+   "nodes": [
+    "d13c",
+    "a13o",
+    "d13m"
+   ],
+   "model": "CA3094_Q_TYP",
+   "label": "CA3094 internal Q12, first Darlington die",
+   "note": "base = pin 1 (the OTA output), collector -> pin 8 through the on-chip 2k, emitter = Q13 base"
+  },
+  {
+   "ref": "RI13A",
+   "type": "R",
+   "nodes": [
+    "plus9",
+    "d13c"
+   ],
+   "value": "2k",
+   "label": "CA3094 on-chip 2k from V+ to Q12 collector (chip R1)"
+  },
+  {
+   "ref": "Q13B",
+   "type": "npn",
+   "nodes": [
+    "plus9",
+    "d13m",
+    "T"
+   ],
+   "model": "CA3094_Q_TYP",
+   "label": "CA3094 internal Q13, second Darlington die (emitter = pin 6 = the ramp node T)"
+  },
+  {
+   "ref": "RI13B",
+   "type": "R",
+   "nodes": [
+    "d13m",
+    "T"
+   ],
+   "value": "47k",
+   "label": "CA3094 on-chip 47k (chip R2), fitted base-emitter as the library two-die pattern does"
+  },
+  {
+   "ref": "R71",
+   "type": "R",
+   "nodes": [
+    "plus9",
+    "n13p"
+   ],
+   "value": "680k"
+  },
+  {
+   "ref": "R72",
+   "type": "R",
+   "nodes": [
+    "n13p",
+    "0"
+   ],
+   "value": "1k"
+  },
+  {
+   "ref": "D18",
+   "type": "D",
+   "nodes": [
+    "neg10",
+    "a13o"
+   ],
+   "model": "1N5235B",
+   "note": "1N5235B (6.8 V) ramp ceiling, on A13 pin 1 with C28 (see C28 note)"
+  },
+  {
+   "ref": "C28",
+   "type": "C",
+   "nodes": [
+    "a13o",
+    "neg10"
+   ],
+   "value": "10u",
+   "note": "10 uF ramp capacitor on A13 pin 1 (the OTA output), NOT pin 6. Sheet 2 carries a circled net (2) on the C28+/D18 column at (399.4,367.5) and the same (2) on sheet 1 at (298.0,177.0), i.e. the ramp is a distributed named net driven by the OTA output. Physics: on pin 6 the Darlington emitter current (beta^2 x Iabc) swamps the abc load and pins T at the D18 clamp (rate pot cannot move it, measured 15 mV over the whole pot); on pin 1 the node balances at T = -5.47 V and the rate pot moves it (measured -5.16 -> -5.41 V decay over 1.1 s at rate 0.5)"
+  },
+  {
+   "ref": "R74",
+   "type": "pot",
+   "nodes": [
+    "n74t",
+    "ratew",
+    "T"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "rate",
+   "note": "100k LIN SWEEP RATE. Read at 3600 dpi: the wiper goes to R73 2.2k (whose far end is node (7) via u=394.4 / v=323.4), and the track BOTTOM lands on the T ramp rail at v=289.1 (junction dot at u=481, v=289.1) — the same rail as R75/R79/R83. The track TOP is open in the drawing (its lead ends 5 pt short of any wire), so that end is a free node. ccw is assigned to the open end so that control 0 = maximum resistance = slowest sweep; the drawing cannot settle the rotation direction"
+  },
+  {
+   "ref": "R73",
+   "type": "R",
+   "nodes": [
+    "ratew",
+    "n7"
+   ],
+   "value": "2k2",
+   "note": "2.2k between the SWEEP RATE wiper and node (7): left lead to u=394.4, down to v=323.4, then left along v=323.4 into the node-(7) rail. The first assembly inserted a second 2.2k (\"R73B\") between this resistor and T; the drawing has only one 2.2k here (the other 2.2K on sheet 2 is R69), and with R73B fitted the pot+R73+R73B formed a loop on the T node itself"
+  },
+  {
+   "ref": "A14",
+   "type": "ota",
+   "nodes": [
+    "vcaout",
+    "vcaP",
+    "0",
+    "vcaabc",
+    "neg10",
+    "plus9"
+   ],
+   "model": "CA3094",
+   "note": "CA3094 VCA. pins 6/8 open; pin 1 = output. Pin 2 (-) is tied to the 0 V bus: the drawing shows it reaching only R97's bottom (verified isolated at 3600 dpi and in the vector dump), so the tie is INFERRED from the canonical OTA VCA input divider (47k/1k keeps Vd under ~25 mV) and from the sibling OTAs A10/A11/A12, whose dividers use the same 47k/1k with the 1k on 0 V"
+  },
+  {
+   "ref": "R104",
+   "type": "R",
+   "nodes": [
+    "vcaout",
+    "0"
+   ],
+   "value": "1k"
+  },
+  {
+   "ref": "R96",
+   "type": "R",
+   "nodes": [
+    "vcaP",
+    "c29r"
+   ],
+   "value": "47k"
+  },
+  {
+   "ref": "C29",
+   "type": "C",
+   "nodes": [
+    "c29r",
+    "W12"
+   ],
+   "value": "1u",
+   "note": "1 uF tantalum, + plate at the filter output side; the far side's drawn route (right, down at u=345, left along v=458) was not traced to its end, so it is tied to the filter output W12 — INFERRED"
+  },
+  {
+   "ref": "R97",
+   "type": "R",
+   "nodes": [
+    "vcaP",
+    "0"
+   ],
+   "value": "1k",
+   "note": "R97 1k is the lower leg of the VCA's 47k/1k input divider, from A14's pin 3 (+) to the 0 V bus. The drawing shows pin 2 (-) reaching nothing but R97's far end with no third wire and no junction dot (the factory drawing's one defect, notes 8.19); the chosen reading puts pin 2 on the 0 V bus, so R97's far end is 0 V. Leaving it on a floating node (the first assembly's 'vcaN') gives the OTA input no DC return at all and the node parks at -0.38 V"
+  },
+  {
+   "ref": "R98",
+   "type": "R",
+   "nodes": [
+    "vcaabc",
+    "q4e"
+   ],
+   "value": "47k"
+  },
+  {
+   "ref": "R102",
+   "type": "R",
+   "nodes": [
+    "Y6",
+    "q6b"
+   ],
+   "value": "8k2"
+  },
+  {
+   "ref": "R103",
+   "type": "R",
+   "nodes": [
+    "q6b",
+    "neg10"
+   ],
+   "value": "820"
+  },
+  {
+   "ref": "Q6",
+   "type": "npn",
+   "nodes": [
+    "nodeA",
+    "q6b",
+    "neg10"
+   ],
+   "model": "2N5088"
+  },
+  {
+   "ref": "R100",
+   "type": "R",
+   "nodes": [
+    "plus9",
+    "nodeA"
+   ],
+   "value": "22k"
+  },
+  {
+   "ref": "R99",
+   "type": "R",
+   "nodes": [
+    "plus9",
+    "q5c"
+   ],
+   "value": "47"
+  },
+  {
+   "ref": "Q5",
+   "type": "npn",
+   "nodes": [
+    "q5c",
+    "nodeA",
+    "q5e"
+   ],
+   "model": "2N5088"
+  },
+  {
+   "ref": "R101",
+   "type": "pot",
+   "nodes": [
+    "ATK",
+    "atkw",
+    "q5e"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "delay"
+  },
+  {
+   "ref": "D19",
+   "type": "D",
+   "nodes": [
+    "ATK",
+    "nodeA"
+   ],
+   "model": "1N914"
+  },
+  {
+   "ref": "C30",
+   "type": "C",
+   "nodes": [
+    "ATK",
+    "neg10"
+   ],
+   "value": "10u",
+   "note": "drawing prints the value in microfarads"
+  },
+  {
+   "ref": "Q4",
+   "type": "npn",
+   "nodes": [
+    "plus9",
+    "atkw",
+    "q4e"
+   ],
+   "model": "2N5088"
+  }
+ ],
+ "probes": [
+  "n1",
+  "n3",
+  "nENV",
+  "vcfIn",
+  "W",
+  "W11",
+  "W12",
+  "vcaout",
+  "n7",
+  "T"
+ ],
+ "layout": {}
+}

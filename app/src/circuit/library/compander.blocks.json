@@ -1,0 +1,154 @@
+{
+  "schema": "headroom.circuit.v1",
+  "note": "Compander sections. Philips NE570 product data (2003 Apr 03), Figs. 2, 6, 9 and 10: R1 10k from RECT IN to the VREF summing node; the rectified input current charges the CRECT pin, flows through R5 10k into the mirror input (diode-connected Q8) and is mirrored x2 to IG; R2 20k from G CELL IN to the cell's VREF summing node; the cell's output current IG*IIN/I1 (I1 = 140 uA) enters the op-amp's inverting summing node (INV IN); R3 20k from INV IN to the R3 pin, R4 30k from INV IN to GND; the op-amp's + input at VREF = 1.8 V above GND. The THD trim pin is not brought out (it sits at VREF).",
+  "subcircuits": {
+    "ne570": {
+      "pins": [
+        "rect_in",
+        "crect",
+        "dg_in",
+        "inv_in",
+        "r3",
+        "out",
+        "vcc",
+        "gnd"
+      ],
+      "note": "one channel of an NE570/NE571 (same internal values)",
+      "parts": [
+        {
+          "ref": "VBG",
+          "type": "V",
+          "nodes": [
+            "bg",
+            "0"
+          ],
+          "value": "-1.8",
+          "note": "bandgap 1.8 V (1.7-1.9 V), referred to GND by EREF"
+        },
+        {
+          "ref": "EREF",
+          "type": "vcvs",
+          "nodes": [
+            "vref",
+            "0",
+            "gnd",
+            "bg"
+          ],
+          "gain": 1.0
+        },
+        {
+          "ref": "R1",
+          "type": "R",
+          "nodes": [
+            "rect_in",
+            "vref"
+          ],
+          "value": "10k"
+        },
+        {
+          "ref": "REC",
+          "type": "absi",
+          "nodes": [
+            "rect_in",
+            "vref",
+            "crect",
+            "gnd"
+          ],
+          "model": "NE570"
+        },
+        {
+          "ref": "R5",
+          "type": "R",
+          "nodes": [
+            "crect",
+            "q"
+          ],
+          "value": "10k"
+        },
+        {
+          "ref": "Q8",
+          "type": "D",
+          "nodes": [
+            "q",
+            "gnd"
+          ],
+          "model": "NE570_Q8"
+        },
+        {
+          "ref": "VIB",
+          "type": "V",
+          "nodes": [
+            "ibv",
+            "0"
+          ],
+          "value": "1",
+          "note": "reference for the rectifier bias current"
+        },
+        {
+          "ref": "GIB",
+          "type": "vccs",
+          "nodes": [
+            "gnd",
+            "crect",
+            "ibv",
+            "0"
+          ],
+          "gain": 5e-08,
+          "note": "unverified: rectifier bias current, datasheet 'less than 0.1 uA' (supplied internally); 50 nA assumed. It keeps the mirror input (Q8) near its Vbe at idle, so CRECT does not start from 0 V"
+        },
+        {
+          "ref": "R2",
+          "type": "R",
+          "nodes": [
+            "dg_in",
+            "vref"
+          ],
+          "value": "20k"
+        },
+        {
+          "ref": "GC",
+          "type": "gaincell",
+          "nodes": [
+            "dg_in",
+            "vref",
+            "crect",
+            "q",
+            "inv_in",
+            "gnd"
+          ],
+          "model": "NE570"
+        },
+        {
+          "ref": "R3",
+          "type": "R",
+          "nodes": [
+            "inv_in",
+            "r3"
+          ],
+          "value": "20k"
+        },
+        {
+          "ref": "R4",
+          "type": "R",
+          "nodes": [
+            "inv_in",
+            "gnd"
+          ],
+          "value": "30k"
+        },
+        {
+          "ref": "OA",
+          "type": "opamp",
+          "nodes": [
+            "vref",
+            "inv_in",
+            "out",
+            "vcc",
+            "gnd"
+          ],
+          "model": "NE570_OPAMP"
+        }
+      ]
+    }
+  }
+}

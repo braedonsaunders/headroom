@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>British Blues Boom</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="British Blues Boom" preset-author="Headroom" preset-comment="Mid-60s London blues at full volume: humbuckers into a 2x12 combo of the early British-amp lineage with both channels up, no pedals. Thick, woody and singing, with a round mid push. Neck pickup with the tone rolled back for sweet leads, bridge for biting riffs." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="62000">
+    <component-audio version="1">
+      <parameters num-parameters="14">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="VB" value="0.88"/>
+        <parameter id="VN" value="0.8"/>
+        <parameter id="B" value="0.42"/>
+        <parameter id="M" value="0.78"/>
+        <parameter id="T" value="0.62"/>
+        <parameter id="Pr" value="0.35"/>
+        <parameter id="Pw" value="0"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.75"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bi" value="0.5"/>
+        <parameter id="G4M" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.6127"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="11"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.2"/>
+        <parameter id="Tm" value="0.5"/>
+        <parameter id="Sz" value="0.42"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Chr" value="0.5"/>
+        <parameter id="iM" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="62000" target-number="1" target-name="VB" min-value="0.5" max-value="1" controller-name="Volume"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="62000" target-number="1" target-name="VN" min-value="0" max-value="1" controller-name="Body"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="62000" target-number="1" target-name="M" min-value="0.4" max-value="0.95" controller-name="Mids"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="62000" target-number="1" target-name="T" min-value="0.35" max-value="0.85" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.45" controller-name="Room"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="crunch-british-blues-boom" category="Crunch" order="60" instrument="guitar" style="Blues Rock">
+  <description>Mid-60s London blues at full volume: humbuckers into a 2x12 combo of the early British-amp lineage with both channels up, no pedals. Thick, woody and singing, with a round mid push. Neck pickup with the tone rolled back for sweet leads, bridge for biting riffs.</description>
+  <tags><tag>Crunch</tag><tag>Blues Rock</tag><tag>Blues</tag><tag>No pedals</tag><tag>Humbucker</tag><tag>Lead</tag></tags>
+  <sources>
+    <source url="https://en.wikipedia.org/wiki/Blues_Breakers_with_Eric_Clapton" title="Blues Breakers with Eric Clapton (Wikipedia)"/>
+    <source url="https://guitar.com/features/guitar-legends-eric-clapton-part-1/" title="Guitar.com: Guitar Legends, Eric Clapton part 1"/>
+    <source url="https://www.musicradar.com/news/when-he-felt-the-spirit-he-was-untouchable-the-story-of-bluesbreakers-with-eric-clapton-and-peter-green" title="MusicRadar: the story of Bluesbreakers with Eric Clapton and Peter Green"/>
+    <source url="https://en.wikipedia.org/wiki/Marshall_Bluesbreaker" title="Marshall Bluesbreaker (Wikipedia)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

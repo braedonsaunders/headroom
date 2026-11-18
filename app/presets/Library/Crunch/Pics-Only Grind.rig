@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Pics-Only Grind</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Pics-Only Grind" preset-author="Headroom" preset-comment="An early-70s British picture-panel head into its matching 4x12: thick, chewy lower mids, a woolly, rounded top and a slow, saturated bloom. Fat riffs and big open chords; turn up the Gain for doom, back it down for 70s rock rhythm." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="80000">
+    <component-audio version="1">
+      <parameters num-parameters="14">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="f" value="0"/>
+        <parameter id="b" value="0.62"/>
+        <parameter id="t" value="0.3"/>
+        <parameter id="p" value="0.25"/>
+        <parameter id="g" value="0.82"/>
+        <parameter id="m" value="0.66"/>
+        <parameter id="Pw" value="0"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0"/>
+        <parameter id="Bi" value="1"/>
+        <parameter id="Br" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.0567"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="16"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="80000" target-number="1" target-name="g" min-value="0.35" max-value="0.95" controller-name="Gain"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="80000" target-number="1" target-name="b" min-value="0.3" max-value="0.85" controller-name="Bass"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="80000" target-number="1" target-name="t" min-value="0.2" max-value="0.7" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="80000" target-number="1" target-name="p" min-value="0.15" max-value="0.7" controller-name="Presence"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="80000" target-number="1" target-name="m" min-value="0.4" max-value="0.9" controller-name="Master"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="crunch-pics-only-grind" category="Crunch" order="140" instrument="guitar" style="Rock / Stoner">
+  <description>An early-70s British picture-panel head into its matching 4x12: thick, chewy lower mids, a woolly, rounded top and a slow, saturated bloom. Fat riffs and big open chords; turn up the Gain for doom, back it down for 70s rock rhythm.</description>
+  <tags><tag>Crunch</tag><tag>Stoner</tag><tag>Rock</tag><tag>Doom</tag><tag>Rhythm</tag><tag>No pedals</tag></tags>
+  <sources>
+    <source url="https://en.wikipedia.org/wiki/Orange_Amps" title="Orange Amps (Wikipedia)"/>
+    <source url="https://orangeamps.com/articles/orange-amps-and-how-they-were-used-on-specific-metal-albums/" title="Orange Amps: how Orange amps were used on specific metal albums"/>
+    <source url="https://geargods.net/interviews/matt-pike-wall-orange-amps-sleep/" title="Gear Gods: Matt Pike talks about that massive wall of Orange amps"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

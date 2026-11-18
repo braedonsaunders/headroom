@@ -1,0 +1,73 @@
+/* =====================================================================
+   UNIT ART — illustrated hardware faces (assets/unit-art.js)
+   ===================================================================== */
+.unit.ua { flex-shrink: 0; }
+.ua .ua-face { position: relative; aspect-ratio: var(--ua-ar); width: 100%; border-radius: 14px; user-select: none; -webkit-user-select: none; }
+.ua .ua-bg, .ua .ua-fg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.ua .ua-bg { object-fit: contain; pointer-events: none; -webkit-user-drag: none; }
+.ua .ua-fg { overflow: visible; pointer-events: none; }
+.ua .ua-fg .ua-ctl, .ua .ua-fg .ua-led, .ua .ua-fg .ua-foot { pointer-events: visiblePainted; }
+.ua.ua-loading .ua-bg { opacity: 0.92; }
+
+/* sizes: pedals sit in the pedal row, amps and cabinets fill the stack, rack gear fills the rack */
+.unit.ua.ua-s-pedal { width: var(--ua-pw, 200px); }
+.unit.ua.ua-s-wide-pedal { width: 440px; }
+.stack > .unit.ua.ua-s-stack { align-self: center; width: min(100%, 940px); }
+.stack.paired > .unit.ua + .unit.ua { margin-top: -10px; }
+
+/* the drawing carries its own shadow and outline; selection is a soft accent halo instead of a box */
+.unit.ua.selected .hw-body { outline: 2px solid color-mix(in srgb, var(--accent) 70%, transparent); outline-offset: 2px; }
+.unit.ua.bypassed .hw-body { filter: saturate(0.55) brightness(0.74); }
+body.light .unit.ua.bypassed .hw-body { filter: saturate(0.55) brightness(0.88); }
+
+/* moving parts */
+.ua .ua-knob { cursor: ns-resize; }
+.ua .ua-lever { cursor: pointer; }
+.ua .ua-tog, .ua .ua-btn, .ua .ua-led, .ua .ua-foot { cursor: pointer; }
+.ua .ua-ind { pointer-events: none !important; }
+.ua .ua-btn:not(.ua-on), .ua .ua-ind:not(.ua-on) { filter: url(#ua-dim); }
+.ua .ua-btn.ua-on, .ua .ua-ind.ua-on { filter: url(#ua-lit); }
+.unit.ua.bypassed .ua-led { filter: url(#ua-led-off); }
+.ua .ua-ctl:focus { outline: none; }
+.ua .ua-ctl:focus-visible { filter: url(#ua-lit); }
+body.learning #rack-bay .ua .ua-ctl { animation: uaLearn 1.3s ease-in-out infinite; }
+@keyframes uaLearn { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+/* power + "+N more" float over the face, out of the way until the unit is hovered */
+.ua .ua-tools { position: absolute; left: 8px; top: 8px; z-index: 4; display: flex; align-items: center; gap: 6px;
+  opacity: 0; transition: opacity 0.15s; --ink: #f1f1f3; }
+.unit.ua:hover .ua-tools, .unit.ua:focus-within .ua-tools, .unit.ua.bypassed .ua-tools, .unit.ua .ua-tools:has(.more-btn.on) { opacity: 1; }
+.ua .ua-tools .pwr-btn { width: 22px; height: 22px; border-radius: 6px; background: rgba(12, 12, 14, 0.62); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.ua .ua-tools .more-btn { background: rgba(12, 12, 14, 0.62); color: #f1f1f3; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.14); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); line-height: 18px; }
+.ua .ua-tools .more-btn.on { background: var(--accent); color: var(--accent-ink); }
+.ua.ua-s-pedal .ua-tools { left: 4px; top: 4px; }
+.ua .drawer { margin: 4px 14px 0; }
+.ua-s-pedal .drawer { margin: 4px 0 0; }
+
+/* Components pane: the full drawing as an image */
+.comp-thumb > img.ua-thumb { position: absolute; inset: 5px; width: calc(100% - 10px); height: calc(100% - 10px); object-fit: contain; pointer-events: none; -webkit-user-drag: none; }
+.stack > .unit.ua + .cab-feet { display: none; }
+.rack:not(:has(.unit:not(.ua))) { background: transparent; box-shadow: none; padding: 0; }
+.rack:not(:has(.unit:not(.ua))) > .rack-rail { display: none; }
+.rack:not(:has(.unit:not(.ua))) > .rack-units { padding: 0; align-items: center; }
+.rack-units > .unit.ua { width: min(100%, 940px); }
+
+/* One consistent shadow, traced from each face's real outline (the drawings' own floor shadows, feet and big
+   cast shadows are stripped by tools/sync_unit_art.py). */
+.unit.ua .ua-bg { filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.42)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.38)); }
+body.light .unit.ua .ua-bg { filter: drop-shadow(0 10px 14px rgba(20, 22, 28, 0.20)) drop-shadow(0 1px 2px rgba(20, 22, 28, 0.22)); }
+.comp-thumb .ua-thumb, .comp-thumb img { filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.35)); }
+
+/* Signal Chain pedalboard: pedals at one real-world size (same face height, width from each drawing's shape),
+   laid out three to a row. Click a pedal to pop it out full size. */
+.board-row:has(> .unit.ua) { display: grid; grid-template-columns: repeat(3, auto); justify-content: center; align-items: end; gap: 18px 22px; }
+.board-row > .unit.ua.ua-s-pedal, .board-row > .unit.ua.ua-s-wide-pedal { width: auto; }
+.board-row > .unit.ua.ua-s-pedal .ua-face, .board-row > .unit.ua.ua-s-wide-pedal .ua-face { height: var(--pb-h, 230px); width: auto; }
+
+/* live displays (meters, lamps, screens; assets/unit-art.js "LIVE DISPLAYS") */
+.ua .ua-disp { pointer-events: none; }
+.ua .ua-d-led.ua-off, .ua .ua-d-ladder [data-seg].ua-off { filter: url(#ua-led-off); }
+.ua .ua-d-led.ua-l1 { filter: url(#ua-lv1); }
+.ua .ua-d-led.ua-l2 { filter: url(#ua-lv2); }
+.ua .ua-d-led.ua-l3 { filter: url(#ua-lv3); }
+.unit.ua.bypassed .ua-d-text, .unit.ua.bypassed .ua-d-spectrum, .unit.ua.bypassed .ua-d-curve, .unit.ua.bypassed .ua-d-scope { opacity: 0.42; }

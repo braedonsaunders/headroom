@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Juke Joint Slide</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Juke Joint Slide" preset-author="Headroom" preset-comment="Gritty, open slide tone: a small class-A combo dimed and pushed through a multi-ten-inch cabinet, the way juke-joint players ran cheap gear at full tilt, with a short slapback. Raw, ringing and loud. Open tunings, bottleneck or metal slide, play hard." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="152000">
+    <component-audio version="1">
+      <parameters num-parameters="6">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="gain" value="0.82"/>
+        <parameter id="tone" value="0.62"/>
+        <parameter id="bright" value="1"/>
+        <parameter id="mod" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.5358"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="15"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="158000">
+    <component-audio version="1">
+      <parameters num-parameters="38">
+        <parameter id="mix" value="0.2"/>
+        <parameter id="input" value="0.7224"/>
+        <parameter id="output" value="0.7224"/>
+        <parameter id="pandry" value="0.5"/>
+        <parameter id="panwet" value="0.5"/>
+        <parameter id="stereowidth" value="0.5"/>
+        <parameter id="stereomode" value="0.5"/>
+        <parameter id="timemode" value="0"/>
+        <parameter id="time" value="0.05"/>
+        <parameter id="feedback" value="0.12"/>
+        <parameter id="style" value="0.5"/>
+        <parameter id="ana_bbdtype" value="0.5"/>
+        <parameter id="modern_sat" value="0.5"/>
+        <parameter id="modern_depth" value="0"/>
+        <parameter id="modern_rate" value="0.5"/>
+        <parameter id="modern_stereo" value="0.5"/>
+        <parameter id="diff_amount" value="0.5"/>
+        <parameter id="diff_size" value="0.5"/>
+        <parameter id="diff_movement" value="0.5"/>
+        <parameter id="diff_dense" value="0.5"/>
+        <parameter id="ana_depth" value="0.5"/>
+        <parameter id="ana_rate" value="0.5"/>
+        <parameter id="ana_stereo" value="0.5"/>
+        <parameter id="tape_sat" value="0.5"/>
+        <parameter id="tape_age" value="0.5"/>
+        <parameter id="tape_wowflut" value="0.5"/>
+        <parameter id="tape_noise" value="0.5"/>
+        <parameter id="vd_quality" value="0.5"/>
+        <parameter id="vd_depth" value="0.5"/>
+        <parameter id="vd_rate" value="0.5"/>
+        <parameter id="vd_stereo" value="0.5"/>
+        <parameter id="locut" value="0.5"/>
+        <parameter id="hicut" value="0.45"/>
+        <parameter id="duckingamount" value="0"/>
+        <parameter id="duckingsensitivity" value="0.5"/>
+        <parameter id="duckingrelease" value="0.5"/>
+        <parameter id="duckingmeter" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.1"/>
+        <parameter id="Tm" value="0.5"/>
+        <parameter id="Sz" value="0.3"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Chr" value="0.5"/>
+        <parameter id="iM" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="152000" target-number="1" target-name="gain" min-value="0.5" max-value="1" controller-name="Amp Volume"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="152000" target-number="1" target-name="tone" min-value="0.3" max-value="0.9" controller-name="Tone"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="158000" target-number="1" target-name="mix" min-value="0" max-value="0.4" controller-name="Slapback"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.35" controller-name="Room"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="crunch-juke-joint-slide" category="Crunch" order="80" instrument="guitar" style="Slide Blues">
+  <description>Gritty, open slide tone: a small class-A combo dimed and pushed through a multi-ten-inch cabinet, the way juke-joint players ran cheap gear at full tilt, with a short slapback. Raw, ringing and loud. Open tunings, bottleneck or metal slide, play hard.</description>
+  <tags><tag>Crunch</tag><tag>Slide Blues</tag><tag>Blues</tag><tag>Slide</tag><tag>Slapback</tag><tag>No pedals</tag></tags>
+  <sources>
+    <source url="https://www.premierguitar.com/artists/forgotten-heroes/hound-dog-taylor" title="Premier Guitar: Forgotten Heroes, Hound Dog Taylor"/>
+    <source url="https://www.vintageguitar.com/12131/dan-auerbach/" title="Vintage Guitar: Dan Auerbach"/>
+    <source url="https://en.wikipedia.org/wiki/Elmore_James" title="Elmore James (Wikipedia)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

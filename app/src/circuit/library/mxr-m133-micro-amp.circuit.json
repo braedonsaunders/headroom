@@ -1,0 +1,257 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "mxr-m133-micro-amp",
+  "version": 1,
+  "name": "MXR M133 Micro Amp (1975, Reference Series)",
+  "description": "MXR M-133 Micro Amp clean boost: a single non-inverting TL061 stage. 22 MΩ input pull-down (R1) and 10 MΩ bias (R2) to a 4.5 V divider give about 6.8 MΩ input impedance; C1 0.1 µF into R3 1 kΩ to the + input. Feedback is R4 56 kΩ with C2 47 pF across it (60 kHz pole); the gain leg is C3 4.7 µF in series with R6 2.7 kΩ and the 500 kΩ reverse-log Boost pot, so DC gain is 1 and AC gain is 1 + 56k/(2.7k + Rpot), i.e. 1.11x to 21.7x (0.8 dB to 26.2 dB). C5 15 µF, R9 470 Ω and R10 10 kΩ make the output network (about 0.54 kΩ output impedance, 1.06 Hz high-pass). The stock pedal has no LED or DC jack; D1 1N4001 is reverse-polarity protection only. The 9 V battery feeds the TL061 through D1.",
+  "sources": [
+    {
+      "title": "ElectroSmash, 'MXR MicroAmp Analysis' (BOM C1 0.1u, C2 47p, C3 4.7u, C4 1u, C5 15u, D1 1N4001, R1 22M, R2 10M, R3 1K, R4 56K, R5 500K reverse-log pot, R6 2.7K, R7/R8 100K, R9 470, R10 10K, U1 TL061; gain table 0-500 kΩ -> 21.7x to 1.11x; output network 539 Ω; TL061/071/081 family)",
+      "url": "https://www.electrosmash.com/mxr-microamp"
+    },
+    {
+      "title": "ElectroSmash op-amp-stage schematic (component placement and topology cross-check: C3 4.7u + R6 2.7K in the ground leg, R5 500k pot, C2 47p across R4 56K, R9 470 / R10 10K output divider)",
+      "url": "https://www.electrosmash.com/images/tech/microamp/mxr-microamp-opamp-stage.png"
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 1.0
+  },
+  "oversampling": 1,
+  "minRate": 176400,
+  "solver": "auto",
+  "models": {
+    "TL061": {
+      "kind": "opamp",
+      "level": 1,
+      "a0": 200000.0,
+      "gbw": 1000000.0,
+      "slew": 3500000.0,
+      "swing_hi": 1.5,
+      "swing_lo": 1.5,
+      "vhi": 8.3,
+      "vlo": 0.0,
+      "note": "TL061 single low-power BiFET: 1 MHz GBW, 3.5 V/µs slew, ~2e5 open-loop gain (TI datasheet SLOS081). vhi = 9 V battery less D1's ~0.7 V forward drop; the model's 1.5 V swing margin each side leaves about 6.8 Vpp at the output. unverified: the exact open-loop gain and output swing at 9 V are not in the datasheet; TL061 is the stock device, TL071 a drop-in"
+    }
+  },
+  "controls": [
+    {
+      "id": "boost",
+      "label": "Boost",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "B"
+      ],
+      "paramRange": [
+        0.14,
+        1.0
+      ],
+      "group": "Main",
+      "note": "500 kΩ reverse-log gain pot (R5) in the feedback ground leg. Catalogue 'B' is 0.14-1.0; mapped onto the full 0-500 kΩ track so the preset's 0.14 is the near-unity end and 1.0 the 26 dB end. C taper = the engine's reverse log"
+    },
+    {"id": "power", "label": "On/Off", "kind": "switch", "default": 1.0, "params": ["Pwr"], "legacyOnly": true, "group": "Legacy", "note": "Host handles bypass; stored only"}
+  ],
+  "parts": [
+    {
+      "ref": "VBAT",
+      "type": "V",
+      "nodes": [
+        "vcc",
+        "0"
+      ],
+      "value": "8.42",
+      "label": "9 V battery behind the reverse-polarity diode (rail 8.42 V)",
+      "note": "The real pedal's D1 (1N4001) sits in series between the battery + and the board rail; at the circuit's ~0.1 mA draw it drops a constant 0.58 V, so the rail is modelled as the 8.42 V the full circuit (with D1) settles to. The series diode has no audio effect (its current is steady) and keeping it made the rail cut fail Newton once per run."
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "vr"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Bias divider top"
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "vr",
+        "0"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Bias divider bottom"
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "vr",
+        "0"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Bias decoupling"
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "in",
+        "0"
+      ],
+      "value": "22M",
+      "tolerance": 0.05,
+      "label": "Input pull-down"
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "in",
+        "n1"
+      ],
+      "value": "100n",
+      "tolerance": 0.2,
+      "label": "Input DC block"
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "n1",
+        "n2"
+      ],
+      "value": "1k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R2",
+      "type": "R",
+      "nodes": [
+        "n2",
+        "vr"
+      ],
+      "value": "10M",
+      "tolerance": 0.05,
+      "label": "Bias to + input"
+    },
+    {
+      "ref": "IC1A",
+      "type": "opamp",
+      "nodes": [
+        "n2",
+        "n3",
+        "n4",
+        "vcc",
+        "0"
+      ],
+      "model": "TL061",
+      "label": "Non-inverting gain stage"
+    },
+    {
+      "ref": "R4",
+      "type": "R",
+      "nodes": [
+        "n4",
+        "n3"
+      ],
+      "value": "56k",
+      "tolerance": 0.05,
+      "label": "Feedback"
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "n4",
+        "n3"
+      ],
+      "value": "47p",
+      "tolerance": 0.2,
+      "label": "Feedback low-pass (60 kHz)"
+    },
+    {
+      "ref": "C3",
+      "type": "C",
+      "nodes": [
+        "n3",
+        "n5"
+      ],
+      "value": "4u7",
+      "tolerance": 0.2,
+      "label": "Gain-leg DC block"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "n5",
+        "n6"
+      ],
+      "value": "2k7",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "GAIN",
+      "type": "pot",
+      "nodes": [
+        "n6",
+        "n6",
+        "0"
+      ],
+      "value": "500k",
+      "taper": "C",
+      "control": "boost",
+      "label": "Boost 500 kΩ reverse-log (rheostat: wiper tied to top end)"
+    },
+    {
+      "ref": "C5",
+      "type": "C",
+      "nodes": [
+        "n4",
+        "n7"
+      ],
+      "value": "15u",
+      "tolerance": 0.2,
+      "label": "Output DC block"
+    },
+    {
+      "ref": "R9",
+      "type": "R",
+      "nodes": [
+        "n7",
+        "out"
+      ],
+      "value": "470",
+      "tolerance": 0.05,
+      "label": "Output series"
+    },
+    {
+      "ref": "R10",
+      "type": "R",
+      "nodes": [
+        "out",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "Output load"
+    }
+  ],
+  "probes": [
+    "n2",
+    "n3",
+    "n4",
+    "out"
+  ],
+  "layout": {},
+  "cuts": []
+}

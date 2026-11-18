@@ -1,0 +1,28 @@
+# Flatpak manifest (stub; not yet built). flatpak-builder --user --install build-flatpak app/packaging/flatpak/com.headroom.studio.yml
+# The GNOME runtime provides GTK 3 + WebKitGTK 4.1, which sidesteps the AppImage's WebKitGTK bundling problem.
+# Audio: PipeWire/PulseAudio via --socket=pulseaudio; JACK clients through PipeWire's JACK shim
+# (--filesystem=xdg-run/pipewire-0). MIDI out (ALSA sequencer) needs --device=all.
+app-id: com.headroom.studio
+runtime: org.gnome.Platform
+runtime-version: '47'
+sdk: org.gnome.Sdk
+command: headroom
+finish-args:
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --socket=pulseaudio
+  - --filesystem=xdg-run/pipewire-0
+  - --device=all                 # ALSA MIDI / raw audio devices
+  - --share=network              # loopback engine API + Guitar Tech AI providers
+  - --talk-name=org.freedesktop.secrets
+  - --filesystem=xdg-documents   # import IRs / NAM captures
+modules:
+  - name: headroom
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DRIG_RELEASE_BUNDLE=ON
+    sources:
+      - type: dir
+        path: ../..                # app/

@@ -1,0 +1,1011 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "leslie-122-31000",
+  "version": 1,
+  "name": "Leslie 122 Rotor Amplifier and Dividing Network",
+  "description": "The 122 rotor (main) amplifier and its dividing network, from the 1971 Electro Music factory manual (schematic pages 19-20, parts list page 20) and the 1995 redraw (122mn-a.pdf, Rev 1.1). A 12AU7 differential input stage (V2A/V2B, 56 kOhm plate loads from a 260 V rail, 1.2 kOhm shared cathode, 6 VDC), capacitor-coupled (0.1 uF) into two 6550s in push-pull with 220 kOhm grid leaks, 390 kOhm + 0.0047 uF plate-to-grid feedback around each valve, a 150 Ohm 10 W shared cathode resistor bypassed by 200 uF (25 VDC), 310 VDC screens from a 0C3 series regulator (105 V) behind 470 Ohm, 420 VDC plates from a 430 VDC bridge reservoir through a choke. Output transformer into the double-section m-derived dividing network at 800 Hz: series 7.8 uF with the treble driver shunted by 3.2 mH, and series 5.2 mH into the 15-inch bass driver shunted by 12.5 uF; both drivers 16 Ohm. The rotors are NOT part of this netlist: io.output carries the treble (horn) band voltage and io.outputR the bass (drum) band voltage, both speaker-level, for the rotary model.",
+  "sources": [
+    {
+      "title": "Electro Music/CBS, 'Leslie Speakers 122, 122V, 122RV, 142, 222, 222RV', installation/operating/maintenance manual 044578, June 1971: schematic '117V Type 122 Rotor and Reverb Amplifiers' (printed pp. 19-20), parts list 'Type 122 Rotor Amplifier' (printed p. 20), SPECIFICATIONS and 'Rotor, Speaker, Dividing Network Servicing' (800 Hz, 16 Ohm drivers, 40 W, 190 W consumption), volume-control setting procedure (p. 6)",
+      "url": "https://archive.org/download/leslie_m122-142-222-m_20190817_2154/leslie_m122-142-222-m.pdf"
+    },
+    {
+      "title": "1995 redraw of the same schematic, '117V Type 122 Rotor and Reverb Amplifiers', Rev 1.1, Oct 25 1995 (vector; every value cited by crop coordinate)",
+      "url": "http://theatreorgans.com/hammond/faq/files/schematics/122mn-a.pdf"
+    },
+    {
+      "title": "Leslie 122 dividing-network and driver impedances: the 1971 manual, 'Both of these loudspeakers are of the permanent magnet type with 16 ohm impedances'; 'A double section, M-derived frequency Dividing Network separates signal output from the rotor amp into frequencies above and below 800 Hz'",
+      "url": "https://archive.org/download/leslie_m122-142-222-m_20190817_2154/leslie_m122-142-222-m.pdf"
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "horn",
+    "outputR": "d1",
+    "inputVoltsPerFS": 3.0,
+    "outputVoltsPerFS": 46.0,
+    "note": "Balanced input on P1 pins 1/6, driven differentially (input and its inverted copy). io.output = 'horn' (treble band, the voltage across the compression driver) and io.outputR = 'd1' (bass band, across the 15-inch driver). outputVoltsPerFS 46 = 1.5 x the larger dimed peak (horn 30.5 Vpk at 3 kHz; drum 28.0 Vpk at 220 Hz; volume 1). inputVoltsPerFS 3.0 V peak is the differential input that reaches full output at volume 1."
+  },
+  "oversampling": 2,
+  "minRate": 176400,
+  "solver": "auto",
+  "lte": {
+    "start": "bdf2",
+    "tol": 8
+  },
+  "cuts": [
+    "n420",
+    "n260"
+  ],
+  "controls": [
+    {
+      "id": "volume",
+      "label": "Volume",
+      "kind": "continuous",
+      "default": 0.85,
+      "params": [],
+      "paramRange": [
+        0,
+        1
+      ],
+      "group": "Main",
+      "note": "R2, the ROTOR AMP volume control (100 kOhm audio taper) across the two 10 kOhm input legs. 0 = the input legs are shorted (silent); 1 = the pad is out. The manual sets it just below distortion with full organ (page 6). This is the amplifier's only control; the catalogue's 15 parameters are rotor-model parameters and are legacyOnly here."
+    },
+    {
+      "id": "rotor_sf",
+      "label": "Speed",
+      "kind": "continuous",
+      "params": [
+        "SF"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "legacyOnly": true,
+      "group": "Rotor (not in this netlist)",
+      "note": "rotor-model parameter of catalogue 31000; this amplifier netlist has no part for it. Stored so .rig presets round-trip."
+    },
+    {
+      "id": "rotor_b",
+      "label": "Balance",
+      "kind": "continuous",
+      "params": [
+        "B"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "legacyOnly": true,
+      "group": "Rotor (not in this netlist)",
+      "note": "rotor-model parameter of catalogue 31000; this amplifier netlist has no part for it. Stored so .rig presets round-trip."
+    },
+    {
+      "id": "rotor_p",
+      "label": "Pan",
+      "kind": "continuous",
+      "params": [
+        "P"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "legacyOnly": true,
+      "group": "Rotor (not in this netlist)",
+      "note": "rotor-model parameter of catalogue 31000; this amplifier netlist has no part for it. Stored so .rig presets round-trip."
+    },
+    {
+      "id": "rotor_d",
+      "label": "Distance",
+      "kind": "continuous",
+      "params": [
+        "D"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "legacyOnly": true,
+      "group": "Rotor (not in this netlist)",
+      "note": "rotor-model parameter of catalogue 31000; this amplifier netlist has no part for it. Stored so .rig presets round-trip."
+    },
+    {
+      "id": "rotor_ts",
+      "label": "T Slow",
+      "kind": "continuous",
+      "params": [
+        "TS"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "legacyOnly": true,
+      "group": "Rotor (not in this netlist)",
+      "note": "rotor-model parameter of catalogue 31000; this amplifier netlist has no part for it. Stored so .rig presets round-trip."
+    },
+    {
+      "id": "rotor_tf",
+      "label": "T Fast",
+      "kind": "continuous",
+      "params": [
+        "TF"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "legacyOnly": true,
+      "group": "Rotor (not in this netlist)",
+      "note": "rotor-model parameter of catalogue 31000; this amplifier netlist has no part for it. Stored so .rig presets round-trip."
+    },
+    {
+      "id": "rotor_ta",
+      "label": "T Accel",
+      "kind": "continuous",
+      "params": [
+        "TA"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "legacyOnly": true,
+      "group": "Rotor (not in this netlist)",
+      "note": "rotor-model parameter of catalogue 31000; this amplifier netlist has no part for it. Stored so .rig presets round-trip."
+    },
+    {
+      "id": "rotor_tsp",
+      "label": "T Spread",
+      "kind": "continuous",
+      "params": [
+        "TSp"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "legacyOnly": true,
+      "group": "Rotor (not in this netlist)",
+      "note": "rotor-model parameter of catalogue 31000; this amplifier netlist has no part for it. Stored so .rig presets round-trip."
+    },
+    {
+      "id": "rotor_bs",
+      "label": "B Slow",
+      "kind": "continuous",
+      "params": [
+        "BS"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "legacyOnly": true,
+      "group": "Rotor (not in this netlist)",
+      "note": "rotor-model parameter of catalogue 31000; this amplifier netlist has no part for it. Stored so .rig presets round-trip."
+    },
+    {
+      "id": "rotor_bf",
+      "label": "B Fast",
+      "kind": "continuous",
+      "params": [
+        "BF"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "legacyOnly": true,
+      "group": "Rotor (not in this netlist)",
+      "note": "rotor-model parameter of catalogue 31000; this amplifier netlist has no part for it. Stored so .rig presets round-trip."
+    },
+    {
+      "id": "rotor_ba",
+      "label": "B Accel",
+      "kind": "continuous",
+      "params": [
+        "BA"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "legacyOnly": true,
+      "group": "Rotor (not in this netlist)",
+      "note": "rotor-model parameter of catalogue 31000; this amplifier netlist has no part for it. Stored so .rig presets round-trip."
+    },
+    {
+      "id": "rotor_bsp",
+      "label": "B Spread",
+      "kind": "continuous",
+      "params": [
+        "BSp"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "legacyOnly": true,
+      "group": "Rotor (not in this netlist)",
+      "note": "rotor-model parameter of catalogue 31000; this amplifier netlist has no part for it. Stored so .rig presets round-trip."
+    },
+    {
+      "id": "rotor_ctn",
+      "label": "Cab",
+      "kind": "continuous",
+      "params": [
+        "CTn"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "legacyOnly": true,
+      "group": "Rotor (not in this netlist)",
+      "note": "rotor-model parameter of catalogue 31000; this amplifier netlist has no part for it. Stored so .rig presets round-trip."
+    },
+    {
+      "id": "rotor_wt",
+      "label": "Mix",
+      "kind": "continuous",
+      "params": [
+        "Wt"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "legacyOnly": true,
+      "group": "Rotor (not in this netlist)",
+      "note": "rotor-model parameter of catalogue 31000; this amplifier netlist has no part for it. Stored so .rig presets round-trip."
+    },
+    {
+      "id": "rotor_pwr",
+      "label": "Power",
+      "kind": "continuous",
+      "params": [
+        "Pwr"
+      ],
+      "paramRange": [
+        0,
+        1
+      ],
+      "legacyOnly": true,
+      "group": "Rotor (not in this netlist)",
+      "note": "rotor-model parameter of catalogue 31000; this amplifier netlist has no part for it. Stored so .rig presets round-trip."
+    }
+  ],
+  "parts": [
+    {
+      "ref": "VMA",
+      "type": "V",
+      "nodes": [
+        "sa0",
+        "0"
+      ],
+      "value": "0",
+      "note": "HT winding half A: 466 V peak (330 Vrms per half, 660 V CT equivalent of the drawn 330 Vrms floating winding), phase 90 (crest at t=0). FITTED: T1's secondary voltage is not published; this lands the bridge reservoir on the drawn 430 VDC and the plates on 420 VDC.",
+      "ac": {
+        "amplitude": "466",
+        "freq": 60,
+        "phase": 90
+      },
+      "label": "PT HT half A"
+    },
+    {
+      "ref": "VMB",
+      "type": "V",
+      "nodes": [
+        "sb",
+        "0"
+      ],
+      "value": "0",
+      "note": "HT winding half B, antiphase: 466 V peak.",
+      "ac": {
+        "amplitude": "466",
+        "freq": 60,
+        "phase": 270
+      },
+      "label": "PT HT half B"
+    },
+    {
+      "ref": "RWA",
+      "type": "R",
+      "nodes": [
+        "sa0",
+        "sa"
+      ],
+      "value": "30",
+      "note": "HT leg A resistance: the two half-winding DCRs (fitted 22 Ohm each) plus R45 8 Ohm, so the sag matches the bridge's two-diode path",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "RWB",
+      "type": "R",
+      "nodes": [
+        "sb",
+        "sbx"
+      ],
+      "value": "30",
+      "note": "HT leg B resistance, same as leg A",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "D1",
+      "type": "D",
+      "nodes": [
+        "sa",
+        "n430"
+      ],
+      "model": "1N4007",
+      "note": "D1 silicon 800 PIV 1 A (parts list 055228): bridge leg A (D1+D4 of the drawing)"
+    },
+    {
+      "ref": "D2",
+      "type": "D",
+      "nodes": [
+        "sbx",
+        "n430"
+      ],
+      "model": "1N4007",
+      "note": "D2 silicon 800 PIV 1 A: bridge leg B (D2+D3 of the drawing)"
+    },
+    {
+      "ref": "D3",
+      "type": "D",
+      "nodes": [
+        "0",
+        "sa"
+      ],
+      "model": "1N4007",
+      "note": "D3 silicon 800 PIV 1 A: bridge leg A return"
+    },
+    {
+      "ref": "D4",
+      "type": "D",
+      "nodes": [
+        "0",
+        "sbx"
+      ],
+      "model": "1N4007",
+      "note": "D4 silicon 800 PIV 1 A: bridge leg B return"
+    },
+    {
+      "ref": "C5A",
+      "type": "C",
+      "nodes": [
+        "n430",
+        "0"
+      ],
+      "value": "30u",
+      "note": "C5A 30 uF 475 V (C5A,B,C,D = 30-30-30-10 uF 475 V, 029892): reservoir after the bridge",
+      "tolerance": 0.2,
+      "label": "430 V reservoir"
+    },
+    {
+      "ref": "L1",
+      "type": "L",
+      "nodes": [
+        "n430",
+        "lx"
+      ],
+      "value": "3",
+      "note": "L1 filter choke (parts list 055111). Value not published; FITTED 3 H (a 40 W-class smoothing choke)",
+      "label": "L1 filter choke"
+    },
+    {
+      "ref": "RDC1",
+      "type": "R",
+      "nodes": [
+        "lx",
+        "n420"
+      ],
+      "value": "60",
+      "note": "L1 winding resistance, FITTED so the drawn 430 -> 420 VDC drop holds at the ~165 mA total draw (a filter choke's DCR is not published)"
+    },
+    {
+      "ref": "C5C",
+      "type": "C",
+      "nodes": [
+        "n420",
+        "0"
+      ],
+      "value": "30u",
+      "note": "C5C 30 uF 475 V: second reservoir = the 420 V plate/OT rail",
+      "tolerance": 0.2,
+      "label": "420 V plates"
+    },
+    {
+      "ref": "VS310",
+      "type": "V",
+      "nodes": [
+        "v310",
+        "0"
+      ],
+      "value": "310",
+      "note": "The 310 VDC screen rail, as drawn: 420 V -(R17 470 Ohm)-(V5 0C3, 105 V)- 310 V, with C5B 30 uF. The engine has no gas-tube device and a 105 V zener stand-in is bistable in this series position: the DC solve stays on the branch with the 6550 screens at 405 V (above the plates), the grids at +5.4 V and 111 mA/tube for ~200 ms after reset, instead of the drawn 310 V / 25 V point. A VR tube holds 105 V +/- 1 V over 5-30 mA, i.e. the rail is a voltage source; C5B (30 uF) and the tube's ~100 Ohm slope make it an AC ground, so this fixed rail keeps the drawn operating point, the DC and the AC. Given up: R17's ~5 V drop and the rail's tracking of the 420 V supply's sag; R17 is therefore not fitted (against 310 V it would draw 230 mA from the 420 V rail).",
+      "label": "310 VDC screens (0C3 regulated)"
+    },
+    {
+      "ref": "RV5",
+      "type": "R",
+      "nodes": [
+        "v310",
+        "scr"
+      ],
+      "value": "80",
+      "note": "The 0C3's dynamic (slope) resistance, ~80 Ohm from the datasheet's 2 V regulation over 5-30 mA; with the rail modelled as a 310 V source this is the tube's only remaining series element."
+    },
+    {
+      "ref": "C5B",
+      "type": "C",
+      "nodes": [
+        "scr",
+        "0"
+      ],
+      "value": "30u",
+      "note": "C5B 30 uF 475 V: screen-rail decoupling (the 1971 sheet marks this section C5B too)",
+      "tolerance": 0.2,
+      "label": "310 V screens"
+    },
+    {
+      "ref": "R13",
+      "type": "R",
+      "nodes": [
+        "scr",
+        "n260"
+      ],
+      "value": "10k",
+      "note": "R13 10 kOhm 1 W 10 % (parts list 020214): 310 -> 260 V dropper",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "C5D",
+      "type": "C",
+      "nodes": [
+        "n260",
+        "0"
+      ],
+      "value": "10u",
+      "note": "C5D 10 uF 475 V: 260 V preamp-rail decoupling",
+      "tolerance": 0.2,
+      "label": "260 V preamp rail"
+    },
+    {
+      "ref": "R16",
+      "type": "R",
+      "nodes": [
+        "scr",
+        "ctlp"
+      ],
+      "value": "12k",
+      "note": "R16 12 kOhm 2 W 10 % (parts list 021568). As drawn it runs from the 310 V screen rail (x=465.7) along y=363 to x=228.7, down to y=291 and out through P1 pin 6. In the non-RV 122 that pin is the external (organ-side) branch and draws nothing, so the node is a documented tap, not part of the audio path.",
+      "tolerance": 0.1,
+      "label": "P1 pin 6 tap"
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "n260",
+        "pa"
+      ],
+      "value": "56k",
+      "note": "R8 56 kOhm 1 W 10 % (parts list 021550): V2A plate load from the 260 V rail; plate sits at the drawn 130 VDC",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R9",
+      "type": "R",
+      "nodes": [
+        "n260",
+        "pb"
+      ],
+      "value": "56k",
+      "note": "R9 56 kOhm 1 W 10 %: V2B plate load from the 260 V rail (drawn 130 VDC)",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "in",
+        "na"
+      ],
+      "value": "10k",
+      "note": "R1 10 kOhm (parts list 028548): P1 pin 1 hot leg into the differential pair",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "inb",
+        "n2"
+      ],
+      "value": "10k",
+      "note": "R3 10 kOhm (028548): P1 pin 6 return leg into the differential pair",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R2",
+      "type": "pot",
+      "nodes": [
+        "na",
+        "n2",
+        "n2"
+      ],
+      "value": "100k",
+      "taper": "A",
+      "control": "volume",
+      "label": "R2 VOL. ADJ. 100 kOhm audio-taper volume control",
+      "note": "R2 (parts list 055186, 'Potentiometer, 100K, Audio Taper') is wired as a rheostat across the two 10 kOhm input legs: the wiper and the CCW end both land on C8's node, so the resistance na..n2 runs 0..100 kOhm with the taper. At 0 the two legs are shorted (silent); at 1 the pad is out. The manual's 'ROTOR AMPLIFIER VOLUME CONTROL SETTING' procedure (page 6) is this knob."
+    },
+    {
+      "ref": "C6",
+      "type": "C",
+      "nodes": [
+        "na",
+        "ga"
+      ],
+      "value": "15n",
+      "note": "C6 .015 uF 600 V 10 % (parts list 032458, Mylar): V2A grid coupling",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "C8",
+      "type": "C",
+      "nodes": [
+        "n2",
+        "gb"
+      ],
+      "value": "15n",
+      "note": "C8 .015 uF 600 V 10 % (032458): V2B grid coupling",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "C7",
+      "type": "C",
+      "nodes": [
+        "ga",
+        "gb"
+      ],
+      "value": "1n",
+      "note": "C7 .001 uF 500 V 10 % (parts list 032409, mica): across the two grids (RF/balance)",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R5",
+      "type": "R",
+      "nodes": [
+        "ga",
+        "0"
+      ],
+      "value": "1meg",
+      "note": "R5 1 MOhm (parts list 024125): V2A grid leak",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "gb",
+        "0"
+      ],
+      "value": "1meg",
+      "note": "R7 1 MOhm (024125): V2B grid leak",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "V2A",
+      "type": "triode",
+      "nodes": [
+        "pa",
+        "ga",
+        "k2"
+      ],
+      "model": "12AU7",
+      "label": "V2A 12AU7A input/differential stage"
+    },
+    {
+      "ref": "V2B",
+      "type": "triode",
+      "nodes": [
+        "pb",
+        "gb",
+        "k2"
+      ],
+      "model": "12AU7",
+      "label": "V2B 12AU7A input/differential stage"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "k2",
+        "0"
+      ],
+      "value": "1.2k",
+      "note": "R6 1.2 kOhm (parts list 018036): shared cathode resistor of the pair; the drawing marks 6 VDC here",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "C9",
+      "type": "C",
+      "nodes": [
+        "pa",
+        "g3"
+      ],
+      "value": "100n",
+      "note": "C9 .1 uF 600 V 10 % (parts list 027318, tubular): V3 grid coupling",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "C10",
+      "type": "C",
+      "nodes": [
+        "pb",
+        "g4"
+      ],
+      "value": "100n",
+      "note": "C10 .1 uF 600 V 10 % (027318): V4 grid coupling",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R10",
+      "type": "R",
+      "nodes": [
+        "g3",
+        "0"
+      ],
+      "value": "220k",
+      "note": "R10 220 kOhm (parts list 013615): V3 grid leak",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R11",
+      "type": "R",
+      "nodes": [
+        "g4",
+        "0"
+      ],
+      "value": "220k",
+      "note": "R11 220 kOhm (013615): V4 grid leak",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R14",
+      "type": "R",
+      "nodes": [
+        "pa3",
+        "f3"
+      ],
+      "value": "390k",
+      "note": "R14 390 kOhm (parts list 018010): plate-to-grid feedback resistor, V3",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "C21",
+      "type": "C",
+      "nodes": [
+        "f3",
+        "g3"
+      ],
+      "value": "4n7",
+      "note": "C21 .0047 uF 1600 V 10 % (parts list 033399): V3 plate-to-grid feedback capacitor",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R15",
+      "type": "R",
+      "nodes": [
+        "pa4",
+        "f4"
+      ],
+      "value": "390k",
+      "note": "R15 390 kOhm (018010): plate-to-grid feedback resistor, V4",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "C13",
+      "type": "C",
+      "nodes": [
+        "f4",
+        "g4"
+      ],
+      "value": "4n7",
+      "note": "C13 .0047 uF 1600 V 10 % (033399): V4 plate-to-grid feedback capacitor",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "V1A",
+      "type": "triode",
+      "nodes": [
+        "p1a",
+        "g1a",
+        "kO"
+      ],
+      "model": "12AU7",
+      "label": "V1A 12AU7A (the second half, V1B, is unused as drawn)"
+    },
+    {
+      "ref": "R4",
+      "type": "R",
+      "nodes": [
+        "n2",
+        "g1a"
+      ],
+      "value": "1meg",
+      "note": "R4 1 MOhm (024125): from the input return leg to V1A's grid. The 1971 drawing (page 22) shows the same connection to the R3/C8 node. V1A draws essentially nothing in the non-RV 122 (its cathode sits on the output valves' 25 V cathode rail, so Vgk is about -25 V); it is kept because it is wired on the chassis and the 122RV uses this valve.",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R18",
+      "type": "R",
+      "nodes": [
+        "scr",
+        "p1a"
+      ],
+      "value": "10k",
+      "note": "R18 10 kOhm 7 W 10 % (parts list 021501) as V1A's plate load from the 310 V screen rail. The 1971 drawing reads the same (the plate lead leaves at the bottom of the envelope and returns to the 310 V node).",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "V3",
+      "type": "pentode",
+      "nodes": [
+        "pa3",
+        "scr",
+        "g3",
+        "kO"
+      ],
+      "model": "6550",
+      "label": "V3 6550"
+    },
+    {
+      "ref": "V4",
+      "type": "pentode",
+      "nodes": [
+        "pa4",
+        "scr",
+        "g4",
+        "kO"
+      ],
+      "model": "6550",
+      "label": "V4 6550"
+    },
+    {
+      "ref": "R12",
+      "type": "R",
+      "nodes": [
+        "kO",
+        "0"
+      ],
+      "value": "150",
+      "note": "R12 wire-wound 150 Ohm 10 W 10 % (parts list 020115): shared cathode resistor of the 6550 pair; drawing marks 25 VDC",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "C11",
+      "type": "C",
+      "nodes": [
+        "kO",
+        "0"
+      ],
+      "value": "200u",
+      "note": "C11 200 uF 50 V electrolytic (parts list 020081): bypasses R12",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "T2",
+      "type": "transformer",
+      "nodes": [
+        "pa3",
+        "n420",
+        "n420",
+        "pa4",
+        "cx",
+        "0"
+      ],
+      "turns": [
+        1.0,
+        1.0,
+        0.0862
+      ],
+      "r": [
+        150.0,
+        150.0,
+        0.35
+      ],
+      "leak": [
+        "4m",
+        "4m",
+        "0.05m"
+      ],
+      "lm": 20.0,
+      "lsat": 3.0,
+      "label": "T2 output transformer (4.3 kOhm p-p : 8 Ohm)",
+      "note": "T2 (parts list 055103). The drawing gives no turns ratio or DCR. FITTED: 4.3 kOhm plate-to-plate (6550 pair at 420 V plates / 310 V screens, 40 W rating) and an 8 Ohm secondary, whose two drawn halves are paralleled about an earthed centre tap (x=541.9 y=282.5 is the ground symbol; the two ends are tied at x=550.4). Its hot end is node `cx`, the crossover input: the interceptor sockets S7/P7 are ideal connectors in the jumpered (no reverb amp) configuration, so they are one node. Half-primary DCR 150 Ohm, leakage 4 mH, Lm 20 H, lsat 3 V s: class values."
+    },
+    {
+      "ref": "CCAP3",
+      "type": "C",
+      "nodes": [
+        "pa3",
+        "wc3"
+      ],
+      "value": "470p",
+      "note": "Half-primary winding capacitance (A), from the plate end (library rule: 470 pF + 2.2 kOhm to the centre tap)"
+    },
+    {
+      "ref": "RCAP3",
+      "type": "R",
+      "nodes": [
+        "wc3",
+        "n420"
+      ],
+      "value": "2k2",
+      "note": "OT winding-capacitance loss (A)"
+    },
+    {
+      "ref": "CCAP4",
+      "type": "C",
+      "nodes": [
+        "pa4",
+        "wc4"
+      ],
+      "value": "470p",
+      "note": "Half-primary winding capacitance (B), from the plate end"
+    },
+    {
+      "ref": "RCAP4",
+      "type": "R",
+      "nodes": [
+        "wc4",
+        "n420"
+      ],
+      "value": "2k2",
+      "note": "OT winding-capacitance loss (B)"
+    },
+    {
+      "ref": "SPLIT",
+      "type": "vcvs",
+      "nodes": [
+        "inb",
+        "0",
+        "in",
+        "0"
+      ],
+      "gain": -1.0,
+      "label": "Balanced-drive glue",
+      "note": "The 122 input is a balanced pair on P1 pins 1 and 6 (the organ's Leslie output is balanced; the amp's own return leg R3 goes through 10 kOhm and is not grounded). The engine drives one input node, so this unity inverting VCVS makes the second leg. No hardware part; it is the interface."
+    },
+    {
+      "ref": "L2",
+      "type": "L",
+      "nodes": [
+        "cx",
+        "h2"
+      ],
+      "value": "3.2m",
+      "note": "L2 3.2 mH choke (dividing network 052803): shunt across the treble driver",
+      "label": "L2 3.2 mH"
+    },
+    {
+      "ref": "C16A",
+      "type": "C",
+      "nodes": [
+        "h2",
+        "0"
+      ],
+      "value": "7.8u",
+      "note": "C16A 7.8 uF (parts list 052852 'Capacitor, ... 7.8/12.5 uF'): series with the treble driver",
+      "tolerance": 0.05,
+      "label": "C16A 7.8 uF"
+    },
+    {
+      "ref": "RHORN",
+      "type": "R",
+      "nodes": [
+        "cx",
+        "h2"
+      ],
+      "value": "16",
+      "note": "Treble driver load, 16 Ohm. The manual (page 14 and the SPECIFICATIONS page) gives 'Compression-type driver, permanent magnet, 16 ohm impedance'; the driver's reactance is not published, so the electrical load is its nominal 16 Ohm resistance (the rotor model owns the mechanics).",
+      "label": "Treble driver 16 Ohm"
+    },
+    {
+      "ref": "L3",
+      "type": "L",
+      "nodes": [
+        "cx",
+        "d1"
+      ],
+      "value": "5.2m",
+      "note": "L3 5.2 mH choke: series with the bass driver",
+      "label": "L3 5.2 mH"
+    },
+    {
+      "ref": "C16B",
+      "type": "C",
+      "nodes": [
+        "d1",
+        "0"
+      ],
+      "value": "12.5u",
+      "note": "C16B 12.5 uF: shunt across the bass driver",
+      "tolerance": 0.05,
+      "label": "C16B 12.5 uF"
+    },
+    {
+      "ref": "RDRUM",
+      "type": "R",
+      "nodes": [
+        "d1",
+        "0"
+      ],
+      "value": "16",
+      "note": "Bass driver load, 16 Ohm: 'Bass: 15 inch heavy duty, permanent magnet, 16 ohm impedance'. Resistive load as for the treble driver.",
+      "label": "Bass driver 16 Ohm"
+    },
+    {
+      "ref": "HORND",
+      "type": "vcvs",
+      "nodes": [
+        "horn",
+        "0",
+        "cx",
+        "h2"
+      ],
+      "gain": 1.0,
+      "label": "Horn band readout",
+      "note": "The treble driver's voice coil is between the amp hot node (cx) and L2's far end (h2). This unity VCVS exports that difference so the rotor model can read the treble band single-ended. Interface glue."
+    }
+  ],
+  "models": {
+    "OC3": {
+      "kind": "diode",
+      "is": 1e-14,
+      "n": 1.0,
+      "rs": 50.0,
+      "bv": 105.0,
+      "ibv": 0.025,
+      "nbv": 6.0,
+      "note": "0C3/VR105 gas regulator stood in by a 105 V zener (no gas-tube device in the engine); 50 Ohm slope resistance is the datasheet order of magnitude, the striking voltage is not modelled"
+    },
+    "1N4007": {
+      "kind": "diode",
+      "is": 7e-09,
+      "n": 1.9,
+      "rs": 0.03,
+      "note": "silicon 800 PIV 1 A bridge diodes (parts list 055228)"
+    }
+  },
+  "probes": [
+    "na",
+    "n2",
+    "ga",
+    "gb",
+    "pa",
+    "pb",
+    "k2",
+    "g3",
+    "g4",
+    "pa3",
+    "pa4",
+    "kO",
+    "n430",
+    "n420",
+    "scr",
+    "n260",
+    "p1a",
+    "g1a",
+    "cx",
+    "h2",
+    "d1",
+    "horn"
+  ],
+  "layout": {}
+}

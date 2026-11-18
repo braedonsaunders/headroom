@@ -1,0 +1,2098 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "soldano-slo100-mk2-163000",
+ "version": 1,
+ "name": "Soldano SLO-100 MK II Super Lead Overdrive",
+ "description": "Soldano SLO-100 MK II (Rev E), complete, from ONE source (a forum KiCad redraw; no second drawing was found to cross-check): V1A input, relay-switched Normal channel (K1 Clean/Crunch, Bright) and OD channel (OD pot, V2A, V2B cold clipper), K2/K3 channel relays, V3A + V3B cathode-follower tone stack, per-channel masters, K4-switched FX loop (V4B send follower, V4A recovery, Loop Level), long-tail-pair PI with presence and Depth in the 4-ohm-tap feedback, four 6L6GC, 100 W OT, 360-0-360 full-wave supply.",
+ "sources": [
+  {
+   "title": "SUPER LEAD OVERDRIVE 100 / MK2 / REV: E / 11/2019 / (c) BOUTIQUE AMPS DISTRIBUTION / DRAWN BY RADIANTRELIC / FOR RESEARCH & REPAIR PURPOSES ONLY (KiCad vector PDF, 1 sheet)",
+   "url": "https://el34world.com/Forum/index.php?action=dlattach;topic=31223.0;attach=124264",
+   "note": "SINGLE SOURCE: a forum redraw, not a factory drawing, and no second source was found to cross-check it (slocloneforums.com and others not reachable/tried, see notes). Vector, fully legible; every value read at 1:1 from a 200/400 dpi render (crop coordinates in the notes)."
+  }
+ ],
+ "oversampling": 4,
+ "minRate": 176400,
+ "lte": {
+  "start": "bdf2",
+  "tol": 8
+ },
+ "multirate": {
+  "rates": {
+   "V1A": 16
+  },
+  "events": true,
+  "note": "Event-local oversampling (docs §10.48, §10.63): base 192 kHz, 4 substeps (768 kHz) on every LTE event of the signal group. 3130 Hz gate tone (own-mains mask) -63.6 / -58.7 / -61.2 -> -63.6 / -64.5 / -68.3 dB at 0.25 / 0.5 / 1.0 FS; 2900 Hz -70.4 / -68.0 / -61.9 -> -74.5 / -73.3 / -72.2. 8 substeps (V1A 32): -64.6 dB worst, +60 % CPU; BE start fails at 0.25 FS. Engine T/8 truth, audio band, lead / rock DI: 0.083 / 0.105 -> 0.046 / 0.080 %. 9900X real / driven: 53.0 / 56.2 -> 56.5 / 60.3 % of a core."
+ },
+ "io": {
+  "input": "in",
+  "output": "spk",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 317.0,
+  "note": "outputVoltsPerFS = 1.5 x the 211 V peak at the speaker with the OD channel and every control dimed (1.0 V, 220 Hz; the peaks are the OT flyback as the 6L6s cut off, engine and ngspice agree on them). Dimed Normal channel: 74 V peak, 48 V rms."
+ },
+ "solver": "auto",
+ "cuts": [
+  "hra",
+  "hrb",
+  "d1m",
+  "d3m",
+  "n6",
+  "m6",
+  "chk",
+  "n5",
+  "m5",
+  "n4",
+  "n3",
+  "n1",
+  "n2"
+ ],
+ "controls": [
+  {
+   "id": "normal",
+   "label": "Normal",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "normalPreamp"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "NORMAL 500KA preamp pot (V1B grid)"
+  },
+  {
+   "id": "overdrive",
+   "label": "Overdrive",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "overdrivePreamp"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "OD 500KA preamp pot (V2A grid)"
+  },
+  {
+   "id": "channel",
+   "label": "Channel",
+   "kind": "selector",
+   "default": 1.0,
+   "options": [
+    "Normal",
+    "Overdrive"
+   ],
+   "params": [
+    "channel"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "Relays K2 (preamp output select + wiper muting) and K3 (master select). Overdrive = de-energised, as drawn."
+  },
+  {
+   "id": "normalMode",
+   "label": "Normal Mode",
+   "kind": "switch",
+   "default": 0.0,
+   "options": [
+    "Clean",
+    "Crunch"
+   ],
+   "params": [
+    "normalMode"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "Relay K1 CLEAN-CRUNCH: Clean (de-energised) = 470 k + 470 k into a 39 k shunt; Crunch = R5 bypassed and the 39 k lifted"
+  },
+  {
+   "id": "bright",
+   "label": "Bright",
+   "kind": "switch",
+   "default": 0.0,
+   "options": [
+    "Normal",
+    "Bright"
+   ],
+   "params": [
+    "bright"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "SW3: 500 pF across R7"
+  },
+  {
+   "id": "bass",
+   "label": "Bass",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "bass"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "BASS 1MA"
+  },
+  {
+   "id": "middle",
+   "label": "Middle",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "middle"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "MIDDLE 25KL"
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "treble"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "TREBLE 250KL"
+  },
+  {
+   "id": "master",
+   "label": "Master",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "master"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "OD-MASTER and NORMAL-MASTER 1MA, ganged: the catalogue has one Master, the amp one per channel; K3 picks the active channel's"
+  },
+  {
+   "id": "presence",
+   "label": "Presence",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "presence"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "PRESENCE 25KL in the feedback node's shunt"
+  },
+  {
+   "id": "depth",
+   "label": "Depth",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "depth"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "DEPTH 1MA in series with the feedback (bypassed by 4.7 nF)"
+  },
+  {
+   "id": "loop",
+   "label": "FX Loop",
+   "kind": "switch",
+   "default": 0.0,
+   "options": [
+    "Off",
+    "On"
+   ],
+   "face": true,
+   "group": "Main",
+   "note": "SW4 LOOP / relay K4: On routes the master wiper through the V4B send buffer, SEND/RETURN (normalled, nothing plugged in) and V4A recovery + LOOP-LVL into the PI"
+  },
+  {
+   "id": "loopLevel",
+   "label": "Loop Level",
+   "kind": "continuous",
+   "default": 0.63,
+   "group": "Main",
+   "note": "LOOP-LVL 500KA (rear panel); internal, only acts with the loop on. Default 0.63 = unity loop gain with nothing plugged in (1 kHz, within 0.1 dB)"
+  },
+  {
+   "id": "stereo",
+   "label": "Stereo",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "CASSt"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Stored only"
+  },
+  {
+   "id": "power",
+   "label": "On/Off",
+   "kind": "switch",
+   "default": 1.0,
+   "params": [
+    "Pwr"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Host handles bypass"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VHA",
+   "type": "V",
+   "nodes": [
+    "ha",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "509.117",
+    "freq": 60,
+    "phase": 90
+   },
+   "label": "PT HTS-12960 HT half 'RED 360V' to the grounded CT (phase A)",
+   "note": "Centre-tapped 360-0-360 VAC HT (drawing labels '360V RED' / 'CT RED/YEL' to GND / '360V RED'), two-source full-wave equivalent as in the reference amps. Amplitude: see notes (fitted so the reservoir sits on the drawing's 477 V)."
+  },
+  {
+   "ref": "VHB",
+   "type": "V",
+   "nodes": [
+    "hb",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "509.117",
+    "freq": 60,
+    "phase": 270
+   },
+   "label": "PT HT half (phase B)"
+  },
+  {
+   "ref": "RPTA",
+   "type": "R",
+   "nodes": [
+    "ha",
+    "hra"
+   ],
+   "value": "34",
+   "label": "HT winding half + reflected primary resistance (A), unverified: fitted, not on the drawing"
+  },
+  {
+   "ref": "RPTB",
+   "type": "R",
+   "nodes": [
+    "hb",
+    "hrb"
+   ],
+   "value": "34",
+   "label": "HT winding half + reflected primary resistance (B), unverified"
+  },
+  {
+   "ref": "D1",
+   "type": "D",
+   "nodes": [
+    "hra",
+    "d1m"
+   ],
+   "model": "1N4001",
+   "label": "D1 UF5408 (1N4001 card), leg A, transformer side"
+  },
+  {
+   "ref": "D2",
+   "type": "D",
+   "nodes": [
+    "d1m",
+    "n6"
+   ],
+   "model": "1N4001",
+   "label": "D2 UF5408 (1N4001 card), leg A, in series with D1; F2 1 A and SW6 Standby (closed) are wires to NODE 6"
+  },
+  {
+   "ref": "D3",
+   "type": "D",
+   "nodes": [
+    "hrb",
+    "d3m"
+   ],
+   "model": "1N4001",
+   "label": "D3 UF5408 (1N4001 card), leg B, transformer side"
+  },
+  {
+   "ref": "D4",
+   "type": "D",
+   "nodes": [
+    "d3m",
+    "n6"
+   ],
+   "model": "1N4001",
+   "label": "D4 UF5408 (1N4001 card), leg B"
+  },
+  {
+   "ref": "C47",
+   "type": "C",
+   "nodes": [
+    "n6",
+    "m6"
+   ],
+   "value": "220u",
+   "label": "C47 220 uF/350 V reservoir, upper (parallel with C49)",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "C49",
+   "type": "C",
+   "nodes": [
+    "n6",
+    "m6"
+   ],
+   "value": "220u",
+   "label": "C49 220 uF/350 V reservoir, upper",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "C50",
+   "type": "C",
+   "nodes": [
+    "m6",
+    "0"
+   ],
+   "value": "220u",
+   "label": "C50 220 uF/350 V reservoir, lower (parallel with C48)",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "C48",
+   "type": "C",
+   "nodes": [
+    "m6",
+    "0"
+   ],
+   "value": "220u",
+   "label": "C48 220 uF/350 V reservoir, lower",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "R74",
+   "type": "R",
+   "nodes": [
+    "n6",
+    "m6"
+   ],
+   "value": "220k",
+   "label": "R74 220 k 2 W balancing (upper)"
+  },
+  {
+   "ref": "R75",
+   "type": "R",
+   "nodes": [
+    "m6",
+    "0"
+   ],
+   "value": "220k",
+   "label": "R75 220 k 2 W balancing (lower)"
+  },
+  {
+   "ref": "LCH",
+   "type": "L",
+   "nodes": [
+    "n6",
+    "chk"
+   ],
+   "value": "4",
+   "label": "CHOKE HTS-13362 (inductance not on the drawing: 4 H unverified typical)"
+  },
+  {
+   "ref": "RCHK",
+   "type": "R",
+   "nodes": [
+    "chk",
+    "n5"
+   ],
+   "value": "120",
+   "label": "Choke DCR, unverified: fitted to the drawing's 477 V (NODE 6) -> 475 V (NODE 5)"
+  },
+  {
+   "ref": "C38",
+   "type": "C",
+   "nodes": [
+    "n5",
+    "m5"
+   ],
+   "value": "220u",
+   "label": "C38 220 uF/350 V NODE 5 filter, upper",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "C39",
+   "type": "C",
+   "nodes": [
+    "m5",
+    "0"
+   ],
+   "value": "220u",
+   "label": "C39 220 uF/350 V NODE 5 filter, lower",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "R69",
+   "type": "R",
+   "nodes": [
+    "n5",
+    "m5"
+   ],
+   "value": "220k",
+   "label": "R69 220 k 2 W balancing (upper)"
+  },
+  {
+   "ref": "R70",
+   "type": "R",
+   "nodes": [
+    "m5",
+    "0"
+   ],
+   "value": "220k",
+   "label": "R70 220 k 2 W balancing (lower)"
+  },
+  {
+   "ref": "R51",
+   "type": "R",
+   "nodes": [
+    "n5",
+    "n4"
+   ],
+   "value": "10k",
+   "label": "R51 10 k 3 W NODE 5 -> NODE 4"
+  },
+  {
+   "ref": "C34",
+   "type": "C",
+   "nodes": [
+    "n4",
+    "0"
+   ],
+   "value": "47u",
+   "label": "C34 47 uF/450 V NODE 4 (376 V)",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "R66",
+   "type": "R",
+   "nodes": [
+    "n4",
+    "n3"
+   ],
+   "value": "10k",
+   "label": "R66 10 k 3 W NODE 4 -> NODE 3"
+  },
+  {
+   "ref": "C18",
+   "type": "C",
+   "nodes": [
+    "n3",
+    "0"
+   ],
+   "value": "47u",
+   "label": "C18 47 uF/450 V NODE 3 (351 V)",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "R12",
+   "type": "R",
+   "nodes": [
+    "n3",
+    "n1"
+   ],
+   "value": "10k",
+   "label": "R12 10 k NODE 3 -> NODE 1"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "n1",
+    "0"
+   ],
+   "value": "10u",
+   "label": "C8 10 uF/450 V NODE 1 (336 V)",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "R22",
+   "type": "R",
+   "nodes": [
+    "n3",
+    "n2"
+   ],
+   "value": "10k",
+   "label": "R22 10 k NODE 3 -> NODE 2"
+  },
+  {
+   "ref": "C16",
+   "type": "C",
+   "nodes": [
+    "n2",
+    "0"
+   ],
+   "value": "10u",
+   "label": "C16 10 uF/450 V NODE 2 (343 V)",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "VBIAS",
+   "type": "V",
+   "nodes": [
+    "bias",
+    "0"
+   ],
+   "value": "-56.2",
+   "label": "BIAS node (drawing: -48.8 V, 'about 60 %, 31.5 mA per tube')",
+   "note": "The bias supply (55 V RED/BLU tap, D5 UF4007, C46 22 uF, R73 15 k, C45 22 uF, R72 10 k + 50 k BIAS trim) is modelled as its filter node, as every reference amp does: a negative half-wave rectifier is not charged at the mains-crest DC operating point the SPICE gate starts from. Value: see the notes (bias fit)."
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "in",
+    "0"
+   ],
+   "value": "1M",
+   "label": "R1 1 M input grid leak at the J1 tip",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "in",
+    "g1a"
+   ],
+   "value": "68k",
+   "label": "R2 68 k grid stopper (shielded lead)",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "V1A",
+   "type": "triode",
+   "nodes": [
+    "p1a",
+    "g1a",
+    "k1a"
+   ],
+   "model": "12AX7",
+   "label": "V1A ECC83 first stage (both channels); drawing plate 180 V"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "n1",
+    "p1a"
+   ],
+   "value": "220k",
+   "label": "R3 220 k plate load on NODE 1",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "k1a",
+    "0"
+   ],
+   "value": "1k8",
+   "label": "R4 1.8 k cathode",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "k1a",
+    "0"
+   ],
+   "value": "1u",
+   "label": "C2 1 uF cathode bypass",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "p1a",
+    "c3o"
+   ],
+   "value": "22n",
+   "label": "C3 22 nF V1A coupling (feeds both channels)",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "C9",
+   "type": "C",
+   "nodes": [
+    "c3o",
+    "oda"
+   ],
+   "value": "1n",
+   "label": "C9 1 nF OD channel input cap",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R13",
+   "type": "R",
+   "nodes": [
+    "oda",
+    "odb"
+   ],
+   "value": "470k",
+   "label": "R13 470 k OD attenuator",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "oda",
+    "odb"
+   ],
+   "value": "2n2",
+   "label": "C10 2.2 nF across R13",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "POD",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "odw",
+    "odb"
+   ],
+   "value": "500k",
+   "taper": "A",
+   "control": "overdrive",
+   "label": "OD 500KA gain pot (pin 1 = odb, pin 3 = GND)"
+  },
+  {
+   "ref": "R14",
+   "type": "R",
+   "nodes": [
+    "odw",
+    "g2a"
+   ],
+   "value": "470k",
+   "label": "R14 470 k grid stopper",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "V2A",
+   "type": "triode",
+   "nodes": [
+    "p2a",
+    "g2a",
+    "k2a"
+   ],
+   "model": "12AX7",
+   "label": "V2A ECC83 OD stage 2; drawing plate 180 V"
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "n2",
+    "p2a"
+   ],
+   "value": "220k",
+   "label": "R15 220 k plate load on NODE 2",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "k2a",
+    "0"
+   ],
+   "value": "1k8",
+   "label": "R16 1.8 k cathode",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C12",
+   "type": "C",
+   "nodes": [
+    "k2a",
+    "0"
+   ],
+   "value": "1u",
+   "label": "C12 1 uF cathode bypass",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "C13",
+   "type": "C",
+   "nodes": [
+    "p2a",
+    "c13o"
+   ],
+   "value": "22n",
+   "label": "C13 22 nF",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R17",
+   "type": "R",
+   "nodes": [
+    "c13o",
+    "g2b"
+   ],
+   "value": "220k",
+   "label": "R17 220 k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R18",
+   "type": "R",
+   "nodes": [
+    "g2b",
+    "0"
+   ],
+   "value": "1M",
+   "label": "R18 1 M V2B grid leak",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "V2B",
+   "type": "triode",
+   "nodes": [
+    "p2b",
+    "g2b",
+    "k2b"
+   ],
+   "model": "12AX7",
+   "label": "V2B ECC83 cold clipper; drawing plate 331 V"
+  },
+  {
+   "ref": "R19",
+   "type": "R",
+   "nodes": [
+    "n2",
+    "p2b"
+   ],
+   "value": "100k",
+   "label": "R19 100 k plate load on NODE 2",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C14",
+   "type": "C",
+   "nodes": [
+    "n2",
+    "p2b"
+   ],
+   "value": "1n",
+   "label": "C14 1 nF across R19",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R20",
+   "type": "R",
+   "nodes": [
+    "k2b",
+    "0"
+   ],
+   "value": "39k",
+   "label": "R20 39 k unbypassed cathode",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C15",
+   "type": "C",
+   "nodes": [
+    "p2b",
+    "odo"
+   ],
+   "value": "22n",
+   "label": "C15 22 nF OD channel output",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R21",
+   "type": "R",
+   "nodes": [
+    "odo",
+    "0"
+   ],
+   "value": "330k",
+   "label": "R21 330 k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "K1B_CL",
+   "type": "switch",
+   "nodes": [
+    "c3o",
+    "k1p6"
+   ],
+   "control": "normalMode",
+   "positions": [
+    0
+   ],
+   "label": "K1 G5V-2 pole 4-6 (de-energised = Clean): signal through R5"
+  },
+  {
+   "ref": "K1B_CR",
+   "type": "switch",
+   "nodes": [
+    "c3o",
+    "clm"
+   ],
+   "control": "normalMode",
+   "positions": [
+    1
+   ],
+   "label": "K1 pole 4-8 (energised = Crunch): R5 bypassed"
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "k1p6",
+    "clm"
+   ],
+   "value": "470k",
+   "label": "R5 470 k (Clean only)",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "clm",
+    "clp"
+   ],
+   "value": "470k",
+   "label": "R7 470 k into the Normal pot top",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R6",
+   "type": "R",
+   "nodes": [
+    "clp",
+    "k1p11"
+   ],
+   "value": "39k",
+   "label": "R6 39 k shunt at the Normal pot top",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "K1A_CL",
+   "type": "switch",
+   "nodes": [
+    "k1p11",
+    "0"
+   ],
+   "control": "normalMode",
+   "positions": [
+    0
+   ],
+   "label": "K1 pole 13-11 (de-energised = Clean): R6 39 k to GND; lifted in Crunch"
+  },
+  {
+   "ref": "SW3",
+   "type": "switch",
+   "nodes": [
+    "clm",
+    "brt"
+   ],
+   "control": "bright",
+   "positions": [
+    1
+   ],
+   "label": "SW3 Bright, pins 2-1 closed = Bright (pin 3 is open)"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "brt",
+    "clp"
+   ],
+   "value": "500p",
+   "label": "C4 500 pF bright cap across R7 (through SW3)",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "PNORM",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "g1b",
+    "clp"
+   ],
+   "value": "500k",
+   "taper": "A",
+   "control": "normal",
+   "label": "NORMAL 500KA pot (pin 1 = clp, pin 3 = GND), wiper straight to V1B grid"
+  },
+  {
+   "ref": "V1B",
+   "type": "triode",
+   "nodes": [
+    "p1b",
+    "g1b",
+    "k1b"
+   ],
+   "model": "12AX7",
+   "label": "V1B ECC83 Normal channel; drawing plate 247 V"
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "n1",
+    "p1b"
+   ],
+   "value": "100k",
+   "label": "R8 100 k plate load on NODE 1",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "k1b",
+    "0"
+   ],
+   "value": "2k2",
+   "label": "R9 2.2 k unbypassed cathode",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "p1b",
+    "c6o"
+   ],
+   "value": "22n",
+   "label": "C6 22 nF",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R10",
+   "type": "R",
+   "nodes": [
+    "c6o",
+    "clo"
+   ],
+   "value": "2M2",
+   "label": "R10 2.2 M",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C7",
+   "type": "C",
+   "nodes": [
+    "c6o",
+    "clo"
+   ],
+   "value": "120p",
+   "label": "C7 120 pF across R10",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "clo",
+    "0"
+   ],
+   "value": "330k",
+   "label": "R11 330 k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "K2A_OD",
+   "type": "switch",
+   "nodes": [
+    "g1b",
+    "0"
+   ],
+   "control": "channel",
+   "positions": [
+    1
+   ],
+   "label": "K2 G5V-2 pole 13-11 (de-energised = OD): grounds the Normal pot wiper / V1B grid"
+  },
+  {
+   "ref": "K2A_N",
+   "type": "switch",
+   "nodes": [
+    "odw",
+    "0"
+   ],
+   "control": "channel",
+   "positions": [
+    0
+   ],
+   "label": "K2 pole 13-9 (energised = Normal): grounds the OD pot wiper"
+  },
+  {
+   "ref": "K2B_OD",
+   "type": "switch",
+   "nodes": [
+    "odo",
+    "sel"
+   ],
+   "control": "channel",
+   "positions": [
+    1
+   ],
+   "label": "K2 pole 4-6 (OD): V2B output to V3A"
+  },
+  {
+   "ref": "K2B_N",
+   "type": "switch",
+   "nodes": [
+    "clo",
+    "sel"
+   ],
+   "control": "channel",
+   "positions": [
+    0
+   ],
+   "label": "K2 pole 4-8 (Normal): V1B output to V3A"
+  },
+  {
+   "ref": "R23",
+   "type": "R",
+   "nodes": [
+    "sel",
+    "0"
+   ],
+   "value": "4.7M",
+   "label": "R23 4.7 M V3A grid leak",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R24",
+   "type": "R",
+   "nodes": [
+    "sel",
+    "g3a"
+   ],
+   "value": "220k",
+   "label": "R24 220 k grid stopper",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "V3A",
+   "type": "triode",
+   "nodes": [
+    "p3a",
+    "g3a",
+    "k3a"
+   ],
+   "model": "12AX7",
+   "label": "V3A ECC83 shared stage; drawing plate 183 V"
+  },
+  {
+   "ref": "R25",
+   "type": "R",
+   "nodes": [
+    "n4",
+    "p3a"
+   ],
+   "value": "220k",
+   "label": "V3A plate load 220 k (TSM; no designator printed) on NODE 4",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R26",
+   "type": "R",
+   "nodes": [
+    "k3a",
+    "0"
+   ],
+   "value": "1k8",
+   "label": "R26 1.8 k cathode",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C19",
+   "type": "C",
+   "nodes": [
+    "k3a",
+    "0"
+   ],
+   "value": "1u",
+   "label": "C19 1 uF cathode bypass",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "V3B",
+   "type": "triode",
+   "nodes": [
+    "n4",
+    "p3a",
+    "k3b"
+   ],
+   "model": "12AX7",
+   "label": "V3B ECC83 DC-coupled cathode follower (plate on NODE 4, 376 V)"
+  },
+  {
+   "ref": "R27",
+   "type": "R",
+   "nodes": [
+    "k3b",
+    "0"
+   ],
+   "value": "100k",
+   "label": "R27 100 k cathode load",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C20",
+   "type": "C",
+   "nodes": [
+    "k3b",
+    "tt"
+   ],
+   "value": "500p",
+   "label": "C20 500 pF treble cap",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R28",
+   "type": "R",
+   "nodes": [
+    "k3b",
+    "ts"
+   ],
+   "value": "47k",
+   "label": "R28 47 k slope",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C21",
+   "type": "C",
+   "nodes": [
+    "ts",
+    "tb"
+   ],
+   "value": "22n",
+   "label": "C21 22 nF bass cap",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "C22",
+   "type": "C",
+   "nodes": [
+    "ts",
+    "mw"
+   ],
+   "value": "22n",
+   "label": "C22 22 nF mid cap (to the Middle pot wiper, as drawn)",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "TREB",
+   "type": "pot",
+   "nodes": [
+    "tb",
+    "tw",
+    "tt"
+   ],
+   "value": "250k",
+   "taper": "B",
+   "control": "treble",
+   "label": "TREBLE 250KL (pin 1 = tt, pin 3 = tb)"
+  },
+  {
+   "ref": "BASS",
+   "type": "pot",
+   "nodes": [
+    "mt",
+    "tb",
+    "tb"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "bass",
+   "label": "BASS 1MA, wiper tied to pin 1 (tb): rheostat tb -> mt"
+  },
+  {
+   "ref": "MID",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mw",
+    "mt"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "middle",
+   "label": "MIDDLE 25KL: pin 1 = mt, wiper = C22, pin 3 = GND"
+  },
+  {
+   "ref": "ODMV",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "odmw",
+    "tw"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "master",
+   "label": "OD-MASTER 1MA on the treble wiper"
+  },
+  {
+   "ref": "NMV",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "nmw",
+    "tw"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "master",
+   "label": "NORMAL-MASTER 1MA on the treble wiper (ganged to the catalogue's single Master, see notes)"
+  },
+  {
+   "ref": "K3_OD",
+   "type": "switch",
+   "nodes": [
+    "odmw",
+    "mvo"
+   ],
+   "control": "channel",
+   "positions": [
+    1
+   ],
+   "label": "K3 G5V-2 pole 4-6 (de-energised = OD): OD master wiper"
+  },
+  {
+   "ref": "K3_N",
+   "type": "switch",
+   "nodes": [
+    "nmw",
+    "mvo"
+   ],
+   "control": "channel",
+   "positions": [
+    0
+   ],
+   "label": "K3 pole 4-8 (energised = Normal): Normal master wiper"
+  },
+  {
+   "ref": "K4A_BY",
+   "type": "switch",
+   "nodes": [
+    "mvo",
+    "k4l"
+   ],
+   "control": "loop",
+   "positions": [
+    0
+   ],
+   "label": "K4 G5V-2 pole 4-6 (de-energised = loop off)"
+  },
+  {
+   "ref": "K4B_BY",
+   "type": "switch",
+   "nodes": [
+    "k4l",
+    "pii"
+   ],
+   "control": "loop",
+   "positions": [
+    0
+   ],
+   "label": "K4 pole 11-13 (loop off); pins 6 and 11 are linked on the drawing"
+  },
+  {
+   "ref": "K4A_LP",
+   "type": "switch",
+   "nodes": [
+    "mvo",
+    "lpi"
+   ],
+   "control": "loop",
+   "positions": [
+    1
+   ],
+   "label": "K4 pole 4-8 (loop on): to the send buffer"
+  },
+  {
+   "ref": "K4B_LP",
+   "type": "switch",
+   "nodes": [
+    "llw",
+    "pii"
+   ],
+   "control": "loop",
+   "positions": [
+    1
+   ],
+   "label": "K4 pole 9-13 (loop on): LOOP-LVL wiper to the PI"
+  },
+  {
+   "ref": "R30",
+   "type": "R",
+   "nodes": [
+    "lpi",
+    "0"
+   ],
+   "value": "4.7M",
+   "label": "R30 4.7 M",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C25",
+   "type": "C",
+   "nodes": [
+    "lpi",
+    "g4b"
+   ],
+   "value": "47n",
+   "label": "C25 47 nF",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R31",
+   "type": "R",
+   "nodes": [
+    "g4b",
+    "k4m"
+   ],
+   "value": "1M",
+   "label": "R31 1 M bootstrapped grid leak to the R32/R33 junction",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "V4B",
+   "type": "triode",
+   "nodes": [
+    "p4b",
+    "g4b",
+    "k4b"
+   ],
+   "model": "12AX7",
+   "label": "V4B ECC83 send cathode follower; drawing plate 363 V"
+  },
+  {
+   "ref": "R42",
+   "type": "R",
+   "nodes": [
+    "n4",
+    "p4b"
+   ],
+   "value": "10k",
+   "label": "R42 10 k plate dropper on NODE 4",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C30",
+   "type": "C",
+   "nodes": [
+    "p4b",
+    "0"
+   ],
+   "value": "10u",
+   "label": "C30 10 uF/450 V plate decoupling",
+   "tolerance": 0.2
+  },
+  {
+   "ref": "R32",
+   "type": "R",
+   "nodes": [
+    "k4b",
+    "k4m"
+   ],
+   "value": "1k5",
+   "label": "R32 1.5 k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R33",
+   "type": "R",
+   "nodes": [
+    "k4m",
+    "0"
+   ],
+   "value": "100k",
+   "label": "R33 100 k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C26",
+   "type": "C",
+   "nodes": [
+    "k4b",
+    "c26o"
+   ],
+   "value": "680n",
+   "label": "C26 680 nF send coupling",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R34",
+   "type": "R",
+   "nodes": [
+    "c26o",
+    "snd"
+   ],
+   "value": "15k",
+   "label": "R34 15 k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R35",
+   "type": "R",
+   "nodes": [
+    "snd",
+    "0"
+   ],
+   "value": "5k1",
+   "label": "R35 5.1 k (J3 SEND tip)",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "J4N",
+   "type": "R",
+   "nodes": [
+    "snd",
+    "ret"
+   ],
+   "value": "1",
+   "label": "J4 RETURN tip-normal contact to the SEND tip (nothing plugged in)"
+  },
+  {
+   "ref": "R36",
+   "type": "R",
+   "nodes": [
+    "ret",
+    "0"
+   ],
+   "value": "100k",
+   "label": "R36 100 k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R37",
+   "type": "R",
+   "nodes": [
+    "ret",
+    "c27i"
+   ],
+   "value": "10k",
+   "label": "R37 10 k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C27",
+   "type": "C",
+   "nodes": [
+    "c27i",
+    "g4a"
+   ],
+   "value": "47n",
+   "label": "C27 47 nF",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R38",
+   "type": "R",
+   "nodes": [
+    "g4a",
+    "0"
+   ],
+   "value": "1M",
+   "label": "R38 1 M",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "V4A",
+   "type": "triode",
+   "nodes": [
+    "p4a",
+    "g4a",
+    "k4a"
+   ],
+   "model": "12AX7",
+   "label": "V4A ECC83 return recovery; drawing plate 242 V"
+  },
+  {
+   "ref": "R39",
+   "type": "R",
+   "nodes": [
+    "n4",
+    "p4a"
+   ],
+   "value": "150k",
+   "label": "R39 150 k plate load on NODE 4",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R40",
+   "type": "R",
+   "nodes": [
+    "k4a",
+    "0"
+   ],
+   "value": "2k2",
+   "label": "R40 2.2 k unbypassed cathode",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C28",
+   "type": "C",
+   "nodes": [
+    "p4a",
+    "c28o"
+   ],
+   "value": "47n",
+   "label": "C28 47 nF",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R41",
+   "type": "R",
+   "nodes": [
+    "c28o",
+    "llt"
+   ],
+   "value": "100k",
+   "label": "R41 100 k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "LOOPLVL",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "llw",
+    "llt"
+   ],
+   "value": "500k",
+   "taper": "A",
+   "control": "loopLevel",
+   "label": "LOOP-LVL 500KA"
+  },
+  {
+   "ref": "C31",
+   "type": "C",
+   "nodes": [
+    "pii",
+    "g5a"
+   ],
+   "value": "22n",
+   "label": "C31 22 nF PI input",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R43",
+   "type": "R",
+   "nodes": [
+    "g5a",
+    "tl"
+   ],
+   "value": "1M",
+   "label": "R43 1 M",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R50",
+   "type": "R",
+   "nodes": [
+    "g5b",
+    "tl"
+   ],
+   "value": "1M",
+   "label": "R50 1 M",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R46",
+   "type": "R",
+   "nodes": [
+    "kpi",
+    "tl"
+   ],
+   "value": "470",
+   "label": "R46 470 R shared cathode",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R47",
+   "type": "R",
+   "nodes": [
+    "tl",
+    "nfb"
+   ],
+   "value": "10k",
+   "label": "R47 10 k tail to the feedback node",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C33",
+   "type": "C",
+   "nodes": [
+    "g5b",
+    "nfb"
+   ],
+   "value": "100n",
+   "label": "C33 100 nF V5B grid to the feedback node",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R48",
+   "type": "R",
+   "nodes": [
+    "nfb",
+    "0"
+   ],
+   "value": "4k7",
+   "label": "R48 4.7 k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "V5A",
+   "type": "triode",
+   "nodes": [
+    "p5a",
+    "g5a",
+    "kpi"
+   ],
+   "model": "12AX7",
+   "label": "V5A ECC83 LTP; drawing plate 250 V"
+  },
+  {
+   "ref": "V5B",
+   "type": "triode",
+   "nodes": [
+    "p5b",
+    "g5b",
+    "kpi"
+   ],
+   "model": "12AX7",
+   "label": "V5B ECC83 LTP; drawing plate 247 V"
+  },
+  {
+   "ref": "R44",
+   "type": "R",
+   "nodes": [
+    "n4",
+    "p5a"
+   ],
+   "value": "82k",
+   "label": "R44 82 k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R45",
+   "type": "R",
+   "nodes": [
+    "n4",
+    "p5b"
+   ],
+   "value": "100k",
+   "label": "R45 100 k",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C26B",
+   "type": "C",
+   "nodes": [
+    "p5a",
+    "p5b"
+   ],
+   "value": "47p",
+   "label": "C26 (second use of the designator on the drawing) 47 pF plate-to-plate",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "C35",
+   "type": "C",
+   "nodes": [
+    "p5a",
+    "ga"
+   ],
+   "value": "47n",
+   "label": "C35 47 nF",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "C36",
+   "type": "C",
+   "nodes": [
+    "p5b",
+    "gb"
+   ],
+   "value": "47n",
+   "label": "C36 47 nF",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "R52",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "bias"
+   ],
+   "value": "220k",
+   "label": "R52 220 k bias feed (V6/V7)",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R53",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "bias"
+   ],
+   "value": "220k",
+   "label": "R53 220 k bias feed (V8/V9)",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "RG67",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "g67"
+   ],
+   "value": "1k1",
+   "label": "R57 / R58 2.2 k grid stoppers, folded (/2)",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "RG89",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "g89"
+   ],
+   "value": "1k1",
+   "label": "R59 / R60 2.2 k grid stoppers, folded (/2)",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "RS67",
+   "type": "R",
+   "nodes": [
+    "n5",
+    "s67"
+   ],
+   "value": "235",
+   "label": "V6/V7 470 R 3 W screen resistors (TSM W21-3W), folded (/2), on NODE 5",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "RS89",
+   "type": "R",
+   "nodes": [
+    "n5",
+    "s89"
+   ],
+   "value": "235",
+   "label": "V8/V9 470 R 3 W screen resistors, folded (/2)",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "RK67",
+   "type": "R",
+   "nodes": [
+    "k67",
+    "0"
+   ],
+   "value": "0.5",
+   "label": "V6/V7 1 R 2 W cathode sense resistors, folded (/2)",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "RK89",
+   "type": "R",
+   "nodes": [
+    "k89",
+    "0"
+   ],
+   "value": "0.5",
+   "label": "V8/V9 1 R 2 W cathode sense resistors, folded (/2)",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "V67",
+   "type": "pentode",
+   "nodes": [
+    "pa",
+    "s67",
+    "g67",
+    "k67"
+   ],
+   "model": "6L6GC",
+   "parallel": 2,
+   "label": "V6A + V7A 6L6GC (BLU side)",
+   "note": "Two tubes folded: the drawing gives each identical 2.2 k grid / 470 R screen / 1 R cathode resistors between the same nodes, so the fold is exact"
+  },
+  {
+   "ref": "V89",
+   "type": "pentode",
+   "nodes": [
+    "pb",
+    "s89",
+    "g89",
+    "k89"
+   ],
+   "model": "6L6GC",
+   "parallel": 2,
+   "label": "V8A + V9A 6L6GC (BRN side)",
+   "note": "folded as V67"
+  },
+  {
+   "ref": "OT",
+   "type": "transformer",
+   "nodes": [
+    "pa",
+    "n6",
+    "n6",
+    "pb",
+    "spk",
+    "0",
+    "fb4",
+    "0"
+   ],
+   "turns": [
+    1,
+    1,
+    0.194,
+    0.097
+   ],
+   "r": [
+    20,
+    20,
+    0.2,
+    0.1
+   ],
+   "leak": [
+    "3m",
+    "3m",
+    0,
+    0
+   ],
+   "lm": 80,
+   "lsat": 5,
+   "label": "100W-O.T. HTS-12960: BLU (V6/V7) / WHT CT on NODE 6 / BRN (V8/V9); 16 ohm tap to the speaker, 4 ohm tap to the feedback",
+   "note": "unverified: the drawing gives no impedance or DCR. 1.7 k plate-to-plate class values (16 ohm turns 2*sqrt(16/1700), 4 ohm half of that), 20 ohm per half, 3 mH leakage, lm 80 H, lsat 5 V s. SW5 IMPEDANCE fixed at 16 ohm (the cab)."
+  },
+  {
+   "ref": "CWA",
+   "type": "C",
+   "nodes": [
+    "pa",
+    "cwa"
+   ],
+   "value": "470p",
+   "label": "OT half-primary winding capacitance (BLU)"
+  },
+  {
+   "ref": "RCWA",
+   "type": "R",
+   "nodes": [
+    "cwa",
+    "n6"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (BLU)"
+  },
+  {
+   "ref": "CWB",
+   "type": "C",
+   "nodes": [
+    "pb",
+    "cwb"
+   ],
+   "value": "470p",
+   "label": "OT half-primary winding capacitance (BRN)"
+  },
+  {
+   "ref": "RCWB",
+   "type": "R",
+   "nodes": [
+    "cwb",
+    "n6"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (BRN)"
+  },
+  {
+   "ref": "SPK",
+   "type": "sub",
+   "nodes": [
+    "spk",
+    "0"
+   ],
+   "of": "lib:spk-12in-16ohm-british",
+   "label": "16 ohm 4x12-class cab on SW5 = 16 ohm (J5/J6 SPKR OUT)"
+  },
+  {
+   "ref": "R56",
+   "type": "R",
+   "nodes": [
+    "spk",
+    "lo"
+   ],
+   "value": "100k",
+   "label": "R56 100 k line-out feed",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "LINEOUT",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "low",
+    "lo"
+   ],
+   "value": "10k",
+   "taper": "B",
+   "label": "LINE-OUT-LEVEL 10KL (J7 unloaded; fixed mid)"
+  },
+  {
+   "ref": "R55",
+   "type": "R",
+   "nodes": [
+    "fb4",
+    "fbe"
+   ],
+   "value": "39k",
+   "label": "R55 39 k from the 4 OHM TAP",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "C37",
+   "type": "C",
+   "nodes": [
+    "fbd",
+    "fbe"
+   ],
+   "value": "4n7",
+   "label": "C37 4.7 nF across the Depth pot",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "DEPTH",
+   "type": "pot",
+   "nodes": [
+    "fbd",
+    "fbe",
+    "fbe"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "depth",
+   "label": "DEPTH 1MA: pin 1 to C53, wiper to R55/C37, pin 3 open; rheostat up with rotation"
+  },
+  {
+   "ref": "C53",
+   "type": "C",
+   "nodes": [
+    "fbd",
+    "nfb"
+   ],
+   "value": "1u",
+   "label": "C53 1 uF into the feedback node",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "C32",
+   "type": "C",
+   "nodes": [
+    "nfb",
+    "prs"
+   ],
+   "value": "100n",
+   "label": "C32 100 nF presence cap",
+   "tolerance": 0.1
+  },
+  {
+   "ref": "PRES",
+   "type": "pot",
+   "nodes": [
+    "prs",
+    "prs",
+    "0"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "presence",
+   "label": "PRESENCE 25KL, wiper tied to pin 1: rheostat to GND, 0 ohm at full presence"
+  }
+ ],
+ "probes": [
+  "p1a",
+  "odb",
+  "g2a",
+  "p2a",
+  "p2b",
+  "odo",
+  "g1b",
+  "p1b",
+  "clo",
+  "sel",
+  "p3a",
+  "k3b",
+  "tw",
+  "mvo",
+  "pii",
+  "p5a",
+  "p5b",
+  "ga",
+  "gb",
+  "pa",
+  "pb",
+  "nfb",
+  "n6",
+  "n5",
+  "n4",
+  "spk"
+ ]
+}

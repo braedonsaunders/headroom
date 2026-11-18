@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Freeze Choir</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Freeze Choir" preset-author="Headroom" preset-comment="Hold a chord and step on Engage: the chord freezes into a pedal-point arpeggio of choir and your own strings, and stays there while you solo over it. Bend a note and the whole arpeggio bends with you. Release Engage to let it go." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="900001">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="low" value="28"/>
+        <parameter id="high" value="88"/>
+        <parameter id="mode" value="0"/>
+        <parameter id="sens" value="0.55"/>
+        <parameter id="bend" value="2"/>
+        <parameter id="vel" value="0.5"/>
+        <parameter id="thru" value="1"/>
+        <parameter id="engine" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="900006">
+    <component-audio version="1">
+      <parameters num-parameters="22">
+        <parameter id="rate" value="1"/>
+        <parameter id="bloom" value="0.5"/>
+        <parameter id="bend" value="1"/>
+        <parameter id="tone" value="0.45"/>
+        <parameter id="dry" value="1"/>
+        <parameter id="level" value="0.4"/>
+        <parameter id="trigger" value="3"/>
+        <parameter id="engage" value="0"/>
+        <parameter id="pattern" value="6"/>
+        <parameter id="motion" value="0.5"/>
+        <parameter id="touch" value="0.3"/>
+        <parameter id="range" value="1"/>
+        <parameter id="extend" value="3"/>
+        <parameter id="key" value="0"/>
+        <parameter id="scale" value="0"/>
+        <parameter id="gate" value="1"/>
+        <parameter id="swing" value="0"/>
+        <parameter id="clock" value="1"/>
+        <parameter id="choke" value="0.7"/>
+        <parameter id="voice" value="2"/>
+        <parameter id="retrig" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="900003">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="sound" value="23"/>
+        <parameter id="tone" value="0.5"/>
+        <parameter id="follow" value="0"/>
+        <parameter id="attack" value="0.55"/>
+        <parameter id="release" value="0.7"/>
+        <parameter id="level" value="0.38"/>
+        <parameter id="mix" value="0.4"/>
+        <parameter id="vibrato" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="172000">
+    <component-audio version="1">
+      <parameters num-parameters="14">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="volume" value="0.62"/>
+        <parameter id="bright" value="0"/>
+        <parameter id="treble" value="0.55"/>
+        <parameter id="bass" value="0.4"/>
+        <parameter id="reverb intensity" value="0.5"/>
+        <parameter id="reverb on" value="0"/>
+        <parameter id="reverb mode" value="0"/>
+        <parameter id="speed" value="0.5"/>
+        <parameter id="intensity" value="0.5"/>
+        <parameter id="tremolo on" value="0"/>
+        <parameter id="tremolo sag" value="0.5"/>
+        <parameter id="tempo sync" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.9579"/>
+        <parameter id="c" value="0"/>
+        <parameter id="Cab" value="24"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="107000">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="R0" value="0.5"/>
+        <parameter id="F1" value="0.35"/>
+        <parameter id="F2" value="0.5"/>
+        <parameter id="D3" value="0.2"/>
+        <parameter id="F4" value="0"/>
+        <parameter id="F5" value="0"/>
+        <parameter id="M6" value="0"/>
+        <parameter id="S7" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="118000">
+    <component-audio version="1">
+      <parameters num-parameters="23">
+        <parameter id="W0" value="0.25"/>
+        <parameter id="S1" value="0.5"/>
+        <parameter id="S2" value="0.5"/>
+        <parameter id="H3" value="0.5"/>
+        <parameter id="D4" value="0.5"/>
+        <parameter id="R5" value="0.5"/>
+        <parameter id="F6" value="0"/>
+        <parameter id="D7" value="0.5"/>
+        <parameter id="D8" value="0.5"/>
+        <parameter id="P9" value="0.5"/>
+        <parameter id="L10" value="0.5"/>
+        <parameter id="P11" value="0.5"/>
+        <parameter id="M12" value="0"/>
+        <parameter id="R13" value="0.5"/>
+        <parameter id="L14" value="0.5"/>
+        <parameter id="H15" value="0.5"/>
+        <parameter id="S16" value="0.5"/>
+        <parameter id="F17" value="0.5"/>
+        <parameter id="G18" value="0.5"/>
+        <parameter id="Q19" value="0.5"/>
+        <parameter id="P20" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="IR" value="0"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="900006" target-number="1" target-name="engage" min-value="0" max-value="1" controller-name="Freeze"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="900006" target-number="1" target-name="motion" min-value="0" max-value="1" controller-name="Motion"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="900003" target-number="1" target-name="mix" min-value="0" max-value="0.7" controller-name="Choir"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="900006" target-number="1" target-name="bend" min-value="0" max-value="1" controller-name="Bend Follow"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-tempo bpm="84.000"/>
+<headroom-library version="1" id="bl-freeze-choir" category="Guitar + MIDI" order="20" instrument="guitar" style="Freeze &amp; Solo">
+  <description>Hold a chord and step on Engage: the chord freezes into a pedal-point arpeggio of choir and your own strings, and stays there while you solo over it. Bend a note and the whole arpeggio bends with you. Release Engage to let it go.</description>
+  <tags><tag>Bloom</tag><tag>Arpeggio</tag><tag>Freeze</tag><tag>Crunch</tag><tag>Lead</tag><tag>Guitar + MIDI</tag><tag>Poly</tag></tags>
+  <sources>
+    <source url="https://en.wikipedia.org/wiki/Arpeggiator" title="Wikipedia: Arpeggiator"/>
+    <source url="https://www.ehx.com/products/freeze/" title="Electro-Harmonix: Freeze Sound Retainer"/>
+    <source url="https://en.wikipedia.org/wiki/Roland_GR-300" title="Wikipedia: Roland GR-300"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

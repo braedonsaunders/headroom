@@ -1,0 +1,8 @@
+# ngspice .op reference: test-speaker v1 (node voltage)
+in  0.000000e+00
+a  0.000000e+00
+vel  0.000000e+00
+b  0.000000e+00
+vel2  0.000000e+00
+c  0.000000e+00
+vel3  0.000000e+00

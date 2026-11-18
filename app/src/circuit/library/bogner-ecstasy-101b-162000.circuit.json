@@ -1,0 +1,2837 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "bogner-ecstasy-101b-162000",
+ "version": 3,
+ "name": "Bogner Ecstasy 101B - clean + OD channels, FX loop, PI, 4 x EL34",
+ "description": "Bogner Ecstasy 101B, catalogue unit 162000: the whole amplifier. Input 68k / 1M into one grid line shared by the clean channel's first stage and the OD channel's V1A. Ch1 (clean, S4): 100k / 1k5 || 22u stage -> Fender-type stack straight off the plate (220p treble cap, 100k slope, .1 / .047, TREBLE 250k, BASS 250k rheostat, MID 25k rheostat) -> 1M with PRE-EQ 100p / 220p -> 100k / 1k5 || 22u stage -> .022 -> 3M3 || 12p into 220k (clean-boost puts 1M + 1n across it) -> 100k / 1k5 || 22u stage -> .01 -> 50k level -> 220k -> 390k + .047 shelf. Ch2 / Ch3 (OD, S2 values, S1 relays): V1A -> 4n7 -> CH2 / CH3 GAIN pots (relay-selected wiper; each channel's own 3-way PRE EQ puts 470p / none / 4n7 from the bus to the wiper; the Plexi assignment sends the wiper straight to V4A through 499k || 470p) -> 470k || 470p / R6 boost shunt -> V2A (Structure S1) -> 2n2 / 500k pads -> V3A (10k cathode) -> .022 -> 500k || 470p -> V4A DC-coupled into the V5 cathode follower -> 470p / 22n / 22n / 33k / 250k / 1M / 25k stack -> VOLUME (inserted). The channel relays select the active output onto the loop input; each sheet's own mute contact grounds the idle channel. FX loop on rail D (send follower, normalled return stage) -> GLOBAL MASTER (inserted) -> PI on rail C (22n, 82k / 100k, 47p plate to plate, 470 / 10k tail, .1 to the second grid, 4k75, .1 couplings) -> 4 x EL34 in two folded pairs (4k7 stoppers, 220k leaks to bias rail A, 470 screen resistors through Sound Style: screens on the screen supply or on their own plates, 250 ohm 50 W cathode resistors behind the half-power relays) -> OT 1.7k : 4 / 16 -> 4x12. Feedback: OT 4 ohm -- 100k -- n2f -- 1M || 470p -- FB -- 22p -- tail node. Supply (S7 as drawn): bridge -> 110u -> choke -> 110u + 440k bleed (screens) -> 15k -> C (50u) -> 10k -> D (50u) and 10k -> E (50u) -> 5k -> F (50u) -> 5k -> G (50u); bias winding -> 22k -> rail A (150u) -> 51k + 25k adjust. NOT IN THIS NETLIST (notes S26-S28): the Excursion switch, its 220k, its .1 and its two 25k trims (their far ends are six pads whose wiring no sheet draws); S1's third stage-skip changeover SK2 (V3A skip; a manual actuator is drawn but no panel function is documented), wired in its drawn position; the FX loop's 'FROM FX 1' feed and send-mute pole; the 'AB/A' second position; one-valve-per-pair half power.",
+ "sources": [
+  {
+   "title": "'OD Channel.pdf', schematicheaven 2008-02-19: typed redraw of the Ecstasy OD (ch 2+3) channel, titled 'Ecstasy OD channel', with the two typed notes 'RLY1 is a footswitchable gain boost' and 'S1 is a front panel switch labeled \"Structure\". It is NOT footswitchable' (primary source for the OD channel values)",
+   "url": "https://schematicheaven.net/manuals/bogner/OD%20Channel.pdf"
+  },
+  {
+   "title": "'bogner_ecstacy.pdf', schematicheaven 2002-04-07: the same drawing as OD Channel.pdf (pixel-identical 1280x960 raster) - counted once, cited for the date",
+   "url": "https://schematicheaven.net/manuals/bogner/bogner_ecstacy.pdf"
+  },
+  {
+   "title": "'Bogner XTC ch2,3.JPG', blueguitar xtc.zip (2002 hand trace), 3450x2478 at 300 dpi, headed 'Bogner XTC ch 2+3': the OD channel with its CH2/CH3 relay contacts, the shared input (two triodes on one grid line: the clean channel's first stage and V1A) and the preamp rail letters G / F / E",
+   "url": "http://blueguitar.org/new/schem/_bogner/xtc.zip"
+  },
+  {
+   "title": "'Bogner XTC clean.JPG' (blueguitar xtc.zip), 3290x1015 at 300 dpi: the clean channel - first stage, Fender-type 220p/250k/100k/.1/.047/250k/25k stack, 1M with the PRE-EQ 100p/220p switch, second stage with 3M3 || 12p and the clean-boost 1M + 1n, third stage, .01 into the 50k level pot, 220k out, 390k + .047, output mute contact (primary source for the clean channel)",
+   "url": "http://blueguitar.org/new/schem/_bogner/xtc.zip"
+  },
+  {
+   "title": "'xtc.txt' (467 B, same blueguitar archive): the tracer's note that a wire runs from the first tube's anode to the clean channel without a coupling cap, and that the tone pots are 250k (notes S26.3 for how it was used)",
+   "url": "http://blueguitar.org/new/schem/_bogner/xtc.zip"
+  },
+  {
+   "title": "'Bogner XTC PSU.JPG' (blueguitar): the HT supply - bridge -> 2 x 220u reservoir -> standby -> choke -> 220u + 220u (220k bleeders) -> 15k -> C; C -> 10k 5W -> D; C -> 10k 5W -> E -> 5k 5W -> F -> 5k 5W -> G, 50u at every lettered node (primary source for the supply topology and values)",
+   "url": "http://blueguitar.org/new/schem/_bogner/xtc.zip"
+  },
+  {
+   "title": "'Bogner XTC  PI.JPG' (blueguitar xtc.zip), 2820x1566 at 300 dpi: the phase inverter (499k, 22n, 82k / 100k, 47p plate to plate, .1 couplings, 1M / 1M / 470 / 10k, .1 to the second grid, 4k75), the feedback network (OT - 100k - 1M || 470p - 22p - tail) and the Excursion switch with its 220k and two 25k trims (notes S28)",
+   "url": "http://blueguitar.org/new/schem/_bogner/xtc.zip"
+  },
+  {
+   "title": "'Bogner XTC FX.JPG' (blueguitar xtc.zip), 2676x1038: the FX loop send cathode follower and return gain stage on rail D",
+   "url": "http://blueguitar.org/new/schem/_bogner/xtc.zip"
+  },
+  {
+   "title": "'xtc_pw.gif' (member 'Ecstasy/xtc_pw.gif' of the MEF 'Bogner.zip'), 2666x2000, headed 'Bogner ecstasy' (a second hand): the power stage - four output valves, 4k7 grid stoppers, 470 screen resistors, 220k grid leaks to bias rail A, S1 'Sound Style' (screens to C or to their own plate line), S2 'AB/A', S3 '1/2 pwr' with 2 x 250 ohm 50 W, the bias supply (diode, 2 x 150u, 22k, 51k, 25k adjust); also a copy of the PI that agrees with S5 on 82k / 100k / 47p / .1 / .1",
+   "url": "https://music-electronics-forum.com/filedata/fetch?id=832913"
+  },
+  {
+   "title": "'xtc_ps.gif' (member 'Ecstasy/xtc_ps.gif' of the MEF 'Bogner.zip'): the same supply topology drawn by the second hand (15k -> A5; 10k -> A4 spur; 10k -> A3 -> 5k -> A2 -> 5k -> A1) with terminal rings before and after the choke (plates / screens)",
+   "url": "https://music-electronics-forum.com/filedata/fetch?id=832913"
+  },
+  {
+   "title": "'audiocircuit-Bogner-Ecstacy-pre-sch.pdf' (audiocircuit.dk): the same 1280x960 'Ecstasy OD channel' raster wrapped in a PDF (one /Image XObject, no vector paths). Cross-check only",
+   "url": "https://audiocircuit.dk/downloads/bogner/Bogner-Ecstacy-pre-sch.pdf"
+  },
+  {
+   "title": "Bogner 'Ecstasy User Manual' (ECSTASY MANUAL 2012, 101B): Ch2 / Ch3 each own Gain, Volume and a 3-position Pre EQ (B1 / N / B2); common Bass / Middle / Treble, Structure, Gain Boost 2&3 and the Plexi mode switch (assignable to Ch2 or Ch3). Function of the PRE EQ rings and the Plexi changeovers only; no values (notes S33). Archived as work/schematics/162000-bogner-ecstasy-101b/Bogner-Ecstasy-101B-manual-2012.pdf",
+   "url": "https://jam.ua/files/files/ECSTASY%20MANUAL%202012.pdf"
+  },
+  {
+   "title": "N. Koren, 'Improved vacuum tube models for SPICE simulations': 12AX7 law (library model)",
+   "url": "https://www.normankoren.com/Audio/Tubemodspice_article.html"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "spk",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 125.5,
+  "note": "outputVoltsPerFS = 1.5 x the largest dimed speaker peak of the three channels: Ch2 / Ch3 +83.68 / -45.49 V (Ch1 +80.8 / -77.4 V) with gain = low = mid = treble = volume = master = 1, a 1 kHz 0.05 V peak input, settled start (notes S29). 'spk' is the 16 ohm tap into the library's 4x12 equivalent."
+ },
+ "oversampling": 2,
+ "minRate": 176400,
+ "lte": {
+  "start": "bdf2",
+  "tol": 8
+ },
+ "solver": "auto",
+ "cuts": [
+  "k5a"
+ ],
+ "multirate": {},
+ "models": {},
+ "controls": [
+  {
+   "id": "gainMode",
+   "label": "Channel",
+   "kind": "selector",
+   "default": 0.5,
+   "options": [
+    "Ch1 Clean",
+    "Ch2",
+    "Ch3"
+   ],
+   "params": [
+    "gainMode"
+   ],
+   "paramRange": [
+    0,
+    2
+   ],
+   "group": "Main",
+   "note": "Catalogue 'Gain Mode' (3 steps; descriptor '3-Mode') drives the channel relays, as the Friedman BE-100 binds its Clean/BE/HBE. Ch1 = clean output to the loop/PI, OD gain bus grounded (S1 contact at (1457,887)-(1450,1044)); Ch2 / Ch3 = OD output to the loop/PI and the clean output muted (S4 contact at (3240,760)/(3220,850)), the CH2/CH3 relay picking that channel's GAIN pot wiper (S1 rings (1754,944) / (1750,1001), pole (1811,976)), and the relay's third pole (1582,1309) handing the 4n7 bus to that channel's PRE EQ terminal ('CH3' (1281,1570) / 'CH2' (1460,1560)). Ch2 and Ch3 differ by their own GAIN pot, their own 3-position PRE EQ (preEq2 / preEq3) and the Plexi assignment (plexi); bass/mid/treble, Structure and Boost are common, as the 101B manual says (notes S33)."
+  },
+  {
+   "id": "gain",
+   "label": "Gain",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "gain"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "Ganged: OD GAIN of the selected channel (RG2 / RG3, 500k-A each, both on the C2 4n7 bus) and the clean channel's 1M (RVC1, the pot between its tone stack and its second stage). Each knob acts on the selected channel, as on the Mesa 16000."
+  },
+  {
+   "id": "low",
+   "label": "Low",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "low"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "Ganged: OD bass R23 1M-A (rheostat, wiper strapped to its top as S2 draws it) and clean bass RCB 250k (rheostat, S4 draws it with the variable-resistor arrow)."
+  },
+  {
+   "id": "mid",
+   "label": "Mid",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "mid"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "Ganged: OD mid R24 25k-B and clean mid RCM 25k (S4: wiper on the bass/.047 node, bottom to 0 V, top end unconnected = a rheostat)."
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "treble"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "Ganged: OD treble R22 250k-A and clean treble RCT 250k."
+  },
+  {
+   "id": "master",
+   "label": "Master",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "master"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "GLOBAL MASTER, inserted at the FX loop's output (`RVG`, 500k-A, wiper 'mf' drives the PI). unverified: no sheet in the set draws a master. It has to sit after the loop because the loop's return stage is a full gain stage; see notes S21.4."
+  },
+  {
+   "id": "volume",
+   "label": "Volume",
+   "kind": "continuous",
+   "default": 1.0,
+   "params": [],
+   "paramRange": [
+    0,
+    1
+   ],
+   "face": true,
+   "group": "Main",
+   "note": "Channel VOLUME, ganged: the clean channel's drawn 50k level pot (RVC3, S4 crop (2855,630)-(2935,725)) and the OD channel's VOLUME (RVM 500k-A, inserted at the only dangling node of the OD sheet, R22's wiper stub). No catalogue parameter."
+  },
+  {
+   "id": "structure",
+   "label": "Structure",
+   "kind": "switch",
+   "default": 0.0,
+   "options": [
+    "Open (drawn)",
+    "Closed"
+   ],
+   "face": true,
+   "group": "OD",
+   "note": "S1 'Structure' (S2: 'a front panel switch labeled \"Structure\". It is NOT footswitchable'). Closed: V2A cathode = R9 || R10 2.375k bypassed by C4 2.2u (more gain, fuller); open (drawn): R9 4.75k unbypassed. Was folded into gainMode before the channel relays were modelled."
+  },
+  {
+   "id": "boost",
+   "label": "Boost",
+   "kind": "switch",
+   "default": 0.0,
+   "options": [
+    "Normal (drawn)",
+    "Boost"
+   ],
+   "face": true,
+   "group": "OD",
+   "note": "RLY1 (S2: 'a footswitchable gain boost'; S1 labels the same contact 'Boost'). Normal (drawn) = R6 100k shunts the V2A grid pad (-16 dB); Boost lifts it (+10 dB)."
+  },
+  {
+   "id": "cleanBoost",
+   "label": "Clean Boost",
+   "kind": "switch",
+   "default": 0.0,
+   "options": [
+    "Off (drawn)",
+    "On"
+   ],
+   "face": true,
+   "group": "Clean",
+   "note": "S4 'clean-boost' contact (rings (2140,600) / (2225,595)): On puts the 1M + 1n leg across the 3M3 || 12p interstage pad of the clean channel's second stage."
+  },
+  {
+   "id": "preEq",
+   "label": "Pre-EQ 1",
+   "kind": "selector",
+   "default": 0.0,
+   "options": [
+    "B1 100 pF (drawn)",
+    "N",
+    "B2 220 pF"
+   ],
+   "face": true,
+   "group": "Clean",
+   "note": "S4 'PRE-EQ' switch (pole (1515,340), throws (1420,290) / (1415,385)): 100p or 220p from the top of the clean 1M to its wiper. The 101B manual (2012) gives every channel a 3-position Pre EQ 'B1 / N / B2', N = normal (centre, neither throw) and B2 'even brighter than B1'; so B1 = the smaller cap. Old presets keep their meaning: 0 = 100p, 1 = 220p."
+  },
+  {
+   "id": "preEq2",
+   "label": "Pre-EQ 2",
+   "kind": "selector",
+   "default": 0.5,
+   "options": [
+    "B1 470 pF",
+    "N",
+    "B2 4n7"
+   ],
+   "face": true,
+   "group": "OD",
+   "note": "Ch2's PRE EQ: S1 'PRE EQ' rings 3 / 4 ((1410,1683) 4n7 strap, (1500,1688) 470p strap) fed from the 'CH2' terminal (1460,1560) when the CH2/CH3 relay's third pole (1582,1309) is on CH2. The cap runs from the 4n7 gain bus (pot top) to the selected wiper (S1 line x 1795 from pole (1811,976) down to (1795,1905)). The panel switch that joins terminal to ring is not drawn; its function and its three positions are the manual's. B1 = 470p, B2 = 4n7 by the clean channel's order (notes S33.2). Default N, the manual's own example ('set Ch.2 Pre EQ to N')."
+  },
+  {
+   "id": "preEq3",
+   "label": "Pre-EQ 3",
+   "kind": "selector",
+   "default": 0.0,
+   "options": [
+    "B1 470 pF",
+    "N",
+    "B2 4n7"
+   ],
+   "face": true,
+   "group": "OD",
+   "note": "Ch3's PRE EQ: S1 rings 1 / 2 ((1217,1690) 4n7, (1312,1688) 470p) from the 'CH3' terminal (1281,1570). Default B1, the manual's example ('Tap in Channel 3, set the Pre EQ to B1 ... kick back and forth between channels 2 & 3')."
+  },
+  {
+   "id": "plexi",
+   "label": "Plexi",
+   "kind": "selector",
+   "default": 0.0,
+   "options": [
+    "Off (drawn)",
+    "Ch2",
+    "Ch3"
+   ],
+   "face": true,
+   "group": "OD",
+   "note": "101B 'Plexi' mode switch, assigning the Plexi voice to Ch2 or Ch3 (manual: 'the plexi channel can be assigned to either Ch.2 or Ch.3'; 'structure switch and Gain Boost 2 & 3 switch are inactive for Plexi'). Modelled as S1's two changeovers SK1 (pole (1922,982); upper throw (2014,952) -> V2A pad, lower throw (2011,1030) -> the long line) and SK3 (pole = V4A grid ring (2804,1737); upper (2775,1633) <- R18, lower (2721,1737) <- the long line): the lower throws carry the selected wiper straight to V4A through 499k || 470p ((2145-2225,1860-1890)), skipping V2A (where Structure and Boost live) and V3A. Both throws of both changeovers are drawn wired; neither has an actuator on the sheet, so the assignment logic (active when the selected channel is the assigned one) is the manual's (notes S33.3)."
+  },
+  {
+   "id": "stereo",
+   "label": "Stereo",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "CASSt"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Catalogue 'CASSt' (Stereo). The Ecstasy is a mono head; stored for presets only."
+  },
+  {
+   "id": "soundStyle",
+   "label": "Sound Style",
+   "kind": "selector",
+   "default": 0.0,
+   "options": [
+    "Pentode (screens on C)",
+    "Triode (screens on own plates)"
+   ],
+   "params": [],
+   "paramRange": [
+    0,
+    1
+   ],
+   "face": true,
+   "group": "Power",
+   "note": "S1a/S1b on the power-amp sheet ('S1 = Sound style'): each pair's screen feed (the midpoint of its two 470 ohm) goes either to 'C' (drawn; the screen supply) or to the dot on that pair's own plate line, i.e. triode connection. S8 crops (1642,333) / (1850,308) and (1625,1142) / (1908,1142)."
+  },
+  {
+   "id": "halfPower",
+   "label": "Half Power",
+   "kind": "selector",
+   "default": 0.0,
+   "options": [
+    "Full power",
+    "Half power"
+   ],
+   "params": [],
+   "paramRange": [
+    0,
+    1
+   ],
+   "face": true,
+   "group": "Power",
+   "note": "S3 '1/2 pwr' (legend on the power-amp sheet) driving the K1/K2 relay contacts across the two 250 ohm 50 W cathode resistors. In this netlist the pairs are folded, so 'Half power' brings BOTH cathode resistors in (all four valves cathode-biased) instead of lifting one valve per pair (notes S13.5)."
+  },
+  {
+   "id": "biasSet",
+   "label": "Bias",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "paramRange": [
+    0,
+    1
+   ],
+   "face": true,
+   "group": "Power",
+   "note": "The 25k bias-adjust trim under the 51k on bias rail A (S8 bottom left). 0 = 0 ohm (hotter), 1 = 25k (colder). Factory trim, exposed so the bias can be swept."
+  },
+  {
+   "id": "fxLoop",
+   "label": "FX Loop",
+   "kind": "selector",
+   "default": 0.0,
+   "options": [
+    "Out (drawn)",
+    "In"
+   ],
+   "params": [],
+   "paramRange": [
+    0,
+    1
+   ],
+   "face": true,
+   "group": "FX",
+   "note": "The 2-position loop switch of S6: the PI's feed is either the off-sheet 'FROM FX 1' throw (drawn, modelled as the dry path from the channel output) or the loop's return stage (nothing patched). unverified: the dry feed's source is not on S6."
+  },
+  {
+   "id": "on",
+   "label": "On/Off",
+   "kind": "switch",
+   "default": 1.0,
+   "params": [
+    "Pwr"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Catalogue 'Pwr' (On/Off). Host handles bypass; no power switch on the sheets."
+  }
+ ],
+ "parts": [
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "k1a",
+    "0"
+   ],
+   "value": "680n",
+   "tolerance": 0.2,
+   "label": "V1A cathode bypass C1 .68uF"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "p1a",
+    "gt"
+   ],
+   "value": "4n7",
+   "tolerance": 0.1,
+   "label": "OD coupling C2 .0047uF (S2 (150,238)-(175,258))"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "k2a",
+    "s1n"
+   ],
+   "value": "2u2",
+   "tolerance": 0.2,
+   "label": "C4 2.2uF across R10"
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "p2a",
+    "n5"
+   ],
+   "value": "2n2",
+   "tolerance": 0.1,
+   "label": "Coupling C5 .0022uF"
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "b1",
+    "b2"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "C6 470pF across R15"
+  },
+  {
+   "ref": "C7",
+   "type": "C",
+   "nodes": [
+    "p3a",
+    "n7"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Coupling C7 .022uF"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "n7",
+    "r18b"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "C8 470pF across R18"
+  },
+  {
+   "ref": "C9",
+   "type": "C",
+   "nodes": [
+    "hvF",
+    "p2a"
+   ],
+   "value": "1n",
+   "tolerance": 0.1,
+   "label": "C9 .001uF across R8"
+  },
+  {
+   "ref": "L6",
+   "type": "L",
+   "nodes": [
+    "bres",
+    "chk"
+   ],
+   "value": "15",
+   "esr": 150,
+   "label": "Choke (S7 (1362,275)-(1544,369), no value printed)",
+   "note": "unverified value: neither supply sheet prints an inductance (S8's xtc_ps has only a part code '250L40' beside it). 15 H / 150 ohm is the library's 100 W-class screen choke."
+  },
+  {
+   "ref": "OT",
+   "type": "transformer",
+   "nodes": [
+    "pa",
+    "bres",
+    "bres",
+    "pb",
+    "t4",
+    "0",
+    "spk",
+    "t4"
+   ],
+   "turns": [
+    1,
+    1,
+    0.097014,
+    0.097014
+   ],
+   "r": [
+    30,
+    30,
+    0.2,
+    0.2
+   ],
+   "leak": [
+    "3m",
+    "3m",
+    0,
+    0
+   ],
+   "lm": 5,
+   "lsat": 2.5,
+   "label": "Output transformer 1.7k : 4 / 16 ohm",
+   "note": "unverified: no sheet in the set gives Raa, DCR or leakage; 1.7 kohm plate-to-plate is the library's 100 W 4 x EL34 figure (notes S13.3)."
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "k1a",
+    "0"
+   ],
+   "value": "820",
+   "tolerance": 0.05,
+   "label": "V1A cathode R1 820"
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "in",
+    "g1a"
+   ],
+   "value": "68k",
+   "tolerance": 0.05,
+   "label": "Input grid stopper R2 68k (S2 (48,262)-(105,282))",
+   "note": "Common to both input triodes: S1 runs the 68k's output line (native (529,925)) through the clean first stage's grid and on to V1A's."
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "in",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "Input grid leak R3 1M (S2 (44,282)-(62,338), on the jack side of R2)"
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "hvG",
+    "p1a"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "V1A plate load R4 100k to rail G (S2 prints 240 Vdc; S1 letter 'G')"
+  },
+  {
+   "ref": "R6",
+   "type": "R",
+   "nodes": [
+    "n2",
+    "ry"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Boost shunt R6 100k"
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "n2",
+    "0"
+   ],
+   "value": "500k",
+   "tolerance": 0.05,
+   "label": "V2A grid leak R7 500k"
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "hvF",
+    "p2a"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "V2A plate load R8 100k to rail F (S2 prints 256 Vdc; S1 letter 'F')"
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "k2a",
+    "0"
+   ],
+   "value": "4750",
+   "tolerance": 0.05,
+   "label": "V2A cathode R9 4.75k"
+  },
+  {
+   "ref": "S1",
+   "type": "switch",
+   "nodes": [
+    "s1n",
+    "0"
+   ],
+   "control": "structure",
+   "label": "S1 'Structure' (drawn open)",
+   "positions": [
+    1
+   ]
+  },
+  {
+   "ref": "V5",
+   "type": "triode",
+   "nodes": [
+    "hvE",
+    "p4a",
+    "k5a"
+   ],
+   "model": "12AX7",
+   "label": "V5 12AX7A DC-coupled cathode follower, plate on rail E"
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "hvF",
+    "p3a"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "C10 470pF across R13"
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "k5a",
+    "tp"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "C11 470pF treble leg into the tone stack"
+  },
+  {
+   "ref": "C12",
+   "type": "C",
+   "nodes": [
+    "y1",
+    "tq"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Bass leg C12 .022uF"
+  },
+  {
+   "ref": "C13",
+   "type": "C",
+   "nodes": [
+    "y1",
+    "tww"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Mid leg C13 .022uF"
+  },
+  {
+   "ref": "C14",
+   "type": "C",
+   "nodes": [
+    "gwa",
+    "n2"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "C14 470pF across R25"
+  },
+  {
+   "ref": "C2P",
+   "type": "C",
+   "nodes": [
+    "tf",
+    "fbt"
+   ],
+   "value": "22p",
+   "tolerance": 0.1,
+   "label": "22p from the tail node to the FB top node (plates (790,1290)-(830,1375), label (793,1393))",
+   "note": "The label's last glyph is this hand's closed-bowl 'p' (as in '47p', '470p', '12p'), not its micro glyph, and the symbol is unpolarised. The tail node's four connections (10k, .1, 4k75, 22p) are all drawn, so every completion of the Excursion pads reaches the PI through this 22p (notes S28)."
+  },
+  {
+   "ref": "CBS",
+   "type": "C",
+   "nodes": [
+    "bias",
+    "0"
+   ],
+   "value": "150u",
+   "tolerance": 0.2,
+   "label": "Bias filter 150u on rail A (S8 (758,1567)-(983,1650))"
+  },
+  {
+   "ref": "CC2",
+   "type": "C",
+   "nodes": [
+    "pc2",
+    "cn"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Clean coupling .022 (S4 plates (1825,390)-(1855,420), label (1785,470))"
+  },
+  {
+   "ref": "CC3",
+   "type": "C",
+   "nodes": [
+    "pc3",
+    "cvt"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "Clean output coupling .01 (S4 plates (2765,530)-(2800,585), label (2700,460))"
+  },
+  {
+   "ref": "CCB",
+   "type": "C",
+   "nodes": [
+    "cx",
+    "ctb"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "Clean bass cap .1 (S4 plates (815,500)-(840,545), label '.1' (812,453))"
+  },
+  {
+   "ref": "CCM",
+   "type": "C",
+   "nodes": [
+    "cx",
+    "cmid"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "Clean mid cap .047 (S4 plates (820,690)-(845,740), label (785,655))"
+  },
+  {
+   "ref": "CCT",
+   "type": "C",
+   "nodes": [
+    "pc1",
+    "ctt"
+   ],
+   "value": "220p",
+   "tolerance": 0.1,
+   "label": "Clean treble cap 220p (S4 plates (805,315)-(835,350), label (780,250))"
+  },
+  {
+   "ref": "CPA",
+   "type": "C",
+   "nodes": [
+    "p6a",
+    "gA"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "PI output coupling .1 to grid line A (plates (935,385)-(965,450), label (967,462))",
+   "note": "Ends on the 'GRID' net label (1109,414). Earlier read .01; S8 prints .1."
+  },
+  {
+   "ref": "CPB",
+   "type": "C",
+   "nodes": [
+    "p6b",
+    "gB"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "PI output coupling .1 to grid line B (crop (844,917)-(915,963), label (897,973))"
+  },
+  {
+   "ref": "CPI",
+   "type": "C",
+   "nodes": [
+    "mf",
+    "g6a"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "PI coupling 22n (crop (400,405)-(450,512))"
+  },
+  {
+   "ref": "CPP",
+   "type": "C",
+   "nodes": [
+    "p6a",
+    "p6b"
+   ],
+   "value": "47p",
+   "tolerance": 0.1,
+   "label": "Plate-to-plate 47p (plates (840,670)-(915,705), label (927,650)-(1043,730))",
+   "note": "'47p' (two digits, closed-bowl p); the earlier read had 470p. S8 also prints 47p."
+  },
+  {
+   "ref": "CPX",
+   "type": "C",
+   "nodes": [
+    "plx",
+    "plx2"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "470p across the Plexi 499k (S1 plates (2150-2165,1935-1965), label '470p' (2117-2233,2042))"
+  },
+  {
+   "ref": "CWA",
+   "type": "C",
+   "nodes": [
+    "pa",
+    "bres"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "470 pF of OT winding capacitance A"
+  },
+  {
+   "ref": "CWB",
+   "type": "C",
+   "nodes": [
+    "pb",
+    "bres"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "470 pF of OT winding capacitance B"
+  },
+  {
+   "ref": "DRA",
+   "type": "D",
+   "nodes": [
+    "hra",
+    "bres"
+   ],
+   "model": "1N4001",
+   "label": "Bridge leg A"
+  },
+  {
+   "ref": "DRB",
+   "type": "D",
+   "nodes": [
+    "hrb",
+    "bres"
+   ],
+   "model": "1N4001",
+   "label": "Bridge leg B"
+  },
+  {
+   "ref": "K1A",
+   "type": "switch",
+   "nodes": [
+    "ka",
+    "0"
+   ],
+   "control": "halfPower",
+   "label": "K1/K2 relay contact across the cathode resistor (closed at full power)",
+   "positions": [
+    0
+   ]
+  },
+  {
+   "ref": "K1B",
+   "type": "switch",
+   "nodes": [
+    "kb",
+    "0"
+   ],
+   "control": "halfPower",
+   "label": "K1/K2 relay contact across the cathode resistor (closed at full power)",
+   "positions": [
+    0
+   ]
+  },
+  {
+   "ref": "K2B",
+   "type": "switch",
+   "nodes": [
+    "gw2",
+    "gw"
+   ],
+   "control": "gainMode",
+   "label": "CH2/CH3 relay, CH2 throw (S1 ring (1750,1001))",
+   "positions": [
+    1
+   ]
+  },
+  {
+   "ref": "K2C",
+   "type": "switch",
+   "nodes": [
+    "gt",
+    "pet2"
+   ],
+   "control": "gainMode",
+   "label": "CH2/CH3 relay third pole, CH2 throw: bus -> 'CH2' PRE EQ terminal (S1 ring (1455,1380), terminal (1460,1560))",
+   "positions": [
+    1
+   ]
+  },
+  {
+   "ref": "K3B",
+   "type": "switch",
+   "nodes": [
+    "gw3",
+    "gw"
+   ],
+   "control": "gainMode",
+   "label": "CH2/CH3 relay, CH3 throw (S1 ring (1754,944)), drawn position",
+   "positions": [
+    0,
+    2
+   ],
+   "note": "Pole ring (1811,976) -> the OD pad. The relay's third contact (pole (1582,1309)) is drawn on its 'CH3' ring (1457,1273), which fixes the drawn state as CH3 and the upper pot as CH3's."
+  },
+  {
+   "ref": "K3C",
+   "type": "switch",
+   "nodes": [
+    "gt",
+    "pet3"
+   ],
+   "control": "gainMode",
+   "label": "CH2/CH3 relay third pole, CH3 throw: bus -> 'CH3' PRE EQ terminal (S1 pole (1582,1309), ring (1455,1290), terminal (1281,1570)), drawn position",
+   "positions": [
+    0,
+    2
+   ],
+   "note": "S1: the 4n7 bus drops at x 1536 to the CH2 pot's top; the branch at (1526,1054) runs right to x 1648 and down to the pole ring (1582,1309) (it hops the CH2 wiper line at (1650,1130)). The armature rests on the ring wired to 'CH3'; the dashed linkage (1555-1776,1275) ties it to the K3B pole."
+  },
+  {
+   "ref": "R10",
+   "type": "R",
+   "nodes": [
+    "k2a",
+    "s1n"
+   ],
+   "value": "4750",
+   "tolerance": 0.05,
+   "label": "V2A cathode R10 4.75k (switched)"
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "n5",
+    "b1"
+   ],
+   "value": "500k",
+   "tolerance": 0.05,
+   "label": "Series pad R11 500k"
+  },
+  {
+   "ref": "R12",
+   "type": "R",
+   "nodes": [
+    "b1",
+    "0"
+   ],
+   "value": "500k",
+   "tolerance": 0.05,
+   "label": "Shunt R12 500k (-6 dB)"
+  },
+  {
+   "ref": "R13",
+   "type": "R",
+   "nodes": [
+    "hvF",
+    "p3a"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "V3A plate load R13 100k to rail F"
+  },
+  {
+   "ref": "R14",
+   "type": "R",
+   "nodes": [
+    "k3a",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "V3A cathode R14 10k (unbypassed)"
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "b1",
+    "b2"
+   ],
+   "value": "500k",
+   "tolerance": 0.05,
+   "label": "Series pad R15 500k"
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "k4a",
+    "0"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "V4A cathode R16 1k (unbypassed)"
+  },
+  {
+   "ref": "R17",
+   "type": "R",
+   "nodes": [
+    "hvE",
+    "p4a"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "V4A plate load R17 100k to rail E (S2 prints 265 Vdc; S1 letter 'E')"
+  },
+  {
+   "ref": "R18",
+   "type": "R",
+   "nodes": [
+    "n7",
+    "r18b"
+   ],
+   "value": "500k",
+   "tolerance": 0.05,
+   "label": "Series pad R18 500k"
+  },
+  {
+   "ref": "R19",
+   "type": "R",
+   "nodes": [
+    "g4a",
+    "0"
+   ],
+   "value": "500k",
+   "tolerance": 0.05,
+   "label": "V4A grid leak R19 500k"
+  },
+  {
+   "ref": "R20",
+   "type": "R",
+   "nodes": [
+    "k5a",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "V5 cathode load R20 100k"
+  },
+  {
+   "ref": "R21",
+   "type": "R",
+   "nodes": [
+    "k5a",
+    "y1"
+   ],
+   "value": "33k",
+   "tolerance": 0.05,
+   "label": "Slope resistor R21 33k"
+  },
+  {
+   "ref": "R22",
+   "type": "pot",
+   "nodes": [
+    "tq",
+    "tw",
+    "tp"
+   ],
+   "value": "250k",
+   "taper": "A",
+   "control": "treble",
+   "label": "OD TREBLE R22 250k-A"
+  },
+  {
+   "ref": "R23",
+   "type": "pot",
+   "nodes": [
+    "tr",
+    "tq",
+    "tq"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "low",
+   "label": "OD BASS R23 1M-A (wiper strapped to its top)"
+  },
+  {
+   "ref": "R24",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "tww",
+    "tr"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "mid",
+   "label": "OD MID R24 25k-B"
+  },
+  {
+   "ref": "R25",
+   "type": "R",
+   "nodes": [
+    "gwa",
+    "n2"
+   ],
+   "value": "470k",
+   "tolerance": 0.05,
+   "label": "Series pad R25 470k"
+  },
+  {
+   "ref": "RBS",
+   "type": "R",
+   "nodes": [
+    "nb",
+    "bias"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "Bias series 22k (S8 (867,1458))"
+  },
+  {
+   "ref": "RCB",
+   "type": "pot",
+   "nodes": [
+    "cmid",
+    "ctb",
+    "ctb"
+   ],
+   "value": "250k",
+   "taper": "A",
+   "control": "low",
+   "label": "Clean BASS 250k rheostat (S4 (900,565)-(945,670), label (975,610))",
+   "note": "Drawn as a variable resistor (diagonal arrow through the body) between the treble pot's bottom and the .047 / mid node. 0 = shorted, 1 = full 250k. Taper not printed."
+  },
+  {
+   "ref": "RCM",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "cmid",
+    "cmid"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "mid",
+   "label": "Clean MID 25k rheostat (S4 (1030,730)-(1085,825), label (1100,770))",
+   "note": "Wiper (arrow at (1030,775)) on the bass/.047 node, bottom to 0 V, top lead a bare stub: only the wiper-to-ground section is in circuit."
+  },
+  {
+   "ref": "RCS",
+   "type": "R",
+   "nodes": [
+    "pc1",
+    "cx"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Clean slope resistor 100k (S4 (750,370)-(790,460), label (610,400))",
+   "note": "Hangs from the plate wire's junction with the 220p's left plate (the node (770,325)); its bottom lead carries the .1 and the .047. This is the node the earlier threads parked as C1b."
+  },
+  {
+   "ref": "RCT",
+   "type": "pot",
+   "nodes": [
+    "ctb",
+    "ctw",
+    "ctt"
+   ],
+   "value": "250k",
+   "taper": "A",
+   "control": "treble",
+   "label": "Clean TREBLE 250k (S4 (905,360)-(945,455), label (955,320))",
+   "note": "Top = the 220p, bottom = the .1 / bass node, wiper (945,405) -> the 1M's top. Taper not printed; audio, as the OD treble."
+  },
+  {
+   "ref": "RDC",
+   "type": "R",
+   "nodes": [
+    "chk",
+    "hvC"
+   ],
+   "value": "15k",
+   "tolerance": 0.05,
+   "label": "Dropper 15k to node C (S7 (1812,325)-(1931,388), label (1844,269))"
+  },
+  {
+   "ref": "RDD",
+   "type": "R",
+   "nodes": [
+    "hvC",
+    "hvD"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Dropper 10k 5W, C to D (S7 (2156,207)-(2244,251), label (2125,151))",
+   "note": "D is a spur: its 50u goes straight to its own ground and nothing continues from it (S7 (2300,357))."
+  },
+  {
+   "ref": "RDE",
+   "type": "R",
+   "nodes": [
+    "hvC",
+    "hvE"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Dropper 10k 5W, C to E (S7 (2156,364)-(2262,407), label (2087,320))"
+  },
+  {
+   "ref": "RDF",
+   "type": "R",
+   "nodes": [
+    "hvE",
+    "hvF"
+   ],
+   "value": "5k",
+   "tolerance": 0.05,
+   "label": "Dropper 5k 5W, E to F (S7 (2594,389)-(2700,432), label (2600,339))"
+  },
+  {
+   "ref": "RDG",
+   "type": "R",
+   "nodes": [
+    "hvF",
+    "hvG"
+   ],
+   "value": "5k",
+   "tolerance": 0.05,
+   "label": "Dropper 5k 5W, F to G (S7 (2894,395)-(2987,432), label (2900,332))"
+  },
+  {
+   "ref": "RFB",
+   "type": "R",
+   "nodes": [
+    "tf",
+    "0"
+   ],
+   "value": "4k75",
+   "tolerance": 0.05,
+   "label": "Tail node to ground 4k75 (crop (314,982)-(367,1100))"
+  },
+  {
+   "ref": "RG2",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "gw2",
+    "gt"
+   ],
+   "value": "500k",
+   "taper": "A",
+   "control": "gain",
+   "label": "CH2 GAIN 500k-A (S1 lower pot (1511,1083)-(1557,1169))"
+  },
+  {
+   "ref": "RG3",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "gw3",
+    "gt"
+   ],
+   "value": "500k",
+   "taper": "A",
+   "control": "gain",
+   "label": "CH3 GAIN 500k-A (S1 upper pot (1625,894)-(1679,973))",
+   "note": "S1 draws two gain pots with their tops on the 4n7 bus and bottoms to 0 V; S2 (one channel) prints 500k for the pot it shows. S1 prints no value on either, so both are 500k-A."
+  },
+  {
+   "ref": "RK6",
+   "type": "R",
+   "nodes": [
+    "k6",
+    "tj"
+   ],
+   "value": "470",
+   "tolerance": 0.05,
+   "label": "PI shared cathode 470 (crop (657,663)-(733,700))"
+  },
+  {
+   "ref": "RPX",
+   "type": "R",
+   "nodes": [
+    "plx",
+    "plx2"
+   ],
+   "value": "499k",
+   "tolerance": 0.05,
+   "label": "Plexi path series 499k (S1 body (2145-2225,1860-1890), label '499k' (2140-2270,1780-1820))",
+   "note": "On the long line from SK1's lower throw (x 2010, y 1032-1865) to SK3's lower ring (2721,1737) via (2710,1875)."
+  },
+  {
+   "ref": "RVG",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mf",
+    "pgi"
+   ],
+   "value": "500k",
+   "taper": "A",
+   "control": "master",
+   "label": "GLOBAL MASTER 500k-A at the loop output (inserted)",
+   "note": "unverified: not on any sheet (notes S21.4)."
+  },
+  {
+   "ref": "RVM",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mst",
+    "tw"
+   ],
+   "value": "500k",
+   "taper": "A",
+   "control": "volume",
+   "label": "OD channel VOLUME 500k-A at R22's wiper (inserted)",
+   "note": "unverified: no sheet draws an OD channel volume. R22's wiper is the only dangling node on the OD sheet; the clean channel's drawn equivalent is RVC3."
+  },
+  {
+   "ref": "RWA",
+   "type": "R",
+   "nodes": [
+    "pa",
+    "bres"
+   ],
+   "value": "2k2",
+   "tolerance": 0.05,
+   "label": "OT winding-capacitance loss A"
+  },
+  {
+   "ref": "RWB",
+   "type": "R",
+   "nodes": [
+    "pb",
+    "bres"
+   ],
+   "value": "2k2",
+   "tolerance": 0.05,
+   "label": "OT winding-capacitance loss B"
+  },
+  {
+   "ref": "SCB",
+   "type": "switch",
+   "nodes": [
+    "cbt",
+    "cp"
+   ],
+   "control": "cleanBoost",
+   "label": "Clean-boost contact (throw ring (2140,600), pole ring (2225,595))",
+   "positions": [
+    1
+   ],
+   "note": "Drawn open; the dashed linkage runs down to the legend 'clean-boost' (2040,780)-(2380,830)."
+  },
+  {
+   "ref": "V1A",
+   "type": "triode",
+   "nodes": [
+    "p1a",
+    "g1a",
+    "k1a"
+   ],
+   "model": "12AX7",
+   "label": "V1A 12AX7 OD input stage"
+  },
+  {
+   "ref": "V2A",
+   "type": "triode",
+   "nodes": [
+    "p2a",
+    "n2",
+    "k2a"
+   ],
+   "model": "12AX7",
+   "label": "V2A 12AX7A"
+  },
+  {
+   "ref": "V3A",
+   "type": "triode",
+   "nodes": [
+    "p3a",
+    "b2",
+    "k3a"
+   ],
+   "model": "12AX7",
+   "label": "V3A 12AX7A"
+  },
+  {
+   "ref": "V4A",
+   "type": "triode",
+   "nodes": [
+    "p4a",
+    "g4a",
+    "k4a"
+   ],
+   "model": "12AX7",
+   "label": "V4A 12AX7A"
+  },
+  {
+   "ref": "V6A",
+   "type": "triode",
+   "nodes": [
+    "p6a",
+    "g6a",
+    "k6"
+   ],
+   "model": "12AX7",
+   "label": "V6A 12AX7 PI (driven side)"
+  },
+  {
+   "ref": "V6B",
+   "type": "triode",
+   "nodes": [
+    "p6b",
+    "g6b",
+    "k6"
+   ],
+   "model": "12AX7",
+   "label": "V6B 12AX7 PI (long-tailed pair, shared cathode k6)"
+  },
+  {
+   "ref": "VC1",
+   "type": "triode",
+   "nodes": [
+    "pc1",
+    "g1a",
+    "kc1"
+   ],
+   "model": "12AX7",
+   "label": "Clean stage 1 (12AX7), grid on the shared input line",
+   "note": "S4 crop (260,320)-(410,460): plate bar, dashed grid fed from the sheet's input ring (95,415)-(250,440), cathode bar. S1 draws the same triode (same 100k / 1k5 / 22u) on the shared grid line with its plate load to rail 'G' (S1 (660,673)-(703,773), letter at (771,583)) - notes S26.1."
+  },
+  {
+   "ref": "VC2",
+   "type": "triode",
+   "nodes": [
+    "pc2",
+    "cvw",
+    "kc2"
+   ],
+   "model": "12AX7",
+   "label": "Clean stage 2 (12AX7)"
+  },
+  {
+   "ref": "VC3",
+   "type": "triode",
+   "nodes": [
+    "pc3",
+    "cp",
+    "kc3"
+   ],
+   "model": "12AX7",
+   "label": "Clean stage 3 (12AX7)"
+  },
+  {
+   "ref": "VFR",
+   "type": "triode",
+   "nodes": [
+    "prp",
+    "rfg",
+    "prk"
+   ],
+   "model": "12AX7",
+   "label": "FX return gain stage (plate on rail D)"
+  },
+  {
+   "ref": "VFS",
+   "type": "triode",
+   "nodes": [
+    "hvD",
+    "sfg",
+    "sfk"
+   ],
+   "model": "12AX7",
+   "label": "FX send cathode follower (plate on rail D, no plate resistor)"
+  },
+  {
+   "ref": "CC1K",
+   "type": "C",
+   "nodes": [
+    "kc1",
+    "0"
+   ],
+   "value": "22u",
+   "tolerance": 0.2,
+   "label": "Clean stage 1 cathode bypass 22u (S4 (440,565)-(495,610))",
+   "note": "Label written '22' + this hand's micro glyph (open stem, as on every 22u of S1/S4; the pF 'p' has a closed bowl, e.g. '12p' at (1980,295)); drawn as an electrolytic (one hollow plate)."
+  },
+  {
+   "ref": "CC2B",
+   "type": "C",
+   "nodes": [
+    "cbn",
+    "cbt"
+   ],
+   "value": "1n",
+   "tolerance": 0.1,
+   "label": "Clean-boost leg 1n (S4 plates (2030,575)-(2055,615), label (2010,640))"
+  },
+  {
+   "ref": "CC2F",
+   "type": "C",
+   "nodes": [
+    "cn",
+    "cp"
+   ],
+   "value": "12p",
+   "tolerance": 0.1,
+   "label": "12p across the 3M3 (S4 plates (1980,345)-(2000,375), label (1980,270))"
+  },
+  {
+   "ref": "CC2K",
+   "type": "C",
+   "nodes": [
+    "kc2",
+    "0"
+   ],
+   "value": "22u",
+   "tolerance": 0.2,
+   "label": "Clean stage 2 cathode bypass 22u (S4 (1765,630)-(1820,680))"
+  },
+  {
+   "ref": "CC3K",
+   "type": "C",
+   "nodes": [
+    "kc3",
+    "0"
+   ],
+   "value": "22u",
+   "tolerance": 0.2,
+   "label": "Clean stage 3 cathode bypass 22u (S4 (2565,720)-(2620,750))"
+  },
+  {
+   "ref": "CC3T",
+   "type": "C",
+   "nodes": [
+    "cqc",
+    "0"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "Clean output shelf .047 (S4 plates (3080,840)-(3140,870), label (2955,860))"
+  },
+  {
+   "ref": "CCHK",
+   "type": "C",
+   "nodes": [
+    "chk",
+    "0"
+   ],
+   "value": "110u",
+   "tolerance": 0.2,
+   "label": "Post-choke filter 220u + 220u in series (S7 (1525,406)-(1619,631))"
+  },
+  {
+   "ref": "CFB2",
+   "type": "C",
+   "nodes": [
+    "fbt",
+    "n2f"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "470p across the 1M (crop (1700,330)-(1770,400))"
+  },
+  {
+   "ref": "CFR1",
+   "type": "C",
+   "nodes": [
+    "nfr",
+    "rfg"
+   ],
+   "value": "2n2",
+   "tolerance": 0.1,
+   "label": "Return input coupling 2n2 (crop (1340,375)-(1385,415))"
+  },
+  {
+   "ref": "CFR2",
+   "type": "C",
+   "nodes": [
+    "prp",
+    "fpo"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Return output coupling 22n (crop (1445,385)-(1495,420))"
+  },
+  {
+   "ref": "CFR3",
+   "type": "C",
+   "nodes": [
+    "fsw",
+    "pgi"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Loop output coupling .022 to the master (crop (1925,375)-(1965,425))"
+  },
+  {
+   "ref": "CFS1",
+   "type": "C",
+   "nodes": [
+    "chout",
+    "sfg"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "FX send input coupling 22n (crop (250,360)-(310,400))"
+  },
+  {
+   "ref": "CFS2",
+   "type": "C",
+   "nodes": [
+    "sfk",
+    "fxs"
+   ],
+   "value": "2u2",
+   "tolerance": 0.1,
+   "label": "Send output coupling 2u2 to the send tip (crop (840,570)-(900,650))"
+  },
+  {
+   "ref": "CG6B",
+   "type": "C",
+   "nodes": [
+    "tf",
+    "g6b"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "Second grid to the tail node .1 (plates (420,860)-(470,915), label (460,937))",
+   "note": "Label is a dot then '1' (.1 uF); the earlier read had .01. S8 prints .1 in the same place."
+  },
+  {
+   "ref": "CHVC",
+   "type": "C",
+   "nodes": [
+    "hvC",
+    "0"
+   ],
+   "value": "50u",
+   "tolerance": 0.2,
+   "label": "Node C 50u/450 V (S7 (2031,451)-(2094,532)): PI + clean stages 2/3"
+  },
+  {
+   "ref": "CHVD",
+   "type": "C",
+   "nodes": [
+    "hvD",
+    "0"
+   ],
+   "value": "50u",
+   "tolerance": 0.2,
+   "label": "Node D 50u/450 V: FX loop (S6 'D')"
+  },
+  {
+   "ref": "CHVE",
+   "type": "C",
+   "nodes": [
+    "hvE",
+    "0"
+   ],
+   "value": "50u",
+   "tolerance": 0.2,
+   "label": "Node E 50u/450 V (S7 (2300,476)-(2362,545)): V4A + V5 (S2: 265 Vdc)"
+  },
+  {
+   "ref": "CHVF",
+   "type": "C",
+   "nodes": [
+    "hvF",
+    "0"
+   ],
+   "value": "50u",
+   "tolerance": 0.2,
+   "label": "Node F 50u (S7 (2719,476)-(2794,526)): V2A + V3A (S2: 256 Vdc)"
+  },
+  {
+   "ref": "CHVG",
+   "type": "C",
+   "nodes": [
+    "hvG",
+    "0"
+   ],
+   "value": "50u",
+   "tolerance": 0.2,
+   "label": "Node G 50u (S7 (3050,482)-(3119,532)): V1A + clean stage 1 (S2: 240 Vdc)"
+  },
+  {
+   "ref": "CPE1",
+   "type": "C",
+   "nodes": [
+    "ctw",
+    "pe1"
+   ],
+   "value": "100p",
+   "tolerance": 0.1,
+   "label": "PRE-EQ 100p (S4 plates (1300,270)-(1345,300), label (1300,200))"
+  },
+  {
+   "ref": "CPE2",
+   "type": "C",
+   "nodes": [
+    "ctw",
+    "pe2"
+   ],
+   "value": "220p",
+   "tolerance": 0.1,
+   "label": "PRE-EQ 220p (S4 plates (1310,365)-(1345,395), label (1320,435))"
+  },
+  {
+   "ref": "CRES",
+   "type": "C",
+   "nodes": [
+    "bres",
+    "0"
+   ],
+   "value": "110u",
+   "tolerance": 0.2,
+   "label": "Reservoir 2 x 220u in series (S7 (981,394)-(1081,619), label '2 x 220u')",
+   "note": "Plates (OT centre tap) are fed from here: S8's own supply draws a terminal ring before the choke."
+  },
+  {
+   "ref": "KCH1",
+   "type": "switch",
+   "nodes": [
+    "cq",
+    "chout"
+   ],
+   "control": "gainMode",
+   "label": "Channel relay: clean output to the loop / PI (Ch1)",
+   "positions": [
+    0
+   ],
+   "note": "unverified junction: neither channel sheet draws where its output goes (S4 ends at the mute contact, S2 at R22's wiper). Each sheet mutes its own channel when the other is selected, so the join is modelled as a changeover onto the loop's input node 'chout'."
+  },
+  {
+   "ref": "KCH2",
+   "type": "switch",
+   "nodes": [
+    "mst",
+    "chout"
+   ],
+   "control": "gainMode",
+   "label": "Channel relay: OD output to the loop / PI (Ch2, Ch3)",
+   "positions": [
+    1,
+    2
+   ]
+  },
+  {
+   "ref": "KMOD",
+   "type": "switch",
+   "nodes": [
+    "gt",
+    "0"
+   ],
+   "control": "gainMode",
+   "label": "OD gain-bus mute contact (S1 rings (1457,887) / (1454,969))",
+   "positions": [
+    0
+   ],
+   "note": "Ring on the 4n7 bus, ring to ground (1450,1044), armature drawn open. Closed in Ch1."
+  },
+  {
+   "ref": "RBI1",
+   "type": "R",
+   "nodes": [
+    "bias",
+    "bw"
+   ],
+   "value": "51k",
+   "tolerance": 0.05,
+   "label": "Bias divider 51k (S8 (1175,1558))"
+  },
+  {
+   "ref": "RBI2",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "bw",
+    "bw"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "biasSet",
+   "label": "Bias adjust 25k rheostat (S8 (1175,1700))",
+   "note": "S8 draws the 25k's wiper wired to its grounded end; only the upper section is in circuit."
+  },
+  {
+   "ref": "RBLD",
+   "type": "R",
+   "nodes": [
+    "chk",
+    "0"
+   ],
+   "value": "440k",
+   "tolerance": 0.05,
+   "label": "Bleeders 220k + 220k across the post-choke pair (S7 (1669,400)-(1725,631))"
+  },
+  {
+   "ref": "RC1K",
+   "type": "R",
+   "nodes": [
+    "kc1",
+    "0"
+   ],
+   "value": "1k5",
+   "tolerance": 0.05,
+   "label": "Clean stage 1 cathode 1k5 (S4 (330,555)-(375,635))"
+  },
+  {
+   "ref": "RC1P",
+   "type": "R",
+   "nodes": [
+    "hvG",
+    "pc1"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Clean stage 1 plate load 100k (S4 (322,205)-(365,295); rail G per S1)"
+  },
+  {
+   "ref": "RC2B",
+   "type": "R",
+   "nodes": [
+    "cn",
+    "cbn"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "Clean-boost leg 1M (S4 (1905,465)-(1945,540), label (1810,500))"
+  },
+  {
+   "ref": "RC2K",
+   "type": "R",
+   "nodes": [
+    "kc2",
+    "0"
+   ],
+   "value": "1k5",
+   "tolerance": 0.05,
+   "label": "Clean stage 2 cathode 1k5 (S4 (1660,595)-(1710,665))"
+  },
+  {
+   "ref": "RC2P",
+   "type": "R",
+   "nodes": [
+    "hvC",
+    "pc2"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Clean stage 2 plate load 100k to rail C (S4 (1655,255)-(1705,350))",
+   "note": "The 'C' rail stub and letter at (1880,40)-(1985,95) feed a bus across the top to both later stages."
+  },
+  {
+   "ref": "RC2S",
+   "type": "R",
+   "nodes": [
+    "cn",
+    "cp"
+   ],
+   "value": "3M3",
+   "tolerance": 0.05,
+   "label": "Clean interstage series 3M3 (S4 (1955,395)-(2050,430), label (1960,450))",
+   "note": "The small arrow under the body is a label leader from '3M3' (no wire on it), as is the one from '1M' to RC2B: neither part is a trimmer."
+  },
+  {
+   "ref": "RC3G",
+   "type": "R",
+   "nodes": [
+    "cp",
+    "0"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "Clean stage 3 grid shunt 220k (S4 (2330,610)-(2375,710), label (2230,680))"
+  },
+  {
+   "ref": "RC3K",
+   "type": "R",
+   "nodes": [
+    "kc3",
+    "0"
+   ],
+   "value": "1k5",
+   "tolerance": 0.05,
+   "label": "Clean stage 3 cathode 1k5 (S4 (2480,710)-(2530,785))"
+  },
+  {
+   "ref": "RC3P",
+   "type": "R",
+   "nodes": [
+    "hvC",
+    "pc3"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Clean stage 3 plate load 100k to rail C (S4 (2490,385)-(2540,480))"
+  },
+  {
+   "ref": "RC3S",
+   "type": "R",
+   "nodes": [
+    "cvo",
+    "cq"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "Clean output series 220k (S4 (3000,675)-(3080,710), label (2985,630))"
+  },
+  {
+   "ref": "RC3T",
+   "type": "R",
+   "nodes": [
+    "cq",
+    "cqc"
+   ],
+   "value": "390k",
+   "tolerance": 0.05,
+   "label": "Clean output shelf 390k (S4 (3090,745)-(3140,800), label (2960,750))",
+   "note": "The middle glyph has a closed loop and a descender ('3g0k'), unlike this hand's open-left '3' in '3M3': read 390k. The earlier threads parked it as 380k/330k (C1c)."
+  },
+  {
+   "ref": "RFB2",
+   "type": "R",
+   "nodes": [
+    "fbt",
+    "n2f"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "1M from the FB top node to n2f (crop (1650,290)-(1700,420))"
+  },
+  {
+   "ref": "RFR1",
+   "type": "R",
+   "nodes": [
+    "fxs",
+    "nfr"
+   ],
+   "value": "3k3",
+   "tolerance": 0.05,
+   "label": "Return input 3k3 (crop (1265,335)-(1335,385))"
+  },
+  {
+   "ref": "RFR2",
+   "type": "R",
+   "nodes": [
+    "rfg",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "Return grid leak 1M to 0 V (INSERTED - the sheet draws no grid leak for this stage)",
+   "note": "unverified: the return stage's grid has no DC path anywhere on S6 (notes S21.2)."
+  },
+  {
+   "ref": "RFR3",
+   "type": "R",
+   "nodes": [
+    "hvD",
+    "prp"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Return plate load 100k to rail D (crop (1305,235)-(1395,325))"
+  },
+  {
+   "ref": "RFR4",
+   "type": "R",
+   "nodes": [
+    "prk",
+    "0"
+   ],
+   "value": "1500",
+   "tolerance": 0.05,
+   "label": "Return cathode 1k5, unbypassed (crop (1310,565)-(1370,670))"
+  },
+  {
+   "ref": "RFR5",
+   "type": "R",
+   "nodes": [
+    "fpo",
+    "0"
+   ],
+   "value": "4700",
+   "tolerance": 0.05,
+   "label": "Return output shunt 4k7 to 0 V (crop (1465,465)-(1515,575))"
+  },
+  {
+   "ref": "RFR6",
+   "type": "R",
+   "nodes": [
+    "fsw",
+    "0"
+   ],
+   "value": "499k",
+   "tolerance": 0.05,
+   "label": "Loop output shunt 499k to 0 V (crop (1855,425)-(1925,535))"
+  },
+  {
+   "ref": "RFS1",
+   "type": "R",
+   "nodes": [
+    "sfk",
+    "sfa"
+   ],
+   "value": "470",
+   "tolerance": 0.05,
+   "label": "Send cathode load 470 (crop (465,500)-(530,620))"
+  },
+  {
+   "ref": "RFS2",
+   "type": "R",
+   "nodes": [
+    "sfa",
+    "0"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "Send divider 22k to 0 V (crop (500,690)-(565,800))"
+  },
+  {
+   "ref": "RFS3",
+   "type": "R",
+   "nodes": [
+    "sfg",
+    "sfa"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "Send grid return 1M, grid to the divider tap (crop (320,435)-(375,535))"
+  },
+  {
+   "ref": "RG6A",
+   "type": "R",
+   "nodes": [
+    "g6a",
+    "tj"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "PI first grid return 1M (crop (573,525)-(633,610))"
+  },
+  {
+   "ref": "RG6B",
+   "type": "R",
+   "nodes": [
+    "g6b",
+    "tj"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "PI second grid return 1M (crop (573,727)-(640,824))"
+  },
+  {
+   "ref": "RGSA",
+   "type": "R",
+   "nodes": [
+    "gA",
+    "gia"
+   ],
+   "value": "2350",
+   "tolerance": 0.05,
+   "label": "grid stoppers 4k7 per valve, 2 valves folded (2 x 4k7 parallel = 2k35)"
+  },
+  {
+   "ref": "RGSB",
+   "type": "R",
+   "nodes": [
+    "gB",
+    "gib"
+   ],
+   "value": "2350",
+   "tolerance": 0.05,
+   "label": "grid stoppers 4k7 per valve, 2 valves folded (2 x 4k7 parallel = 2k35)"
+  },
+  {
+   "ref": "RKCA",
+   "type": "R",
+   "nodes": [
+    "ka",
+    "0"
+   ],
+   "value": "250",
+   "tolerance": 0.05,
+   "label": "cathode resistor 250 ohm 50 W (per pair)"
+  },
+  {
+   "ref": "RKCB",
+   "type": "R",
+   "nodes": [
+    "kb",
+    "0"
+   ],
+   "value": "250",
+   "tolerance": 0.05,
+   "label": "cathode resistor 250 ohm 50 W (per pair)"
+  },
+  {
+   "ref": "RL6A",
+   "type": "R",
+   "nodes": [
+    "hvC",
+    "p6a"
+   ],
+   "value": "82k",
+   "tolerance": 0.05,
+   "label": "PI plate load 82k to rail C (box (777,233)-(830,340), label (837,300))",
+   "note": "Read '82' + this hand's k glyph; the earlier '824 = 82.4k' took the k for a digit. S8 agrees."
+  },
+  {
+   "ref": "RL6B",
+   "type": "R",
+   "nodes": [
+    "hvC",
+    "p6b"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "PI plate load 100k to rail C (crop (732,1005)-(807,1088))"
+  },
+  {
+   "ref": "RLKA",
+   "type": "R",
+   "nodes": [
+    "gA",
+    "bias"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "grid leak 220k per grid line to bias rail A"
+  },
+  {
+   "ref": "RLKB",
+   "type": "R",
+   "nodes": [
+    "gB",
+    "bias"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "grid leak 220k per grid line to bias rail A"
+  },
+  {
+   "ref": "RLY1",
+   "type": "switch",
+   "nodes": [
+    "ry",
+    "0"
+   ],
+   "control": "boost",
+   "label": "RLY1 boost contact (closed = Normal, drawn)",
+   "positions": [
+    0
+   ],
+   "note": "S2: 'RLY1 is a footswitchable gain boost'. Drawn NORMAL with R6's bottom tied to 0 V."
+  },
+  {
+   "ref": "RNFB",
+   "type": "R",
+   "nodes": [
+    "t4",
+    "n2f"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Feedback 100k from the 'OT' net to the ring (1650,634) (box (1420,600)-(1540,675))"
+  },
+  {
+   "ref": "RPI1",
+   "type": "R",
+   "nodes": [
+    "mf",
+    "0"
+   ],
+   "value": "499k",
+   "tolerance": 0.05,
+   "label": "PI input shunt 499k (crop (200,455)-(275,555))"
+  },
+  {
+   "ref": "RPTA",
+   "type": "R",
+   "nodes": [
+    "m1",
+    "hra"
+   ],
+   "value": "20",
+   "tolerance": 0.05,
+   "label": "HT winding + reflected primary resistance (A)"
+  },
+  {
+   "ref": "RPTB",
+   "type": "R",
+   "nodes": [
+    "m2",
+    "hrb"
+   ],
+   "value": "20",
+   "tolerance": 0.05,
+   "label": "HT winding + reflected primary resistance (B)"
+  },
+  {
+   "ref": "RSCA",
+   "type": "R",
+   "nodes": [
+    "scrA",
+    "sa"
+   ],
+   "value": "235",
+   "tolerance": 0.05,
+   "label": "screen resistors 470 per valve, 2 folded (235)"
+  },
+  {
+   "ref": "RSCB",
+   "type": "R",
+   "nodes": [
+    "scrB",
+    "sb"
+   ],
+   "value": "235",
+   "tolerance": 0.05,
+   "label": "screen resistors 470 per valve, 2 folded (235)"
+  },
+  {
+   "ref": "RVC1",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "cvw",
+    "ctw"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "gain",
+   "label": "Clean 1M (S4 (1220,450)-(1285,555), label (1110,515)) - the clean channel's drive pot",
+   "note": "Top = treble wiper, bottom = 0 V, wiper (1290,505) straight to the second stage's grid (the dashed grid at (1600,483)); it is the grid's only DC return."
+  },
+  {
+   "ref": "RVC3",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "cvo",
+    "cvt"
+   ],
+   "value": "50k",
+   "taper": "A",
+   "control": "volume",
+   "label": "Clean level 50k (S4 (2855,630)-(2935,725), label (2720,650))",
+   "note": "Top = the .01, bottom = 0 V, wiper arrow (2940,690) -> the 220k. Taper not printed."
+  },
+  {
+   "ref": "SCLM",
+   "type": "switch",
+   "nodes": [
+    "cq",
+    "0"
+   ],
+   "control": "gainMode",
+   "label": "Clean output mute contact (rings (3240,760) / (3220,850))",
+   "positions": [
+    1,
+    2
+   ],
+   "note": "Ring on the output node, ring to ground, armature drawn open (clean channel active); its dashed linkage (3175-3235,798) drops off the sheet. Closed whenever an OD channel is selected."
+  },
+  {
+   "ref": "SPE1",
+   "type": "switch",
+   "nodes": [
+    "pe1",
+    "cvw"
+   ],
+   "control": "preEq",
+   "label": "PRE-EQ throw 100p (ring (1420,290)), drawn position",
+   "positions": [
+    0
+   ],
+   "note": "Pole ring (1515,340) wired down to the 1M's wiper line; the armature is drawn on the 100p throw."
+  },
+  {
+   "ref": "SPE2",
+   "type": "switch",
+   "nodes": [
+    "pe2",
+    "cvw"
+   ],
+   "control": "preEq",
+   "label": "PRE-EQ throw 220p (ring (1415,385))",
+   "positions": [
+    1
+   ]
+  },
+  {
+   "ref": "SPK1",
+   "type": "sub",
+   "nodes": [
+    "spk",
+    "0"
+   ],
+   "of": "lib:spk-12in-16ohm-british",
+   "label": "4x12 cab on the 16 ohm tap (library equivalent)"
+  },
+  {
+   "ref": "V7V8",
+   "type": "pentode",
+   "nodes": [
+    "pa",
+    "sa",
+    "gia",
+    "ka"
+   ],
+   "model": "EL34",
+   "parallel": 2,
+   "label": "V7 + V8 EL34 (two valves folded)"
+  },
+  {
+   "ref": "VHT1",
+   "type": "V",
+   "nodes": [
+    "m1",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "544",
+    "freq": 60,
+    "phase": 90
+   },
+   "label": "HT secondary, equivalent half 1 (fitted, see notes)",
+   "note": "The one fitted scalar of the supply: no sheet prints the transformer voltage (notes S27.1)."
+  },
+  {
+   "ref": "VHT2",
+   "type": "V",
+   "nodes": [
+    "m2",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "544",
+    "freq": 60,
+    "phase": 270
+   },
+   "label": "HT secondary, equivalent half 2"
+  },
+  {
+   "ref": "CPE47",
+   "type": "C",
+   "nodes": [
+    "pe47",
+    "gw"
+   ],
+   "value": "4n7",
+   "tolerance": 0.1,
+   "label": "OD PRE EQ 4n7 (S1 plates (1190-1240,1795-1810), label '4n7' (1050-1100,1760))",
+   "note": "Top -> ring 1 (1217,1690), strapped to ring 3 (1410,1683) over the top (y 1650); bottom -> the selected wiper line (x 1795)."
+  },
+  {
+   "ref": "RTAIL",
+   "type": "R",
+   "nodes": [
+    "tj",
+    "tf"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "PI tail 10k (crop (370,650)-(455,706))"
+  },
+  {
+   "ref": "SFXON",
+   "type": "switch",
+   "nodes": [
+    "fpo",
+    "fsw"
+   ],
+   "control": "fxLoop",
+   "label": "FX loop in: the return stage's output into the .022",
+   "positions": [
+    1
+   ]
+  },
+  {
+   "ref": "SK1A0",
+   "type": "switch",
+   "nodes": [
+    "sk1a",
+    "gwa"
+   ],
+   "control": "gainMode",
+   "label": "SK1 upper throw when Plexi is on Ch2 and Ch3 is selected",
+   "positions": [
+    0,
+    2
+   ]
+  },
+  {
+   "ref": "SK1A1",
+   "type": "switch",
+   "nodes": [
+    "sk1a",
+    "plx"
+   ],
+   "control": "gainMode",
+   "label": "SK1 lower throw (S1 ring (2011,1030)) when Ch2 is the Plexi channel",
+   "positions": [
+    1
+   ]
+  },
+  {
+   "ref": "SK1B0",
+   "type": "switch",
+   "nodes": [
+    "sk1b",
+    "gwa"
+   ],
+   "control": "gainMode",
+   "label": "SK1 upper throw when Plexi is on Ch3 and Ch2 is selected",
+   "positions": [
+    0,
+    1
+   ]
+  },
+  {
+   "ref": "SK1B2",
+   "type": "switch",
+   "nodes": [
+    "sk1b",
+    "plx"
+   ],
+   "control": "gainMode",
+   "label": "SK1 lower throw when Ch3 is the Plexi channel",
+   "positions": [
+    2
+   ]
+  },
+  {
+   "ref": "SK1P0",
+   "type": "switch",
+   "nodes": [
+    "gw",
+    "gwa"
+   ],
+   "control": "plexi",
+   "label": "SK1 upper throw (S1 ring (2014,952)) - Plexi off",
+   "positions": [
+    0
+   ],
+   "note": "S1 changeover drawn in the full-path position; no actuator drawn. Assignment logic from the 101B manual: the Plexi voice replaces the channel it is assigned to."
+  },
+  {
+   "ref": "SK1P1",
+   "type": "switch",
+   "nodes": [
+    "gw",
+    "sk1a"
+   ],
+   "control": "plexi",
+   "label": "SK1 logic: Plexi on Ch2",
+   "positions": [
+    1
+   ]
+  },
+  {
+   "ref": "SK1P2",
+   "type": "switch",
+   "nodes": [
+    "gw",
+    "sk1b"
+   ],
+   "control": "plexi",
+   "label": "SK1 logic: Plexi on Ch3",
+   "positions": [
+    2
+   ]
+  },
+  {
+   "ref": "SK3A0",
+   "type": "switch",
+   "nodes": [
+    "sk3a",
+    "r18b"
+   ],
+   "control": "gainMode",
+   "label": "SK3 upper throw when Plexi is on Ch2 and Ch3 is selected",
+   "positions": [
+    0,
+    2
+   ]
+  },
+  {
+   "ref": "SK3A1",
+   "type": "switch",
+   "nodes": [
+    "sk3a",
+    "plx2"
+   ],
+   "control": "gainMode",
+   "label": "SK3 lower throw (S1 ring (2721,1737)) when Ch2 is the Plexi channel",
+   "positions": [
+    1
+   ]
+  },
+  {
+   "ref": "SK3B0",
+   "type": "switch",
+   "nodes": [
+    "sk3b",
+    "r18b"
+   ],
+   "control": "gainMode",
+   "label": "SK3 upper throw when Plexi is on Ch3 and Ch2 is selected",
+   "positions": [
+    0,
+    1
+   ]
+  },
+  {
+   "ref": "SK3B2",
+   "type": "switch",
+   "nodes": [
+    "sk3b",
+    "plx2"
+   ],
+   "control": "gainMode",
+   "label": "SK3 lower throw when Ch3 is the Plexi channel",
+   "positions": [
+    2
+   ]
+  },
+  {
+   "ref": "SK3P0",
+   "type": "switch",
+   "nodes": [
+    "g4a",
+    "r18b"
+   ],
+   "control": "plexi",
+   "label": "SK3 upper throw (S1 ring (2775,1633), R18 side) - Plexi off",
+   "positions": [
+    0
+   ],
+   "note": "S1 changeover drawn in the full-path position; no actuator drawn. Assignment logic from the 101B manual: the Plexi voice replaces the channel it is assigned to."
+  },
+  {
+   "ref": "SK3P1",
+   "type": "switch",
+   "nodes": [
+    "g4a",
+    "sk3a"
+   ],
+   "control": "plexi",
+   "label": "SK3 logic: Plexi on Ch2",
+   "positions": [
+    1
+   ]
+  },
+  {
+   "ref": "SK3P2",
+   "type": "switch",
+   "nodes": [
+    "g4a",
+    "sk3b"
+   ],
+   "control": "plexi",
+   "label": "SK3 logic: Plexi on Ch3",
+   "positions": [
+    2
+   ]
+  },
+  {
+   "ref": "SPE2A",
+   "type": "switch",
+   "nodes": [
+    "pet2",
+    "pe470"
+   ],
+   "control": "preEq2",
+   "label": "Ch2 PRE EQ B1: 'CH2' terminal -> ring 4 (470p)",
+   "positions": [
+    0
+   ]
+  },
+  {
+   "ref": "SPE2B",
+   "type": "switch",
+   "nodes": [
+    "pet2",
+    "pe47"
+   ],
+   "control": "preEq2",
+   "label": "Ch2 PRE EQ B2: 'CH2' terminal -> ring 3 (4n7)",
+   "positions": [
+    2
+   ]
+  },
+  {
+   "ref": "SPE3A",
+   "type": "switch",
+   "nodes": [
+    "pet3",
+    "pe470"
+   ],
+   "control": "preEq3",
+   "label": "Ch3 PRE EQ B1: 'CH3' terminal -> ring 2 (470p)",
+   "positions": [
+    0
+   ],
+   "note": "Panel switch not drawn (terminal and rings only); positions from the 101B manual (notes S33.2)."
+  },
+  {
+   "ref": "SPE3B",
+   "type": "switch",
+   "nodes": [
+    "pet3",
+    "pe47"
+   ],
+   "control": "preEq3",
+   "label": "Ch3 PRE EQ B2: 'CH3' terminal -> ring 1 (4n7)",
+   "positions": [
+    2
+   ]
+  },
+  {
+   "ref": "SST1A",
+   "type": "switch",
+   "nodes": [
+    "chk",
+    "scrA"
+   ],
+   "control": "soundStyle",
+   "label": "S1a Sound Style - pair A screens on C (drawn)",
+   "positions": [
+    0
+   ],
+   "note": "S8: the armature rests on the contact marked 'C'. On S8's own supply (xtc_ps) the screen feed is the terminal ring after the choke, i.e. 'chk' here (notes S27.2)."
+  },
+  {
+   "ref": "SST1B",
+   "type": "switch",
+   "nodes": [
+    "chk",
+    "scrB"
+   ],
+   "control": "soundStyle",
+   "label": "S1b Sound Style - pair B screens on C (drawn)",
+   "positions": [
+    0
+   ],
+   "note": "S8: the armature rests on the contact marked 'C'. On S8's own supply (xtc_ps) the screen feed is the terminal ring after the choke, i.e. 'chk' here (notes S27.2)."
+  },
+  {
+   "ref": "SST2A",
+   "type": "switch",
+   "nodes": [
+    "pa",
+    "scrA"
+   ],
+   "control": "soundStyle",
+   "label": "S1a Sound Style - pair A screens on their own plate line (triode)",
+   "positions": [
+    1
+   ],
+   "note": "S8: the second contact is the dot on that pair's plate line ((1642,333) for the upper pair)."
+  },
+  {
+   "ref": "SST2B",
+   "type": "switch",
+   "nodes": [
+    "pb",
+    "scrB"
+   ],
+   "control": "soundStyle",
+   "label": "S1b Sound Style - pair B screens on their own plate line (triode)",
+   "positions": [
+    1
+   ],
+   "note": "S8: the second contact is the dot on that pair's plate line ((1642,333) for the upper pair)."
+  },
+  {
+   "ref": "V9V10",
+   "type": "pentode",
+   "nodes": [
+    "pb",
+    "sb",
+    "gib",
+    "kb"
+   ],
+   "model": "EL34",
+   "parallel": 2,
+   "label": "V9 + V10 EL34 (two valves folded)"
+  },
+  {
+   "ref": "VBIAS",
+   "type": "V",
+   "nodes": [
+    "nb",
+    "0"
+   ],
+   "value": "-69.6",
+   "label": "Bias winding after its diode and first 150u (ideal source, fitted)",
+   "note": "unverified: S8 gives the network but no voltage; the winding, diode and first 150u are the library's ideal negative source, fitted to ~28 mA per EL34 with the trim centred (notes S27.3)."
+  },
+  {
+   "ref": "CPE470",
+   "type": "C",
+   "nodes": [
+    "pe470",
+    "gw"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "OD PRE EQ 470p (S1 plates (1280-1335,1795-1810), label '470p' (1335-1410,1760))",
+   "note": "Top -> ring 2 (1312,1688), strapped to ring 4 (1500,1688) by the line that hops the 1-3 strap."
+  },
+  {
+   "ref": "SFXOFF",
+   "type": "switch",
+   "nodes": [
+    "chout",
+    "fsw"
+   ],
+   "control": "fxLoop",
+   "label": "FX loop out (drawn position): the dry path into the .022",
+   "positions": [
+    0
+   ],
+   "note": "unverified: the drawn throw is fed by the off-sheet net 'FROM FX 1' (no mate in the set); modelled as the channel output (notes S21.3)."
+  }
+ ],
+ "probes": [
+  "in",
+  "g1a",
+  "p1a",
+  "k1a",
+  "pc1",
+  "kc1",
+  "ctt",
+  "cx",
+  "ctb",
+  "cmid",
+  "ctw",
+  "cvw",
+  "pc2",
+  "kc2",
+  "cn",
+  "cp",
+  "pc3",
+  "kc3",
+  "cvt",
+  "cvo",
+  "cq",
+  "gt",
+  "gw",
+  "gwa",
+  "pet2",
+  "pet3",
+  "plx",
+  "plx2",
+  "r18b",
+  "n2",
+  "p2a",
+  "k2a",
+  "b2",
+  "p3a",
+  "k3a",
+  "n7",
+  "g4a",
+  "p4a",
+  "k4a",
+  "k5a",
+  "tw",
+  "mst",
+  "chout",
+  "sfg",
+  "sfk",
+  "fxs",
+  "rfg",
+  "prp",
+  "fpo",
+  "pgi",
+  "mf",
+  "g6a",
+  "k6",
+  "p6a",
+  "p6b",
+  "tj",
+  "tf",
+  "fbt",
+  "n2f",
+  "gA",
+  "gB",
+  "pa",
+  "pb",
+  "sa",
+  "sb",
+  "ka",
+  "kb",
+  "bres",
+  "chk",
+  "hvC",
+  "hvD",
+  "hvE",
+  "hvF",
+  "hvG",
+  "bias",
+  "t4",
+  "spk"
+ ],
+ "layout": {}
+}

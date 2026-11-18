@@ -1,0 +1,79 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "proco-rat2",
+  "version": 1,
+  "name": "ProCo RAT 2 (LM308N)",
+  "description": "ProCo RAT 2 distortion, LM308N version, as drawn on the ElectroSmash 'Pro Co Rat Analysis' schematic (RAT/RAT 2 core: the RAT 2 adds the LED and keeps this circuit; later units use the OP07). Input: R1 1 MΩ pull-down, C1 22 nF, R2 1 MΩ to the 4.5 V reference, R3 1 kΩ, C2 1 nF to ground into the LM308 + input. Non-inverting gain: 100 kΩ Distortion pot as a rheostat in the feedback with C4 100 pF across it; two ground legs R4 47 Ω + C5 2.2 µF (1.54 kHz) and R5 560 Ω + C6 4.7 µF (60 Hz); 30 pF compensation capacitor C3 between pins 1 and 8 (LM308 external compensation: it sets the slew rate and gain-bandwidth, part of the RAT's sound). C7 4.7 µF, R6 1 kΩ into the 1N914 pair to ground. Filter: 100 kΩ rheostat + R7 1.5 kΩ into C8 3.3 nF (475 Hz ... 32 kHz). C9 22 nF, R8 1 MΩ into the 2N5458 source follower (R9 10 kΩ source resistor), C10 1 µF into the 100 kΩ audio Volume pot. Supply: 9 V through R10 47 Ω to the filtered +9 V node with C11 100 µF, C12 0.1 µF and the shunt reverse-polarity diode D3 1N4002; that node feeds the LM308 V+, the Q1 drain and the R11/R12 100 kΩ divider with C13 1 µF for the 4.5 V reference. True-bypass effect-on state. The output buffer Q1 is an N-channel JFET (part type 'njf', nodes [drain, gate, source]); see JFET.md.",
+  "sources": [
+    { "title": "ElectroSmash, 'Pro Co Rat Analysis' (schematic and BOM: C1/C9 22 nF, C2 1 nF, C3 30 pF, C4 100 pF, C5 2.2 µF, C6/C7 4.7 µF, C8 3.3 nF, C10/C13 1 µF, C11 100 µF, C12 0.1 µF, D1/D2 1N914, D3 1N4002, Q1 2N5458, Volume/Tone/Distortion 100K-A, R1/R2/R8 1M, R3/R6 1K, R4/R10 47, R5 560, R7 1.5K, R9 10K, R11/R12 100K, U1 LM308; LM308 slew rate 0.3 V/µs with 30 pF; at the RAT's 67 dB maximum gain the LM308 open-loop curve limits the gain to about 30 dB at 10 kHz). Archived copy used", "url": "https://www.electrosmash.com/proco-rat" },
+    { "title": "ElectroSmash, Pro Co Rat power-supply drawing (R10 47 Ω series from +9V Main; D3 1N4002 shunt, anode to ground, cathode on the filtered +9 V; C11 100 µF and C12 0.1 µF to ground; R11/R12 100K with C13 1 µF for +4.5 V). Archived copy read", "url": "https://web.archive.org/web/20231217223956/https://www.electrosmash.com/images/tech/pro-co-rat/pro-co-rat-power-supply.png" },
+    { "title": "National Semiconductor, 'LM108/LM208/LM308 Operational Amplifiers' datasheet TL/H/7758 (Dec 1994): standard compensation Cf = 30 pF, 'bandwidth and slew rate are proportional to 1/Cf', LM308 large-signal voltage gain 25 V/mV min / 300 V/mV typ, output swing ±13 min / ±14 V typ at ±15 V into 10 kΩ, supply current 0.3 mA", "url": "https://www.mit.edu/~6.301/LM108.pdf" },
+    { "title": "onsemi 2N5457/D datasheet (Rev. 6, 2010): 2N5458 IDSS 2.0 / 6.0 / 9.0 mA (min/typ/max), VGS(off) −1.0 to −7.0 V, |yfs| 1500 / 4000 / 5500 µmhos", "url": "https://www.onsemi.com/pdf/datasheet/2n5457-d.pdf" }
+  ],
+  "io": { "input": "in", "output": "out", "inputVoltsPerFS": 1.0, "outputVoltsPerFS": 1.0 },
+  "oversampling": 2,
+  "minRate": 352800,
+  "solver": "auto",
+  "cuts": ["vb", "v9"],
+  "models": {
+    "LM308": {
+      "kind": "opamp", "level": 1, "a0": 3.0e5, "gbw": 3.2e5, "slew": 0.3e6, "swing_hi": 1.0, "swing_lo": 1.0, "vhi": 14.0, "vlo": -14.0, "cdom": 30e-12, "iq": 0.3e-3,
+      "note": "LM308N with the RAT's 30 pF compensation capacitor C3 as the macro's dominant-pole capacitor (cdom = Cf, so slew = Imax/Cf as in the real part). a0 300 V/mV typ and ±14 V swing at ±15 V (1 V headroom) from the National datasheet; slew 0.3 V/µs at 30 pF as read from the datasheet graph by ElectroSmash. unverified: gbw 320 kHz is ElectroSmash's reading of the open-loop curve (about 30 dB left at 10 kHz); the datasheet gives this only as a graph. Supply: U1's V+ pin sits on the R10/C11 filtered node, so the macro runs in rail-node mode (output swing clamped 1 V from the actual V+ / V− node voltages, push-pull output drawing from V+). iq 0.3 mA = the datasheet's typical supply current. rout is left at the engine default 100 Ω: the National datasheet gives no open-loop output resistance (unverified). Not modelled: the LM308's input-stage limits, output current limit, the 1/Cf scaling if C3 is edited (C3 is folded into cdom, not a separate part)"
+    },
+    "2N5458": {
+      "kind": "njf", "vto": -3.0, "beta": 0.667e-3, "lambda": 0.01, "is": 1.0e-14, "n": 1.0, "cgs": 4.5e-12, "cgd": 1.5e-12,
+      "note": "Same values as the engine's library 2N5458 (njf, SPICE level 1). Shichman-Hodges fit to the onsemi datasheet typicals: IDSS 6 mA and gm0 4 mS give |VTO| = 2·IDSS/gm0 = 3.0 V and BETA = IDSS/VTO² = 0.667 mA/V². unverified: LAMBDA 0.01 /V, IS, CGS/CGD (datasheet Ciss 7 pF max, Crss 3 pF max → assumed 4.5 p / 1.5 p zero-bias), assumed; see JFET.md. 2026-11-09: rd/rs/pb/m removed (not parameters of the engine's njf kind; the netlist did not compile with them)"
+    }
+  },
+  "controls": [
+    { "id": "volume", "label": "Volume", "kind": "continuous", "default": 0.5, "params": ["V"], "group": "Main", "note": "100 kΩ audio-taper pot after C10; wiper is the output" },
+    { "id": "distortion", "label": "Distortion", "kind": "continuous", "default": 0.5, "params": ["D"], "group": "Main", "note": "100 kΩ audio-taper rheostat in the LM308 feedback: gain 1 + Rdist/(47 Ω ∥ 560 Ω) above 1.5 kHz, up to 67 dB" },
+    { "id": "filter", "label": "Filter", "kind": "continuous", "default": 0.5, "params": ["F"], "group": "Main", "note": "100 kΩ rheostat + 1.5 kΩ into 3.3 nF: clockwise adds resistance (darker, down to 475 Hz)" },
+    { "id": "bass", "label": "Bass", "kind": "continuous", "default": 0.5, "params": ["B"], "group": "Legacy", "legacyOnly": true, "note": "Legacy 'Bass' parameter; the RAT 2 has no bass control; stored only" },
+    { "id": "balls", "label": "Balls", "kind": "continuous", "default": 0.5, "params": ["Bl"], "group": "Legacy", "legacyOnly": true, "note": "Legacy 'Balls' parameter; no such control on the RAT 2; stored only" },
+    { "id": "treble", "label": "Treble", "kind": "continuous", "default": 0.5, "params": ["T"], "group": "Legacy", "legacyOnly": true, "note": "Legacy 'Treble' parameter; no circuit meaning; stored only" },
+    { "id": "tone", "label": "Tone", "kind": "continuous", "default": 0.5, "params": ["O"], "group": "Legacy", "legacyOnly": true, "note": "Legacy 'Tone' parameter (id O). The RAT 2's only tone control is Filter (id F); stored only" },
+    { "id": "lamp", "label": "Lamp", "kind": "switch", "default": 0.0, "params": ["L"], "group": "Legacy", "legacyOnly": true, "note": "Legacy indicator lamp (the RAT 2 LED is on the switch, not in the audio path); stored only" }
+  ],
+  "parts": [
+    { "ref": "VCC", "type": "V", "nodes": ["v9in", "0"], "value": "9", "label": "+9 V Main (battery / adapter)", "note": "Ideal source: the battery or adapter at the DC jack, ahead of R10" },
+    { "ref": "R10", "type": "R", "nodes": ["v9in", "v9"], "value": "47", "tolerance": 0.05, "label": "Supply filter resistor", "note": "ElectroSmash power-supply drawing: series 47 Ω from '+9V Main' to the filtered +9 V node that feeds U1 pin 7, the Q1 drain and R11. With C11 it is a 34 Hz low-pass; at ~0.6 mA it drops ~28 mV" },
+    { "ref": "D3", "type": "D", "nodes": ["0", "v9"], "model": "1N4001", "label": "Reverse-polarity protection (shunt)", "note": "1N4002 on the ElectroSmash BOM; drawn as a SHUNT diode, anode to ground and cathode on the filtered +9 V node after R10 (reverse-biased in normal use; with a reversed supply it conducts and R10 limits the current). Library 1N4001 card used: the 1N4002 differs only in its 100 V reverse rating" },
+    { "ref": "C11", "type": "C", "nodes": ["v9", "0"], "value": "100u", "tolerance": 0.2, "label": "Supply reservoir" },
+    { "ref": "C12", "type": "C", "nodes": ["v9", "0"], "value": "100n", "tolerance": 0.2, "label": "Supply HF bypass" },
+    { "ref": "R11", "type": "R", "nodes": ["v9", "vb"], "value": "100k", "tolerance": 0.05, "label": "4.5 V divider" },
+    { "ref": "R12", "type": "R", "nodes": ["vb", "0"], "value": "100k", "tolerance": 0.05 },
+    { "ref": "C13", "type": "C", "nodes": ["vb", "0"], "value": "1u", "tolerance": 0.2 },
+
+    { "ref": "R1", "type": "R", "nodes": ["in", "0"], "value": "1M", "tolerance": 0.05, "label": "Input pull-down" },
+    { "ref": "C1", "type": "C", "nodes": ["in", "a"], "value": "22n", "tolerance": 0.1 },
+    { "ref": "R2", "type": "R", "nodes": ["a", "vb"], "value": "1M", "tolerance": 0.05 },
+    { "ref": "R3", "type": "R", "nodes": ["a", "p"], "value": "1k", "tolerance": 0.05 },
+    { "ref": "C2", "type": "C", "nodes": ["p", "0"], "value": "1n", "tolerance": 0.1 },
+    { "ref": "U1", "type": "opamp", "nodes": ["p", "n", "o", "v9", "0"], "model": "LM308", "label": "LM308N (C3 30 pF compensation in the model)" },
+    { "ref": "DIST", "type": "pot", "nodes": ["n", "o", "o"], "value": "100k", "taper": "A", "control": "distortion", "label": "Distortion", "note": "unverified: taper and rotation sense; ElectroSmash labels it 100K-A wired as a rheostat" },
+    { "ref": "C4", "type": "C", "nodes": ["n", "o"], "value": "100p", "tolerance": 0.05 },
+    { "ref": "R4", "type": "R", "nodes": ["n", "x4"], "value": "47", "tolerance": 0.05 },
+    { "ref": "C5", "type": "C", "nodes": ["x4", "0"], "value": "2.2u", "tolerance": 0.2 },
+    { "ref": "R5", "type": "R", "nodes": ["n", "x5"], "value": "560", "tolerance": 0.05 },
+    { "ref": "C6", "type": "C", "nodes": ["x5", "0"], "value": "4.7u", "tolerance": 0.2 },
+
+    { "ref": "C7", "type": "C", "nodes": ["o", "y"], "value": "4.7u", "tolerance": 0.2 },
+    { "ref": "R6", "type": "R", "nodes": ["y", "d"], "value": "1k", "tolerance": 0.05 },
+    { "ref": "D1", "type": "D", "nodes": ["d", "0"], "model": "1N914" },
+    { "ref": "D2", "type": "D", "nodes": ["0", "d"], "model": "1N914" },
+
+    { "ref": "FILTER", "type": "pot", "nodes": ["d", "f", "f"], "value": "100k", "taper": "A", "control": "filter", "label": "Filter", "note": "unverified: taper and rotation sense (ElectroSmash: 100K-A rheostat; clockwise = darker on the real pedal)" },
+    { "ref": "R7", "type": "R", "nodes": ["f", "t"], "value": "1.5k", "tolerance": 0.05 },
+    { "ref": "C8", "type": "C", "nodes": ["t", "0"], "value": "3.3n", "tolerance": 0.1 },
+
+    { "ref": "C9", "type": "C", "nodes": ["t", "g"], "value": "22n", "tolerance": 0.1 },
+    { "ref": "R8", "type": "R", "nodes": ["g", "0"], "value": "1M", "tolerance": 0.05 },
+    { "ref": "Q1", "type": "njf", "nodes": ["v9", "g", "s"], "model": "2N5458", "label": "2N5458 source follower" },
+    { "ref": "R9", "type": "R", "nodes": ["s", "0"], "value": "10k", "tolerance": 0.05 },
+    { "ref": "C10", "type": "C", "nodes": ["s", "vt"], "value": "1u", "tolerance": 0.2 },
+    { "ref": "VOLUME", "type": "pot", "nodes": ["0", "out", "vt"], "value": "100k", "taper": "A", "control": "volume", "label": "Volume" }
+  ],
+  "probes": ["v9", "p", "o", "d", "t", "s", "out"],
+  "layout": {}
+}

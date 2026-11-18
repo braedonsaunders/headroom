@@ -1,0 +1,772 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "ibanez-ts9dx",
+  "version": 1,
+  "name": "Ibanez TS9DX Turbo Tube Screamer (4 modes)",
+  "description": "TS9DX, the four-mode Turbo Tube Screamer: the TS9 signal path (2SC1815 input buffer, TA75558 clipping stage, TA75558 tone stage, 2SC1815 output buffer) with a 4-position Mode rotary switch that changes only the clipping diodes and the 720 Hz feedback-leg capacitor, per the Ibanez TS9DX service manual and the Stompbox Electronics mode analysis. TS9 mode: two MA150 silicon diodes (1N914 class) in the feedback loop, 47 nF leg -> 615 Hz corner. '+' mode: two diodes in series each way (1.2-1.4 V threshold) and 0.22 uF -> 150 Hz. 'HOT' mode: two red LEDs with a fixed resistor across them and 1 uF -> 40 Hz, gain reduced by the resistor. 'TURBO' mode: no clipping diodes, 22 uF -> 16 Hz, so only the op-amp clips. Pots are the service-manual values: Drive 250 kA, Tone 100 kB, Level 20 kW (the 1981 TS9-style network; the TS808 file uses 500 kA / 20 kB / 100 kA). The catalogue's Bass/Mid/Treble knobs do not exist on a TS9DX and are stored only. The 2SK30A electronic bypass is omitted: the effect-on path is a closed switch.",
+  "sources": [
+    {
+      "title": "Ibanez TS9DX service manual No.165 (Maxon, 1998), parts list and block diagram: IC1 TA75558P; Q101/105/106 2SC1815(BL); Q102/104 2SK30A; D101/102/110-113 MA150; D103/104/106 MA165; D107 RD4.7EB zener; D108 1N4002; LED1/2 TLIR124; VR1 RD9712-250KA, VR2 RD9711-100KB, VR3 RD9711-20KW; rotary mode switch SRBM1A",
+      "url": "https://schematicsonline.com/wp-content/uploads/2022/11/Ibanez-TS-9dx-Turbo-Tube-Screamer.pdf"
+    },
+    {
+      "title": "Stompbox Electronics, 'The Ibanez TS9DX Modes & Their Clipping Circuits': TS9 mode = silicon pair + 47 nF (615 Hz); '+' mode = two diodes in series each way + 0.22 uF (150 Hz); HOT mode = two red LEDs with a parallel resistor + 1 uF (40 Hz); TURBO mode = no diodes + 22 uF (16 Hz)",
+      "url": "https://stompboxelectronics.com/2023/04/10/the-ibanez-ts9dx-modes-their-clipping-circuits/"
+    },
+    {
+      "title": "Pedal Parts Ltd, 'Tube Screamer v2.0' build document: TS808 schematic/BOM used for the shared TS9 signal-path values (1k, 510k, 10k, 4k7, 51k, 220R, 1M, 22n, 1u, 220n, 100n, 10u, 51p, 1N914)",
+      "url": "https://pedalparts.co.uk/docs/TubeScreamer2.pdf"
+    },
+    {
+      "title": "R.G. Keen, 'The Technology of the Tube Screamer' (clipping stage and active tone topology)",
+      "url": "http://www.geofex.com/article_folders/tstech/tsxtech.htm"
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 1.0
+  },
+  "oversampling": 2,
+  "minRate": 176400,
+  "solver": "auto",
+  "multirate": {
+    "oversampled": [
+      "IC1A"
+    ],
+    "note": "Only the clipping partition (IC1A, its feedback network and the 1N914 pair) runs at 2x; the buffers and the tone stage run at the host rate with half-band converters at their exact one-way boundaries."
+  },
+  "controls": [
+    {
+      "id": "overdrive",
+      "label": "Drive",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "overdrive",
+        "Dr"
+      ],
+      "group": "Main",
+      "note": "VR1 250 kOhm audio-taper pot (TS9DX service manual) in series with R7 51 kOhm"
+    },
+    {
+      "id": "tone",
+      "label": "Tone",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "tone",
+        "Tn"
+      ],
+      "group": "Main",
+      "note": "VR2 100 kOhm linear pot in the TS9 active tone network"
+    },
+    {
+      "id": "level",
+      "label": "Volume",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "level"
+      ],
+      "group": "Main",
+      "note": "VR3 20 kOhm W-taper output pot"
+    },
+    {
+      "id": "mode",
+      "label": "Mode",
+      "kind": "selector",
+      "default": 1.0,
+      "options": [
+        "Turbo",
+        "Hot",
+        "+",
+        "TS9"
+      ],
+      "params": [
+        "mode"
+      ],
+      "paramRange": [
+        0.0,
+        3.0
+      ],
+      "group": "Main",
+      "note": "4-position rotary: TS9 (silicon pair, 47 nF), + (two in series each way, 0.22 uF), Hot (red LEDs + resistor, 1 uF), Turbo (no diodes, 22 uF). Raw 0/1/2/3 select Turbo/Hot/+/TS9, the rotary's order left to right (service manual p.4 block diagram lists TURBO, HOT, +, TS9DX; the unit face and RealtimeAudioServer paramLabels use the same order); default TS9. Each position switches in exactly one leg cap through its own switch (2026-11-12: the four caps and their switches all sat across leg-vr in parallel, so every mode sounded the same). The catalogue range was extended to 0..3 on 2026-11-09 so every mode is reachable from presets"
+    },
+    {
+      "id": "bass",
+      "label": "Bass",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "bass"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "The TS9DX has no Bass knob; legacy catalogue parameter, stored only"
+    },
+    {
+      "id": "mid",
+      "label": "Mid",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "mid"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "The TS9DX has no Mid knob; stored only"
+    },
+    {
+      "id": "treble",
+      "label": "Treble",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "treble"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "The TS9DX has no Treble knob; stored only"
+    },
+    {
+      "id": "stereo",
+      "label": "Stereo",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "CASSt"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Catalogue stereo parameter; stored only"
+    },
+    {
+      "id": "power",
+      "label": "On/Off",
+      "kind": "switch",
+      "default": 1.0,
+      "params": [
+        "Pwr"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Host handles bypass; stored only"
+    }
+  ],
+  "parts": [
+    {
+      "ref": "VCC",
+      "type": "V",
+      "nodes": [
+        "vcc",
+        "0"
+      ],
+      "value": "9",
+      "label": "9 V supply"
+    },
+    {
+      "ref": "VR",
+      "type": "V",
+      "nodes": [
+        "vr",
+        "0"
+      ],
+      "value": "4.5",
+      "label": "Vref (R9/R10 divider, 47 µF)",
+      "note": "Ideal bias node; the real divider's 47 µF makes it < 3.4 Ω above 1 kHz"
+    },
+    {
+      "ref": "R22",
+      "type": "R",
+      "nodes": [
+        "in",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "Input pull-down"
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "in",
+        "b1a"
+      ],
+      "value": "22n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "b1a",
+        "b1"
+      ],
+      "value": "1k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R2",
+      "type": "R",
+      "nodes": [
+        "b1",
+        "vr"
+      ],
+      "value": "510k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "Q1",
+      "type": "npn",
+      "nodes": [
+        "vcc",
+        "b1",
+        "e1"
+      ],
+      "model": "2SC1815",
+      "label": "Input buffer"
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "e1",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "e1",
+        "inp1"
+      ],
+      "value": "1u",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R5",
+      "type": "R",
+      "nodes": [
+        "inp1",
+        "vr"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "IC1A",
+      "type": "opamp",
+      "nodes": [
+        "inp1",
+        "inv1",
+        "out1",
+        "vcc",
+        "0"
+      ],
+      "model": "TA75558",
+      "label": "Clipping stage"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "inv1",
+        "leg"
+      ],
+      "value": "4k7",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "inv1",
+        "fb"
+      ],
+      "value": "51k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "DRIVE",
+      "type": "pot",
+      "nodes": [
+        "fb",
+        "out1",
+        "out1"
+      ],
+      "value": "250k",
+      "taper": "A",
+      "control": "overdrive",
+      "label": "Drive"
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "inv1",
+        "out1"
+      ],
+      "value": "51p",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "out1",
+        "t1"
+      ],
+      "value": "1k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C5",
+      "type": "C",
+      "nodes": [
+        "t1",
+        "0"
+      ],
+      "value": "220n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R16",
+      "type": "R",
+      "nodes": [
+        "t1",
+        "vr"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "IC1B",
+      "type": "opamp",
+      "nodes": [
+        "t1",
+        "inv2",
+        "out2",
+        "vcc",
+        "0"
+      ],
+      "model": "TA75558",
+      "label": "Tone stage"
+    },
+    {
+      "ref": "TONE",
+      "type": "pot",
+      "nodes": [
+        "t1",
+        "tw",
+        "inv2"
+      ],
+      "value": "100k",
+      "taper": "B",
+      "control": "tone",
+      "label": "Tone"
+    },
+    {
+      "ref": "C9",
+      "type": "C",
+      "nodes": [
+        "tw",
+        "tr"
+      ],
+      "value": "220n",
+      "tolerance": 0.1,
+      "label": "Tone-range cap (TS9 stock 220 nF)"
+    },
+    {
+      "ref": "R11",
+      "type": "R",
+      "nodes": [
+        "tr",
+        "0"
+      ],
+      "value": "220",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R17",
+      "type": "R",
+      "nodes": [
+        "inv2",
+        "out2"
+      ],
+      "value": "1k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C8",
+      "type": "C",
+      "nodes": [
+        "out2",
+        "l1"
+      ],
+      "value": "1u",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R18",
+      "type": "R",
+      "nodes": [
+        "l1",
+        "l3"
+      ],
+      "value": "1k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "LEVEL",
+      "type": "pot",
+      "nodes": [
+        "vr",
+        "lw",
+        "l3"
+      ],
+      "value": "20k",
+      "taper": "W",
+      "control": "level",
+      "label": "Level"
+    },
+    {
+      "ref": "C10",
+      "type": "C",
+      "nodes": [
+        "lw",
+        "b2"
+      ],
+      "value": "100n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R12",
+      "type": "R",
+      "nodes": [
+        "b2",
+        "vr"
+      ],
+      "value": "510k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "Q2",
+      "type": "npn",
+      "nodes": [
+        "vcc",
+        "b2",
+        "e2"
+      ],
+      "model": "2SC1815",
+      "label": "Output buffer"
+    },
+    {
+      "ref": "R14",
+      "type": "R",
+      "nodes": [
+        "e2",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R15",
+      "type": "R",
+      "nodes": [
+        "e2",
+        "o1"
+      ],
+      "value": "100",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C11",
+      "type": "C",
+      "nodes": [
+        "o1",
+        "out"
+      ],
+      "value": "10u",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "R13",
+      "type": "R",
+      "nodes": [
+        "out",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C4a",
+      "type": "C",
+      "nodes": [
+        "leg",
+        "mc_a"
+      ],
+      "value": "47n",
+      "tolerance": 0.1,
+      "label": "feedback-leg cap, TS9 mode (raw 3)"
+    },
+    {
+      "ref": "SWCa",
+      "type": "switch",
+      "nodes": [
+        "mc_a",
+        "vr"
+      ],
+      "control": "mode",
+      "positions": [
+        3
+      ],
+      "label": "mode cap select: TS9 (in series with C4a; one leg cap per mode)"
+    },
+    {
+      "ref": "C4b",
+      "type": "C",
+      "nodes": [
+        "leg",
+        "mc_b"
+      ],
+      "value": "220n",
+      "tolerance": 0.1,
+      "label": "feedback-leg cap, + mode (raw 2)"
+    },
+    {
+      "ref": "SWCb",
+      "type": "switch",
+      "nodes": [
+        "mc_b",
+        "vr"
+      ],
+      "control": "mode",
+      "positions": [
+        2
+      ],
+      "label": "mode cap select: + (in series with C4b; one leg cap per mode)"
+    },
+    {
+      "ref": "C4c",
+      "type": "C",
+      "nodes": [
+        "leg",
+        "mc_c"
+      ],
+      "value": "1u",
+      "tolerance": 0.1,
+      "label": "feedback-leg cap, Hot mode (raw 1)"
+    },
+    {
+      "ref": "SWCc",
+      "type": "switch",
+      "nodes": [
+        "mc_c",
+        "vr"
+      ],
+      "control": "mode",
+      "positions": [
+        1
+      ],
+      "label": "mode cap select: Hot (in series with C4c; one leg cap per mode)"
+    },
+    {
+      "ref": "C4d",
+      "type": "C",
+      "nodes": [
+        "leg",
+        "mc_d"
+      ],
+      "value": "22u",
+      "tolerance": 0.1,
+      "label": "feedback-leg cap, Turbo mode (raw 0)"
+    },
+    {
+      "ref": "SWCd",
+      "type": "switch",
+      "nodes": [
+        "mc_d",
+        "vr"
+      ],
+      "control": "mode",
+      "positions": [
+        0
+      ],
+      "label": "mode cap select: Turbo (in series with C4d; one leg cap per mode)"
+    },
+    {
+      "ref": "D1",
+      "type": "D",
+      "nodes": [
+        "inv1",
+        "p1"
+      ],
+      "model": "MA150",
+      "label": "TS9-mode clip (MA150, 1N914 class)"
+    },
+    {
+      "ref": "D2",
+      "type": "D",
+      "nodes": [
+        "p1",
+        "inv1"
+      ],
+      "model": "MA150",
+      "label": "TS9-mode clip, antiparallel"
+    },
+    {
+      "ref": "SW1",
+      "type": "switch",
+      "nodes": [
+        "p1",
+        "out1"
+      ],
+      "control": "mode",
+      "positions": [
+        3
+      ],
+      "label": "TS9 mode"
+    },
+    {
+      "ref": "D3",
+      "type": "D",
+      "nodes": [
+        "inv1",
+        "q1"
+      ],
+      "model": "MA150",
+      "label": "+ mode: two in series"
+    },
+    {
+      "ref": "D4",
+      "type": "D",
+      "nodes": [
+        "q1",
+        "p2"
+      ],
+      "model": "MA150"
+    },
+    {
+      "ref": "D5",
+      "type": "D",
+      "nodes": [
+        "p2",
+        "inv1"
+      ],
+      "model": "MA150",
+      "label": "+ mode, antiparallel"
+    },
+    {
+      "ref": "D6",
+      "type": "D",
+      "nodes": [
+        "q2",
+        "p2"
+      ],
+      "model": "MA150"
+    },
+    {
+      "ref": "D7",
+      "type": "D",
+      "nodes": [
+        "inv1",
+        "q2"
+      ],
+      "model": "MA150"
+    },
+    {
+      "ref": "SW2",
+      "type": "switch",
+      "nodes": [
+        "p2",
+        "out1"
+      ],
+      "control": "mode",
+      "positions": [
+        2
+      ],
+      "label": "+ mode"
+    },
+    {
+      "ref": "LED1",
+      "type": "D",
+      "nodes": [
+        "inv1",
+        "p3"
+      ],
+      "model": "LED_RED",
+      "label": "Hot mode red LED (TLIR124)"
+    },
+    {
+      "ref": "LED2",
+      "type": "D",
+      "nodes": [
+        "p3",
+        "inv1"
+      ],
+      "model": "LED_RED",
+      "label": "Hot mode red LED, antiparallel"
+    },
+    {
+      "ref": "R6H",
+      "type": "R",
+      "nodes": [
+        "inv1",
+        "p3"
+      ],
+      "value": "47k",
+      "tolerance": 0.1,
+      "label": "Hot-mode LED shunt (unverified: the analysis only says 'a resistor'; 47k leaves the LED mode at about 7x gain so the LEDs still clip, against 17x in TS9 mode)"
+    },
+    {
+      "ref": "SW3",
+      "type": "switch",
+      "nodes": [
+        "p3",
+        "out1"
+      ],
+      "control": "mode",
+      "positions": [
+        1
+      ],
+      "label": "Hot mode"
+    }
+  ],
+  "probes": [
+    "e1",
+    "out1",
+    "t1",
+    "out2",
+    "out"
+  ],
+  "layout": {},
+  "models": {
+    "TA75558": {
+      "kind": "opamp",
+      "level": 1,
+      "a0": 100000.0,
+      "gbw": 3000000.0,
+      "slew": 1000000.0,
+      "swing_hi": 1.5,
+      "swing_lo": 1.5,
+      "vhi": 13.5,
+      "vlo": -13.5,
+      "note": "Toshiba TA75558P dual op-amp (the TS9DX's IC, service-manual parts list): 4558-class, Av 100 dB typ, GBW 3 MHz, SR 1 V/us. Values from the NJM4558/TI RC4558 datasheet class; unverified for the TA75558 die"
+    },
+    "MA150": {
+      "kind": "diode",
+      "is": 2.52e-09,
+      "n": 1.752,
+      "rs": 0.568,
+      "note": "Matsushita MA150 silicon switching diode (TS9DX service-manual part): no vendor SPICE card found, so the 1N914 card (IS 2.52n, N 1.752, RS 0.568) is used - the same 0.6-0.7 V class"
+    }
+  }
+}

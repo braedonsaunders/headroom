@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Gothenburg Harmony Lead</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Gothenburg Harmony Lead" preset-author="Headroom" preset-comment="Melodic death metal lead: an overdrive pushing a 120-watt lead channel with the mids forward, into a British 4x12, with a clean, even echo behind it. Smooth, singing and focused, so twin-guitar harmony lines and fast melodic runs stay clear over blast beats." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="15000">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.8"/>
+        <parameter id="Tn" value="0.6"/>
+        <parameter id="Dr" value="0.35"/>
+        <parameter id="Lmp" value="0.5"/>
+        <parameter id="Bs" value="0.5"/>
+        <parameter id="Cl" value="0.5"/>
+        <parameter id="Br" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="134000">
+    <component-audio version="1">
+      <parameters num-parameters="21">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="R0" value="0.5"/>
+        <parameter id="L1" value="0.7"/>
+        <parameter id="B2" value="0.45"/>
+        <parameter id="M3" value="0.7"/>
+        <parameter id="T4" value="0.55"/>
+        <parameter id="P5" value="0.5"/>
+        <parameter id="R6" value="0.45"/>
+        <parameter id="P7" value="0.5"/>
+        <parameter id="P8" value="0"/>
+        <parameter id="V9" value="0.5"/>
+        <parameter id="S10" value="0.5"/>
+        <parameter id="R11" value="0.5"/>
+        <parameter id="B12" value="0.5"/>
+        <parameter id="L13" value="1"/>
+        <parameter id="H14" value="0"/>
+        <parameter id="B15" value="0"/>
+        <parameter id="C16" value="0"/>
+        <parameter id="R17" value="0.5"/>
+        <parameter id="L18" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.4172"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="10"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="158000">
+    <component-audio version="1">
+      <parameters num-parameters="38">
+        <parameter id="mix" value="0.22"/>
+        <parameter id="input" value="0.7224"/>
+        <parameter id="output" value="0.6855"/>
+        <parameter id="pandry" value="0.5"/>
+        <parameter id="panwet" value="0.5"/>
+        <parameter id="stereowidth" value="0.5"/>
+        <parameter id="stereomode" value="0.5"/>
+        <parameter id="timemode" value="0"/>
+        <parameter id="time" value="0.5161"/>
+        <parameter id="feedback" value="0.35"/>
+        <parameter id="style" value="0"/>
+        <parameter id="ana_bbdtype" value="0"/>
+        <parameter id="modern_sat" value="0.5"/>
+        <parameter id="modern_depth" value="0"/>
+        <parameter id="modern_rate" value="0.5"/>
+        <parameter id="modern_stereo" value="0.5"/>
+        <parameter id="diff_amount" value="0.5"/>
+        <parameter id="diff_size" value="0.5"/>
+        <parameter id="diff_movement" value="0.5"/>
+        <parameter id="diff_dense" value="0.5"/>
+        <parameter id="ana_depth" value="0.5"/>
+        <parameter id="ana_rate" value="0.5"/>
+        <parameter id="ana_stereo" value="0.5"/>
+        <parameter id="tape_sat" value="0.5"/>
+        <parameter id="tape_age" value="0.5"/>
+        <parameter id="tape_wowflut" value="0.5"/>
+        <parameter id="tape_noise" value="0.5"/>
+        <parameter id="vd_quality" value="0"/>
+        <parameter id="vd_depth" value="0.5"/>
+        <parameter id="vd_rate" value="0.5"/>
+        <parameter id="vd_stereo" value="0.5"/>
+        <parameter id="locut" value="0.5"/>
+        <parameter id="hicut" value="0.5"/>
+        <parameter id="duckingamount" value="0"/>
+        <parameter id="duckingsensitivity" value="0.5"/>
+        <parameter id="duckingrelease" value="0.5"/>
+        <parameter id="duckingmeter" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="134000" target-number="1" target-name="L1" min-value="0.45" max-value="0.95" controller-name="Gain"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="134000" target-number="1" target-name="M3" min-value="0.4" max-value="0.9" controller-name="Mids"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="15000" target-number="1" target-name="Dr" min-value="0" max-value="0.7" controller-name="Boost Drive"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="158000" target-number="1" target-name="mix" min-value="0" max-value="0.4" controller-name="Delay Mix"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="158000" target-number="1" target-name="time" min-value="0.2" max-value="0.8" controller-name="Delay Time"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="hg-gothenburg-harmony-lead" category="High Gain" order="180" instrument="guitar" style="Melodeath">
+  <description>Melodic death metal lead: an overdrive pushing a 120-watt lead channel with the mids forward, into a British 4x12, with a clean, even echo behind it. Smooth, singing and focused, so twin-guitar harmony lines and fast melodic runs stay clear over blast beats.</description>
+  <tags><tag>High Gain</tag><tag>Melodeath</tag><tag>Swedish</tag><tag>Lead</tag><tag>Harmony</tag><tag>Boosted</tag><tag>Delay</tag></tags>
+  <sources>
+    <source url="https://www.guitarworld.com/magazine/gates-discuss-new-album-war-reality" title="Guitar World: At the Gates discuss their new album"/>
+    <source url="https://www.guitarworld.com/features/michael-amott-arch-enemy-deceivers" title="Guitar World: Michael Amott, Arch Enemy, Deceivers"/>
+    <source url="https://en.wikipedia.org/wiki/Bj%C3%B6rn_Gelotte" title="Björn Gelotte (Wikipedia)"/>
+    <source url="https://www.nailthemix.com/fredrik-nordstroms-fredman-technique-for-guitars" title="Nail The Mix: Fredrik Nordström's Fredman technique"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

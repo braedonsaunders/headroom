@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>JCM800 British Crunch</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="JCM800 British Crunch" preset-author="Headroom" preset-comment="Marshall JCM800 2203 pushed by an Ibanez TS808 Tube Screamer into a matched 4x12 cabinet and EMT 140 plate reverb." tempo-bpm="120"/>
+<rack>
+<non-fix-components>
+  <component id="15000">
+    <component-audio version="1">
+      <parameters num-parameters="5">
+        <parameter id="Dr" value="0.25"/>
+        <parameter id="Tn" value="0.60"/>
+        <parameter id="Vol" value="0.68"/>
+        <parameter id="Bs" value="0.50"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="56000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="V1" value="0.68"/>
+        <parameter id="Hg" value="1"/>
+        <parameter id="B" value="0.52"/>
+        <parameter id="M" value="0.68"/>
+        <parameter id="T" value="0.64"/>
+        <parameter id="Pr" value="0.58"/>
+        <parameter id="MV" value="0.65"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="Cab" value="10"/>
+        <parameter id="c" value="0.55"/>
+        <parameter id="LL" value="0.35"/>
+        <parameter id="MV" value="0.7907"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="127000">
+    <component-audio version="1">
+      <parameters num-parameters="4">
+        <parameter id="S1" value="1"/>
+        <parameter id="M2" value="0.16"/>
+        <parameter id="M3" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="56000" target-number="1" target-name="V1" min-value="0.2" max-value="0.95" controller-name="Preamp Gain"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="15000" target-number="1" target-name="Dr" min-value="0" max-value="0.85" controller-name="TS808 Drive"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="56000" target-number="1" target-name="M" min-value="0.2" max-value="0.9" controller-name="Mids"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="127000" target-number="1" target-name="M2" min-value="0" max-value="0.5" controller-name="Plate Mix"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+</headroom-preset>

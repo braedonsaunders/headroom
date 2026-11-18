@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Tampa Death Rhythm</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Tampa Death Rhythm" preset-author="Headroom" preset-comment="Thick, mid-heavy Florida death metal rhythm: an op-amp distortion used as a dark push into a rectified high-gain head with the mids up, into a 4x12. Close, dense and growling, with the low mids that make tremolo riffs and slow, crushing parts sound enormous." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="19000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="T" value="0.45"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="A" value="0.5"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="G" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="42000">
+    <component-audio version="1">
+      <parameters num-parameters="10">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V" value="0.75"/>
+        <parameter id="D" value="0.45"/>
+        <parameter id="F" value="0.55"/>
+        <parameter id="B" value="0.5"/>
+        <parameter id="Bl" value="0.5"/>
+        <parameter id="T" value="0.5"/>
+        <parameter id="O" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="16000">
+    <component-audio version="1">
+      <parameters num-parameters="14">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Mast" value="0.55"/>
+        <parameter id="Gn" value="0.9"/>
+        <parameter id="Bs" value="0.55"/>
+        <parameter id="Mid" value="0.72"/>
+        <parameter id="Trb" value="0.5"/>
+        <parameter id="Prs" value="0.45"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="M" value="2"/>
+        <parameter id="Bias" value="0.5"/>
+        <parameter id="Hz" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.5397"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="10"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="16000" target-number="1" target-name="Gn" min-value="0.45" max-value="0.95" controller-name="Gain"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="42000" target-number="1" target-name="D" min-value="0.1" max-value="0.7" controller-name="Push"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="16000" target-number="1" target-name="Mid" min-value="0.35" max-value="0.9" controller-name="Mids"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="42000" target-number="1" target-name="F" min-value="0.3" max-value="0.8" controller-name="Darkness"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="19000" target-number="1" target-name="T" min-value="0.2" max-value="0.75" controller-name="Gate"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="hg-tampa-death-rhythm" category="High Gain" order="80" instrument="guitar" style="Death Metal">
+  <description>Thick, mid-heavy Florida death metal rhythm: an op-amp distortion used as a dark push into a rectified high-gain head with the mids up, into a 4x12. Close, dense and growling, with the low mids that make tremolo riffs and slow, crushing parts sound enormous.</description>
+  <tags><tag>High Gain</tag><tag>Death Metal</tag><tag>Florida</tag><tag>Rhythm</tag><tag>Mid-Heavy</tag><tag>Gate</tag><tag>Downtuned</tag></tags>
+  <sources>
+    <source url="https://www.guitarworld.com/features/obituary-trevor-peres-ken-andrews-dying-of-everything" title="Guitar World: Obituary's Trevor Peres and Ken Andrews"/>
+    <source url="https://www.decibelmagazine.com/2023/09/11/pre-order-the-scott-burns-sessions-a-life-in-death-metal-1987-1997-from-decibel-books-read-an-exclusive-excerpt-now/" title="Decibel: The Scott Burns Sessions, book excerpt"/>
+    <source url="https://tapeop.com/interviews/173/scott-burns" title="Tape Op: Scott Burns interview"/>
+    <source url="https://www.musicradar.com/news/5-songs-guitar-players-Death" title="MusicRadar: Death, five songs guitar players need to hear"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

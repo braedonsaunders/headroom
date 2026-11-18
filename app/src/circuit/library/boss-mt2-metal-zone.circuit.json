@@ -1,0 +1,1536 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "boss-mt2-metal-zone",
+ "version": 1,
+ "name": "Boss MT-2 Metal Zone",
+ "description": "Boss MT-2 Metal Zone (1991) as drawn in the Roland service notes (MT BOARD 7527552000, pcb 22930117RT). 2SK184 source-follower input -> 2SK118 effect switch (ON) -> IC3b pre-distortion shaping: non-inverting, 220 k // 100 p feedback, and to ground C034 0.027 in series with a transistor gyrator (Q010 2SC3378 emitter follower: C035 0.01 from the C034 node to the base, R053 47 k base to +4.5 V, R046 2.2 k from the emitter back to the C034 node, R054 10 k emitter load) -> a 952 Hz band-pass, about +36 dB peak -> R045/R042 divider with C031 (340 Hz) -> IC3a gain x2...x252 (DIST 250 kA) -> 2.2 k into a 1SS133 pair to ground -> R032/R031/C023 shelf -> IC4b post-shaping with two more transistor gyrators (4.9 kHz and 105 Hz peaks) -> IC4a unity inverter -> IC1a High/Low cut-boost (High shelf 2.2 k/10 n, Low = IC1b op-amp gyrator 105 Hz) -> IC2a Middle cut/boost with an IC2b-driven Wien bridge swept by the dual-gang MID FREQ -> LEVEL 50 kA -> 2SK118 effect switch (ON) -> 2SC3378 emitter-follower output. The flip-flop footswitch logic, the CHECK LED and the bypass switch Q003 (OFF in the effect state) are not modelled; the bypass buffer Q004 is, because it loads the input buffer. Engine notes: the +4.5 V rail (R056/R057 with C040 + C019, 200 uF) is a supply cut, which splits the single 33-port group into eleven stage groups (CPU 30.8 % -> 13.7 % of a core at 96 kHz, gate unchanged within 0.7 % NRMSE). The solver is pinned to nodal DK because with the cut the automatic WDF choice for the clipper group (C027..R029) outputs a silent clip node (engine bug, reported).",
+ "sources": [
+  {
+   "title": "Boss MT-2 Service Notes, Apr 1991 (Roland): MT BOARD circuit diagram (assy 7527552000, pcb 22930117RT 1/2 and VR board 2/2) and parts list (M5218AL IC1-4; 2SC3378GR / 2SC2240GR, 2SC2458GR, 2SK184GR / 2SK117GR, 2SK118Y; S5500G, 1SS133, RD5.6EB3, LN-28RP; pots 100kW+100kW HIGH/LOW, 50kCx2+100kW MIDDLE, 250kA DIST, 50kA LEVEL)",
+   "url": "https://www.synfo.nl/servicemanuals/Boss/BOSS_MT-2_SERVICE_NOTES.pdf"
+  },
+  {
+   "title": "Hobby Hour, Boss MT-2 Metal Zone schematic (clean single-page copy of the same diagram; used to cross-read the VR board and the gyrator transistors)",
+   "url": "https://www.hobby-hour.com/electronics/s/schematics/boss-mt2-metal-zone-schematic.png"
+  },
+  {
+   "title": "Electric Druid, 'Boss MT-2 Metal Zone pedal analysis' (stage values, the 106 Hz / 7.2 kHz / 340 Hz / 48 Hz corners, gain x2-x252, the gyrator tables 4898 Hz Q 2.2 and 105 Hz Q 14.6 / 3.1, +/-20 dB High/Low, +/-15 dB Mid from 240 Hz to 4.7/6.3 kHz, and the published pre-distortion response with its ~1 kHz peak, ~36 dB per the article's comments)",
+   "url": "https://electricdruid.net/boss-mt-2-metal-zone-pedal-analysis/"
+  },
+  {
+   "title": "Mitsubishi M5218AL/P/FP datasheet: Gvo 110 dB, fT 7 MHz, SR 3.0 V/us typ",
+   "url": "https://www.alldatasheet.com/datasheet-pdf/pdf/908/MITSUBISHI/M5218.html"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "out",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 1.0
+ },
+ "oversampling": 2,
+ "solver": "dk",
+ "multirate": {"rates": {"IC3B": 4, "IC3A": 4, "C027": 4}, "note": "The three clipping op-amp groups (IC3B pre-shaper, IC3A gain stage, the 1SS133 pair with C027) run at 192 kHz, the rest at 96 kHz (docs §10.62). At 96 kHz they fold at -36.6 dB (aliasing gate, every bin, 0.5 FS); any one or two of them raised leave -47.8 to -55.4 dB. Gate -65.0 / -73.0 / -63.1 dB at 0.25 / 0.5 / 1.0 FS. Engine 8x fine-step truth (band-limited), audio band, lead / rock DI: 0.546 / 0.574 -> 0.464 / 0.537 %; ngspice mt2_lead_d32 out 0.568 -> 0.476 %"},
+ "cuts": [
+  "vb"
+ ],
+ "models": {
+  "M5218AL": {
+   "kind": "opamp",
+   "level": 1,
+   "a0": 316000.0,
+   "gbw": 7000000.0,
+   "slew": 3000000.0,
+   "swing_hi": 1.5,
+   "swing_lo": 1.5,
+   "vhi": 9.0,
+   "vlo": 0.0,
+   "note": "Mitsubishi M5218AL dual low-noise op-amp (MT-2 parts list IC1-4): datasheet typicals Gvo 110 dB, fT 7 MHz, SR 3.0 V/us. unverified: output swing 1.5 V from each rail on the single 9 V supply (4558-class figure; the datasheet gives swing only at +/-15 V)"
+  },
+  "1SS133": {
+   "kind": "diode",
+   "is": 4.352e-09,
+   "n": 1.906,
+   "rs": 0.6458,
+   "note": "Rohm 1SS133 silicon switching diode (D003/D004 clippers): 1N4148-class part (VF 1.2 V max at 100 mA); the NXP 1N4148 card is used. unverified for the 1SS133 die"
+  },
+  "2SC3378GR": {
+   "kind": "npn",
+   "is": 2e-14,
+   "bf": 300.0,
+   "br": 3.0,
+   "note": "Toshiba 2SC3378-GR low-noise NPN: hFE GR rank 200-400, BF 300 = mid-rank; IS approximate (2SC1815-class die). unverified: no vendor SPICE card"
+  },
+  "2SK184GR": {
+   "kind": "njf",
+   "vto": -0.7,
+   "beta": 0.0092,
+   "lambda": 0.01,
+   "is": 1e-14,
+   "n": 1.0,
+   "cgs": 1e-11,
+   "cgd": 3e-12,
+   "note": "Toshiba 2SK184-GR input follower: GR-rank IDSS 2.6-6.5 mA, VGS(off) -0.2 to -1.5 V; card takes IDSS 4.5 mA, Vp -0.7 V -> BETA = IDSS/Vp^2 = 9.2 mA/V^2 (gm0 12.9 mS, datasheet |Yfs| 15 mS typ). Ciss 13 pF / Crss 3 pF. unverified: mid-rank values, LAMBDA assumed"
+  },
+  "2SK118Y": {
+   "kind": "njf",
+   "vto": -0.8,
+   "beta": 0.0031,
+   "lambda": 0.01,
+   "is": 1e-14,
+   "n": 1.0,
+   "cgs": 1e-11,
+   "cgd": 3e-12,
+   "note": "Toshiba 2SK118-Y switching JFET (Q002/Q003/Q009): Y-rank IDSS 1.2-3.0 mA, VGS(off) -0.2 to -1.5 V; card takes IDSS 2 mA, Vp -0.8 V -> BETA 3.1 mA/V^2, Rds(on) at Vgs 0 = 1/(2 BETA |Vp|) = 200 ohm. Ciss 13 pF / Crss 3 pF. unverified: mid-rank values"
+  }
+ },
+ "controls": [
+  {
+   "id": "dist",
+   "label": "Distortion",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "D"
+   ],
+   "group": "Main",
+   "note": "VR01 DIST 250 kA (parts list RK0971110038), wired as a rheostat with R051 1 k in IC3a's feedback over R041 1 k: gain x2 ... x252"
+  },
+  {
+   "id": "level",
+   "label": "Level",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "V"
+   ],
+   "group": "Main",
+   "note": "VR04 LEVEL 50 kA (parts list RK0971110040), pin 1 to ground, fed from IC2a through C005"
+  },
+  {
+   "id": "low",
+   "label": "Low",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "B"
+   ],
+   "group": "Main",
+   "note": "VR03a LOW 100 kW (parts list RK0972210006, concentric with HIGH): cut/boost of the 105 Hz IC1b gyrator; centre = flat"
+  },
+  {
+   "id": "high",
+   "label": "High",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "T"
+   ],
+   "group": "Main",
+   "note": "VR03b HIGH 100 kW (concentric with LOW): cut/boost of the R061 2.2 k / C044 10 n high shelf; centre = flat"
+  },
+  {
+   "id": "middle",
+   "label": "Middle",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "M"
+   ],
+   "group": "Main",
+   "note": "VR02b MIDDLE 100 kW (parts list RK0972310005, concentric with MID FREQ): mix between IC2a's input and output into the Wien bridge; +/-15 dB, centre = flat"
+  },
+  {
+   "id": "midfreq",
+   "label": "Mid Freq",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "MF"
+   ],
+   "group": "Main",
+   "note": "VR02a MID FREQ 50 kC x2 (dual gang, both gangs wired as rheostats): Wien bridge 2.2 k + gang with 22 n / 8.2 n, about 230 Hz (CCW) to 5.4 kHz (CW)"
+  },
+  {
+   "id": "prebass",
+   "label": "Pre Bass",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "PB"
+   ],
+   "group": "Legacy",
+   "note": "The MT-2 has no such knob (fixed pre-shaping); legacy catalogue parameter, stored only",
+   "legacyOnly": true
+  },
+  {
+   "id": "premidq",
+   "label": "Pre Mid-Q",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "PQ"
+   ],
+   "group": "Legacy",
+   "note": "The MT-2 has no such knob (the Q010 gyrator is fixed); stored only",
+   "legacyOnly": true
+  },
+  {
+   "id": "premidfreq",
+   "label": "Pre Mid Freq",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "PM"
+   ],
+   "group": "Legacy",
+   "note": "The MT-2 has no such knob (fixed 950 Hz pre-shaping band-pass); stored only",
+   "legacyOnly": true
+  },
+  {
+   "id": "pretreble",
+   "label": "Pre Treble",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "PT"
+   ],
+   "group": "Legacy",
+   "note": "The MT-2 has no such knob; stored only",
+   "legacyOnly": true
+  },
+  {
+   "id": "stereo",
+   "label": "Stereo",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "CASSt"
+   ],
+   "group": "Legacy",
+   "note": "Catalogue stereo parameter; the MT-2 is mono, stored only",
+   "legacyOnly": true
+  },
+  {
+   "id": "power",
+   "label": "On/Off",
+   "kind": "switch",
+   "default": 1.0,
+   "params": [
+    "Pwr"
+   ],
+   "group": "Legacy",
+   "note": "Host handles bypass (the effect-state JFET switches are modelled ON); stored only",
+   "legacyOnly": true
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VBAT",
+   "type": "V",
+   "nodes": [
+    "vcc",
+    "0"
+   ],
+   "value": "9",
+   "label": "9 V battery / adaptor (+9V)",
+   "note": "D006 S5500G reverse-polarity shunt and C041 100 uF/16 V across the supply are inert across an ideal source and omitted"
+  },
+  {
+   "ref": "R056",
+   "type": "R",
+   "nodes": [
+    "vcc",
+    "vb"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "+4.5 V divider top"
+  },
+  {
+   "ref": "R057",
+   "type": "R",
+   "nodes": [
+    "vb",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "+4.5 V divider bottom"
+  },
+  {
+   "ref": "C040",
+   "type": "C",
+   "nodes": [
+    "vb",
+    "0"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "+4.5 V reservoir (100 uF/6.3 V)"
+  },
+  {
+   "ref": "C019",
+   "type": "C",
+   "nodes": [
+    "vb",
+    "0"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "+4.5 V reservoir (100 uF/6.3 V)"
+  },
+  {
+   "ref": "R059",
+   "type": "R",
+   "nodes": [
+    "in",
+    "n59"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Input series"
+  },
+  {
+   "ref": "C042",
+   "type": "C",
+   "nodes": [
+    "n59",
+    "g11"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "Input DC block (0.047)"
+  },
+  {
+   "ref": "R058",
+   "type": "R",
+   "nodes": [
+    "g11",
+    "vb"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "Q011 gate bias to +4.5 V"
+  },
+  {
+   "ref": "Q011",
+   "type": "njf",
+   "nodes": [
+    "vcc",
+    "g11",
+    "s11"
+   ],
+   "model": "2SK184GR",
+   "label": "Input source follower (2SK184-GR)"
+  },
+  {
+   "ref": "R060",
+   "type": "R",
+   "nodes": [
+    "s11",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Q011 source load"
+  },
+  {
+   "ref": "R055",
+   "type": "R",
+   "nodes": [
+    "s11",
+    "b4"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Bypass-path buffer base series"
+  },
+  {
+   "ref": "Q004",
+   "type": "npn",
+   "nodes": [
+    "vcc",
+    "b4",
+    "e4"
+   ],
+   "model": "2SC3378GR",
+   "label": "Bypass-path emitter follower (loads the input buffer)"
+  },
+  {
+   "ref": "R008",
+   "type": "R",
+   "nodes": [
+    "e4",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Q004 emitter load"
+  },
+  {
+   "ref": "C003",
+   "type": "C",
+   "nodes": [
+    "e4",
+    "d3"
+   ],
+   "value": "1u",
+   "tolerance": 0.2,
+   "label": "Into the bypass switch Q003 (1/50)"
+  },
+  {
+   "ref": "R007",
+   "type": "R",
+   "nodes": [
+    "d3",
+    "vb"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "Q003 drain bias",
+   "note": "Q003 (2SK118Y bypass switch) is pinched off in the effect state (gate pulled to ~0.6 V through D002 by the flip-flop, channel at 4.5 V) and is omitted; its drain node stays loaded by R007"
+  },
+  {
+   "ref": "C039",
+   "type": "C",
+   "nodes": [
+    "s11",
+    "sw9a"
+   ],
+   "value": "1u",
+   "tolerance": 0.2,
+   "label": "Into the effect switch (1/50)"
+  },
+  {
+   "ref": "R052",
+   "type": "R",
+   "nodes": [
+    "sw9a",
+    "vb"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Q009 bias"
+  },
+  {
+   "ref": "Q009",
+   "type": "njf",
+   "nodes": [
+    "sw9a",
+    "g9",
+    "sw9b"
+   ],
+   "model": "2SK118Y",
+   "label": "Effect-path JFET switch (conducting in the effect state)"
+  },
+  {
+   "ref": "RG9",
+   "type": "R",
+   "nodes": [
+    "g9",
+    "sw9a"
+   ],
+   "value": "10M",
+   "tolerance": 0.5,
+   "label": "Q009 gate, effect state (model element)",
+   "note": "Modelling element, not a drawn part: in the effect state D005's cathode is held high by the Q005/Q006 flip-flop, so D005 is reverse-biased and the gate floats at the channel's 4.5 V (Vgs = 0, fully on). 10 Mohm to +4.5 V stands for that floating gate's DC return; at audio the gate follows the channel through Cgs/Cgd"
+  },
+  {
+   "ref": "R047",
+   "type": "R",
+   "nodes": [
+    "sw9b",
+    "vb"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "Q009 bias"
+  },
+  {
+   "ref": "C033",
+   "type": "C",
+   "nodes": [
+    "sw9b",
+    "p3b"
+   ],
+   "value": "15n",
+   "tolerance": 0.1,
+   "label": "Into IC3b + (0.015)"
+  },
+  {
+   "ref": "R043",
+   "type": "R",
+   "nodes": [
+    "p3b",
+    "vb"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "IC3b + bias (106 Hz high-pass with C033)"
+  },
+  {
+   "ref": "IC3B",
+   "type": "opamp",
+   "nodes": [
+    "p3b",
+    "m3b",
+    "o3b",
+    "vcc",
+    "0"
+   ],
+   "model": "M5218AL",
+   "label": "IC3b pre-distortion shaping (non-inverting)"
+  },
+  {
+   "ref": "R044",
+   "type": "R",
+   "nodes": [
+    "m3b",
+    "o3b"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "IC3b feedback"
+  },
+  {
+   "ref": "C032",
+   "type": "C",
+   "nodes": [
+    "m3b",
+    "o3b"
+   ],
+   "value": "100p",
+   "tolerance": 0.05,
+   "label": "IC3b feedback HF roll-off (7.2 kHz)"
+  },
+  {
+   "ref": "C034",
+   "type": "C",
+   "nodes": [
+    "m3b",
+    "gy10"
+   ],
+   "value": "27n",
+   "tolerance": 0.1,
+   "label": "Gyrator series C (0.027): f0 = 1/(2 pi sqrt(L C034)) = 952 Hz"
+  },
+  {
+   "ref": "C035",
+   "type": "C",
+   "nodes": [
+    "gy10",
+    "q10b"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "Gyrator C (0.01) into Q010 base: L = R053 R046 C035 = 1.03 H"
+  },
+  {
+   "ref": "R053",
+   "type": "R",
+   "nodes": [
+    "q10b",
+    "vb"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "Q010 base return to +4.5 V"
+  },
+  {
+   "ref": "Q010",
+   "type": "npn",
+   "nodes": [
+    "vcc",
+    "q10b",
+    "q10e"
+   ],
+   "model": "2SC3378GR",
+   "label": "Q010 gyrator emitter follower"
+  },
+  {
+   "ref": "R046",
+   "type": "R",
+   "nodes": [
+    "gy10",
+    "q10e"
+   ],
+   "value": "2.2k",
+   "tolerance": 0.05,
+   "label": "Gyrator series R (emitter -> C034/C035 node)"
+  },
+  {
+   "ref": "R054",
+   "type": "R",
+   "nodes": [
+    "q10e",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Q010 emitter load"
+  },
+  {
+   "ref": "R045",
+   "type": "R",
+   "nodes": [
+    "o3b",
+    "n45"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Post-shaping divider / 340 Hz low-pass"
+  },
+  {
+   "ref": "R042",
+   "type": "R",
+   "nodes": [
+    "n45",
+    "vb"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Post-shaping divider"
+  },
+  {
+   "ref": "C031",
+   "type": "C",
+   "nodes": [
+    "n45",
+    "vb"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "340 Hz low-pass (0.047)"
+  },
+  {
+   "ref": "C029",
+   "type": "C",
+   "nodes": [
+    "n45",
+    "p3a"
+   ],
+   "value": "33n",
+   "tolerance": 0.1,
+   "label": "Into IC3a + (0.033)"
+  },
+  {
+   "ref": "R040",
+   "type": "R",
+   "nodes": [
+    "p3a",
+    "vb"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "IC3a + bias (48 Hz high-pass)"
+  },
+  {
+   "ref": "IC3A",
+   "type": "opamp",
+   "nodes": [
+    "p3a",
+    "m3a",
+    "o3a",
+    "vcc",
+    "0"
+   ],
+   "model": "M5218AL",
+   "label": "IC3a gain stage, x2 ... x252"
+  },
+  {
+   "ref": "R041",
+   "type": "R",
+   "nodes": [
+    "m3a",
+    "n41"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "IC3a ground leg"
+  },
+  {
+   "ref": "C030",
+   "type": "C",
+   "nodes": [
+    "n41",
+    "0"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "IC3a ground-leg DC block (10/16)"
+  },
+  {
+   "ref": "C028",
+   "type": "C",
+   "nodes": [
+    "m3a",
+    "o3a"
+   ],
+   "value": "47p",
+   "tolerance": 0.05,
+   "label": "IC3a feedback HF roll-off"
+  },
+  {
+   "ref": "R051",
+   "type": "R",
+   "nodes": [
+    "o3a",
+    "n51"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "IC3a feedback series"
+  },
+  {
+   "ref": "VR01",
+   "type": "pot",
+   "nodes": [
+    "m3a",
+    "n51",
+    "n51"
+   ],
+   "value": "250k",
+   "taper": "A",
+   "control": "dist",
+   "label": "DIST 250 kA (pins 2-3 tied: rheostat in the feedback)"
+  },
+  {
+   "ref": "C027",
+   "type": "C",
+   "nodes": [
+    "o3a",
+    "n27"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "Into the clipper (10/16)"
+  },
+  {
+   "ref": "R033",
+   "type": "R",
+   "nodes": [
+    "n27",
+    "clip"
+   ],
+   "value": "2.2k",
+   "tolerance": 0.05,
+   "label": "Clipper series"
+  },
+  {
+   "ref": "D004",
+   "type": "D",
+   "nodes": [
+    "0",
+    "clip"
+   ],
+   "model": "1SS133",
+   "label": "Clipping diode to ground"
+  },
+  {
+   "ref": "D003",
+   "type": "D",
+   "nodes": [
+    "clip",
+    "0"
+   ],
+   "model": "1SS133",
+   "label": "Clipping diode to ground"
+  },
+  {
+   "ref": "R032",
+   "type": "R",
+   "nodes": [
+    "clip",
+    "n32"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Post-clip low-pass"
+  },
+  {
+   "ref": "R031",
+   "type": "R",
+   "nodes": [
+    "n32",
+    "n31"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.05,
+   "label": "Post-clip low-pass shelf"
+  },
+  {
+   "ref": "C023",
+   "type": "C",
+   "nodes": [
+    "n31",
+    "0"
+   ],
+   "value": "15n",
+   "tolerance": 0.1,
+   "label": "Post-clip low-pass shelf (0.015)"
+  },
+  {
+   "ref": "C021",
+   "type": "C",
+   "nodes": [
+    "n32",
+    "p4b"
+   ],
+   "value": "1u",
+   "tolerance": 0.2,
+   "label": "Into IC4b + (1/50)"
+  },
+  {
+   "ref": "R029",
+   "type": "R",
+   "nodes": [
+    "p4b",
+    "vb"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "IC4b + bias"
+  },
+  {
+   "ref": "IC4B",
+   "type": "opamp",
+   "nodes": [
+    "p4b",
+    "m4b",
+    "o4b",
+    "vcc",
+    "0"
+   ],
+   "model": "M5218AL",
+   "label": "IC4b post-distortion shaping (non-inverting)"
+  },
+  {
+   "ref": "R030",
+   "type": "R",
+   "nodes": [
+    "m4b",
+    "o4b"
+   ],
+   "value": "3.3k",
+   "tolerance": 0.05,
+   "label": "IC4b feedback"
+  },
+  {
+   "ref": "C022",
+   "type": "C",
+   "nodes": [
+    "m4b",
+    "o4b"
+   ],
+   "value": "47p",
+   "tolerance": 0.05,
+   "label": "IC4b feedback HF roll-off"
+  },
+  {
+   "ref": "C024",
+   "type": "C",
+   "nodes": [
+    "m4b",
+    "gy8"
+   ],
+   "value": "15n",
+   "tolerance": 0.1,
+   "label": "High gyrator series C (0.015): 4.9 kHz"
+  },
+  {
+   "ref": "C025",
+   "type": "C",
+   "nodes": [
+    "gy8",
+    "q8b"
+   ],
+   "value": "1.5n",
+   "tolerance": 0.1,
+   "label": "High gyrator C (0.0015)"
+  },
+  {
+   "ref": "R036",
+   "type": "R",
+   "nodes": [
+    "q8b",
+    "vb"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "Q008 base return to +4.5 V"
+  },
+  {
+   "ref": "Q008",
+   "type": "npn",
+   "nodes": [
+    "vcc",
+    "q8b",
+    "q8e"
+   ],
+   "model": "2SC3378GR",
+   "label": "Q008 gyrator emitter follower"
+  },
+  {
+   "ref": "R034",
+   "type": "R",
+   "nodes": [
+    "gy8",
+    "q8e"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "High gyrator series R"
+  },
+  {
+   "ref": "R037",
+   "type": "R",
+   "nodes": [
+    "q8e",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Q008 emitter load"
+  },
+  {
+   "ref": "C020",
+   "type": "C",
+   "nodes": [
+    "m4b",
+    "gy7"
+   ],
+   "value": "220n",
+   "tolerance": 0.2,
+   "label": "Low gyrator series C (0.22/35): 105 Hz"
+  },
+  {
+   "ref": "C017",
+   "type": "C",
+   "nodes": [
+    "gy7",
+    "q7b"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "Low gyrator C (0.047)"
+  },
+  {
+   "ref": "R025",
+   "type": "R",
+   "nodes": [
+    "q7b",
+    "vb"
+   ],
+   "value": "470k",
+   "tolerance": 0.05,
+   "label": "Q007 base return to +4.5 V"
+  },
+  {
+   "ref": "Q007",
+   "type": "npn",
+   "nodes": [
+    "vcc",
+    "q7b",
+    "q7e"
+   ],
+   "model": "2SC3378GR",
+   "label": "Q007 gyrator emitter follower"
+  },
+  {
+   "ref": "R027",
+   "type": "R",
+   "nodes": [
+    "gy7",
+    "q7e"
+   ],
+   "value": "470",
+   "tolerance": 0.05,
+   "label": "Low gyrator series R"
+  },
+  {
+   "ref": "R024",
+   "type": "R",
+   "nodes": [
+    "q7e",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Q007 emitter load"
+  },
+  {
+   "ref": "R028",
+   "type": "R",
+   "nodes": [
+    "o4b",
+    "m4a"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "IC4a input"
+  },
+  {
+   "ref": "IC4A",
+   "type": "opamp",
+   "nodes": [
+    "vb",
+    "m4a",
+    "o4a",
+    "vcc",
+    "0"
+   ],
+   "model": "M5218AL",
+   "label": "IC4a unity inverter"
+  },
+  {
+   "ref": "R026",
+   "type": "R",
+   "nodes": [
+    "m4a",
+    "o4a"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "IC4a feedback"
+  },
+  {
+   "ref": "C018",
+   "type": "C",
+   "nodes": [
+    "m4a",
+    "o4a"
+   ],
+   "value": "10p",
+   "tolerance": 0.05,
+   "label": "IC4a feedback HF roll-off"
+  },
+  {
+   "ref": "R014",
+   "type": "R",
+   "nodes": [
+    "o4a",
+    "t7"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "Into the High/Low stage (VR board pin 7)"
+  },
+  {
+   "ref": "IC1A",
+   "type": "opamp",
+   "nodes": [
+    "t7",
+    "t8",
+    "o1a",
+    "vcc",
+    "0"
+   ],
+   "model": "M5218AL",
+   "label": "IC1a High/Low cut-boost stage"
+  },
+  {
+   "ref": "R015",
+   "type": "R",
+   "nodes": [
+    "t8",
+    "o1a"
+   ],
+   "value": "22k",
+   "tolerance": 0.05,
+   "label": "IC1a feedback"
+  },
+  {
+   "ref": "C010",
+   "type": "C",
+   "nodes": [
+    "t8",
+    "o1a"
+   ],
+   "value": "10p",
+   "tolerance": 0.05,
+   "label": "IC1a feedback HF roll-off"
+  },
+  {
+   "ref": "VR03B",
+   "type": "pot",
+   "nodes": [
+    "t7",
+    "hw",
+    "t8"
+   ],
+   "value": "100k",
+   "taper": "W",
+   "control": "high",
+   "label": "HIGH 100 kW (VR03b): pin 1 on the + line (cut), pin 3 on the - line (boost)"
+  },
+  {
+   "ref": "R061",
+   "type": "R",
+   "nodes": [
+    "hw",
+    "n61"
+   ],
+   "value": "2.2k",
+   "tolerance": 0.05,
+   "label": "High shelf R"
+  },
+  {
+   "ref": "C044",
+   "type": "C",
+   "nodes": [
+    "n61",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.1,
+   "label": "High shelf C (0.01)"
+  },
+  {
+   "ref": "VR03A",
+   "type": "pot",
+   "nodes": [
+    "t7",
+    "lw",
+    "t8"
+   ],
+   "value": "100k",
+   "taper": "W",
+   "control": "low",
+   "label": "LOW 100 kW (VR03a): pin 1 on the + line (cut), pin 3 on the - line (boost)"
+  },
+  {
+   "ref": "C008",
+   "type": "C",
+   "nodes": [
+    "lw",
+    "lg"
+   ],
+   "value": "220n",
+   "tolerance": 0.2,
+   "label": "Low gyrator series C (0.22/35)"
+  },
+  {
+   "ref": "R012",
+   "type": "R",
+   "nodes": [
+    "lg",
+    "o1b"
+   ],
+   "value": "2.2k",
+   "tolerance": 0.05,
+   "label": "Low gyrator series R"
+  },
+  {
+   "ref": "C009",
+   "type": "C",
+   "nodes": [
+    "lg",
+    "p1b"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "Low gyrator C (0.047): L = R013 R012 C009 = 10.3 H, 105 Hz"
+  },
+  {
+   "ref": "R013",
+   "type": "R",
+   "nodes": [
+    "p1b",
+    "vb"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "IC1b + return to +4.5 V"
+  },
+  {
+   "ref": "IC1B",
+   "type": "opamp",
+   "nodes": [
+    "p1b",
+    "o1b",
+    "o1b",
+    "vcc",
+    "0"
+   ],
+   "model": "M5218AL",
+   "label": "IC1b Low gyrator follower"
+  },
+  {
+   "ref": "C011",
+   "type": "C",
+   "nodes": [
+    "o1a",
+    "m1"
+   ],
+   "value": "1u",
+   "tolerance": 0.2,
+   "label": "Into the mid stage (1/50)"
+  },
+  {
+   "ref": "R050",
+   "type": "R",
+   "nodes": [
+    "m1",
+    "x12"
+   ],
+   "value": "330",
+   "tolerance": 0.05,
+   "label": "To MIDDLE pin 1 (VR board pin 12)"
+  },
+  {
+   "ref": "R038",
+   "type": "R",
+   "nodes": [
+    "m1",
+    "m2a"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "IC2a input"
+  },
+  {
+   "ref": "IC2A",
+   "type": "opamp",
+   "nodes": [
+    "p2a",
+    "m2a",
+    "o2a",
+    "vcc",
+    "0"
+   ],
+   "model": "M5218AL",
+   "label": "IC2a mid cut/boost stage (inverting, -1 at flat)"
+  },
+  {
+   "ref": "R035",
+   "type": "R",
+   "nodes": [
+    "m2a",
+    "o2a"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "IC2a feedback"
+  },
+  {
+   "ref": "C026",
+   "type": "C",
+   "nodes": [
+    "m2a",
+    "o2a"
+   ],
+   "value": "100p",
+   "tolerance": 0.05,
+   "label": "IC2a feedback HF roll-off"
+  },
+  {
+   "ref": "C037",
+   "type": "C",
+   "nodes": [
+    "o2a",
+    "n37"
+   ],
+   "value": "1u",
+   "tolerance": 0.2,
+   "label": "To MIDDLE pin 3 (1/50)"
+  },
+  {
+   "ref": "R049",
+   "type": "R",
+   "nodes": [
+    "n37",
+    "x11"
+   ],
+   "value": "330",
+   "tolerance": 0.05,
+   "label": "To MIDDLE pin 3 (VR board pin 11)"
+  },
+  {
+   "ref": "VR02B",
+   "type": "pot",
+   "nodes": [
+    "x12",
+    "mw",
+    "x11"
+   ],
+   "value": "100k",
+   "taper": "W",
+   "control": "middle",
+   "label": "MIDDLE 100 kW (VR02b): pin 1 = stage input (cut), pin 3 = stage output (boost)"
+  },
+  {
+   "ref": "IC2B",
+   "type": "opamp",
+   "nodes": [
+    "mw",
+    "o2b",
+    "o2b",
+    "vcc",
+    "0"
+   ],
+   "model": "M5218AL",
+   "label": "IC2b Wien-bridge driver (follower)"
+  },
+  {
+   "ref": "C036",
+   "type": "C",
+   "nodes": [
+    "o2b",
+    "n36"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Wien series C (0.022)"
+  },
+  {
+   "ref": "R048",
+   "type": "R",
+   "nodes": [
+    "n36",
+    "x9"
+   ],
+   "value": "2.2k",
+   "tolerance": 0.05,
+   "label": "Wien series R"
+  },
+  {
+   "ref": "VR02A1",
+   "type": "pot",
+   "nodes": [
+    "x10",
+    "x10",
+    "x9"
+   ],
+   "value": "50k",
+   "taper": "C",
+   "control": "midfreq",
+   "label": "MID FREQ 50 kC gang 1 (VR02a, pins 1-2 tied): Wien series arm"
+  },
+  {
+   "ref": "C043",
+   "type": "C",
+   "nodes": [
+    "x10",
+    "0"
+   ],
+   "value": "8.2n",
+   "tolerance": 0.1,
+   "label": "Wien shunt C (0.0082)"
+  },
+  {
+   "ref": "VR02A2",
+   "type": "pot",
+   "nodes": [
+    "x10",
+    "x10",
+    "n62"
+   ],
+   "value": "50k",
+   "taper": "C",
+   "control": "midfreq",
+   "label": "MID FREQ 50 kC gang 2 (VR02a, pins 1-2 tied): Wien shunt arm"
+  },
+  {
+   "ref": "R062",
+   "type": "R",
+   "nodes": [
+    "n62",
+    "0"
+   ],
+   "value": "2.2k",
+   "tolerance": 0.05,
+   "label": "Wien shunt R"
+  },
+  {
+   "ref": "C038",
+   "type": "C",
+   "nodes": [
+    "x10",
+    "p2a"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "Wien output into IC2a + (0.1)"
+  },
+  {
+   "ref": "R039",
+   "type": "R",
+   "nodes": [
+    "p2a",
+    "vb"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "IC2a + bias"
+  },
+  {
+   "ref": "C005",
+   "type": "C",
+   "nodes": [
+    "o2a",
+    "lv"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "Into LEVEL (10/16)"
+  },
+  {
+   "ref": "VR04",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "lvw",
+    "lv"
+   ],
+   "value": "50k",
+   "taper": "A",
+   "control": "level",
+   "label": "LEVEL 50 kA"
+  },
+  {
+   "ref": "C004",
+   "type": "C",
+   "nodes": [
+    "lvw",
+    "sw2a"
+   ],
+   "value": "1u",
+   "tolerance": 0.2,
+   "label": "Into the effect output switch (1/50)"
+  },
+  {
+   "ref": "R006",
+   "type": "R",
+   "nodes": [
+    "sw2a",
+    "vb"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "Q002 bias"
+  },
+  {
+   "ref": "Q002",
+   "type": "njf",
+   "nodes": [
+    "sw2a",
+    "g2",
+    "sw2b"
+   ],
+   "model": "2SK118Y",
+   "label": "Effect-path output JFET switch (conducting in the effect state)"
+  },
+  {
+   "ref": "RG2",
+   "type": "R",
+   "nodes": [
+    "g2",
+    "sw2a"
+   ],
+   "value": "10M",
+   "tolerance": 0.5,
+   "label": "Q002 gate, effect state (model element)",
+   "note": "Modelling element, not a drawn part: D001 is reverse-biased by the flip-flop in the effect state, so the gate floats and follows the channel (see RG9)"
+  },
+  {
+   "ref": "R005",
+   "type": "R",
+   "nodes": [
+    "sw2b",
+    "vb"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "Q002 bias"
+  },
+  {
+   "ref": "C002",
+   "type": "C",
+   "nodes": [
+    "sw2b",
+    "b1"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "Into the output buffer (10/16)"
+  },
+  {
+   "ref": "R004",
+   "type": "R",
+   "nodes": [
+    "b1",
+    "vb"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Q001 base bias to +4.5 V"
+  },
+  {
+   "ref": "Q001",
+   "type": "npn",
+   "nodes": [
+    "vcc",
+    "b1",
+    "e1"
+   ],
+   "model": "2SC3378GR",
+   "label": "Output emitter follower"
+  },
+  {
+   "ref": "R002",
+   "type": "R",
+   "nodes": [
+    "e1",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Q001 emitter load"
+  },
+  {
+   "ref": "C001",
+   "type": "C",
+   "nodes": [
+    "e1",
+    "n1"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "Output DC block (10/16)"
+  },
+  {
+   "ref": "R003",
+   "type": "R",
+   "nodes": [
+    "n1",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Output pull-down"
+  },
+  {
+   "ref": "R001",
+   "type": "R",
+   "nodes": [
+    "n1",
+    "out"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "Output series"
+  }
+ ],
+ "probes": [
+  "s11",
+  "o3b",
+  "o3a",
+  "clip",
+  "o4b",
+  "o1a",
+  "o2a",
+  "out"
+ ],
+ "layout": {}
+}

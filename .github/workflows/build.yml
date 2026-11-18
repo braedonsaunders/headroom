@@ -1,0 +1,186 @@
+# Headroom CI: build + test + package on macOS (universal), Windows (clang-cl x64) and Linux (Ubuntu 24.04).
+#
+# Secrets (all optional; jobs degrade to unsigned packages when absent):
+#   macOS    MACOS_CERT_P12_BASE64, MACOS_CERT_PASSWORD   "Developer ID Application" cert + key (.p12, base64)
+#            MACOS_SIGN_IDENTITY                          e.g. "Developer ID Application: Name (TEAMID)"
+#            MACOS_INSTALLER_IDENTITY                     "Developer ID Installer: …" (plugin .pkg)
+#            APPLE_ID, APPLE_TEAM_ID, APPLE_APP_PASSWORD  notarytool credentials (app-specific password)
+#   Windows  AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET,
+#            AZURE_SIGNING_ENDPOINT, AZURE_SIGNING_ACCOUNT, AZURE_CERT_PROFILE   Azure Artifact (Trusted) Signing
+#            or WINDOWS_CERT_PFX_BASE64 + WINDOWS_CERT_PASSWORD               classic exportable cert (legacy)
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      notarize:
+        description: "Submit the macOS dmg for notarization"
+        type: boolean
+        default: false
+  workflow_call:
+    inputs:
+      notarize:
+        type: boolean
+        default: true
+    # callers pass `secrets: inherit`
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  HEADROOM_VERSION: "0.9.0"
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-15
+            name: macOS-universal
+          - os: windows-2022
+            name: Windows-x64
+          - os: ubuntu-24.04
+            name: Linux-x64
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    env:
+      # Step-level `if:` can't read secrets directly; expose presence through the job env.
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # ── dependencies ──
+      - name: Linux deps
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ninja-build pkg-config libgtk-3-dev libwebkit2gtk-4.1-dev \
+            libasound2-dev libjack-jackd2-dev libsecret-1-dev dpkg-dev file
+
+      - name: MSVC environment
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Windows deps (WebView2 SDK via NuGet, Inno Setup)
+        if: runner.os == 'Windows'
+        run: |
+          nuget install Microsoft.Web.WebView2 -OutputDirectory "$RUNNER_TEMP/nuget" -ExcludeVersion -NonInteractive
+          echo "RIG_WEBVIEW2_SDK=$RUNNER_TEMP/nuget/Microsoft.Web.WebView2" >> "$GITHUB_ENV"
+          choco install innosetup -y --no-progress
+          echo "C:/Program Files (x86)/Inno Setup 6" >> "$GITHUB_PATH"
+          curl -fsSL -o "$RUNNER_TEMP/MicrosoftEdgeWebview2Setup.exe" https://go.microsoft.com/fwlink/p/?LinkId=2124703
+
+      - name: Windows ASIO SDK
+        if: runner.os == 'Windows'
+        run: |
+          archive="$RUNNER_TEMP/asiosdk.zip"
+          curl -fsSL --retry 3 -o "$archive" https://download.steinberg.net/sdk_downloads/ASIO-SDK_2.3.4_2025-10-15.zip
+          echo "d5ebf0c20dd2c5f43771fd0c1418f4b361bf52434ee670097cfa6b3a335e2eca  $archive" | sha256sum -c -
+          7z x -y -o"$RUNNER_TEMP/asiosdk" "$archive" >/dev/null
+          echo "RIG_ASIO_SDK_DIR=$(cd "$RUNNER_TEMP/asiosdk/ASIOSDK" && pwd -W)" >> "$GITHUB_ENV"
+
+      # ── configure / build / test ──
+      - name: Configure
+        run: |
+          args=(-G Ninja -DCMAKE_BUILD_TYPE=Release -DRIG_RELEASE_BUNDLE=ON -DRIG_DEV_SOURCE_UI=OFF)
+          case "$RUNNER_OS" in
+            macOS)   args+=(-DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -DCMAKE_OSX_DEPLOYMENT_TARGET=13.0 -DHEADROOM_SIGN_IDENTITY=-) ;;
+            Windows) args+=(-DCMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl -DHEADROOM_PGO=OFF -DRIG_BUILD_APP=ON -DRIG_WEBVIEW2_SDK="$RIG_WEBVIEW2_SDK" -DRIG_WITH_ASIO=ON "-DRIG_ASIO_SDK_DIR=$RIG_ASIO_SDK_DIR") ;;
+            Linux)   args+=(-DCMAKE_INSTALL_PREFIX=/usr) ;;
+          esac
+          cmake -S app -B build "${args[@]}"
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Test
+        run: ctest --test-dir build --output-on-failure --timeout 600
+
+      # ── package ──
+      - name: Package (macOS)
+        if: runner.os == 'macOS'
+        env:
+          P12: ${{ secrets.MACOS_CERT_P12_BASE64 }}
+          P12_PASSWORD: ${{ secrets.MACOS_CERT_PASSWORD }}
+          IDENTITY: ${{ secrets.MACOS_SIGN_IDENTITY }}
+          HEADROOM_INSTALLER_IDENTITY: ${{ secrets.MACOS_INSTALLER_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+        run: |
+          extra=()
+          if [[ -n "$P12" && -n "$IDENTITY" ]]; then
+            kc="$RUNNER_TEMP/signing.keychain-db"; kcpw=$(uuidgen)
+            security create-keychain -p "$kcpw" "$kc"
+            security set-keychain-settings -lut 21600 "$kc"
+            security unlock-keychain -p "$kcpw" "$kc"
+            echo "$P12" | base64 --decode > "$RUNNER_TEMP/cert.p12"
+            security import "$RUNNER_TEMP/cert.p12" -k "$kc" -P "$P12_PASSWORD" -T /usr/bin/codesign -T /usr/bin/productsign
+            security set-key-partition-list -S apple-tool:,apple: -s -k "$kcpw" "$kc" >/dev/null
+            kcs=(); while IFS= read -r k; do kcs+=("$k"); done < <(security list-keychains -d user | tr -d '" ')
+            security list-keychains -d user -s "$kc" "${kcs[@]}"
+            extra+=(--identity "$IDENTITY")
+            if [[ "${{ inputs.notarize }}" == "true" && -n "$APPLE_ID" ]]; then
+              xcrun notarytool store-credentials headroom-ci --apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" \
+                --password "$APPLE_APP_PASSWORD" --keychain "$kc"
+              extra+=(--notary-profile headroom-ci --submit)
+            fi
+          fi
+          app/packaging/macos/build-release.sh --no-build --build-dir "$PWD/build" --out "$PWD/dist" --plugins --jobs 3 "${extra[@]}"
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          cmake --install build --prefix stage
+          bash app/packaging/check-bundle.sh stage
+          iscc //DStage="$PWD/stage" //DVersion="$HEADROOM_VERSION" \
+               //DWebView2Bootstrapper="$RUNNER_TEMP/MicrosoftEdgeWebview2Setup.exe" app/packaging/windows/headroom.iss
+          (cd build && cpack -G ZIP -B "$PWD/../dist" >/dev/null)
+
+      - name: Sign (Windows, Azure Artifact Signing)
+        if: runner.os == 'Windows' && env.AZURE_CLIENT_ID != ''
+        uses: azure/trusted-signing-action@v0
+        with:
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          endpoint: ${{ secrets.AZURE_SIGNING_ENDPOINT }}
+          trusted-signing-account-name: ${{ secrets.AZURE_SIGNING_ACCOUNT }}
+          certificate-profile-name: ${{ secrets.AZURE_CERT_PROFILE }}
+          files-folder: dist
+          files-folder-filter: exe
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+      # Note: signing the installer only; the Headroom.exe inside should be signed before iscc runs. With Azure that
+      # means a second signing step on stage/Headroom.exe (or iscc's /S hook calling the Azure dlib via signtool).
+
+      - name: Package (Linux)
+        if: runner.os == 'Linux'
+        run: app/packaging/linux/build-appimage.sh --no-build --build-dir "$PWD/build" --out "$PWD/dist"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Headroom-${{ matrix.name }}
+          path: |
+            dist/*.dmg
+            dist/*.pkg
+            dist/*Setup.exe
+            dist/*.zip
+            dist/*.deb
+            dist/*.tar.gz
+            dist/*.AppImage
+          if-no-files-found: warn

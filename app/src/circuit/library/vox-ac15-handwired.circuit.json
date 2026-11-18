@@ -1,0 +1,1911 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "vox-ac15-handwired",
+  "version": 1,
+  "name": "Vox AC15 Handwired",
+  "description": "Vox AC-15 (factory drawing No. V-1-5, 'Vox AC-15 Amplifier'), both channels. Normal: EF86 pentode -> R29 500k volume -> C27 into V5A. Vib/Trem: V1 ECC83 first stage and split-load driver feeding the HI and LO RC paths; V4 ECC82 modulator pair (common plate node, shared 1.5k cathode) blending them under the Vibravox's antiphase LFO; the 5 x 0.005 uF / 1 MOhm output ladder; R30 500k volume -> C28 into V5B. V5 ECC83 long-tailed pair mixing the two channels (1.2k shared cathode, 47k tail, 1M grid returns to the tail node, 100k plates from the R43 22k / C26 8 uF node) -> C32 / C33 -> TOP CUT 250k + 0.005 across the EL84 grids -> 2 x EL84 cathode bias -> T2 (8 Ohm tap) -> 12-inch speaker. Vibravox: V6 ECC83 phase-shift oscillator (3 x 0.01 uF, R65 / R68 1 MOhm on the footswitch return, SW5 speed switch R64 / R66 / R67) and LFO phase splitter with the R46 depth preset; SW4 tremolo; SW6 footswitch. The Input control picks the jack the guitar goes into: Normal (default), Vib-Trem (the channel the Vibravox acts on) or both jumpered. Supply: EZ81 (GZ34 card) -> 32 uF reservoir (325 V) -> 10-20 H choke -> the +315 V node (OT centre tap, screens); R7 22k -> the vib/trem 210 V node; R43 22k -> V5. EL84 screens through R62 / R63 100 Ohm and the OT centre tap from the +315 V node after the choke, cathodes on R60 130 Ohm / C39 50 uF, as drawn.",
+  "sources": [
+    {
+      "title": "S. Luckey, Vox AC-15 (V-1-5 reproduced, plus the vibrato channel and Vibravox redrawn with measured voltages; note 2: SW5 speed switch R64 / R66 / R67)",
+      "url": "https://sluckeyamps.com/VAC15/Vox_AC15.pdf"
+    },
+    {
+      "title": "Vox AC-15 Amplifier, factory schematic No. V-1-5 (all values, the 315 V / 210 V / 90 V supply nodes, EZ81, 2 x EL84 6BQ5, T2 15/8 Ohm, SW3 BRILLIANCE, SW4 TREMOLO, SW5 VIB/TREM, SW2 voltage selector)",
+      "url": "https://el34world.com/charts/Schematics/files/Vox/Vox_AC15.pdf"
+    },
+    {
+      "title": "Koren-form triode/beam-tetrode cards from the engine library (12AX7, EL84, GZ34) - the same cards the 5E3 netlist uses",
+      "url": "app/src/circuit/library/EmbeddedLibrary.hpp"
+    }
+  ],
+  "minRate": 176400,
+  "lte": {"start": "bdf2", "tol": 8},
+  "io": {
+    "input": "in",
+    "output": "spk",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 184.36,
+    "note": "outputVoltsPerFS 20 -> 94.63 (2026-11-10): keeps the shipped level within 1 dB of the previous release after the refitted valve cards and the EF86 stage rewired to the factory drawing (DI level +13.50 dB at the same scale). 94.63 -> 116.16 (2026-11-10): the Vibravox rebuild removed the old fabricated vibrato-channel join (C25 33 nF from the mixer plate into V5B's grid), which had attenuated the normal channel; DI level +2.51 dB clean (riff at 0.05 V peak) / +1.04 dB driven (0.5 V peak) at the same scale, retuned to +0.73 / -0.74 dB. 116.16 -> 130.17 (2026-11-10): V5 rebuilt to the drawing's long-tailed pair; DI level vs the release before today +1.79 dB clean / +0.19 dB driven at 116.16, retuned to +0.80 / -0.80 dB. 130.17 -> 184.36 (2026-11-10): Tone Cut direction fixed (0 = no cut) and the EL84 screens / OT centre tap rebuilt to the drawing (+315 V after the choke, HT refitted to the drawing's 325 / 315 V); DI level vs the release before today +3.87 dB clean / +2.18 dB driven at 130.17, retuned to +0.85 / -0.85 dB"
+  },
+  "oversampling": 2,
+  "solver": "auto",
+  "cuts": [
+    "sa1",
+    "sb1",
+    "bpa",
+    "v210",
+    {
+      "node": "vt",
+      "loads": [
+        "C6"
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "id": "input",
+      "label": "Input",
+      "kind": "selector",
+      "default": 0.0,
+      "options": [
+        "Normal",
+        "Vib-Trem",
+        "Both (jumpered)"
+      ],
+      "params": [],
+      "group": "Main",
+      "note": "Which input jack the guitar feeds: Normal (J1, EF86 channel), Vib-Trem (J3, the channel the Vibravox acts on), or both channels jumpered",
+      "face": true
+    },
+    {
+      "id": "volume",
+      "label": "Volume",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "volume"
+      ],
+      "group": "Main",
+      "note": "R29 (normal) and R30 (vib/trem) 500 kOhm audio, one per channel, both driven by this control"
+    },
+    {
+      "id": "cut",
+      "label": "Tone Cut",
+      "kind": "continuous",
+      "default": 0.0,
+      "params": [
+        "cut"
+      ],
+      "group": "Main",
+      "note": "R49 TOP CUT 250 kOhm (0 = no cut, 1 = full cut)"
+    },
+    {
+      "id": "brilliance",
+      "label": "Brilliance",
+      "kind": "switch",
+      "default": 0.0,
+      "params": [
+        "brilliance"
+      ],
+      "group": "Main",
+      "note": "SW3 on the drawing switches C17 250 pF in series between C12 and the normal volume (brilliance on = switch open); not modelled: the circuit is the switch-closed (normal) position"
+    },
+    {
+      "id": "depth",
+      "label": "Depth",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "depth"
+      ],
+      "group": "Vibravox",
+      "note": "R46 DEPTH PRESET 500 kOhm (a trimmer inside the chassis on the original) in the LFO divider: the LFO into the phase splitter V6A runs from 0.13 (0) to 0.39 (1) of the oscillator's filtered swing, never zero"
+    },
+    {
+      "id": "vibratoSpeed",
+      "label": "Speed",
+      "kind": "selector",
+      "default": 0.5,
+      "params": [
+        "vibratoSpeed"
+      ],
+      "group": "Vibravox",
+      "options": [
+        "Slow",
+        "Medium",
+        "Fast"
+      ],
+      "note": "SW5, the panel's three-position speed switch: R64 1M / R66 680k / R67 330k as the phase-shift ladder's middle shunt"
+    },
+    {
+      "id": "tremoloSpeed",
+      "label": "Tremolo Speed",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "tremoloSpeed"
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "The AC-15 has one oscillator for vibrato and tremolo; its speed is the Speed switch"
+    },
+    {
+      "id": "effectsSelector",
+      "label": "Vib · Trem",
+      "kind": "selector",
+      "default": 1.0,
+      "options": [
+        "Off",
+        "Tremolo",
+        "Vibrato"
+      ],
+      "params": [
+        "effectsSelector"
+      ],
+      "group": "Vibravox",
+      "paramRange": [
+        0,
+        2
+      ],
+      "note": "Legacy selector Off / Tremolo / Vibrato (raw 0 / 1 / 2, as the engine's catalogue labels it). Tremolo closes SW4 TREMOLO (the LO path grounded through C22); Vibrato leaves it open (both paths blended); Off stops the oscillator, in series with the SW6 footswitch"
+    },
+    {
+      "id": "footswitch",
+      "label": "Vib-Trem on",
+      "kind": "switch",
+      "default": 0.0,
+      "params": [],
+      "group": "Vibravox",
+      "note": "SW6 FOOT SWITCH: closed = on (the oscillator runs, with Vib · Trem on Tremolo or Vibrato). Open (default, as the Twin and Deluxe vibrato pedals), the phase-shift ladder loses two shunt legs and the oscillator stops",
+      "face": true
+    },
+    {
+      "id": "brillianceFrequency",
+      "label": "Brilliance Freq",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "brillianceFrequency"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "the real amp's brilliance is a 2-state switch; a continuous range is host-side only"
+    },
+    {
+      "id": "tempoSync",
+      "label": "Tempo Sync",
+      "kind": "switch",
+      "default": 0.0,
+      "params": [
+        "tempoSync"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy"
+    },
+    {
+      "id": "stereo",
+      "label": "Stereo",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "CASSt"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy"
+    },
+    {
+      "id": "power",
+      "label": "On/Off",
+      "kind": "switch",
+      "default": 1.0,
+      "params": [
+        "Pwr"
+      ],
+      "group": "Main",
+      "note": "SW1"
+    }
+  ],
+  "parts": [
+    {
+      "ref": "VA",
+      "type": "V",
+      "nodes": [
+        "sa",
+        "0"
+      ],
+      "value": "0",
+      "ac": {
+        "amplitude": "375.5",
+        "freq": 60,
+        "phase": 90
+      },
+      "label": "T1 HT half (265.5 Vrms)",
+      "note": "unverified: the AC-15 mains transformer secondary voltage is not on the drawing; 265.5 Vrms per half (375.5 V peak) is fitted so the running supply lands on the drawing's 325 V reservoir / +315 V after the choke (measured 324.6 / 314.6 V; EL84 plates 308.5 V against the drawing's 310 V, V5 plates 222.9 V against 220 V, the vib/trem node 210.7 V against 210 V)"
+    },
+    {
+      "ref": "VB",
+      "type": "V",
+      "nodes": [
+        "sb",
+        "0"
+      ],
+      "value": "0",
+      "ac": {
+        "amplitude": "375.5",
+        "freq": 60,
+        "phase": 270
+      },
+      "label": "T1 HT half (265.5 Vrms)"
+    },
+    {
+      "ref": "RWA",
+      "type": "R",
+      "nodes": [
+        "sa",
+        "sa1"
+      ],
+      "value": "60",
+      "tolerance": 0.1,
+      "label": "HT half-winding DCR",
+      "note": "unverified: winding resistance not published; 60 Ohm per half typical of a 15 W transformer"
+    },
+    {
+      "ref": "RWB",
+      "type": "R",
+      "nodes": [
+        "sb",
+        "sb1"
+      ],
+      "value": "60",
+      "tolerance": 0.1,
+      "label": "HT half-winding DCR"
+    },
+    {
+      "ref": "DA",
+      "type": "D",
+      "nodes": [
+        "sa1",
+        "bpa"
+      ],
+      "model": "GZ34",
+      "label": "V3 EZ81 plate A (GZ34 card)"
+    },
+    {
+      "ref": "DB",
+      "type": "D",
+      "nodes": [
+        "sb1",
+        "bpa"
+      ],
+      "model": "GZ34",
+      "label": "V3 EZ81 plate B (GZ34 card)"
+    },
+    {
+      "ref": "C10",
+      "type": "C",
+      "nodes": [
+        "bpa",
+        "0"
+      ],
+      "value": "32u",
+      "tolerance": 0.2,
+      "label": "reservoir 32 uF (drawing C10)"
+    },
+    {
+      "ref": "L1",
+      "type": "L",
+      "nodes": [
+        "bpa",
+        "lk"
+      ],
+      "value": "10",
+      "tolerance": 0.2,
+      "label": "L1 smoothing choke 10-20 H",
+      "note": "drawing: 10-20 H choke between the 315 V reservoir and the 210 V node"
+    },
+    {
+      "ref": "C15",
+      "type": "C",
+      "nodes": [
+        "bpb",
+        "0"
+      ],
+      "value": "16u",
+      "tolerance": 0.2,
+      "label": "+315 V filter (C15)"
+    },
+    {
+      "ref": "C16",
+      "type": "C",
+      "nodes": [
+        "bpb",
+        "0"
+      ],
+      "value": "16u",
+      "tolerance": 0.2,
+      "label": "+315 V filter (C16)"
+    },
+    {
+      "ref": "SJN",
+      "type": "switch",
+      "nodes": [
+        "in",
+        "in1"
+      ],
+      "control": "input",
+      "positions": [
+        0,
+        2
+      ],
+      "label": "Guitar into the normal input (J1)",
+      "note": "The input selector stands in for which jack the guitar cable goes in; 'both' is the classic jumper (the guitar in one channel, a short cable bridging to the other's input)"
+    },
+    {
+      "ref": "SJV",
+      "type": "switch",
+      "nodes": [
+        "in",
+        "in3"
+      ],
+      "control": "input",
+      "positions": [
+        1,
+        2
+      ],
+      "label": "Guitar into the vib/trem input (J3)"
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "in1",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "R1 1M normal-input grid leak (J1 / J2)"
+    },
+    {
+      "ref": "R5",
+      "type": "R",
+      "nodes": [
+        "in1",
+        "g2"
+      ],
+      "value": "68k",
+      "tolerance": 0.05,
+      "label": "J1 grid stopper"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "in2",
+        "g2"
+      ],
+      "value": "68k",
+      "tolerance": 0.05,
+      "label": "J2 grid stopper"
+    },
+    {
+      "ref": "V2",
+      "type": "pentode",
+      "nodes": [
+        "p2",
+        "scr2",
+        "g2",
+        "k2"
+      ],
+      "model": "EF86",
+      "label": "V2 EF86 (6267) pentode input stage"
+    },
+    {
+      "ref": "R14",
+      "type": "R",
+      "nodes": [
+        "bpb",
+        "ef86s"
+      ],
+      "value": "22k",
+      "tolerance": 0.05,
+      "label": "EF86 supply dropper 22k from the +315 V node (drawing R14)"
+    },
+    {
+      "ref": "C3",
+      "type": "C",
+      "nodes": [
+        "ef86s",
+        "0"
+      ],
+      "value": "8u",
+      "tolerance": 0.2,
+      "label": "EF86 supply decoupling 8 uF (drawing C3)"
+    },
+    {
+      "ref": "R13",
+      "type": "R",
+      "nodes": [
+        "k2",
+        "0"
+      ],
+      "value": "2.2k",
+      "tolerance": 0.05,
+      "label": "EF86 cathode bias"
+    },
+    {
+      "ref": "C5",
+      "type": "C",
+      "nodes": [
+        "k2",
+        "0"
+      ],
+      "value": "25u",
+      "tolerance": 0.2,
+      "label": "EF86 cathode bypass"
+    },
+    {
+      "ref": "C12",
+      "type": "C",
+      "nodes": [
+        "p2",
+        "vola"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": "into the normal volume"
+    },
+    {
+      "ref": "VOL",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "volw",
+        "vola"
+      ],
+      "value": "500k",
+      "taper": "A",
+      "control": "volume",
+      "label": "R29 NORMAL VOLUME 500 kOhm"
+    },
+    {
+      "ref": "C27",
+      "type": "C",
+      "nodes": [
+        "volw",
+        "g5a"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": "C27 0.01 from the normal volume (R29) into V5A"
+    },
+    {
+      "ref": "R2",
+      "type": "R",
+      "nodes": [
+        "in3",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "R2 1M vib/trem-input grid leak (J3 / J4)"
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "in3",
+        "g1"
+      ],
+      "value": "68k",
+      "tolerance": 0.05,
+      "label": "J3 grid stopper"
+    },
+    {
+      "ref": "R4",
+      "type": "R",
+      "nodes": [
+        "in4",
+        "g1"
+      ],
+      "value": "68k",
+      "tolerance": 0.05,
+      "label": "J4 grid stopper"
+    },
+    {
+      "ref": "V1A",
+      "type": "triode",
+      "nodes": [
+        "p1",
+        "g1",
+        "k1"
+      ],
+      "model": "12AX7",
+      "label": "V1 ECC83 (pins 1-3) vibrato/tremolo first stage"
+    },
+    {
+      "ref": "R9",
+      "type": "R",
+      "nodes": [
+        "k1",
+        "0"
+      ],
+      "value": "2.2k",
+      "tolerance": 0.05,
+      "label": "V1A cathode bias"
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "k1",
+        "0"
+      ],
+      "value": "25u",
+      "tolerance": 0.2,
+      "label": "V1A cathode bypass"
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "bpb",
+        "v210"
+      ],
+      "value": "22k",
+      "tolerance": 0.05,
+      "label": "R7 22k from the +315 V node to the vibrato/tremolo 210 V node (C1 32 uF)",
+      "note": "Rewired 2026-11-10 to the drawing: R7 is this channel's supply dropper (it was a V1 plate load, and the 210 V node hung off the screen rail through R10)"
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "v210",
+        "p1"
+      ],
+      "value": "150k",
+      "tolerance": 0.05,
+      "label": "R8 V1 (pins 1-3) plate load 150k"
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "p1",
+        "g1b"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": "C4 0.01 into V1 pins 6-8"
+    },
+    {
+      "ref": "V1B",
+      "type": "triode",
+      "nodes": [
+        "p1b",
+        "g1b",
+        "k1b"
+      ],
+      "model": "12AX7",
+      "label": "V1 ECC83 pins 6-8: split-load driver of the two vibrato paths",
+      "note": "Plate (R11 22k) and cathode (R12 1.5k + R19 22k) outputs in antiphase; the two RC paths below sum them with different phase, which the modulator V4 blends"
+    },
+    {
+      "ref": "R11",
+      "type": "R",
+      "nodes": [
+        "v210",
+        "p1b"
+      ],
+      "value": "22k",
+      "tolerance": 0.05,
+      "label": "R11 V1 (pins 6-8) plate load 22k"
+    },
+    {
+      "ref": "R12",
+      "type": "R",
+      "nodes": [
+        "k1b",
+        "v1r"
+      ],
+      "value": "1.5k",
+      "tolerance": 0.05,
+      "label": "R12 V1 (pins 6-8) cathode 1.5k"
+    },
+    {
+      "ref": "R19",
+      "type": "R",
+      "nodes": [
+        "v1r",
+        "0"
+      ],
+      "value": "22k",
+      "tolerance": 0.05,
+      "label": "R19 22k cathode load (the paths' return node)"
+    },
+    {
+      "ref": "R16",
+      "type": "R",
+      "nodes": [
+        "g1b",
+        "v1r"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "R16 1M grid leak to the cathode load"
+    },
+    {
+      "ref": "C13",
+      "type": "C",
+      "nodes": [
+        "p1b",
+        "h1"
+      ],
+      "value": "500p",
+      "tolerance": 0.1,
+      "label": "C13 500 pF (HI path)"
+    },
+    {
+      "ref": "R24",
+      "type": "R",
+      "nodes": [
+        "h1",
+        "hn"
+      ],
+      "value": "68k",
+      "tolerance": 0.05,
+      "label": "R24 68k (HI path)"
+    },
+    {
+      "ref": "R22",
+      "type": "R",
+      "nodes": [
+        "hn",
+        "v1r"
+      ],
+      "value": "330k",
+      "tolerance": 0.05,
+      "label": "R22 330k (HI path, to the cathode load)"
+    },
+    {
+      "ref": "C16V",
+      "type": "C",
+      "nodes": [
+        "hn",
+        "v1r"
+      ],
+      "value": "100p",
+      "tolerance": 0.1,
+      "label": "C16 100 pF across R22 (drawing C16)"
+    },
+    {
+      "ref": "R28",
+      "type": "R",
+      "nodes": [
+        "hn",
+        "0"
+      ],
+      "value": "180k",
+      "tolerance": 0.05,
+      "label": "R28 180k (HI path to ground)"
+    },
+    {
+      "ref": "C21",
+      "type": "C",
+      "nodes": [
+        "hn",
+        "0"
+      ],
+      "value": "200p",
+      "tolerance": 0.1,
+      "label": "C21 200 pF across R28"
+    },
+    {
+      "ref": "C23",
+      "type": "C",
+      "nodes": [
+        "hn",
+        "g4a"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "label": "C23 0.1 into V4A"
+    },
+    {
+      "ref": "C7",
+      "type": "C",
+      "nodes": [
+        "p1b",
+        "l1"
+      ],
+      "value": "2n",
+      "tolerance": 0.1,
+      "label": "C7 0.002 (LO path)"
+    },
+    {
+      "ref": "R18",
+      "type": "R",
+      "nodes": [
+        "l1",
+        "ln"
+      ],
+      "value": "68k",
+      "tolerance": 0.05,
+      "label": "R18 68k (LO path)"
+    },
+    {
+      "ref": "R17",
+      "type": "R",
+      "nodes": [
+        "ln",
+        "v1r"
+      ],
+      "value": "330k",
+      "tolerance": 0.05,
+      "label": "R17 330k (LO path, to the cathode load)"
+    },
+    {
+      "ref": "C9",
+      "type": "C",
+      "nodes": [
+        "ln",
+        "v1r"
+      ],
+      "value": "500p",
+      "tolerance": 0.1,
+      "label": "C9 500 pF across R17"
+    },
+    {
+      "ref": "R26",
+      "type": "R",
+      "nodes": [
+        "ln",
+        "0"
+      ],
+      "value": "180k",
+      "tolerance": 0.05,
+      "label": "R26 180k (LO path to ground)"
+    },
+    {
+      "ref": "C19",
+      "type": "C",
+      "nodes": [
+        "ln",
+        "0"
+      ],
+      "value": "750p",
+      "tolerance": 0.1,
+      "label": "C19 750 pF across R26"
+    },
+    {
+      "ref": "C24",
+      "type": "C",
+      "nodes": [
+        "ln",
+        "g4b"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "label": "C24 0.1 into V4B"
+    },
+    {
+      "ref": "C22",
+      "type": "C",
+      "nodes": [
+        "ln",
+        "trm"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "label": "C22 0.1: SW4 TREMOLO grounds the LO path through it"
+    },
+    {
+      "ref": "SW4",
+      "type": "switch",
+      "nodes": [
+        "trm",
+        "0"
+      ],
+      "control": "effectsSelector",
+      "positions": [
+        1
+      ],
+      "ron": "1",
+      "label": "SW4 TREMOLO ON-OFF (closed = tremolo)",
+      "note": "Closed, the LO path is shorted to ground and only the HI path reaches the modulator: the blend no longer shifts phase, it only swings level (tremolo). Open: vibrato"
+    },
+    {
+      "ref": "V4A",
+      "type": "triode",
+      "nodes": [
+        "p4a",
+        "g4a",
+        "k4"
+      ],
+      "model": "12AU7",
+      "label": "V4A ECC82 (pins 6-8) modulator, HI path"
+    },
+    {
+      "ref": "V4B",
+      "type": "triode",
+      "nodes": [
+        "p4b",
+        "g4b",
+        "k4"
+      ],
+      "model": "12AU7",
+      "label": "V4B ECC82 (pins 1-3) modulator, LO path"
+    },
+    {
+      "ref": "R39",
+      "type": "R",
+      "nodes": [
+        "k4",
+        "0"
+      ],
+      "value": "1.5k",
+      "tolerance": 0.05,
+      "label": "R39 1.5k shared cathode (unbypassed)"
+    },
+    {
+      "ref": "R36",
+      "type": "R",
+      "nodes": [
+        "vn",
+        "p4a"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "R36 10k V4A plate"
+    },
+    {
+      "ref": "R37",
+      "type": "R",
+      "nodes": [
+        "vn",
+        "p4b"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "R37 10k V4B plate"
+    },
+    {
+      "ref": "R35",
+      "type": "R",
+      "nodes": [
+        "vt",
+        "vn"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "R35 47k common plate load"
+    },
+    {
+      "ref": "C25",
+      "type": "C",
+      "nodes": [
+        "vt",
+        "vn"
+      ],
+      "value": "33n",
+      "tolerance": 0.1,
+      "label": "C25 0.033 across R35"
+    },
+    {
+      "ref": "R10",
+      "type": "R",
+      "nodes": [
+        "v210",
+        "vt"
+      ],
+      "value": "12k",
+      "tolerance": 0.05,
+      "label": "R10 12k from the 210 V node: the modulator's plate supply; vt drives the output ladder",
+      "note": "Rewired 2026-11-10 to the drawing (it was the dropper from the screen rail to the 210 V node)"
+    },
+    {
+      "ref": "R31",
+      "type": "R",
+      "nodes": [
+        "g4a",
+        "lfa"
+      ],
+      "value": "470k",
+      "tolerance": 0.05,
+      "label": "R31 470k: LFO (V6 plate phase) into V4A"
+    },
+    {
+      "ref": "R32",
+      "type": "R",
+      "nodes": [
+        "lfa",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "R32 1M"
+    },
+    {
+      "ref": "R34",
+      "type": "R",
+      "nodes": [
+        "g4b",
+        "lfb"
+      ],
+      "value": "470k",
+      "tolerance": 0.05,
+      "label": "R34 470k: LFO (V6 cathode phase) into V4B"
+    },
+    {
+      "ref": "R33",
+      "type": "R",
+      "nodes": [
+        "lfb",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "R33 1M"
+    },
+    {
+      "ref": "C6",
+      "type": "C",
+      "nodes": [
+        "vt",
+        "tl1"
+      ],
+      "value": "5n",
+      "tolerance": 0.1,
+      "label": "C6 0.005 (output ladder)"
+    },
+    {
+      "ref": "R21",
+      "type": "R",
+      "nodes": [
+        "tl1",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "R21 1M"
+    },
+    {
+      "ref": "C11",
+      "type": "C",
+      "nodes": [
+        "tl1",
+        "tl2"
+      ],
+      "value": "5n",
+      "tolerance": 0.1,
+      "label": "C11 0.005"
+    },
+    {
+      "ref": "R23",
+      "type": "R",
+      "nodes": [
+        "tl2",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "R23 1M"
+    },
+    {
+      "ref": "C14",
+      "type": "C",
+      "nodes": [
+        "tl2",
+        "tl3"
+      ],
+      "value": "5n",
+      "tolerance": 0.1,
+      "label": "C14 0.005"
+    },
+    {
+      "ref": "R25",
+      "type": "R",
+      "nodes": [
+        "tl3",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "R25 1M"
+    },
+    {
+      "ref": "C18",
+      "type": "C",
+      "nodes": [
+        "tl3",
+        "tl4"
+      ],
+      "value": "5n",
+      "tolerance": 0.1,
+      "label": "C18 0.005"
+    },
+    {
+      "ref": "R27",
+      "type": "R",
+      "nodes": [
+        "tl4",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "R27 1M"
+    },
+    {
+      "ref": "C20",
+      "type": "C",
+      "nodes": [
+        "tl4",
+        "tl5"
+      ],
+      "value": "5n",
+      "tolerance": 0.1,
+      "label": "C20 0.005 into R30"
+    },
+    {
+      "ref": "VOLV",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "tvw",
+        "tl5"
+      ],
+      "value": "500k",
+      "taper": "A",
+      "control": "volume",
+      "label": "R30 vibrato-channel VOLUME 500 kOhm (after the output ladder)",
+      "note": "Wiper to V5B's grid through C28, as drawn"
+    },
+    {
+      "ref": "V5A",
+      "type": "triode",
+      "nodes": [
+        "p5a",
+        "g5a",
+        "k5"
+      ],
+      "model": "12AX7",
+      "label": "V5A ECC83 (pins 1-3): long-tailed pair, normal-channel grid",
+      "note": "Rebuilt 2026-11-10 to the factory drawing V-1-5: V5 is a long-tailed pair mixing both channels (it was a gain stage + cathodyne)"
+    },
+    {
+      "ref": "R38",
+      "type": "R",
+      "nodes": [
+        "kn",
+        "0"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "R38 47k tail",
+      "note": "was 1k (fitted for the cathodyne reading); the drawing's 47k tail"
+    },
+    {
+      "ref": "R41",
+      "type": "R",
+      "nodes": [
+        "g5b",
+        "kn"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "R41 1M V5B grid return to the tail node"
+    },
+    {
+      "ref": "V5B",
+      "type": "triode",
+      "nodes": [
+        "p5b",
+        "g5b",
+        "k5"
+      ],
+      "model": "12AX7",
+      "label": "V5B ECC83 (pins 6-8): long-tailed pair, vibrato-channel grid"
+    },
+    {
+      "ref": "R44",
+      "type": "R",
+      "nodes": [
+        "bp5",
+        "p5a"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "R44 100k V5A plate load"
+    },
+    {
+      "ref": "R42",
+      "type": "R",
+      "nodes": [
+        "k5",
+        "kn"
+      ],
+      "value": "1.2k",
+      "tolerance": 0.05,
+      "label": "R42 1.2k shared cathode resistor to the tail node"
+    },
+    {
+      "ref": "R48",
+      "type": "R",
+      "nodes": [
+        "bp5",
+        "p5b"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "R48 100k V5B plate load"
+    },
+    {
+      "ref": "C28",
+      "type": "C",
+      "nodes": [
+        "tvw",
+        "g5b"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": "C28 0.01 from the vibrato-channel volume (R30) into V5B"
+    },
+    {
+      "ref": "C32",
+      "type": "C",
+      "nodes": [
+        "p5a",
+        "g7"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": "C32 0.01 V5A plate to V7's grid"
+    },
+    {
+      "ref": "C33",
+      "type": "C",
+      "nodes": [
+        "p5b",
+        "g8"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": "C33 0.01 V5B plate to V8's grid"
+    },
+    {
+      "ref": "CUT",
+      "type": "pot",
+      "nodes": [
+        "cutw",
+        "cutw",
+        "g7"
+      ],
+      "value": "250k",
+      "taper": "A",
+      "control": "cut",
+      "label": "R49 TOP CUT 250 kOhm with C36",
+      "note": "drawing: 250k in SERIES with C36 across the two grid sides (a rheostat; the wiper must not float). Resistance g7-cutw = 250 kOhm x (1 - taper): 0 = no cut (250k), 1 = full cut (0 Ohm). Fixed 2026-11-10: it was wired the other way round (0 = full cut), against this control's note"
+    },
+    {
+      "ref": "C36",
+      "type": "C",
+      "nodes": [
+        "cutw",
+        "g8"
+      ],
+      "value": "5n",
+      "tolerance": 0.1,
+      "label": "top-cut capacitor (C36)",
+      "note": "top-cut capacitor in series with the 250k rheostat"
+    },
+    {
+      "ref": "R53",
+      "type": "R",
+      "nodes": [
+        "g7",
+        "0"
+      ],
+      "value": "220k",
+      "tolerance": 0.05,
+      "label": "V7 grid leak"
+    },
+    {
+      "ref": "R54",
+      "type": "R",
+      "nodes": [
+        "g8",
+        "0"
+      ],
+      "value": "220k",
+      "tolerance": 0.05,
+      "label": "V8 grid leak"
+    },
+    {
+      "ref": "R56",
+      "type": "R",
+      "nodes": [
+        "g7",
+        "gt7"
+      ],
+      "value": "1.5k",
+      "tolerance": 0.05,
+      "label": "V7 grid stopper"
+    },
+    {
+      "ref": "R57",
+      "type": "R",
+      "nodes": [
+        "g8",
+        "gt8"
+      ],
+      "value": "1.5k",
+      "tolerance": 0.05,
+      "label": "V8 grid stopper"
+    },
+    {
+      "ref": "V7",
+      "type": "pentode",
+      "nodes": [
+        "pa",
+        "s7",
+        "gt7",
+        "kk"
+      ],
+      "model": "EL84",
+      "label": "V7 EL84 (6BQ5)"
+    },
+    {
+      "ref": "V8",
+      "type": "pentode",
+      "nodes": [
+        "pb",
+        "s8",
+        "gt8",
+        "kk"
+      ],
+      "model": "EL84",
+      "label": "V8 EL84 (6BQ5)"
+    },
+    {
+      "ref": "R62",
+      "type": "R",
+      "nodes": [
+        "bpb",
+        "s7"
+      ],
+      "value": "100",
+      "tolerance": 0.05,
+      "label": "R62 100 Ohm V7 screen resistor from the +315 V node (drawing R62)"
+    },
+    {
+      "ref": "R63",
+      "type": "R",
+      "nodes": [
+        "bpb",
+        "s8"
+      ],
+      "value": "100",
+      "tolerance": 0.05,
+      "label": "R63 100 Ohm V8 screen resistor from the +315 V node (drawing R63)"
+    },
+    {
+      "ref": "R60",
+      "type": "R",
+      "nodes": [
+        "kk",
+        "0"
+      ],
+      "value": "130",
+      "tolerance": 0.1,
+      "label": "R60 130 Ohm 5 W shared EL84 cathode resistor (drawing R60)"
+    },
+    {
+      "ref": "C39",
+      "type": "C",
+      "nodes": [
+        "kk",
+        "0"
+      ],
+      "value": "50u",
+      "tolerance": 0.2,
+      "label": "C39 50 uF EL84 cathode bypass (drawing C39)"
+    },
+    {
+      "ref": "OT",
+      "type": "transformer",
+      "nodes": [
+        "pa",
+        "bpb",
+        "bpb",
+        "pb",
+        "spk",
+        "0"
+      ],
+      "turns": [
+        1,
+        1,
+        0.0632
+      ],
+      "r": [
+        160,
+        160,
+        0.3
+      ],
+      "leak": [
+        "5m",
+        "5m",
+        0
+      ],
+      "lm": 5,
+      "lsat": 1.5,
+      "label": "T2 output transformer (8 kOhm p-p : 8 Ohm)",
+      "note": "the drawing gives 15 Ohm and 8 Ohm secondary taps; only the 8 Ohm tap is modelled (the speaker is 8 Ohm). Half-primary 160 Ohm DCR, 5 mH leakage, 5 H / 1.5 V s are typical-class values, unverified for T2; centre tap on the +315 V node after the choke, as drawn (it was on the reservoir; rewired 2026-11-10)"
+    },
+    {
+      "ref": "SPK",
+      "type": "sub",
+      "of": "lib:spk-12in-8ohm-american",
+      "nodes": [
+        "spk",
+        "0"
+      ],
+      "label": "12-inch 8 Ohm speaker (the AC15's 1x12)"
+    },
+    {
+      "ref": "R43",
+      "type": "R",
+      "nodes": [
+        "bpb",
+        "bp5"
+      ],
+      "value": "22k",
+      "tolerance": 0.05,
+      "label": "R43 22k from the +315 V node to the phase inverter's supply (C26 8 uF)"
+    },
+    {
+      "ref": "C26",
+      "type": "C",
+      "nodes": [
+        "bp5",
+        "0"
+      ],
+      "value": "8u",
+      "tolerance": 0.2,
+      "label": "C26 8 uF phase-inverter supply decoupling"
+    },
+    {
+      "ref": "R61",
+      "type": "R",
+      "nodes": [
+        "v210",
+        "p6"
+      ],
+      "value": "270k",
+      "tolerance": 0.05,
+      "label": "R61 270k oscillator plate load"
+    },
+    {
+      "ref": "V6B",
+      "type": "triode",
+      "nodes": [
+        "p6",
+        "g6",
+        "k6"
+      ],
+      "model": "12AX7",
+      "label": "V6 ECC83 (pins 1-3) Vibravox phase-shift oscillator"
+    },
+    {
+      "ref": "R59",
+      "type": "R",
+      "nodes": [
+        "k6",
+        "0"
+      ],
+      "value": "3.9k",
+      "tolerance": 0.05,
+      "label": "R59 3.9k oscillator cathode"
+    },
+    {
+      "ref": "C38",
+      "type": "C",
+      "nodes": [
+        "k6",
+        "0"
+      ],
+      "value": "25u",
+      "tolerance": 0.2,
+      "label": "C38 25 uF cathode bypass"
+    },
+    {
+      "ref": "C42",
+      "type": "C",
+      "nodes": [
+        "p6",
+        "x3"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": "C42 0.01 phase-shift section 1"
+    },
+    {
+      "ref": "R68",
+      "type": "R",
+      "nodes": [
+        "x3",
+        "fsw"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "R68 1M section-1 shunt (to the footswitch return)"
+    },
+    {
+      "ref": "C41",
+      "type": "C",
+      "nodes": [
+        "x3",
+        "x2"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": "C41 0.01 phase-shift section 2"
+    },
+    {
+      "ref": "C40",
+      "type": "C",
+      "nodes": [
+        "x2",
+        "g6"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": "C40 0.01 phase-shift section 3"
+    },
+    {
+      "ref": "R65",
+      "type": "R",
+      "nodes": [
+        "g6",
+        "fsw"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "R65 1M grid shunt (to the footswitch return)"
+    },
+    {
+      "ref": "SW6",
+      "type": "switch",
+      "nodes": [
+        "fsw",
+        "fs2"
+      ],
+      "control": "footswitch",
+      "ron": "1",
+      "label": "SW6 FOOT SWITCH ON-OFF (closed = on)",
+      "note": "Closed, R65 and R68 are the ladder's first and third shunt legs. Open, they hang in series between the grid and C42 and the ladder has one shunt leg left (the speed resistor): it cannot reach 180 degrees, so the oscillator stops (the grid also loses its DC return; the switch's 1 GOhm off-resistance stands in for leakage)"
+    },
+    {
+      "ref": "SWE",
+      "type": "switch",
+      "nodes": [
+        "fs2",
+        "0"
+      ],
+      "control": "effectsSelector",
+      "positions": [
+        1,
+        2
+      ],
+      "ron": "1",
+      "label": "Vib · Trem not Off: completes the footswitch return",
+      "note": "Stands in for the legacy selector's Off position (not a part of the drawing): in series with SW6, so Off stops the oscillator like an open footswitch"
+    },
+    {
+      "ref": "SW5A",
+      "type": "switch",
+      "nodes": [
+        "x2",
+        "s64"
+      ],
+      "control": "vibratoSpeed",
+      "positions": [
+        0
+      ],
+      "label": "SW5 speed switch: slow (R64)"
+    },
+    {
+      "ref": "R64",
+      "type": "R",
+      "nodes": [
+        "s64",
+        "kb"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "R64 1M section-2 shunt, slow"
+    },
+    {
+      "ref": "SW5B",
+      "type": "switch",
+      "nodes": [
+        "x2",
+        "s66"
+      ],
+      "control": "vibratoSpeed",
+      "positions": [
+        1
+      ],
+      "label": "SW5 speed switch: medium (R66)"
+    },
+    {
+      "ref": "R66",
+      "type": "R",
+      "nodes": [
+        "s66",
+        "kb"
+      ],
+      "value": "680k",
+      "tolerance": 0.05,
+      "label": "R66 680k section-2 shunt, medium"
+    },
+    {
+      "ref": "SW5C",
+      "type": "switch",
+      "nodes": [
+        "x2",
+        "s67"
+      ],
+      "control": "vibratoSpeed",
+      "positions": [
+        2
+      ],
+      "label": "SW5 speed switch: fast (R67)"
+    },
+    {
+      "ref": "R67",
+      "type": "R",
+      "nodes": [
+        "s67",
+        "kb"
+      ],
+      "value": "330k",
+      "tolerance": 0.05,
+      "label": "R67 330k section-2 shunt, fast"
+    },
+    {
+      "ref": "VKICK",
+      "type": "V",
+      "nodes": [
+        "kb",
+        "0"
+      ],
+      "value": "0",
+      "ac": {
+        "amplitude": "1m",
+        "freq": 6,
+        "phase": 0
+      },
+      "label": "Oscillator start-up kick",
+      "note": "Not in the amp: 1 mV at 6 Hz in series with the speed resistors' ground return stands in for noise / switching transients, so the oscillator starts from its (unstable) DC operating point. In series, it adds no DC path to the grid (a resistor into the grid would be a grid return and keep the oscillator running with the footswitch open)"
+    },
+    {
+      "ref": "R50",
+      "type": "R",
+      "nodes": [
+        "p6",
+        "lw"
+      ],
+      "value": "220k",
+      "tolerance": 0.05,
+      "label": "R50 220k LFO take-off"
+    },
+    {
+      "ref": "C34V",
+      "type": "C",
+      "nodes": [
+        "lw",
+        "0"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "label": "C34 0.1 LFO smoothing (drawing C34)"
+    },
+    {
+      "ref": "C31",
+      "type": "C",
+      "nodes": [
+        "lw",
+        "lw2"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "label": "C31 0.1"
+    },
+    {
+      "ref": "R45",
+      "type": "R",
+      "nodes": [
+        "lw2",
+        "dd"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "R45 1M depth divider (series leg)"
+    },
+    {
+      "ref": "C35",
+      "type": "C",
+      "nodes": [
+        "dd",
+        "0"
+      ],
+      "value": "20n",
+      "tolerance": 0.1,
+      "label": "C35 0.02"
+    },
+    {
+      "ref": "R46",
+      "type": "pot",
+      "nodes": [
+        "dd",
+        "dpb",
+        "dpb"
+      ],
+      "value": "500k",
+      "taper": "B",
+      "control": "depth",
+      "label": "R46 DEPTH PRESET 500k (rheostat, wiper to one end)",
+      "note": "Resistance dd-dpb = 500 kOhm x position: with R47 the divider's shunt leg, 150k (minimum depth, never zero) to 650k (maximum)"
+    },
+    {
+      "ref": "R47",
+      "type": "R",
+      "nodes": [
+        "dpb",
+        "0"
+      ],
+      "value": "150k",
+      "tolerance": 0.05,
+      "label": "R47 150k"
+    },
+    {
+      "ref": "C37",
+      "type": "C",
+      "nodes": [
+        "dd",
+        "g6a"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "label": "C37 0.1 into the LFO phase splitter"
+    },
+    {
+      "ref": "V6A",
+      "type": "triode",
+      "nodes": [
+        "p6a",
+        "g6a",
+        "k6a"
+      ],
+      "model": "12AX7",
+      "label": "V6 ECC83 (pins 6-8) LFO phase splitter"
+    },
+    {
+      "ref": "R58",
+      "type": "R",
+      "nodes": [
+        "v210",
+        "p6a"
+      ],
+      "value": "22k",
+      "tolerance": 0.05,
+      "label": "R58 22k splitter plate load"
+    },
+    {
+      "ref": "R55",
+      "type": "R",
+      "nodes": [
+        "k6a",
+        "lz"
+      ],
+      "value": "1.5k",
+      "tolerance": 0.05,
+      "label": "R55 1.5k splitter cathode"
+    },
+    {
+      "ref": "R52",
+      "type": "R",
+      "nodes": [
+        "lz",
+        "0"
+      ],
+      "value": "22k",
+      "tolerance": 0.05,
+      "label": "R52 22k splitter cathode load"
+    },
+    {
+      "ref": "R51",
+      "type": "R",
+      "nodes": [
+        "g6a",
+        "lz"
+      ],
+      "value": "560k",
+      "tolerance": 0.05,
+      "label": "R51 560k grid leak to the cathode load"
+    },
+    {
+      "ref": "C29",
+      "type": "C",
+      "nodes": [
+        "p6a",
+        "lfa"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "label": "C29 0.1 LFO (plate phase) to V4A"
+    },
+    {
+      "ref": "C30",
+      "type": "C",
+      "nodes": [
+        "lz",
+        "lfb"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "label": "C30 0.1 LFO (cathode phase) to V4B"
+    },
+    {
+      "ref": "CWA",
+      "type": "C",
+      "nodes": [
+        "pa",
+        "cwa"
+      ],
+      "value": "470p",
+      "tolerance": 0.2,
+      "label": "OT half-primary self-capacitance (A)"
+    },
+    {
+      "ref": "RCWA",
+      "type": "R",
+      "nodes": [
+        "cwa",
+        "bpb"
+      ],
+      "value": "2.2k",
+      "tolerance": 0.1,
+      "label": "winding-capacitance loss (A)"
+    },
+    {
+      "ref": "CWB",
+      "type": "C",
+      "nodes": [
+        "pb",
+        "cwb"
+      ],
+      "value": "470p",
+      "tolerance": 0.2,
+      "label": "OT half-primary self-capacitance (B)"
+    },
+    {
+      "ref": "RCWB",
+      "type": "R",
+      "nodes": [
+        "cwb",
+        "bpb"
+      ],
+      "value": "2.2k",
+      "tolerance": 0.1,
+      "label": "winding-capacitance loss (B)"
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "v210",
+        "0"
+      ],
+      "value": "32u",
+      "tolerance": 0.2,
+      "label": "C1 32 uF on the vibrato/tremolo 210 V node"
+    },
+    {
+      "ref": "RL1",
+      "type": "R",
+      "nodes": [
+        "lk",
+        "bpb"
+      ],
+      "value": "110",
+      "tolerance": 0.3,
+      "label": "L1 choke DCR 300 Ohm",
+      "note": "unverified: the drawing gives 10-20 H but no DCR; 110 Ohm is fitted to the drawing's 325 V (reservoir) to 315 V (after the choke) drop at the drawn currents"
+    },
+    {
+      "ref": "R15",
+      "type": "R",
+      "nodes": [
+        "ef86s",
+        "p2"
+      ],
+      "value": "220k",
+      "tolerance": 0.05,
+      "label": "EF86 plate load 220k (drawing R15; the drawing prints 90 V at the plate)"
+    },
+    {
+      "ref": "R20",
+      "type": "R",
+      "nodes": [
+        "ef86s",
+        "scr2"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "EF86 screen dropper 1M (drawing R20)"
+    },
+    {
+      "ref": "C8",
+      "type": "C",
+      "nodes": [
+        "scr2",
+        "0"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "label": "EF86 screen bypass 0.1 uF (drawing C8)"
+    },
+    {
+      "ref": "R40",
+      "type": "R",
+      "nodes": [
+        "g5a",
+        "kn"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "R40 1M V5A grid return to the tail node"
+    }
+  ],
+  "probes": [
+    "p2",
+    "volw",
+    "p5a",
+    "g5b",
+    "p5b",
+    "p6",
+    "g6",
+    "k4",
+    "pa",
+    "bpb",
+    "s7",
+    "spk",
+    "k5",
+    "tvw"
+  ],
+  "layout": {},
+  "models": {
+    "EF86": {
+      "kind": "pentode",
+      "mu": 42.118,
+      "ex": 1.0831,
+      "kg1": 1458,
+      "kg2": 2778.2,
+      "kp": 204.64,
+      "kvb": 9.417,
+      "cg1k": 3.4e-12,
+      "cg1p": 5e-14,
+      "cpk": 3e-12,
+      "gscale": 0.001,
+      "gknee": 0.08,
+      "note": "EF86/6267 fitted (Headroom 2026, tools/circuit/tube_fit.py) to the Philips Electronic Tube Handbook EF86 plate family at Vg2 = 140 V (Vg1 0..-4.5 V) and Ia transfer at Va 250 V, Vg2 60..180 V (frank.pocnet.net sheet 030/e/EF86.pdf), anchored on the class-A point Va 250 V, Vg2 140 V, Vg1 -2 V -> Ia 3.0 mA, Ig2 0.6 mA (card 3.07 / 0.60): RMS error, % of 10.8 mA, plate 23 -> 0.9, knee 25 -> 3.3 against the previous card, which was scaled to a 1.2 mA reading of that point and drew 1.35 mA of screen current"
+    }
+  },
+  "readouts": {
+    "lfo": {
+      "node": "p6",
+      "minSwing": 5
+    }
+  }
+}

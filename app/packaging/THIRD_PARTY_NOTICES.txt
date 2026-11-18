@@ -1,0 +1,15 @@
+Headroom includes the following third-party software. Each licence text ships in app/licenses/<name>/.
+
+  NeuralAmpModelerCore   MIT            Copyright (c) 2023 Steven Atkinson (incl. the demo .nam captures)
+  Eigen                  MPL-2.0        (unmodified source; https://gitlab.com/libeigen/eigen)
+  nlohmann/json          MIT            Copyright (c) 2013-2025 Niels Lohmann (licence text in json.hpp)
+  miniaudio              MIT-0 / Public Domain (dual)   David Reid
+  Signalsmith Stretch    MIT            Copyright (c) Signalsmith Audio
+  Signalsmith Linear     MIT            Copyright (c) Signalsmith Audio
+  webview/webview        MIT            Copyright (c) Serge Zaitsev and contributors
+  VST 3 SDK              MIT            Copyright (c) Steinberg Media Technologies GmbH (DAW plugin builds)
+                         "VST" is a trademark of Steinberg Media Technologies GmbH.
+  AudioUnitSDK           Apache-2.0     Copyright (c) Apple Inc. (macOS Audio Unit plugin)
+
+Windows standalone audio uses the Steinberg ASIO® SDK.
+ASIO is a registered trademark of Steinberg Media Technologies GmbH.

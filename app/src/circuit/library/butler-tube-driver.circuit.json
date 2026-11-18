@@ -1,0 +1,555 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "butler-tube-driver",
+  "version": 1,
+  "name": "BK Butler Tube Driver (catalogue 111000)",
+  "description": "BK Butler Tube Driver: a TL072 input buffer, an inverting TL072 gain stage whose feedback resistor is the 500 kOhm 'Tube Drive' pot (C5 120 pF across it), and a real starved 12AX7 cascade. IC1b drives grid 1 (pin 7) through C6 10 nF and R6 10 kOhm with a 10 kOhm grid return to V-; both 12AX7 cathodes sit on V- and both plates are loaded by 68 kOhm to V+ (about 34 V across each triode). Plate 1 feeds grid 2 through C7 47 nF, R9 10 kOhm and a 10 kOhm return to V-. The tone network is the pedal's own: C8 330 pF (treble) across R13 the 500 kOhm HI pot with R14 220 kOhm to the mid node, R12 22 kOhm into C9 100 nF and C10 47 nF/C11 47 nF with R16 2k2 and the 100 kOhm LO pot, and the 100 kOhm log Level pot after the HI wiper. D1/D2 1N4148 clamp the buffer's input node to a 1 kOhm/22 uF filtered V+ node and to V-. Supply: the 12.6 V AC adapter's half-wave voltage doubler, modelled as the two rails it produces (+17 V / -17 V), see the notes.",
+  "sources": [
+    {
+      "title": "J. D. Sleep, 'Tube Driver' schematic, General Guitar Gadgets, revision 2003-12-09 (redraw of the Chandler/Butler Tube Driver): complete signal path and values - C1 0.033 uF, R1 10k, R2 1M, C2 47 pF, D1/D2 1N4148 with R3 1k/C3 22 uF, IC1a buffer, C4 5 uF, R4 1k5, IC1b with R5 500 kOhm log 'Tube Drive' and C5 120 pF, C6 0.01 uF, R6 10k, R7 10k, R8/R11 68k, 12AX7, C7 0.047 uF, R9/R10 10k, C8 330 pF, R12 22k, R13 500 kOhm linear 'Hi', R14 220k, C9 0.1 uF, R15 100 kOhm linear 'Lo', C10/C11 0.047 uF, R16 2k2, R17 100 kOhm log 'Level'; supply 12.6 V AC secondary with R18 10R/1W, D3/D4 1N4007, R19 470, R20 1k and 470 uF reservoirs",
+      "url": "https://www.schematicheaven.net/effects/ggg_chandler_tube_driver.pdf"
+    },
+    {
+      "title": "Chandler Industries 'Tube Driver' (the licensed BK Butler design): the pedal this redraw is of; the Butler original uses the same op-amp -> starved 12AX7 -> HI/LO/Level topology. No second independent schematic was obtainable from this machine (freestompboxes, reddit and the datasheet mirror hosts refuse or do not resolve); the values here are from the GGG redraw alone and each one is marked in its part note",
+      "url": "https://www.schematicheaven.net/effects.html"
+    },
+    {
+      "title": "N. Koren, 'Improved vacuum tube models for SPICE' (12AX7 set), the library card used for both triodes",
+      "url": "http://www.normankoren.com/Audio/Tubemodspice_article.html"
+    }
+  ],
+  "minRate": 705600,
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 1.0
+  },
+  "oversampling": 2,
+  "newton": {"groups": {"D1": 0.0001, "IC1A": 0.0001, "IC1B": 0.0001}},
+  "solver": "auto",
+  "controls": [
+    {
+      "id": "drive",
+      "label": "Drive",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "D0"
+      ],
+      "group": "Main",
+      "note": "R5 500 kOhm log 'Tube Drive' pot, the feedback resistor of the inverting IC1b stage (C5 120 pF in parallel). 0 = 0 Ohm (unity, no drive), 1 = 500 kOhm against R4 1k5 (about +50 dB before the op-amp clips). Legacy 'Drive'"
+    },
+    {
+      "id": "treble",
+      "label": "Treble (HI)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "T2"
+      ],
+      "group": "Tone",
+      "note": "R13 500 kOhm linear HI pot: its wiper is the tone-stack output that feeds the Level pot, R14 220 kOhm takes the wiper back to the stack's mid node. Legacy 'Tone'"
+    },
+    {
+      "id": "bass",
+      "label": "Bass (LO)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Tone",
+      "note": "R15 100 kOhm linear LO pot, wired as the rheostat between the stack's mid node and the C11/R16 bass node. The catalogue has no bass parameter for this unit"
+    },
+    {
+      "id": "level",
+      "label": "Level",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Main",
+      "note": "R17 100 kOhm log Level pot from the tone-stack output to ground; its wiper is the output jack. The catalogue has no volume parameter for this unit (the legacy model folded level into its Mix)"
+    },
+    {
+      "id": "feedback",
+      "label": "Feedback",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "F1"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "The legacy model's feedback amount. The pedal has no feedback control: its only in-loop element is the Drive pot itself. Stored only"
+    },
+    {
+      "id": "mix",
+      "label": "Mix",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "D3"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "The legacy model's dry/wet mix. The Tube Driver is a single series path from jack to jack (no blend). Stored only"
+    },
+    {
+      "id": "fbMinus",
+      "label": "FB (-)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "F4"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Legacy negative-feedback trim; no part in the pedal. Stored only"
+    },
+    {
+      "id": "gate",
+      "label": "Gate",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "G5"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Legacy noise gate; the pedal has none. Stored only"
+    },
+    {
+      "id": "power",
+      "label": "On/Off",
+      "kind": "switch",
+      "default": 1,
+      "params": [
+        "Pwr"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Host bypass (the pedal's true-bypass footswitch). The netlist is the effect-on path. Stored only"
+    }
+  ],
+  "parts": [
+    {
+      "ref": "VPOS",
+      "type": "V",
+      "nodes": [
+        "vp",
+        "0"
+      ],
+      "value": "17",
+      "label": "V+ (12.6 V AC adapter doubler)",
+      "note": "unverified: the GGG drawing shows the 12.6 V AC secondary, R18 10R/1W, D4 1N4007, R19 470 and two 470 uF reservoirs; that is a half-wave doubler giving about +17.0 V (17.8 V peak less the diode and the R19 drop at the pedal's ~20 mA). Modelled as the rail it produces, with the note that no mains ripple is represented; the pedal's idle draw makes it a few tens of mV"
+    },
+    {
+      "ref": "VNEG",
+      "type": "V",
+      "nodes": [
+        "0",
+        "vm"
+      ],
+      "value": "17",
+      "label": "V- (same doubler, negative half)",
+      "note": "unverified: D3 1N4007, R20 1k and the 470 uF pair give about -16.4 V; -17 V is used so both halves are symmetric (the GGG drawing's two halves differ only by R19/R20)"
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "in",
+        "r1n"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "Input series resistor"
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "r1n",
+        "a1"
+      ],
+      "value": "33n",
+      "tolerance": 0.1,
+      "label": "Input cap 0.033 uF"
+    },
+    {
+      "ref": "R2",
+      "type": "R",
+      "nodes": [
+        "a1",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "1 MOhm input load"
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "a1",
+        "0"
+      ],
+      "value": "47p",
+      "tolerance": 0.1,
+      "label": "47 pF RF filter"
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "vp",
+        "dq"
+      ],
+      "value": "1k",
+      "label": "Clamp-node feed"
+    },
+    {
+      "ref": "C3",
+      "type": "C",
+      "nodes": [
+        "dq",
+        "0"
+      ],
+      "value": "22u",
+      "tolerance": 0.2,
+      "label": "Clamp-node filter"
+    },
+    {
+      "ref": "D1",
+      "type": "D",
+      "nodes": [
+        "a1",
+        "dq"
+      ],
+      "model": "1N4148",
+      "label": "Input clamp to the filtered V+ node",
+      "note": "The GGG drawing's D1/D2 sit on the buffer's input node with a 1 kOhm/22 uF node above them; read as the input clamps they are (they only conduct above about +16 V). Whatever their original purpose, they are inaudible at pedal levels, so the reading does not colour the sound"
+    },
+    {
+      "ref": "D2",
+      "type": "D",
+      "nodes": [
+        "vm",
+        "a1"
+      ],
+      "model": "1N4148",
+      "label": "Input clamp to V-"
+    },
+    {
+      "ref": "IC1A",
+      "type": "opamp",
+      "nodes": [
+        "a1",
+        "o1",
+        "o1",
+        "vp",
+        "vm"
+      ],
+      "model": "TL072",
+      "label": "Input buffer (unity gain)",
+      "note": "Unity-gain buffer. Modelled as the engine's nullor (level 0): the TL072 macro with a 1 Ohm unity feedback has two spurious saturated DC solutions of +/-137885 V in ngspice (the macro's 137885 DC gain against tanh limiting) that .nodeset does not remove, while the engine's source stepping finds 0 V. A nullor is exact for a buffer whose input never leaves +/-16 V, and the D1/D2 clamps are kept"
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "o1",
+        "c4n"
+      ],
+      "value": "5u",
+      "tolerance": 0.2,
+      "label": "5 uF coupling"
+    },
+    {
+      "ref": "R4",
+      "type": "R",
+      "nodes": [
+        "c4n",
+        "n6"
+      ],
+      "value": "1k5",
+      "tolerance": 0.05,
+      "label": "Input resistor of the drive stage"
+    },
+    {
+      "ref": "IC1B",
+      "type": "opamp",
+      "nodes": [
+        "0",
+        "n6",
+        "o2",
+        "vp",
+        "vm"
+      ],
+      "model": "TL072",
+      "label": "Drive stage (inverting, gain = R5/R4)"
+    },
+    {
+      "ref": "DRIVE",
+      "type": "pot",
+      "nodes": [
+        "n6",
+        "o2",
+        "o2"
+      ],
+      "value": "500k",
+      "taper": "A",
+      "control": "drive",
+      "label": "Tube Drive",
+      "note": "Rheostat: wiper tied to the inverting-input end, so the resistance falls to 0 Ohm at 0 (CCW) and is 500 kOhm at 1"
+    },
+    {
+      "ref": "C5",
+      "type": "C",
+      "nodes": [
+        "o2",
+        "n6"
+      ],
+      "value": "120p",
+      "tolerance": 0.1,
+      "label": "Feedback cap (bandwidth limit)"
+    },
+    {
+      "ref": "C6",
+      "type": "C",
+      "nodes": [
+        "o2",
+        "c6n"
+      ],
+      "value": "10n",
+      "tolerance": 0.1,
+      "label": "Coupling to grid 1"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "c6n",
+        "g1"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "Grid 1 stopper"
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "g1",
+        "vm"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "Grid 1 return to V-"
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "vp",
+        "p1"
+      ],
+      "value": "68k",
+      "tolerance": 0.05,
+      "label": "V1A plate load"
+    },
+    {
+      "ref": "V1A",
+      "type": "triode",
+      "nodes": [
+        "p1",
+        "g1",
+        "vm"
+      ],
+      "model": "12AX7",
+      "label": "12AX7 triode 1 (pins 6/7/8), cathode on V-"
+    },
+    {
+      "ref": "C7",
+      "type": "C",
+      "nodes": [
+        "p1",
+        "c7n"
+      ],
+      "value": "47n",
+      "tolerance": 0.1,
+      "label": "Plate 1 to grid 2 coupling"
+    },
+    {
+      "ref": "R9",
+      "type": "R",
+      "nodes": [
+        "c7n",
+        "g2"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "Grid 2 stopper"
+    },
+    {
+      "ref": "R10",
+      "type": "R",
+      "nodes": [
+        "g2",
+        "vm"
+      ],
+      "value": "10k",
+      "tolerance": 0.05,
+      "label": "Grid 2 return to V-"
+    },
+    {
+      "ref": "R11",
+      "type": "R",
+      "nodes": [
+        "vp",
+        "p2"
+      ],
+      "value": "68k",
+      "tolerance": 0.05,
+      "label": "V1B plate load"
+    },
+    {
+      "ref": "V1B",
+      "type": "triode",
+      "nodes": [
+        "p2",
+        "g2",
+        "vm"
+      ],
+      "model": "12AX7",
+      "label": "12AX7 triode 2 (pins 1/2/3), cathode on V-"
+    },
+    {
+      "ref": "C8",
+      "type": "C",
+      "nodes": [
+        "p2",
+        "h"
+      ],
+      "value": "330p",
+      "tolerance": 0.05,
+      "label": "Treble feed into the HI pot"
+    },
+    {
+      "ref": "R12",
+      "type": "R",
+      "nodes": [
+        "p2",
+        "m"
+      ],
+      "value": "22k",
+      "tolerance": 0.05,
+      "label": "Feed into the low/mid branch"
+    },
+    {
+      "ref": "C9",
+      "type": "C",
+      "nodes": [
+        "m",
+        "nq"
+      ],
+      "value": "100n",
+      "tolerance": 0.1,
+      "label": "0.1 uF mid coupling"
+    },
+    {
+      "ref": "C10",
+      "type": "C",
+      "nodes": [
+        "m",
+        "q"
+      ],
+      "value": "47n",
+      "tolerance": 0.1,
+      "label": "0.047 uF bass branch"
+    },
+    {
+      "ref": "C11",
+      "type": "C",
+      "nodes": [
+        "q",
+        "0"
+      ],
+      "value": "47n",
+      "tolerance": 0.1,
+      "label": "0.047 uF bass shunt"
+    },
+    {
+      "ref": "R16",
+      "type": "R",
+      "nodes": [
+        "q",
+        "0"
+      ],
+      "value": "2k2",
+      "tolerance": 0.05,
+      "label": "Bass shunt resistor"
+    },
+    {
+      "ref": "HI",
+      "type": "pot",
+      "nodes": [
+        "nq",
+        "wip13",
+        "h"
+      ],
+      "value": "500k",
+      "taper": "B",
+      "control": "treble",
+      "label": "HI (treble)"
+    },
+    {
+      "ref": "R14",
+      "type": "R",
+      "nodes": [
+        "wip13",
+        "nq"
+      ],
+      "value": "220k",
+      "tolerance": 0.05,
+      "label": "HI wiper to the stack's mid node"
+    },
+    {
+      "ref": "LO",
+      "type": "pot",
+      "nodes": [
+        "q",
+        "nq",
+        "nq"
+      ],
+      "value": "100k",
+      "taper": "B",
+      "control": "bass",
+      "label": "LO (bass), rheostat mid-node to bass node"
+    },
+    {
+      "ref": "LEVEL",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "out",
+        "wip13"
+      ],
+      "value": "100k",
+      "taper": "A",
+      "control": "level",
+      "label": "Level"
+    }
+  ],
+  "probes": [
+    "a1",
+    "o1",
+    "o2",
+    "g1",
+    "p1",
+    "g2",
+    "p2",
+    "wip13",
+    "out"
+  ],
+  "layout": {}
+}

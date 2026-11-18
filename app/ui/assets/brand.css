@@ -1,0 +1,59 @@
+/* Headroom brand: Glow mark + boot splash.
+   Generated from app/docs/brand/headroom-glow.html (the approved source of truth); regenerate rather than hand-edit
+   the keyframes. Every class is prefixed hrb- so it can't collide with the app's own styles. */
+#hr-splash {
+  position: fixed; inset: 0; z-index: 10000; display: grid; place-items: center; overflow: hidden;
+  background: radial-gradient(85% 85% at 50% 38%, #18191d 0%, #0b0c0e 100%);
+  transition: opacity .8s ease .25s; cursor: default;
+}
+#hr-splash svg {
+  width: min(960px, 100vw, 160vh); height: auto; aspect-ratio: 16 / 10; overflow: visible; display: block;
+  --bg:#0b0c0e;--bg2:#18191d;--ink:#ececef;--ink3:#5d6068;--acc:#e3a04b;--acc2:#f6c27a;--hot:#ff7b2e;--halo:.16;
+}
+body.light #hr-splash { background: radial-gradient(85% 85% at 50% 38%, #ffffff 0%, #eceef1 100%); }
+body.light #hr-splash svg { --bg:#eceef1;--bg2:#ffffff;--ink:#16171a;--ink3:#9a9da5;--acc:#cf8526;--acc2:#eba650;--hot:#f0701f;--halo:.22; }
+#hr-splash.out { opacity: 0; pointer-events: none; }
+html.hosted #hr-splash { display: none; }
+.hrb-f-ink{fill:var(--ink)}.hrb-f-ink3{fill:var(--ink3)}.hrb-f-acc{fill:var(--acc)}.hrb-f-none{fill:none}
+.hrb-s-ink{stroke:var(--ink)}.hrb-sc-bg{stop-color:var(--bg)}.hrb-sc-bg2{stop-color:var(--bg2)}.hrb-sc-acc{stop-color:var(--acc)}.hrb-sc-acc2{stop-color:var(--acc2)}.hrb-sc-hot{stop-color:var(--hot)}
+.hrb-hr-halo{opacity:var(--halo)}
+@keyframes hrb-gl-sil{0%{opacity:0}22%{opacity:.2}46%{opacity:.26}100%{opacity:1}}
+@keyframes hrb-gl-sil2{0%{opacity:0}30%{opacity:.16}52%{opacity:.24}100%{opacity:1}}
+@keyframes hrb-gl-in{from{opacity:0}}
+@keyframes hrb-gl-draw{from{stroke-dashoffset:1}}
+@keyframes hrb-gl-heat{0%{stroke:#2e0b05}22%{stroke:#6a1907}46%{stroke:#b23a0c}68%{stroke:#f07a24}84%{stroke:#ffe6bd}100%{stroke:#ffd49a}}
+@keyframes hrb-gl-bloom{0%{opacity:0}35%{opacity:.12}82%{opacity:1}100%{opacity:.86}}
+@keyframes hrb-gl-breathe{0%,100%{opacity:1}50%{opacity:.72}}
+@keyframes hrb-gl-flick{0%,58%{opacity:1}59%{opacity:.82}60%{opacity:1}61.5%{opacity:.9}62.5%,100%{opacity:1}}
+@keyframes hrb-gl-glint{from{opacity:1;transform:translateX(-34px)}to{opacity:1;transform:translateX(66px)}}
+@keyframes hrb-gl-rise{from{opacity:0;transform:translateY(10px)}}
+@keyframes hrb-gl-ink{from{fill-opacity:0}}
+@keyframes hrb-gl-word-glow{0%{opacity:0}42%{opacity:1}100%{opacity:.4}}
+.hrb-gl-sil{animation:hrb-gl-sil 2.4s cubic-bezier(.45,0,.25,1) .05s backwards}
+.hrb-gl-sil2{animation:hrb-gl-sil2 2.5s cubic-bezier(.45,0,.25,1) .25s backwards}
+.hrb-gl-plate{animation:hrb-gl-sil 2s cubic-bezier(.45,0,.25,1) .35s backwards}
+.hrb-gl-coil{stroke:#ffd49a;stroke-dasharray:1;animation:hrb-gl-draw .8s cubic-bezier(.3,0,.2,1) .5s backwards,hrb-gl-heat 1.75s cubic-bezier(.5,0,.75,1) .5s backwards}
+.hrb-gl-b1{opacity:.86;animation:hrb-gl-bloom 1.9s cubic-bezier(.45,0,.3,1) .75s backwards}
+.hrb-gl-b2{opacity:.86;animation:hrb-gl-bloom 2.2s cubic-bezier(.45,0,.3,1) .95s backwards}
+.hrb-gl-lit{animation:hrb-gl-in 1.6s ease-out 1.15s backwards}
+.hrb-gl-amb{animation:hrb-gl-in 1.9s ease-out 1.05s backwards}
+.hrb-gl-halo{animation:hrb-gl-in 2.6s ease-out 1.2s backwards}
+.hrb-gl-br{animation:hrb-gl-breathe 6.5s ease-in-out 3.3s infinite}
+.hrb-gl-fl{animation:hrb-gl-flick 9s linear 4.2s infinite}
+.hrb-gl-glint{opacity:0;animation:hrb-gl-glint 1.25s cubic-bezier(.45,0,.3,1) 2.45s}
+.hrb-gl-word{animation:hrb-gl-rise 1s cubic-bezier(.2,.7,.2,1) var(--w,1.7s) backwards}
+.hrb-gl-t1{animation:hrb-gl-ink .9s ease-out var(--w,1.7s) backwards}
+.hrb-gl-t2{animation:hrb-gl-ink 1.1s ease-out calc(var(--w,1.7s) + .22s) backwards}
+.hrb-gl-wglow{opacity:.4;animation:hrb-gl-word-glow 1.8s ease-out calc(var(--w,1.7s) + .3s) backwards}
+.hrb-gl-tag{animation:hrb-gl-rise 1s cubic-bezier(.2,.7,.2,1) calc(var(--w,1.7s) + .5s) backwards}
+@keyframes hrb-gl-sweep{from{transform:translateX(-60px)}to{transform:translateX(180px)}}
+.hrb-hr-loader{animation:hrb-gl-in .8s ease-out 2.7s backwards}
+.hrb-hr-ind{animation:hrb-gl-sweep 1.6s cubic-bezier(.45,0,.55,1) 2.7s infinite}
+.hrb-hr-fill{transform:scaleX(0)}
+.hrb-hr-driven .hrb-hr-ind{display:none}
+.hrb-hr-driven .hrb-hr-fill{transform:scaleX(var(--p,0));transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.hrb-hr-splash{transition:opacity .8s ease .3s}
+.hrb-hr-content{transition:opacity .6s ease,transform 1s cubic-bezier(.2,.7,.2,1)}
+.hrb-hr-exit{opacity:0}.hrb-hr-exit .hrb-hr-content{opacity:0;transform:scale(1.03)}
+.hrb-hr-static *{animation:none!important}
+@media (prefers-reduced-motion:reduce){.hrb-hr-anim *{animation:none!important}}

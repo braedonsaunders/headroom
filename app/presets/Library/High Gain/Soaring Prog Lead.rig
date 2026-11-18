@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Soaring Prog Lead</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Soaring Prog Lead" preset-author="Headroom" preset-comment="Fluid, singing prog metal lead: an overdrive into a cascaded boutique head in its highest gain mode with the mids up, into a 4x12, then a half-second echo and a long plate. Legato runs flow, bends sustain for days, and the ambience trails behind without washing out fast lines." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="15000">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.8"/>
+        <parameter id="Tn" value="0.55"/>
+        <parameter id="Dr" value="0.3"/>
+        <parameter id="Lmp" value="0.5"/>
+        <parameter id="Bs" value="0.5"/>
+        <parameter id="Cl" value="0.5"/>
+        <parameter id="Br" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="151000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="gain" value="0.72"/>
+        <parameter id="low" value="0.5"/>
+        <parameter id="mid" value="0.7"/>
+        <parameter id="treble" value="0.5"/>
+        <parameter id="master" value="0.6"/>
+        <parameter id="gainMode" value="2"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.5706"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="7"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="158000">
+    <component-audio version="1">
+      <parameters num-parameters="38">
+        <parameter id="mix" value="0.2"/>
+        <parameter id="input" value="0.7224"/>
+        <parameter id="output" value="0.7224"/>
+        <parameter id="pandry" value="0.5"/>
+        <parameter id="panwet" value="0.5"/>
+        <parameter id="stereowidth" value="0.5"/>
+        <parameter id="stereomode" value="0.5"/>
+        <parameter id="timemode" value="0"/>
+        <parameter id="time" value="0.6774"/>
+        <parameter id="feedback" value="0.38"/>
+        <parameter id="style" value="0"/>
+        <parameter id="ana_bbdtype" value="0"/>
+        <parameter id="modern_sat" value="0.5"/>
+        <parameter id="modern_depth" value="0"/>
+        <parameter id="modern_rate" value="0.5"/>
+        <parameter id="modern_stereo" value="0.5"/>
+        <parameter id="diff_amount" value="0.5"/>
+        <parameter id="diff_size" value="0.5"/>
+        <parameter id="diff_movement" value="0.5"/>
+        <parameter id="diff_dense" value="0.5"/>
+        <parameter id="ana_depth" value="0.5"/>
+        <parameter id="ana_rate" value="0.5"/>
+        <parameter id="ana_stereo" value="0.5"/>
+        <parameter id="tape_sat" value="0.5"/>
+        <parameter id="tape_age" value="0.5"/>
+        <parameter id="tape_wowflut" value="0.5"/>
+        <parameter id="tape_noise" value="0.5"/>
+        <parameter id="vd_quality" value="0"/>
+        <parameter id="vd_depth" value="0.5"/>
+        <parameter id="vd_rate" value="0.5"/>
+        <parameter id="vd_stereo" value="0.5"/>
+        <parameter id="locut" value="0.5"/>
+        <parameter id="hicut" value="0.45"/>
+        <parameter id="duckingamount" value="0"/>
+        <parameter id="duckingsensitivity" value="0.5"/>
+        <parameter id="duckingrelease" value="0.5"/>
+        <parameter id="duckingmeter" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="127000">
+    <component-audio version="1">
+      <parameters num-parameters="4">
+        <parameter id="S1" value="1"/>
+        <parameter id="M2" value="0.18"/>
+        <parameter id="M3" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="151000" target-number="1" target-name="gain" min-value="0.5" max-value="0.95" controller-name="Gain"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="151000" target-number="1" target-name="mid" min-value="0.45" max-value="0.9" controller-name="Mids"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="15000" target-number="1" target-name="Dr" min-value="0" max-value="0.7" controller-name="Boost Drive"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="158000" target-number="1" target-name="mix" min-value="0" max-value="0.4" controller-name="Delay Mix"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="127000" target-number="1" target-name="M2" min-value="0" max-value="0.4" controller-name="Plate"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="hg-soaring-prog-lead" category="High Gain" order="210" instrument="guitar" style="Prog Metal">
+  <description>Fluid, singing prog metal lead: an overdrive into a cascaded boutique head in its highest gain mode with the mids up, into a 4x12, then a half-second echo and a long plate. Legato runs flow, bends sustain for days, and the ambience trails behind without washing out fast lines.</description>
+  <tags><tag>High Gain</tag><tag>Prog Metal</tag><tag>Lead</tag><tag>Fluid</tag><tag>Boosted</tag><tag>Delay</tag><tag>Plate</tag></tags>
+  <sources>
+    <source url="https://www.premierguitar.com/features/artist-features/john-petrucci-still-living-the-dream" title="Premier Guitar: John Petrucci, still living the dream"/>
+    <source url="https://boogieforum.com/threads/petrucci-and-iic.54951/" title="Boogie Forum: Petrucci and the IIC+ (forum)"/>
+    <source url="https://www.guitarworld.com/features/guthrie-govan-guitar-buying" title="Guitar World: Guthrie Govan on guitar buying"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

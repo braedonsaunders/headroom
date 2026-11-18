@@ -1,0 +1,144 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "test-speaker",
+ "version": 1,
+ "name": "Electro-mechanical speaker test (SPICE gate)",
+ "description": "Three nonlinear speakers on voltage drive through a source resistance: a Celestion G12M-25 (8 ohm) in free air; the same driver with a fast (30 ms) voice-coil thermal network on a closed-box air spring (the thermal and box paths, gated against ngspice); and a 2s2p cab of Jensen P12Q (8 ohm) as one equivalent driver. vel* are cone velocities (m/s).",
+ "sources": [
+  {
+   "title": "Headroom speaker device (docs/CIRCUIT_ENGINE.md section 10.21)",
+   "url": ""
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "vel",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 1.0
+ },
+ "oversampling": 2,
+ "solver": "auto",
+ "models": {
+  "G12M_FASTTHERMAL": {
+   "kind": "speaker",
+   "note": "CELESTION_G12M25_8 with a 30 ms voice-coil thermal time constant and no magnet stage (test only)",
+   "re": 6.7,
+   "le": 0.000137337,
+   "l2": 0.000274673,
+   "r2": 20.1,
+   "bl": 12.14,
+   "mms": 0.02922,
+   "kms": 6488.77,
+   "rms": 1.52996,
+   "sd": 0.05251,
+   "b1": -0.0138412,
+   "b2": -0.0270836,
+   "b3": 0.000147069,
+   "b4": 0.000271651,
+   "k1": 0.0277778,
+   "k2": 0.0341435,
+   "k4": 0.0208976,
+   "lx1": -0.125,
+   "lx2": 0.0138889,
+   "alpha": 0.00393,
+   "rtv": 3.08,
+   "ctv": 0.00974026,
+   "rtm": 0.0,
+   "ctm": 681.818
+  }
+ },
+ "controls": [],
+ "parts": [
+  {
+   "ref": "RS1",
+   "type": "R",
+   "nodes": [
+    "in",
+    "a"
+   ],
+   "value": 0.5,
+   "label": "amplifier source resistance"
+  },
+  {
+   "ref": "SPK1",
+   "type": "speaker",
+   "nodes": [
+    "a",
+    "0",
+    "vel"
+   ],
+   "model": "CELESTION_G12M25_8",
+   "label": "G12M-25 8 ohm, free air"
+  },
+  {
+   "ref": "RS2",
+   "type": "R",
+   "nodes": [
+    "in",
+    "b"
+   ],
+   "value": 2.0
+  },
+  {
+   "ref": "SPK2",
+   "type": "speaker",
+   "nodes": [
+    "b",
+    "0",
+    "vel2"
+   ],
+   "model": "G12M_FASTTHERMAL",
+   "label": "G12M-25 with a fast thermal network, boxed"
+  },
+  {
+   "ref": "LBOX",
+   "type": "L",
+   "nodes": [
+    "vel2",
+    "0"
+   ],
+   "value": 7.5e-05,
+   "label": "closed-box air spring (1/Kbox, Kbox 13.3 N/mm: ~30 L per driver)"
+  },
+  {
+   "ref": "RBOX",
+   "type": "R",
+   "nodes": [
+    "vel2",
+    "0"
+   ],
+   "value": 2.0,
+   "label": "box losses (0.5 N s/m)"
+  },
+  {
+   "ref": "RS3",
+   "type": "R",
+   "nodes": [
+    "in",
+    "c"
+   ],
+   "value": 1.0
+  },
+  {
+   "ref": "SPK3",
+   "type": "speaker",
+   "nodes": [
+    "c",
+    "0",
+    "vel3"
+   ],
+   "model": "JENSEN_P12Q_8",
+   "series": 2,
+   "parallel": 2,
+   "label": "2s2p P12Q (8 ohm cab)"
+  }
+ ],
+ "probes": [
+  "vel",
+  "a",
+  "vel2",
+  "b",
+  "vel3",
+  "c"
+ ]
+}

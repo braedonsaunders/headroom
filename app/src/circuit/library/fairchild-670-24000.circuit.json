@@ -1,0 +1,5347 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "fairchild-670-24000",
+ "version": 1,
+ "name": "Fairchild 670 stereo limiter",
+ "description": "Fairchild Recording Equipment Corp. Model 670 stereo limiter, factory schematic A-96039 (670 DUAL LIMITER, manual Dec. 1959): per channel a 600-ohm T step attenuator (AT101/AT102) -> S301 L-R / lateral-vertical matrix -> T101 (R101/R102 180 ohm 1 %) -> push-pull variable-mu bridge of eight 6386 remote-cutoff sections (four in parallel per side; R103/R104 680 ohm, R105A/B ganged 100-ohm BALANCE with opposed wipers to chassis and to the L302 bias rail, C101/C102 4 uF across the cathode groups) -> T102 (R107/R108 30 ohm 1 % meter shunts, R111 33 ohm feed, VU meter through R106 4700 and S101) -> S301 output matrix; feedback side chain from T102's secondaries (R145-R150) -> T103 -> R115 AC THRESHOLD (centre-tapped, R113/R114 24K) -> 12AX7 class-B pair biased by R117 DC THRESHOLD / R116 / R118 / R119 -> 12BH7A pair -> 6973 push-pull with tertiary feedback (R128/R129, R134/R135) -> T104 -> 1N538 bridge -> R137 / C109 and the six-position S102 time-constant network, referred to the R142 ZERO bias, -> T101's centre tap. Supplies: GZ34 / L301 / C305-C306 450 V; EL34 + 6084 + 5651 series regulator at 240 V (R313); T301 bridge -> L302 / C303 cathode bias rail, R301 / R302 / R303 -17 V and -13...-14.5 V rails. Both channels in one instance (inputR / outputR).",
+ "sources": [
+  {
+   "title": "Fairchild Recording Equipment Corp., Model 670 Stereo Limiter Instruction Manual (Dec. 1959): specifications p.4-5, input/output connections, balance/zero and threshold adjustments, 'Input vs. Output Curves' (Dec. 1959), and schematic A-96039 '670 Dual Limiter' (p.14, 7110x6035)",
+   "url": "https://archive.org/download/fairchild_670-im/fairchild_670-im.pdf"
+  },
+  {
+   "title": "Fairchild Model 670 schematic, redrawn (John Leimseider archive JL10880, 6576x5557; same drawing as JL10881 / thehistoryofrecording.com): cross-check for connections (hop-over crossings); values follow A-96039 where they differ",
+   "url": "http://4tubes.com/2-SCHEMATICS/Pro-Audio/Compressors/FAIRCHILD-670/670_schematics_redrawn.png"
+  },
+  {
+   "title": "Fairchild Technical Bulletin, Model 660/670 Limiting Amplifiers (Leimseider archive JL10869): specifications, 'full limiting in the first 5,000th of a second'",
+   "url": "https://archive.org/details/JL10869"
+  },
+  {
+   "title": "General Electric 6386 Twin Triode, ET-T1113 (1953-54): transfer and plate characteristics, interelectrode capacitances (the two-triode card: work/tube-curves/6386)",
+   "url": "https://frank.pocnet.net/sheets/142/6/6386.pdf"
+  },
+  {
+   "title": "Philips 6084 (E80F) long-life a.f. pentode data (8.8.1951, RTMA release #1029): typical characteristics and transfer curves (the regulator's error amplifier card)",
+   "url": "https://frank.pocnet.net/sheets/201/6/6084.pdf"
+  },
+  {
+   "title": "P. Raffensperger, 'Toward a wave digital filter model of the Fairchild 670 limiter', DAFx-12: transformer ratio estimates (T101 1:9, T102 9:1, T103 1:17, T104 4:1 / 9.5:1), Lm 35.7 H, operating point (-7.2 V grid bias, -3.1 V balance), time-constant table; compared against",
+   "url": "https://www.dafx.de/paper-archive/2012/papers/dafx12_submission_9.pdf"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "inputR": "inr",
+  "output": "outl",
+  "outputR": "outr",
+  "inputVoltsPerFS": 30.0,
+  "outputVoltsPerFS": 14.0
+ },
+ "oversampling": 2,
+ "solver": "auto",
+ "models": {
+  "6386_A": {
+   "kind": "triode",
+   "mu": 40.528,
+   "ex": 1.5695,
+   "kg1": 692.0,
+   "kp": 46.34,
+   "kvb": 841.82,
+   "vgo": 0,
+   "cgk": 0,
+   "cgp": 0,
+   "cpk": 0,
+   "gscale": 0.00062,
+   "gknee": 0.06,
+   "note": "6386 remote-cutoff section, high-mu part of the two-triode card (work/tube-curves/6386: GE ET-T1113 1953, rms 0.54 mA over 65 points)"
+  },
+  "6386_B": {
+   "kind": "triode",
+   "mu": 4.548,
+   "ex": 1.5695,
+   "kg1": 80905.82,
+   "kp": 46.34,
+   "kvb": 841.82,
+   "vgo": 0,
+   "cgk": 0,
+   "cgp": 0,
+   "cpk": 0,
+   "gscale": 1e-09,
+   "gknee": 0.06,
+   "note": "6386 low-mu part (same fit); its grid law is off (the high-mu part carries the section's grid current)"
+  },
+  "12BH7A": {
+   "kind": "triode",
+   "mu": 23.641,
+   "ex": 1.2529,
+   "kg1": 561.15,
+   "kp": 96.243,
+   "kvb": 3636.8,
+   "vgo": 0.60161,
+   "cgk": 3.2e-12,
+   "cgp": 2.6e-12,
+   "cpk": 5e-13,
+   "gscale": 0.00062,
+   "gknee": 0.06,
+   "note": "the LA-2A netlist's 12BH7A card (RCA 92CM-7742R1 fit, work/tube-curves/12BH7A)"
+  },
+  "6973": {
+   "kind": "pentode",
+   "mu": 10.944,
+   "ex": 1.1758,
+   "kg1": 904.51,
+   "kg2": 5700.4,
+   "kp": 43.799,
+   "kvb": 9.7487,
+   "cg1k": 9e-12,
+   "cg1p": 7e-13,
+   "cpk": 7e-12,
+   "gscale": 0.001,
+   "gknee": 0.08,
+   "note": "the Supro netlist's 6973 card (RCA 92CM-9380/9389 fit, work/tube-curves/6973)"
+  },
+  "6084": {
+   "kind": "pentode",
+   "mu": 25.793,
+   "ex": 1.2643,
+   "kg1": 2355.74,
+   "kg2": 4937.7,
+   "kp": 161.12,
+   "kvb": 12.0,
+   "cg1k": 5.1e-12,
+   "cg1p": 2.5e-14,
+   "cpk": 7.1e-12,
+   "gscale": 0.001,
+   "gknee": 0.08,
+   "note": "6084 (= E80F) APPROXIMATE: Koren pentode fitted to Philips 6084 (8.8.1951, RTMA #1029, frank.pocnet.net sheets/201/6/6084.pdf) typical point 250 V / 100 V / -2 V -> 3 mA, gm 1.85 mA/V (card 2.92 mA, 1.85), Ig2 0.55 mA, and ten points read off the Va = 250 V transfer curves (Vg2 50-200 V) by eye; kvb assumed"
+  },
+  "1N538": {
+   "kind": "diode",
+   "is": 1.411e-08,
+   "n": 1.984,
+   "rs": 0.03389,
+   "note": "1N538 silicon rectifier (200 PIV, 750 mA): the 1N4001 card (same diffused-silicon class)"
+  },
+  "5651": {
+   "kind": "diode",
+   "is": 1e-14,
+   "n": 1.0,
+   "rs": 1500.0,
+   "bv": 87.0,
+   "ibv": 0.0001,
+   "nbv": 1.0,
+   "note": "5651 glow-discharge reference as a breakdown law: 87 V burning voltage (RCA: 82-92 V), ~1.5 kohm incremental (3 V regulation over 1.5-3.5 mA); striking hysteresis not modelled"
+  }
+ },
+ "subcircuits": {
+  "s6386": {
+   "pins": [
+    "p",
+    "g",
+    "k"
+   ],
+   "parts": [
+    {
+     "ref": "A",
+     "type": "triode",
+     "nodes": [
+      "p",
+      "g",
+      "k"
+     ],
+     "model": "6386_A"
+    },
+    {
+     "ref": "B",
+     "type": "triode",
+     "nodes": [
+      "p",
+      "g",
+      "k"
+     ],
+     "model": "6386_B"
+    },
+    {
+     "ref": "CGK",
+     "type": "C",
+     "nodes": [
+      "g",
+      "k"
+     ],
+     "value": "2p",
+     "note": "GE: input 2.0 pF"
+    },
+    {
+     "ref": "CGP",
+     "type": "C",
+     "nodes": [
+      "g",
+      "p"
+     ],
+     "value": "1.2p",
+     "note": "GE: grid to plate 1.2 pF"
+    },
+    {
+     "ref": "CPK",
+     "type": "C",
+     "nodes": [
+      "p",
+      "k"
+     ],
+     "value": "1.1p",
+     "note": "GE: output 1.1 pF"
+    }
+   ]
+  }
+ },
+ "controls": [
+  {
+   "id": "input_l",
+   "label": "Input Gain L",
+   "kind": "selector",
+   "default": 0.75,
+   "options": [
+    "-20 dB",
+    "-19 dB",
+    "-18 dB",
+    "-17 dB",
+    "-16 dB",
+    "-15 dB",
+    "-14 dB",
+    "-13 dB",
+    "-12 dB",
+    "-11 dB",
+    "-10 dB",
+    "-9 dB",
+    "-8 dB",
+    "-7 dB",
+    "-6 dB",
+    "-5 dB",
+    "-4 dB",
+    "-3 dB",
+    "-2 dB",
+    "-1 dB",
+    "-0 dB"
+   ],
+   "params": [
+    "In"
+   ],
+   "group": "Input",
+   "note": "AT101 600-ohm T step attenuator, 1 dB per step (manual p.5); 0-20 dB range assumed (the drawing gives no step count)"
+  },
+  {
+   "id": "input_r",
+   "label": "Input Gain R",
+   "kind": "selector",
+   "default": 0.75,
+   "options": [
+    "-20 dB",
+    "-19 dB",
+    "-18 dB",
+    "-17 dB",
+    "-16 dB",
+    "-15 dB",
+    "-14 dB",
+    "-13 dB",
+    "-12 dB",
+    "-11 dB",
+    "-10 dB",
+    "-9 dB",
+    "-8 dB",
+    "-7 dB",
+    "-6 dB",
+    "-5 dB",
+    "-4 dB",
+    "-3 dB",
+    "-2 dB",
+    "-1 dB",
+    "-0 dB"
+   ],
+   "params": [
+    "In"
+   ],
+   "group": "Input",
+   "note": "AT102, ganged to the legacy Input"
+  },
+  {
+   "id": "threshold",
+   "label": "Threshold",
+   "kind": "continuous",
+   "default": 0.83,
+   "params": [
+    "Th"
+   ],
+   "group": "Limiter",
+   "note": "AC THRESHOLD R115/R215 (front-panel knob), both channels; default 0.83 = the factory-adjusted condition, fitted (with DC THRESHOLD 0.64) to the manual's curve 3 (p.11): worst 0.83 dB over +2.2 ... +24.7 dBm in (2026-11-12, teardown T104)"
+  },
+  {
+   "id": "dcthr1",
+   "label": "DC Threshold L",
+   "kind": "continuous",
+   "default": 0.64,
+   "params": [
+    "Rt"
+   ],
+   "group": "Limiter",
+   "note": "R117 DC THRESHOLD (screwdriver beneath panel); default 0.64 = factory condition (with AC THRESHOLD 0.83, manual curve 3)"
+  },
+  {
+   "id": "dcthr2",
+   "label": "DC Threshold R",
+   "kind": "continuous",
+   "default": 0.64,
+   "params": [
+    "Rt"
+   ],
+   "group": "Limiter",
+   "note": "R217; default 0.64 = factory condition (with AC THRESHOLD 0.83, manual curve 3)"
+  },
+  {
+   "id": "tc1",
+   "label": "Time Constant L",
+   "kind": "selector",
+   "default": 0.0,
+   "options": [
+    "1: 0.2 ms / 0.3 s",
+    "2: 0.2 ms / 0.8 s",
+    "3: 0.4 ms / 2 s",
+    "4: 0.4 ms / 5 s",
+    "5: 0.4 ms / 2-10 s auto",
+    "6: 0.2 ms / 0.3-25 s auto"
+   ],
+   "params": [
+    "Rl"
+   ],
+   "group": "Limiter",
+   "note": "S102 six positions"
+  },
+  {
+   "id": "tc2",
+   "label": "Time Constant R",
+   "kind": "selector",
+   "default": 0.0,
+   "options": [
+    "1: 0.2 ms / 0.3 s",
+    "2: 0.2 ms / 0.8 s",
+    "3: 0.4 ms / 2 s",
+    "4: 0.4 ms / 5 s",
+    "5: 0.4 ms / 2-10 s auto",
+    "6: 0.2 ms / 0.3-25 s auto"
+   ],
+   "params": [
+    "Rl"
+   ],
+   "group": "Limiter",
+   "note": "S202"
+  },
+  {
+   "id": "mode",
+   "label": "Mode",
+   "kind": "switch",
+   "default": 0,
+   "options": [
+    "Left-Right",
+    "Lateral-Vertical"
+   ],
+   "params": [],
+   "face": true,
+   "group": "Limiter",
+   "note": "S301 matrixing (11 wafers): LEFT & RIGHT / LATERAL & VERTICAL (sum and difference)"
+  },
+  {
+   "id": "meter1",
+   "label": "Metering L",
+   "kind": "selector",
+   "default": 0.5,
+   "options": [
+    "Balance (lower)",
+    "Zero",
+    "Balance (upper)"
+   ],
+   "params": [
+    "mtr"
+   ],
+   "group": "Meter",
+   "note": "S101: plate-current metering of each set of control tubes"
+  },
+  {
+   "id": "meter2",
+   "label": "Metering R",
+   "kind": "selector",
+   "default": 0.5,
+   "options": [
+    "Balance (lower)",
+    "Zero",
+    "Balance (upper)"
+   ],
+   "params": [
+    "mtr"
+   ],
+   "group": "Meter"
+  },
+  {
+   "id": "balance1",
+   "label": "Balance L",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Trims",
+   "note": "R105A/B 100 ohm ganged, screwdriver front panel"
+  },
+  {
+   "id": "balance2",
+   "label": "Balance R",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [],
+   "group": "Trims"
+  },
+  {
+   "id": "zero1",
+   "label": "Zero L",
+   "kind": "continuous",
+   "default": 0.597,
+   "params": [],
+   "group": "Trims",
+   "note": "R142 2500 ZERO, screwdriver front panel"
+  },
+  {
+   "id": "zero2",
+   "label": "Zero R",
+   "kind": "continuous",
+   "default": 0.597,
+   "params": [],
+   "group": "Trims"
+  },
+  {
+   "id": "c114trim1",
+   "label": "C114 trim",
+   "kind": "continuous",
+   "default": 0.5981040045018439,
+   "params": [],
+   "group": "Trims"
+  },
+  {
+   "id": "c114trim2",
+   "label": "Wiring capacitance R",
+   "kind": "continuous",
+   "default": 0.5981040045018439,
+   "params": [],
+   "group": "Trims"
+  },
+  {
+   "id": "badj",
+   "label": "B+ Adj (R313)",
+   "kind": "continuous",
+   "default": 0.3027,
+   "params": [],
+   "group": "Trims",
+   "note": "REG B+ ADJ, inside"
+  },
+  {
+   "id": "legacy_drv",
+   "label": "Saturation",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Drv"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "no part in the circuit; stored only"
+  },
+  {
+   "id": "legacy_kn",
+   "label": "Knee",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Kn"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "knee is set by the AC / DC threshold pair; stored only"
+  },
+  {
+   "id": "legacy_dyn",
+   "label": "Dynamic",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Dyn"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "no part in the circuit; stored only"
+  },
+  {
+   "id": "legacy_att",
+   "label": "Attack",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Att"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "attack is set by the time-constant switch (S102/S202) with release; stored only"
+  },
+  {
+   "id": "legacy_out",
+   "label": "Output",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Out"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "the 670 has no output level control; stored only"
+  },
+  {
+   "id": "legacy_s",
+   "label": "Sidechain",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "S"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "no part in the circuit; stored only"
+  },
+  {
+   "id": "legacy_pwr",
+   "label": "On/Off",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "Pwr"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "S302 power switch: always on; stored only"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "RSRC_L",
+   "type": "R",
+   "nodes": [
+    "in",
+    "j2"
+   ],
+   "value": "600",
+   "note": "600-ohm generator (the manual's 600-ohm input; dBm at terminal 2)"
+  },
+  {
+   "ref": "RSRC_R",
+   "type": "R",
+   "nodes": [
+    "inr",
+    "j6"
+   ],
+   "value": "600",
+   "note": "600-ohm generator, right input (terminal 6)"
+  },
+  {
+   "ref": "AT101_A20",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    0
+   ],
+   "ron": 490.9091,
+   "note": "-20 dB series arm R1 490.91 ohm"
+  },
+  {
+   "ref": "AT101_B20",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    0
+   ],
+   "ron": 490.9091,
+   "note": "-20 dB series arm R1 490.91 ohm"
+  },
+  {
+   "ref": "AT101_C20",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    0
+   ],
+   "ron": 121.2121,
+   "note": "-20 dB shunt arm R2 121.21 ohm"
+  },
+  {
+   "ref": "AT101_A19",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    1
+   ],
+   "ron": 478.9408,
+   "note": "-19 dB series arm R1 478.94 ohm"
+  },
+  {
+   "ref": "AT101_B19",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    1
+   ],
+   "ron": 478.9408,
+   "note": "-19 dB series arm R1 478.94 ohm"
+  },
+  {
+   "ref": "AT101_C19",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    1
+   ],
+   "ron": 136.3589,
+   "note": "-19 dB shunt arm R2 136.36 ohm"
+  },
+  {
+   "ref": "AT101_A18",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    2
+   ],
+   "ron": 465.8211,
+   "note": "-18 dB series arm R1 465.82 ohm"
+  },
+  {
+   "ref": "AT101_B18",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    2
+   ],
+   "ron": 465.8211,
+   "note": "-18 dB series arm R1 465.82 ohm"
+  },
+  {
+   "ref": "AT101_C18",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    2
+   ],
+   "ron": 153.5039,
+   "note": "-18 dB shunt arm R2 153.50 ohm"
+  },
+  {
+   "ref": "AT101_A17",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    3
+   ],
+   "ron": 451.4752,
+   "note": "-17 dB series arm R1 451.48 ohm"
+  },
+  {
+   "ref": "AT101_B17",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    3
+   ],
+   "ron": 451.4752,
+   "note": "-17 dB series arm R1 451.48 ohm"
+  },
+  {
+   "ref": "AT101_C17",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    3
+   ],
+   "ron": 172.9554,
+   "note": "-17 dB shunt arm R2 172.96 ohm"
+  },
+  {
+   "ref": "AT101_A16",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    4
+   ],
+   "ron": 435.8317,
+   "note": "-16 dB series arm R1 435.83 ohm"
+  },
+  {
+   "ref": "AT101_B16",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    4
+   ],
+   "ron": 435.8317,
+   "note": "-16 dB series arm R1 435.83 ohm"
+  },
+  {
+   "ref": "AT101_C16",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    4
+   ],
+   "ron": 195.0876,
+   "note": "-16 dB shunt arm R2 195.09 ohm"
+  },
+  {
+   "ref": "AT101_A15",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    5
+   ],
+   "ron": 418.8245,
+   "note": "-15 dB series arm R1 418.82 ohm"
+  },
+  {
+   "ref": "AT101_B15",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    5
+   ],
+   "ron": 418.8245,
+   "note": "-15 dB series arm R1 418.82 ohm"
+  },
+  {
+   "ref": "AT101_C15",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    5
+   ],
+   "ron": 220.362,
+   "note": "-15 dB shunt arm R2 220.36 ohm"
+  },
+  {
+   "ref": "AT101_A14",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    6
+   ],
+   "ron": 400.395,
+   "note": "-14 dB series arm R1 400.39 ohm"
+  },
+  {
+   "ref": "AT101_B14",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    6
+   ],
+   "ron": 400.395,
+   "note": "-14 dB series arm R1 400.39 ohm"
+  },
+  {
+   "ref": "AT101_C14",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    6
+   ],
+   "ron": 249.3586,
+   "note": "-14 dB shunt arm R2 249.36 ohm"
+  },
+  {
+   "ref": "AT101_A13",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    7
+   ],
+   "ron": 380.4946,
+   "note": "-13 dB series arm R1 380.49 ohm"
+  },
+  {
+   "ref": "AT101_B13",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    7
+   ],
+   "ron": 380.4946,
+   "note": "-13 dB series arm R1 380.49 ohm"
+  },
+  {
+   "ref": "AT101_C13",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    7
+   ],
+   "ron": 282.8212,
+   "note": "-13 dB shunt arm R2 282.82 ohm"
+  },
+  {
+   "ref": "AT101_A12",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    8
+   ],
+   "ron": 359.088,
+   "note": "-12 dB series arm R1 359.09 ohm"
+  },
+  {
+   "ref": "AT101_B12",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    8
+   ],
+   "ron": 359.088,
+   "note": "-12 dB series arm R1 359.09 ohm"
+  },
+  {
+   "ref": "AT101_C12",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    8
+   ],
+   "ron": 321.7259,
+   "note": "-12 dB shunt arm R2 321.73 ohm"
+  },
+  {
+   "ref": "AT101_A11",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    9
+   ],
+   "ron": 336.1555,
+   "note": "-11 dB series arm R1 336.16 ohm"
+  },
+  {
+   "ref": "AT101_B11",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    9
+   ],
+   "ron": 336.1555,
+   "note": "-11 dB series arm R1 336.16 ohm"
+  },
+  {
+   "ref": "AT101_C11",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    9
+   ],
+   "ron": 367.3887,
+   "note": "-11 dB shunt arm R2 367.39 ohm"
+  },
+  {
+   "ref": "AT101_A10",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    10
+   ],
+   "ron": 311.6963,
+   "note": "-10 dB series arm R1 311.70 ohm"
+  },
+  {
+   "ref": "AT101_B10",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    10
+   ],
+   "ron": 311.6963,
+   "note": "-10 dB series arm R1 311.70 ohm"
+  },
+  {
+   "ref": "AT101_C10",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    10
+   ],
+   "ron": 421.637,
+   "note": "-10 dB shunt arm R2 421.64 ohm"
+  },
+  {
+   "ref": "AT101_A9",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    11
+   ],
+   "ron": 285.7308,
+   "note": "-9 dB series arm R1 285.73 ohm"
+  },
+  {
+   "ref": "AT101_B9",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    11
+   ],
+   "ron": 285.7308,
+   "note": "-9 dB series arm R1 285.73 ohm"
+  },
+  {
+   "ref": "AT101_C9",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    11
+   ],
+   "ron": 487.0981,
+   "note": "-9 dB shunt arm R2 487.10 ohm"
+  },
+  {
+   "ref": "AT101_A8",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    12
+   ],
+   "ron": 258.3033,
+   "note": "-8 dB series arm R1 258.30 ohm"
+  },
+  {
+   "ref": "AT101_B8",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    12
+   ],
+   "ron": 258.3033,
+   "note": "-8 dB series arm R1 258.30 ohm"
+  },
+  {
+   "ref": "AT101_C8",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    12
+   ],
+   "ron": 567.7036,
+   "note": "-8 dB shunt arm R2 567.70 ohm"
+  },
+  {
+   "ref": "AT101_A7",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    13
+   ],
+   "ron": 229.4834,
+   "note": "-7 dB series arm R1 229.48 ohm"
+  },
+  {
+   "ref": "AT101_B7",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    13
+   ],
+   "ron": 229.4834,
+   "note": "-7 dB series arm R1 229.48 ohm"
+  },
+  {
+   "ref": "AT101_C7",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    13
+   ],
+   "ron": 669.6288,
+   "note": "-7 dB shunt arm R2 669.63 ohm"
+  },
+  {
+   "ref": "AT101_A6",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    14
+   ],
+   "ron": 199.3673,
+   "note": "-6 dB series arm R1 199.37 ohm"
+  },
+  {
+   "ref": "AT101_B6",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    14
+   ],
+   "ron": 199.3673,
+   "note": "-6 dB series arm R1 199.37 ohm"
+  },
+  {
+   "ref": "AT101_C6",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    14
+   ],
+   "ron": 803.1725,
+   "note": "-6 dB shunt arm R2 803.17 ohm"
+  },
+  {
+   "ref": "AT101_A5",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    15
+   ],
+   "ron": 168.078,
+   "note": "-5 dB series arm R1 168.08 ohm"
+  },
+  {
+   "ref": "AT101_B5",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    15
+   ],
+   "ron": 168.078,
+   "note": "-5 dB series arm R1 168.08 ohm"
+  },
+  {
+   "ref": "AT101_C5",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    15
+   ],
+   "ron": 986.8924,
+   "note": "-5 dB shunt arm R2 986.89 ohm"
+  },
+  {
+   "ref": "AT101_A4",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    16
+   ],
+   "ron": 135.7642,
+   "note": "-4 dB series arm R1 135.76 ohm"
+  },
+  {
+   "ref": "AT101_B4",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    16
+   ],
+   "ron": 135.7642,
+   "note": "-4 dB series arm R1 135.76 ohm"
+  },
+  {
+   "ref": "AT101_C4",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    16
+   ],
+   "ron": 1257.9462,
+   "note": "-4 dB shunt arm R2 1257.95 ohm"
+  },
+  {
+   "ref": "AT101_A3",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    17
+   ],
+   "ron": 102.5984,
+   "note": "-3 dB series arm R1 102.60 ohm"
+  },
+  {
+   "ref": "AT101_B3",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    17
+   ],
+   "ron": 102.5984,
+   "note": "-3 dB series arm R1 102.60 ohm"
+  },
+  {
+   "ref": "AT101_C3",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    17
+   ],
+   "ron": 1703.1139,
+   "note": "-3 dB shunt arm R2 1703.11 ohm"
+  },
+  {
+   "ref": "AT101_A2",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    18
+   ],
+   "ron": 68.774,
+   "note": "-2 dB series arm R1 68.77 ohm"
+  },
+  {
+   "ref": "AT101_B2",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    18
+   ],
+   "ron": 68.774,
+   "note": "-2 dB series arm R1 68.77 ohm"
+  },
+  {
+   "ref": "AT101_C2",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    18
+   ],
+   "ron": 2582.8827,
+   "note": "-2 dB shunt arm R2 2582.88 ohm"
+  },
+  {
+   "ref": "AT101_A1",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "at101_m"
+   ],
+   "control": "input_l",
+   "positions": [
+    19
+   ],
+   "ron": 34.5007,
+   "note": "-1 dB series arm R1 34.50 ohm"
+  },
+  {
+   "ref": "AT101_B1",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    19
+   ],
+   "ron": 34.5007,
+   "note": "-1 dB series arm R1 34.50 ohm"
+  },
+  {
+   "ref": "AT101_C1",
+   "type": "switch",
+   "nodes": [
+    "at101_m",
+    "0"
+   ],
+   "control": "input_l",
+   "positions": [
+    19
+   ],
+   "ron": 5200.0386,
+   "note": "-1 dB shunt arm R2 5200.04 ohm"
+  },
+  {
+   "ref": "AT101_S0",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "a1o"
+   ],
+   "control": "input_l",
+   "positions": [
+    20
+   ],
+   "ron": 0.01,
+   "note": "AT101 0 dB: through"
+  },
+  {
+   "ref": "AT102_A20",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    0
+   ],
+   "ron": 490.9091,
+   "note": "-20 dB series arm R1 490.91 ohm"
+  },
+  {
+   "ref": "AT102_B20",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    0
+   ],
+   "ron": 490.9091,
+   "note": "-20 dB series arm R1 490.91 ohm"
+  },
+  {
+   "ref": "AT102_C20",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    0
+   ],
+   "ron": 121.2121,
+   "note": "-20 dB shunt arm R2 121.21 ohm"
+  },
+  {
+   "ref": "AT102_A19",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    1
+   ],
+   "ron": 478.9408,
+   "note": "-19 dB series arm R1 478.94 ohm"
+  },
+  {
+   "ref": "AT102_B19",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    1
+   ],
+   "ron": 478.9408,
+   "note": "-19 dB series arm R1 478.94 ohm"
+  },
+  {
+   "ref": "AT102_C19",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    1
+   ],
+   "ron": 136.3589,
+   "note": "-19 dB shunt arm R2 136.36 ohm"
+  },
+  {
+   "ref": "AT102_A18",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    2
+   ],
+   "ron": 465.8211,
+   "note": "-18 dB series arm R1 465.82 ohm"
+  },
+  {
+   "ref": "AT102_B18",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    2
+   ],
+   "ron": 465.8211,
+   "note": "-18 dB series arm R1 465.82 ohm"
+  },
+  {
+   "ref": "AT102_C18",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    2
+   ],
+   "ron": 153.5039,
+   "note": "-18 dB shunt arm R2 153.50 ohm"
+  },
+  {
+   "ref": "AT102_A17",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    3
+   ],
+   "ron": 451.4752,
+   "note": "-17 dB series arm R1 451.48 ohm"
+  },
+  {
+   "ref": "AT102_B17",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    3
+   ],
+   "ron": 451.4752,
+   "note": "-17 dB series arm R1 451.48 ohm"
+  },
+  {
+   "ref": "AT102_C17",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    3
+   ],
+   "ron": 172.9554,
+   "note": "-17 dB shunt arm R2 172.96 ohm"
+  },
+  {
+   "ref": "AT102_A16",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    4
+   ],
+   "ron": 435.8317,
+   "note": "-16 dB series arm R1 435.83 ohm"
+  },
+  {
+   "ref": "AT102_B16",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    4
+   ],
+   "ron": 435.8317,
+   "note": "-16 dB series arm R1 435.83 ohm"
+  },
+  {
+   "ref": "AT102_C16",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    4
+   ],
+   "ron": 195.0876,
+   "note": "-16 dB shunt arm R2 195.09 ohm"
+  },
+  {
+   "ref": "AT102_A15",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    5
+   ],
+   "ron": 418.8245,
+   "note": "-15 dB series arm R1 418.82 ohm"
+  },
+  {
+   "ref": "AT102_B15",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    5
+   ],
+   "ron": 418.8245,
+   "note": "-15 dB series arm R1 418.82 ohm"
+  },
+  {
+   "ref": "AT102_C15",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    5
+   ],
+   "ron": 220.362,
+   "note": "-15 dB shunt arm R2 220.36 ohm"
+  },
+  {
+   "ref": "AT102_A14",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    6
+   ],
+   "ron": 400.395,
+   "note": "-14 dB series arm R1 400.39 ohm"
+  },
+  {
+   "ref": "AT102_B14",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    6
+   ],
+   "ron": 400.395,
+   "note": "-14 dB series arm R1 400.39 ohm"
+  },
+  {
+   "ref": "AT102_C14",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    6
+   ],
+   "ron": 249.3586,
+   "note": "-14 dB shunt arm R2 249.36 ohm"
+  },
+  {
+   "ref": "AT102_A13",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    7
+   ],
+   "ron": 380.4946,
+   "note": "-13 dB series arm R1 380.49 ohm"
+  },
+  {
+   "ref": "AT102_B13",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    7
+   ],
+   "ron": 380.4946,
+   "note": "-13 dB series arm R1 380.49 ohm"
+  },
+  {
+   "ref": "AT102_C13",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    7
+   ],
+   "ron": 282.8212,
+   "note": "-13 dB shunt arm R2 282.82 ohm"
+  },
+  {
+   "ref": "AT102_A12",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    8
+   ],
+   "ron": 359.088,
+   "note": "-12 dB series arm R1 359.09 ohm"
+  },
+  {
+   "ref": "AT102_B12",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    8
+   ],
+   "ron": 359.088,
+   "note": "-12 dB series arm R1 359.09 ohm"
+  },
+  {
+   "ref": "AT102_C12",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    8
+   ],
+   "ron": 321.7259,
+   "note": "-12 dB shunt arm R2 321.73 ohm"
+  },
+  {
+   "ref": "AT102_A11",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    9
+   ],
+   "ron": 336.1555,
+   "note": "-11 dB series arm R1 336.16 ohm"
+  },
+  {
+   "ref": "AT102_B11",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    9
+   ],
+   "ron": 336.1555,
+   "note": "-11 dB series arm R1 336.16 ohm"
+  },
+  {
+   "ref": "AT102_C11",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    9
+   ],
+   "ron": 367.3887,
+   "note": "-11 dB shunt arm R2 367.39 ohm"
+  },
+  {
+   "ref": "AT102_A10",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    10
+   ],
+   "ron": 311.6963,
+   "note": "-10 dB series arm R1 311.70 ohm"
+  },
+  {
+   "ref": "AT102_B10",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    10
+   ],
+   "ron": 311.6963,
+   "note": "-10 dB series arm R1 311.70 ohm"
+  },
+  {
+   "ref": "AT102_C10",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    10
+   ],
+   "ron": 421.637,
+   "note": "-10 dB shunt arm R2 421.64 ohm"
+  },
+  {
+   "ref": "AT102_A9",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    11
+   ],
+   "ron": 285.7308,
+   "note": "-9 dB series arm R1 285.73 ohm"
+  },
+  {
+   "ref": "AT102_B9",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    11
+   ],
+   "ron": 285.7308,
+   "note": "-9 dB series arm R1 285.73 ohm"
+  },
+  {
+   "ref": "AT102_C9",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    11
+   ],
+   "ron": 487.0981,
+   "note": "-9 dB shunt arm R2 487.10 ohm"
+  },
+  {
+   "ref": "AT102_A8",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    12
+   ],
+   "ron": 258.3033,
+   "note": "-8 dB series arm R1 258.30 ohm"
+  },
+  {
+   "ref": "AT102_B8",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    12
+   ],
+   "ron": 258.3033,
+   "note": "-8 dB series arm R1 258.30 ohm"
+  },
+  {
+   "ref": "AT102_C8",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    12
+   ],
+   "ron": 567.7036,
+   "note": "-8 dB shunt arm R2 567.70 ohm"
+  },
+  {
+   "ref": "AT102_A7",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    13
+   ],
+   "ron": 229.4834,
+   "note": "-7 dB series arm R1 229.48 ohm"
+  },
+  {
+   "ref": "AT102_B7",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    13
+   ],
+   "ron": 229.4834,
+   "note": "-7 dB series arm R1 229.48 ohm"
+  },
+  {
+   "ref": "AT102_C7",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    13
+   ],
+   "ron": 669.6288,
+   "note": "-7 dB shunt arm R2 669.63 ohm"
+  },
+  {
+   "ref": "AT102_A6",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    14
+   ],
+   "ron": 199.3673,
+   "note": "-6 dB series arm R1 199.37 ohm"
+  },
+  {
+   "ref": "AT102_B6",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    14
+   ],
+   "ron": 199.3673,
+   "note": "-6 dB series arm R1 199.37 ohm"
+  },
+  {
+   "ref": "AT102_C6",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    14
+   ],
+   "ron": 803.1725,
+   "note": "-6 dB shunt arm R2 803.17 ohm"
+  },
+  {
+   "ref": "AT102_A5",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    15
+   ],
+   "ron": 168.078,
+   "note": "-5 dB series arm R1 168.08 ohm"
+  },
+  {
+   "ref": "AT102_B5",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    15
+   ],
+   "ron": 168.078,
+   "note": "-5 dB series arm R1 168.08 ohm"
+  },
+  {
+   "ref": "AT102_C5",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    15
+   ],
+   "ron": 986.8924,
+   "note": "-5 dB shunt arm R2 986.89 ohm"
+  },
+  {
+   "ref": "AT102_A4",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    16
+   ],
+   "ron": 135.7642,
+   "note": "-4 dB series arm R1 135.76 ohm"
+  },
+  {
+   "ref": "AT102_B4",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    16
+   ],
+   "ron": 135.7642,
+   "note": "-4 dB series arm R1 135.76 ohm"
+  },
+  {
+   "ref": "AT102_C4",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    16
+   ],
+   "ron": 1257.9462,
+   "note": "-4 dB shunt arm R2 1257.95 ohm"
+  },
+  {
+   "ref": "AT102_A3",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    17
+   ],
+   "ron": 102.5984,
+   "note": "-3 dB series arm R1 102.60 ohm"
+  },
+  {
+   "ref": "AT102_B3",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    17
+   ],
+   "ron": 102.5984,
+   "note": "-3 dB series arm R1 102.60 ohm"
+  },
+  {
+   "ref": "AT102_C3",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    17
+   ],
+   "ron": 1703.1139,
+   "note": "-3 dB shunt arm R2 1703.11 ohm"
+  },
+  {
+   "ref": "AT102_A2",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    18
+   ],
+   "ron": 68.774,
+   "note": "-2 dB series arm R1 68.77 ohm"
+  },
+  {
+   "ref": "AT102_B2",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    18
+   ],
+   "ron": 68.774,
+   "note": "-2 dB series arm R1 68.77 ohm"
+  },
+  {
+   "ref": "AT102_C2",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    18
+   ],
+   "ron": 2582.8827,
+   "note": "-2 dB shunt arm R2 2582.88 ohm"
+  },
+  {
+   "ref": "AT102_A1",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "at102_m"
+   ],
+   "control": "input_r",
+   "positions": [
+    19
+   ],
+   "ron": 34.5007,
+   "note": "-1 dB series arm R1 34.50 ohm"
+  },
+  {
+   "ref": "AT102_B1",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    19
+   ],
+   "ron": 34.5007,
+   "note": "-1 dB series arm R1 34.50 ohm"
+  },
+  {
+   "ref": "AT102_C1",
+   "type": "switch",
+   "nodes": [
+    "at102_m",
+    "0"
+   ],
+   "control": "input_r",
+   "positions": [
+    19
+   ],
+   "ron": 5200.0386,
+   "note": "-1 dB shunt arm R2 5200.04 ohm"
+  },
+  {
+   "ref": "AT102_S0",
+   "type": "switch",
+   "nodes": [
+    "j6",
+    "a2o"
+   ],
+   "control": "input_r",
+   "positions": [
+    20
+   ],
+   "ron": 0.01,
+   "note": "AT102 0 dB: through"
+  },
+  {
+   "ref": "T101",
+   "type": "transformer",
+   "nodes": [
+    "a1o",
+    "t1p2",
+    "t1p3",
+    "t1p4",
+    "gu1",
+    "ctl1",
+    "ctl1",
+    "gl1"
+   ],
+   "turns": [
+    1.0,
+    1.0,
+    3.94,
+    3.94
+   ],
+   "r": [
+    5.0,
+    5.0,
+    25.0,
+    25.0
+   ],
+   "leak": [
+    "2m",
+    "2m",
+    "0.5m",
+    "0.5m"
+   ],
+   "lm": 8.9,
+   "label": "T101 input transformer (primary 1-2 / 3-4, secondary 5 - 6,7 (CT) - 8)",
+   "note": "no published data: turns 1:3.94 per half (DAFx-12 Np/Ns), magnetising 35.7 H at the 600-ohm side, DCR / leakage from DAFx-12 Table 2 (Rp 10, Lp 4 mH, Rs 50, Ls 1 mH) split per half; FITTED, unverified"
+  },
+  {
+   "ref": "R101",
+   "type": "R",
+   "nodes": [
+    "a1o",
+    "t1p2"
+   ],
+   "value": "180",
+   "tolerance": 0.01,
+   "note": "180 ohm 1 % (A-96039; the redraw prints 150)"
+  },
+  {
+   "ref": "R102",
+   "type": "R",
+   "nodes": [
+    "t1p3",
+    "t1p4"
+   ],
+   "value": "180",
+   "tolerance": 0.01
+  },
+  {
+   "ref": "T201",
+   "type": "transformer",
+   "nodes": [
+    "t2p1",
+    "t2p2",
+    "t2p3",
+    "t2p4",
+    "gu2",
+    "ctl2",
+    "ctl2",
+    "gl2"
+   ],
+   "turns": [
+    1.0,
+    1.0,
+    3.94,
+    3.94
+   ],
+   "r": [
+    5.0,
+    5.0,
+    25.0,
+    25.0
+   ],
+   "leak": [
+    "2m",
+    "2m",
+    "0.5m",
+    "0.5m"
+   ],
+   "lm": 8.9,
+   "label": "T201 input transformer (primary 1-2 / 3-4, secondary 5 - 6,7 (CT) - 8)",
+   "note": "no published data: turns 1:3.94 per half (DAFx-12 Np/Ns), magnetising 35.7 H at the 600-ohm side, DCR / leakage from DAFx-12 Table 2 (Rp 10, Lp 4 mH, Rs 50, Ls 1 mH) split per half; FITTED, unverified"
+  },
+  {
+   "ref": "R201",
+   "type": "R",
+   "nodes": [
+    "t2p1",
+    "t2p2"
+   ],
+   "value": "180",
+   "tolerance": 0.01,
+   "note": "180 ohm 1 % (A-96039; the redraw prints 150)"
+  },
+  {
+   "ref": "R202",
+   "type": "R",
+   "nodes": [
+    "t2p3",
+    "t2p4"
+   ],
+   "value": "180",
+   "tolerance": 0.01
+  },
+  {
+   "ref": "S301A_1",
+   "type": "switch",
+   "nodes": [
+    "t1p2",
+    "t1p3"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "note": "S301A contact 1 (LEFT & RIGHT)"
+  },
+  {
+   "ref": "S301A_2",
+   "type": "switch",
+   "nodes": [
+    "t1p2",
+    "t2p1"
+   ],
+   "control": "mode",
+   "positions": [
+    1
+   ],
+   "note": "S301A contact 2 (LATERAL & VERTICAL)"
+  },
+  {
+   "ref": "S301B_1",
+   "type": "switch",
+   "nodes": [
+    "0",
+    "t1p4"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "note": "S301B contact 1 (LEFT & RIGHT)"
+  },
+  {
+   "ref": "S301B_2",
+   "type": "switch",
+   "nodes": [
+    "0",
+    "t2p2"
+   ],
+   "control": "mode",
+   "positions": [
+    1
+   ],
+   "note": "S301B contact 2 (LATERAL & VERTICAL)"
+  },
+  {
+   "ref": "S301C_1",
+   "type": "switch",
+   "nodes": [
+    "a2o",
+    "t2p1"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "note": "S301C contact 1 (LEFT & RIGHT)"
+  },
+  {
+   "ref": "S301C_2",
+   "type": "switch",
+   "nodes": [
+    "a2o",
+    "t1p3"
+   ],
+   "control": "mode",
+   "positions": [
+    1
+   ],
+   "note": "S301C contact 2 (LATERAL & VERTICAL)"
+  },
+  {
+   "ref": "S301D_1",
+   "type": "switch",
+   "nodes": [
+    "t2p3",
+    "t2p2"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "note": "S301D contact 1 (LEFT & RIGHT)"
+  },
+  {
+   "ref": "S301D_2",
+   "type": "switch",
+   "nodes": [
+    "t2p3",
+    "0"
+   ],
+   "control": "mode",
+   "positions": [
+    1
+   ],
+   "note": "S301D contact 2 (LATERAL & VERTICAL)"
+  },
+  {
+   "ref": "S301E_1",
+   "type": "switch",
+   "nodes": [
+    "t2p4",
+    "0"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "note": "S301E contact 1 (LEFT & RIGHT)"
+  },
+  {
+   "ref": "S301E_2",
+   "type": "switch",
+   "nodes": [
+    "t2p4",
+    "t1p4"
+   ],
+   "control": "mode",
+   "positions": [
+    1
+   ],
+   "note": "S301E contact 2 (LATERAL & VERTICAL)"
+  },
+  {
+   "ref": "S301F_1",
+   "type": "switch",
+   "nodes": [
+    "o1s2",
+    "o1s3"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "note": "S301F contact 1 (LEFT & RIGHT)"
+  },
+  {
+   "ref": "S301F_2",
+   "type": "switch",
+   "nodes": [
+    "o1s2",
+    "o2s1"
+   ],
+   "control": "mode",
+   "positions": [
+    1
+   ],
+   "note": "S301F contact 2 (LATERAL & VERTICAL)"
+  },
+  {
+   "ref": "S301G_1",
+   "type": "switch",
+   "nodes": [
+    "0",
+    "o1s4"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "note": "S301G contact 1 (LEFT & RIGHT)"
+  },
+  {
+   "ref": "S301G_2",
+   "type": "switch",
+   "nodes": [
+    "0",
+    "o2s2"
+   ],
+   "control": "mode",
+   "positions": [
+    1
+   ],
+   "note": "S301G contact 2 (LATERAL & VERTICAL)"
+  },
+  {
+   "ref": "S301H_1",
+   "type": "switch",
+   "nodes": [
+    "outr",
+    "o2s1"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "note": "S301H contact 1 (LEFT & RIGHT)"
+  },
+  {
+   "ref": "S301H_2",
+   "type": "switch",
+   "nodes": [
+    "outr",
+    "o1s3"
+   ],
+   "control": "mode",
+   "positions": [
+    1
+   ],
+   "note": "S301H contact 2 (LATERAL & VERTICAL)"
+  },
+  {
+   "ref": "S301J_1",
+   "type": "switch",
+   "nodes": [
+    "o2s3",
+    "o2s2"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "note": "S301J contact 1 (LEFT & RIGHT)"
+  },
+  {
+   "ref": "S301J_2",
+   "type": "switch",
+   "nodes": [
+    "o2s3",
+    "0"
+   ],
+   "control": "mode",
+   "positions": [
+    1
+   ],
+   "note": "S301J contact 2 (LATERAL & VERTICAL)"
+  },
+  {
+   "ref": "S301K_1",
+   "type": "switch",
+   "nodes": [
+    "o2s4",
+    "0"
+   ],
+   "control": "mode",
+   "positions": [
+    0
+   ],
+   "note": "S301K contact 1 (LEFT & RIGHT)"
+  },
+  {
+   "ref": "S301K_2",
+   "type": "switch",
+   "nodes": [
+    "o2s4",
+    "o1s4"
+   ],
+   "control": "mode",
+   "positions": [
+    1
+   ],
+   "note": "S301K contact 2 (LATERAL & VERTICAL)"
+  },
+  {
+   "ref": "RLOAD_L",
+   "type": "R",
+   "nodes": [
+    "outl",
+    "0"
+   ],
+   "value": "600",
+   "note": "600-ohm load across terminals 12-13 (13 strapped to chassis 14)"
+  },
+  {
+   "ref": "RLOAD_R",
+   "type": "R",
+   "nodes": [
+    "outr",
+    "0"
+   ],
+   "value": "600",
+   "note": "600-ohm load across terminals 15-16 (16 strapped to chassis 17)"
+  },
+  {
+   "ref": "C114",
+   "type": "C",
+   "nodes": [
+    "gu1",
+    "gl1"
+   ],
+   "value": {
+    "nominal": "30p",
+    "control": "c114trim1",
+    "min": "5p",
+    "max": "100p",
+    "law": "log"
+   },
+   "note": "C114 trimmer across the grid lines (value not printed; trim control)"
+  },
+  {
+   "ref": "XU1",
+   "type": "sub",
+   "nodes": [
+    "pu1",
+    "gu1",
+    "ku1"
+   ],
+   "of": "s6386",
+   "parallel": 4,
+   "label": "V101A/V102A (sect. 2, pins 4/3/2) || V103B/V104B (sect. 1, pins 6/7/8): upper 6386 sections"
+  },
+  {
+   "ref": "XL1",
+   "type": "sub",
+   "nodes": [
+    "pl1",
+    "gl1",
+    "kl1"
+   ],
+   "of": "s6386",
+   "parallel": 4,
+   "label": "V101B/V102B (sect. 1, pins 6/7/8) || V103A/V104A (sect. 2, pins 4/3/2): lower 6386 sections"
+  },
+  {
+   "ref": "R103",
+   "type": "R",
+   "nodes": [
+    "ku1",
+    "bt1"
+   ],
+   "value": "680",
+   "note": "680 1W"
+  },
+  {
+   "ref": "R104",
+   "type": "R",
+   "nodes": [
+    "bb1",
+    "kl1"
+   ],
+   "value": "680",
+   "note": "680 1W"
+  },
+  {
+   "ref": "R105A",
+   "type": "pot",
+   "nodes": [
+    "bb1",
+    "0",
+    "bt1"
+   ],
+   "value": "100",
+   "taper": "B",
+   "control": "balance1",
+   "note": "BALANCE 100 ohm, ganged with R105B, wipers opposed (A-96039 box); wiper to chassis"
+  },
+  {
+   "ref": "R105B",
+   "type": "pot",
+   "nodes": [
+    "bt1",
+    "na",
+    "bb1"
+   ],
+   "value": "100",
+   "taper": "B",
+   "control": "balance1",
+   "note": "BALANCE 100 ohm, wiper to the L302 bias rail (-ve, C303)"
+  },
+  {
+   "ref": "C101",
+   "type": "C",
+   "nodes": [
+    "ku1",
+    "kl1"
+   ],
+   "value": "4u",
+   "note": "C101 4 uF 200 V across the cathode groups (one symbol labelled C101 / C102, the drawing's convention for paralleled identical parts, as V101A / V102A)"
+  },
+  {
+   "ref": "C102",
+   "type": "C",
+   "nodes": [
+    "ku1",
+    "kl1"
+   ],
+   "value": "4u",
+   "note": "C102 4 uF 200 V, in parallel with C101"
+  },
+  {
+   "ref": "T102",
+   "type": "transformer",
+   "nodes": [
+    "pu1",
+    "t31",
+    "t21",
+    "pl1",
+    "outl",
+    "o1s2",
+    "o1s3",
+    "o1s4"
+   ],
+   "turns": [
+    6.0,
+    6.0,
+    1.0,
+    1.0
+   ],
+   "r": [
+    420.0,
+    420.0,
+    2.5,
+    2.5
+   ],
+   "leak": [
+    "8m",
+    "8m",
+    "0.1m",
+    "0.1m"
+   ],
+   "lm": 8.9,
+   "label": "T102 output transformer (primary 4-3 / 2-1, secondaries 5-7 / 8-10)",
+   "note": "no published data: turns 6:1 per half (DAFx-12 9:1), 35.7 H at the 600-ohm side; primary half DCR 420 ohm FITTED to the redraw's (230 V) plates against the (240 V) centre; FITTED, unverified"
+  },
+  {
+   "ref": "R107",
+   "type": "R",
+   "nodes": [
+    "t31",
+    "n2401"
+   ],
+   "value": "30",
+   "tolerance": 0.01,
+   "note": "30 ohm 1 % meter shunt, upper half"
+  },
+  {
+   "ref": "R108",
+   "type": "R",
+   "nodes": [
+    "n2401",
+    "t21"
+   ],
+   "value": "30",
+   "tolerance": 0.01,
+   "note": "30 ohm 1 % meter shunt, lower half"
+  },
+  {
+   "ref": "R111",
+   "type": "R",
+   "nodes": [
+    "n2401",
+    "b240"
+   ],
+   "value": "33",
+   "tolerance": 0.01,
+   "note": "33 ohm 1W (redraw: 1 %); remote-meter shunt (terminals 8/9 or 10/11)"
+  },
+  {
+   "ref": "R106",
+   "type": "R",
+   "nodes": [
+    "n2401",
+    "mp1"
+   ],
+   "value": "4k7",
+   "tolerance": 0.01,
+   "note": "4700 1 %"
+  },
+  {
+   "ref": "M101",
+   "type": "R",
+   "nodes": [
+    "mp1",
+    "mm1"
+   ],
+   "value": "3900",
+   "note": "front-panel VU movement, rectifier removed (DC); 3900 ohm is a standard VU movement's resistance (not on the drawing)"
+  },
+  {
+   "ref": "S101A",
+   "type": "switch",
+   "nodes": [
+    "mm1",
+    "t31"
+   ],
+   "control": "meter1",
+   "positions": [
+    1,
+    2
+   ],
+   "note": "S101A: positions 2, 3 to R107"
+  },
+  {
+   "ref": "S101B",
+   "type": "switch",
+   "nodes": [
+    "mm1",
+    "t21"
+   ],
+   "control": "meter1",
+   "positions": [
+    0,
+    1
+   ],
+   "note": "S101B: positions 1, 2 to R108"
+  },
+  {
+   "ref": "R145",
+   "type": "R",
+   "nodes": [
+    "outl",
+    "t3a1"
+   ],
+   "value": "150",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R146",
+   "type": "R",
+   "nodes": [
+    "o1s2",
+    "t3b1"
+   ],
+   "value": "150",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R149",
+   "type": "R",
+   "nodes": [
+    "t3a1",
+    "t3b1"
+   ],
+   "value": "680",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R147",
+   "type": "R",
+   "nodes": [
+    "o1s3",
+    "t3c1"
+   ],
+   "value": "150",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R148",
+   "type": "R",
+   "nodes": [
+    "o1s4",
+    "t3d1"
+   ],
+   "value": "150",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R150",
+   "type": "R",
+   "nodes": [
+    "t3c1",
+    "t3d1"
+   ],
+   "value": "680",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "T103",
+   "type": "transformer",
+   "nodes": [
+    "t3a1",
+    "t3b1",
+    "t3c1",
+    "t3d1",
+    "s51",
+    "0",
+    "0",
+    "s81"
+   ],
+   "turns": [
+    1.0,
+    1.0,
+    17.0,
+    17.0
+   ],
+   "r": [
+    5.0,
+    5.0,
+    25.0,
+    25.0
+   ],
+   "leak": [
+    "1m",
+    "1m",
+    "0.5m",
+    "0.5m"
+   ],
+   "lm": 1.425,
+   "label": "T103 side-chain input transformer (primary 1-3 / 2-4, secondary 5 - 6,7 (CT, chassis) - 8)",
+   "note": "no published data: DAFx-12 Np/Ns = 1/17, Lm 5.7 H, Table 2 sidechain DCR / leakage; FITTED, unverified"
+  },
+  {
+   "ref": "R115A_L",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "w115al1",
+    "ct115a1"
+   ],
+   "value": "90k",
+   "taper": "B",
+   "control": "threshold",
+   "span": [
+    0.0,
+    0.5
+   ],
+   "note": "AC THRESHOLD 180K LIN centre-tapped (A-96039: R115A prints 100K, R115B / R215A / R215B 180K; ganged pair, 180K taken): lower half-track, chassis end to the centre tap"
+  },
+  {
+   "ref": "R115A_H",
+   "type": "pot",
+   "nodes": [
+    "ct115a1",
+    "w115ah1",
+    "s51"
+   ],
+   "value": "90k",
+   "taper": "B",
+   "control": "threshold",
+   "span": [
+    0.5,
+    1.0
+   ],
+   "note": "upper half-track, centre tap to T103 pin 5"
+  },
+  {
+   "ref": "R115A_SL",
+   "type": "switch",
+   "nodes": [
+    "w115al1",
+    "g105a1"
+   ],
+   "control": "threshold",
+   "invert": true,
+   "ron": 0.01,
+   "note": "wiper on the lower half"
+  },
+  {
+   "ref": "R115A_SH",
+   "type": "switch",
+   "nodes": [
+    "w115ah1",
+    "g105a1"
+   ],
+   "control": "threshold",
+   "ron": 0.01,
+   "note": "wiper on the upper half"
+  },
+  {
+   "ref": "R113",
+   "type": "R",
+   "nodes": [
+    "ct115a1",
+    "0"
+   ],
+   "value": "24k",
+   "tolerance": 0.05,
+   "note": "24K 5 % from the pot's centre tap to the chassis bus (A-96039: the second contact drawn on the track; DAFx-12 reads it the same way); the redraw omits it"
+  },
+  {
+   "ref": "R115B_L",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "w115bl1",
+    "ct115b1"
+   ],
+   "value": "90k",
+   "taper": "B",
+   "control": "threshold",
+   "span": [
+    0.0,
+    0.5
+   ],
+   "note": "lower half-track"
+  },
+  {
+   "ref": "R115B_H",
+   "type": "pot",
+   "nodes": [
+    "ct115b1",
+    "w115bh1",
+    "s81"
+   ],
+   "value": "90k",
+   "taper": "B",
+   "control": "threshold",
+   "span": [
+    0.5,
+    1.0
+   ],
+   "note": "upper half-track, centre tap to T103 pin 8"
+  },
+  {
+   "ref": "R115B_SL",
+   "type": "switch",
+   "nodes": [
+    "w115bl1",
+    "g105b1"
+   ],
+   "control": "threshold",
+   "invert": true,
+   "ron": 0.01,
+   "note": "wiper on the lower half"
+  },
+  {
+   "ref": "R115B_SH",
+   "type": "switch",
+   "nodes": [
+    "w115bh1",
+    "g105b1"
+   ],
+   "control": "threshold",
+   "ron": 0.01,
+   "note": "wiper on the upper half"
+  },
+  {
+   "ref": "R114",
+   "type": "R",
+   "nodes": [
+    "ct115b1",
+    "0"
+   ],
+   "value": "24k",
+   "tolerance": 0.05,
+   "note": "24K 5 % from the pot's centre tap to the chassis bus (A-96039: the second contact drawn on the track; DAFx-12 reads it the same way); the redraw omits it"
+  },
+  {
+   "ref": "V105A",
+   "type": "triode",
+   "nodes": [
+    "p105a1",
+    "g105a1",
+    "k1051"
+   ],
+   "model": "12AX7",
+   "label": "V105A 12AX7 (pins 1/2/3)"
+  },
+  {
+   "ref": "V105B",
+   "type": "triode",
+   "nodes": [
+    "p105b1",
+    "g105b1",
+    "k1051"
+   ],
+   "model": "12AX7",
+   "label": "V105B 12AX7 (pins 6/7/8)"
+  },
+  {
+   "ref": "R120",
+   "type": "R",
+   "nodes": [
+    "b240",
+    "p105a1"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "note": "100K 1W 5 %"
+  },
+  {
+   "ref": "R121",
+   "type": "R",
+   "nodes": [
+    "b240",
+    "p105b1"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "note": "100K 1W 5 %"
+  },
+  {
+   "ref": "R117",
+   "type": "pot",
+   "nodes": [
+    "k1051",
+    "w1171",
+    "0"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "dcthr1",
+   "note": "DC THRESHOLD 100K (screwdriver, beneath panel): track from the T103 centre-tap bus (chassis) to the 12AX7 cathodes"
+  },
+  {
+   "ref": "R116",
+   "type": "R",
+   "nodes": [
+    "b240",
+    "w1171"
+   ],
+   "value": "270k",
+   "note": "270K into the DC THRESHOLD wiper"
+  },
+  {
+   "ref": "R118",
+   "type": "R",
+   "nodes": [
+    "b240",
+    "k1051"
+   ],
+   "value": "1M"
+  },
+  {
+   "ref": "R119",
+   "type": "R",
+   "nodes": [
+    "k1051",
+    "0"
+   ],
+   "value": "18k",
+   "note": "18K (A-96039 R119 and R219; the redraw prints 1M)"
+  },
+  {
+   "ref": "C103",
+   "type": "C",
+   "nodes": [
+    "p105a1",
+    "g106a1"
+   ],
+   "value": "50n",
+   "note": ".05 400V"
+  },
+  {
+   "ref": "C104",
+   "type": "C",
+   "nodes": [
+    "p105b1",
+    "g106b1"
+   ],
+   "value": "50n",
+   "note": ".05 400V"
+  },
+  {
+   "ref": "R122",
+   "type": "R",
+   "nodes": [
+    "g106a1",
+    "0"
+   ],
+   "value": "1M"
+  },
+  {
+   "ref": "R123",
+   "type": "R",
+   "nodes": [
+    "g106b1",
+    "0"
+   ],
+   "value": "1M"
+  },
+  {
+   "ref": "V106A",
+   "type": "triode",
+   "nodes": [
+    "p106a1",
+    "g106a1",
+    "k106a1"
+   ],
+   "model": "12BH7A",
+   "label": "V106A 12BH7A (pins 1/2/3)"
+  },
+  {
+   "ref": "V106B",
+   "type": "triode",
+   "nodes": [
+    "p106b1",
+    "g106b1",
+    "k106b1"
+   ],
+   "model": "12BH7A",
+   "label": "V106B 12BH7A (pins 6/7/8)"
+  },
+  {
+   "ref": "R124",
+   "type": "R",
+   "nodes": [
+    "k106a1",
+    "0"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "note": "1000 1W 5 %"
+  },
+  {
+   "ref": "R125",
+   "type": "R",
+   "nodes": [
+    "k106b1",
+    "0"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "note": "1000 1W 5 %"
+  },
+  {
+   "ref": "R126",
+   "type": "R",
+   "nodes": [
+    "b450",
+    "p106a1"
+   ],
+   "value": "100k",
+   "note": "100K 2W"
+  },
+  {
+   "ref": "R127",
+   "type": "R",
+   "nodes": [
+    "b450",
+    "p106b1"
+   ],
+   "value": "100k",
+   "note": "100K 2W"
+  },
+  {
+   "ref": "R128",
+   "type": "R",
+   "nodes": [
+    "k106a1",
+    "gy1"
+   ],
+   "value": "2k7",
+   "tolerance": 0.05,
+   "note": "2700 1W 5 pct to T104 G-Y (printed 'R120' on A-96039, R128 on the redraw)"
+  },
+  {
+   "ref": "R129",
+   "type": "R",
+   "nodes": [
+    "k106b1",
+    "gg1"
+   ],
+   "value": "2k7",
+   "tolerance": 0.05,
+   "note": "2700 1W 5 pct to T104 G"
+  },
+  {
+   "ref": "C107",
+   "type": "C",
+   "nodes": [
+    "p106a1",
+    "g1071"
+   ],
+   "value": "100n",
+   "note": ".1 600V"
+  },
+  {
+   "ref": "C108",
+   "type": "C",
+   "nodes": [
+    "p106b1",
+    "g1081"
+   ],
+   "value": "100n",
+   "note": ".1 600V"
+  },
+  {
+   "ref": "R130",
+   "type": "R",
+   "nodes": [
+    "g1071",
+    "nc"
+   ],
+   "value": "150k",
+   "note": "150K (redraw: 150 ohm)"
+  },
+  {
+   "ref": "R131",
+   "type": "R",
+   "nodes": [
+    "g1081",
+    "nc"
+   ],
+   "value": "150k"
+  },
+  {
+   "ref": "R143",
+   "type": "R",
+   "nodes": [
+    "g1071",
+    "x1431"
+   ],
+   "value": "47k"
+  },
+  {
+   "ref": "C105",
+   "type": "C",
+   "nodes": [
+    "x1431",
+    "p1071"
+   ],
+   "value": "20p",
+   "note": "20 MMF 1.6 KV"
+  },
+  {
+   "ref": "R144",
+   "type": "R",
+   "nodes": [
+    "g1081",
+    "x1441"
+   ],
+   "value": "47k",
+   "note": "47K (printed 'V144')"
+  },
+  {
+   "ref": "C106",
+   "type": "C",
+   "nodes": [
+    "x1441",
+    "p1081"
+   ],
+   "value": "20p",
+   "note": "20 MMF 1.6 KV (printed 'C107')"
+  },
+  {
+   "ref": "V107",
+   "type": "pentode",
+   "nodes": [
+    "p1071",
+    "sc1071",
+    "g1071",
+    "0"
+   ],
+   "model": "6973",
+   "label": "V107 6973 (plate 9, g1 3, cathode 7)"
+  },
+  {
+   "ref": "V108",
+   "type": "pentode",
+   "nodes": [
+    "p1081",
+    "sc1081",
+    "g1081",
+    "0"
+   ],
+   "model": "6973",
+   "label": "V108 6973 (plate 9, g1 6, g2 1, cathode 7)"
+  },
+  {
+   "ref": "R132",
+   "type": "R",
+   "nodes": [
+    "sc1071",
+    "v2"
+   ],
+   "value": "560"
+  },
+  {
+   "ref": "R133",
+   "type": "R",
+   "nodes": [
+    "sc1081",
+    "v2"
+   ],
+   "value": "560"
+  },
+  {
+   "ref": "T104",
+   "type": "transformer",
+   "nodes": [
+    "p1071",
+    "b450",
+    "b450",
+    "p1081",
+    "gy1",
+    "gg1",
+    "ay1",
+    "bk1"
+   ],
+   "turns": [
+    787.5,
+    787.5,
+    71.0,
+    252.0
+   ],
+   "r": [
+    79.5,
+    79.5,
+    8.7,
+    8.4
+   ],
+   "leak": [
+    "10m",
+    "10m",
+    "0.2m",
+    "1m"
+   ],
+   "lm": 3.6382e-05,
+   "label": "T104 side-chain output transformer (BL-CT-BR plate windings, G-Y/G tertiary, A-Y/BK secondary)",
+   "note": "turns from a teardown of the CTC-150 control output transformer (T-104 / T-204): primary 7 layers x 225 t = 1575 t #36, centre-tapped, so 787.5 t per plate half; tertiary 1 layer 71 t #36; secondary 252 t #29 (GroupDIY 'Winding Specs Of Audio Transfomerers For The Fairchild 670', posts #8 and #13, Jan. 2008; work/schematics/24000-fairchild-670/web/). Per plate half 11.09:1 to the tertiary and 3.125:1 to the secondary (DAFx-12 had 9.5:1 and 4:1). lm keeps the earlier 22.6 H per plate half (assumed). DCR from the same post: 159 ohm primary (79.5 per half), tertiary 8.7, secondary 8.4 ohm; leakage FITTED, unverified; winding sense chosen for negative feedback through R128/R129 (checked)"
+  },
+  {
+   "ref": "R134",
+   "type": "R",
+   "nodes": [
+    "gy1",
+    "0"
+   ],
+   "value": "560",
+   "note": "560 1W (A-96039 prints R134 860; R135, R234, R235 and the redraw 560)"
+  },
+  {
+   "ref": "R135",
+   "type": "R",
+   "nodes": [
+    "gg1",
+    "0"
+   ],
+   "value": "560",
+   "note": "560 1W"
+  },
+  {
+   "ref": "R136",
+   "type": "R",
+   "nodes": [
+    "ay1",
+    "bk1"
+   ],
+   "value": "3k9",
+   "note": "3900 1W (printed 'A136')"
+  },
+  {
+   "ref": "CR101",
+   "type": "D",
+   "nodes": [
+    "ay1",
+    "cvref1"
+   ],
+   "model": "1N538",
+   "label": "CR101 1N538 bridge"
+  },
+  {
+   "ref": "CR102",
+   "type": "D",
+   "nodes": [
+    "ctl1",
+    "ay1"
+   ],
+   "model": "1N538",
+   "label": "CR102 1N538 bridge"
+  },
+  {
+   "ref": "CR103",
+   "type": "D",
+   "nodes": [
+    "bk1",
+    "cvref1"
+   ],
+   "model": "1N538",
+   "label": "CR103 1N538 bridge"
+  },
+  {
+   "ref": "CR104",
+   "type": "D",
+   "nodes": [
+    "ctl1",
+    "bk1"
+   ],
+   "model": "1N538",
+   "label": "CR104 1N538 bridge"
+  },
+  {
+   "ref": "R137",
+   "type": "R",
+   "nodes": [
+    "ctl1",
+    "cvref1"
+   ],
+   "value": "220k"
+  },
+  {
+   "ref": "C109",
+   "type": "C",
+   "nodes": [
+    "ctl1",
+    "cvref1"
+   ],
+   "value": "2u",
+   "note": "2 uF 200V (redraw: .1)"
+  },
+  {
+   "ref": "S102A1",
+   "type": "switch",
+   "nodes": [
+    "ctl1",
+    "w111"
+   ],
+   "control": "tc1",
+   "positions": [
+    0
+   ]
+  },
+  {
+   "ref": "R141",
+   "type": "R",
+   "nodes": [
+    "w111",
+    "cvref1"
+   ],
+   "value": "68k"
+  },
+  {
+   "ref": "S102A3",
+   "type": "switch",
+   "nodes": [
+    "ctl1",
+    "w131"
+   ],
+   "control": "tc1",
+   "positions": [
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "ref": "C113",
+   "type": "C",
+   "nodes": [
+    "w131",
+    "cvref1"
+   ],
+   "value": "2u",
+   "note": "2 uF 200V"
+  },
+  {
+   "ref": "S102A6",
+   "type": "switch",
+   "nodes": [
+    "ctl1",
+    "w161"
+   ],
+   "control": "tc1",
+   "positions": [
+    5
+   ]
+  },
+  {
+   "ref": "R140",
+   "type": "R",
+   "nodes": [
+    "w161",
+    "x1401"
+   ],
+   "value": "100k"
+  },
+  {
+   "ref": "C112",
+   "type": "C",
+   "nodes": [
+    "x1401",
+    "cvref1"
+   ],
+   "value": "20u",
+   "note": "20 uF 150V"
+  },
+  {
+   "ref": "S102B2",
+   "type": "switch",
+   "nodes": [
+    "ctl1",
+    "w221"
+   ],
+   "control": "tc1",
+   "positions": [
+    1
+   ]
+  },
+  {
+   "ref": "R138",
+   "type": "R",
+   "nodes": [
+    "w221",
+    "cvref1"
+   ],
+   "value": "470k"
+  },
+  {
+   "ref": "S102B4",
+   "type": "switch",
+   "nodes": [
+    "ctl1",
+    "w241"
+   ],
+   "control": "tc1",
+   "positions": [
+    3
+   ]
+  },
+  {
+   "ref": "C111",
+   "type": "C",
+   "nodes": [
+    "w241",
+    "cvref1"
+   ],
+   "value": "4u",
+   "note": "4 uF 150V"
+  },
+  {
+   "ref": "S102B5",
+   "type": "switch",
+   "nodes": [
+    "ctl1",
+    "w251"
+   ],
+   "control": "tc1",
+   "positions": [
+    4,
+    5
+   ]
+  },
+  {
+   "ref": "R139",
+   "type": "R",
+   "nodes": [
+    "w251",
+    "x1391"
+   ],
+   "value": "100k"
+  },
+  {
+   "ref": "C110",
+   "type": "C",
+   "nodes": [
+    "x1391",
+    "cvref1"
+   ],
+   "value": "8u",
+   "note": "8 uF 150V"
+  },
+  {
+   "ref": "C115",
+   "type": "C",
+   "nodes": [
+    "cvref1",
+    "0"
+   ],
+   "value": "100n",
+   "note": ".1 200V (C215; C115's value prints as 'J' on A-96039, '???' on the redraw)"
+  },
+  {
+   "ref": "R142",
+   "type": "pot",
+   "nodes": [
+    "nb",
+    "cvref1",
+    "0"
+   ],
+   "value": "2k5",
+   "taper": "B",
+   "control": "zero1",
+   "note": "ZERO 2500 (screwdriver, front panel): from the -17 V bias rail to chassis"
+  },
+  {
+   "ref": "CW214",
+   "type": "C",
+   "nodes": [
+    "gu2",
+    "gl2"
+   ],
+   "value": {
+    "nominal": "30p",
+    "control": "c114trim2",
+    "min": "5p",
+    "max": "100p",
+    "law": "log"
+   },
+   "note": "drawn capacitor marked 'WIRING CAPAC.' (no part; value not printed; same trim range as C114)"
+  },
+  {
+   "ref": "XU2",
+   "type": "sub",
+   "nodes": [
+    "pu2",
+    "gu2",
+    "ku2"
+   ],
+   "of": "s6386",
+   "parallel": 4,
+   "label": "V201A/V202A (sect. 2, pins 4/3/2) || V203B/V204B (sect. 1, pins 6/7/8): upper 6386 sections"
+  },
+  {
+   "ref": "XL2",
+   "type": "sub",
+   "nodes": [
+    "pl2",
+    "gl2",
+    "kl2"
+   ],
+   "of": "s6386",
+   "parallel": 4,
+   "label": "V201B/V202B (sect. 1, pins 6/7/8) || V203A/V204A (sect. 2, pins 4/3/2): lower 6386 sections"
+  },
+  {
+   "ref": "R203",
+   "type": "R",
+   "nodes": [
+    "ku2",
+    "bt2"
+   ],
+   "value": "680",
+   "note": "680 1W"
+  },
+  {
+   "ref": "R204",
+   "type": "R",
+   "nodes": [
+    "bb2",
+    "kl2"
+   ],
+   "value": "680",
+   "note": "680 1W"
+  },
+  {
+   "ref": "R205A",
+   "type": "pot",
+   "nodes": [
+    "bb2",
+    "0",
+    "bt2"
+   ],
+   "value": "100",
+   "taper": "B",
+   "control": "balance2",
+   "note": "BALANCE 100 ohm, ganged with R205B, wipers opposed (A-96039 box); wiper to chassis"
+  },
+  {
+   "ref": "R205B",
+   "type": "pot",
+   "nodes": [
+    "bt2",
+    "na",
+    "bb2"
+   ],
+   "value": "100",
+   "taper": "B",
+   "control": "balance2",
+   "note": "BALANCE 100 ohm, wiper to the L302 bias rail (-ve, C303)"
+  },
+  {
+   "ref": "C201",
+   "type": "C",
+   "nodes": [
+    "ku2",
+    "kl2"
+   ],
+   "value": "4u",
+   "note": "C201 4 uF 200 V across the cathode groups (one symbol labelled C201 / C202, the drawing's convention for paralleled identical parts, as V101A / V102A)"
+  },
+  {
+   "ref": "C202",
+   "type": "C",
+   "nodes": [
+    "ku2",
+    "kl2"
+   ],
+   "value": "4u",
+   "note": "C202 4 uF 200 V, in parallel with C201"
+  },
+  {
+   "ref": "T202",
+   "type": "transformer",
+   "nodes": [
+    "pu2",
+    "t32",
+    "t22",
+    "pl2",
+    "o2s1",
+    "o2s2",
+    "o2s3",
+    "o2s4"
+   ],
+   "turns": [
+    6.0,
+    6.0,
+    1.0,
+    1.0
+   ],
+   "r": [
+    420.0,
+    420.0,
+    2.5,
+    2.5
+   ],
+   "leak": [
+    "8m",
+    "8m",
+    "0.1m",
+    "0.1m"
+   ],
+   "lm": 8.9,
+   "label": "T202 output transformer (primary 4-3 / 2-1, secondaries 5-7 / 8-10)",
+   "note": "no published data: turns 6:1 per half (DAFx-12 9:1), 35.7 H at the 600-ohm side; primary half DCR 420 ohm FITTED to the redraw's (230 V) plates against the (240 V) centre; FITTED, unverified"
+  },
+  {
+   "ref": "R207",
+   "type": "R",
+   "nodes": [
+    "t32",
+    "n2402"
+   ],
+   "value": "30",
+   "tolerance": 0.01,
+   "note": "30 ohm 1 % meter shunt, upper half"
+  },
+  {
+   "ref": "R208",
+   "type": "R",
+   "nodes": [
+    "n2402",
+    "t22"
+   ],
+   "value": "30",
+   "tolerance": 0.01,
+   "note": "30 ohm 1 % meter shunt, lower half"
+  },
+  {
+   "ref": "R211",
+   "type": "R",
+   "nodes": [
+    "n2402",
+    "b240"
+   ],
+   "value": "33",
+   "tolerance": 0.01,
+   "note": "33 ohm 1W (redraw: 1 %); remote-meter shunt (terminals 8/9 or 10/11)"
+  },
+  {
+   "ref": "R206",
+   "type": "R",
+   "nodes": [
+    "n2402",
+    "mp2"
+   ],
+   "value": "4k7",
+   "tolerance": 0.01,
+   "note": "4700 1 %"
+  },
+  {
+   "ref": "M201",
+   "type": "R",
+   "nodes": [
+    "mp2",
+    "mm2"
+   ],
+   "value": "3900",
+   "note": "front-panel VU movement, rectifier removed (DC); 3900 ohm is a standard VU movement's resistance (not on the drawing)"
+  },
+  {
+   "ref": "S201A",
+   "type": "switch",
+   "nodes": [
+    "mm2",
+    "t32"
+   ],
+   "control": "meter2",
+   "positions": [
+    1,
+    2
+   ],
+   "note": "S201A: positions 2, 3 to R207"
+  },
+  {
+   "ref": "S201B",
+   "type": "switch",
+   "nodes": [
+    "mm2",
+    "t22"
+   ],
+   "control": "meter2",
+   "positions": [
+    0,
+    1
+   ],
+   "note": "S201B: positions 1, 2 to R208"
+  },
+  {
+   "ref": "R245",
+   "type": "R",
+   "nodes": [
+    "o2s1",
+    "t3a2"
+   ],
+   "value": "150",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R246",
+   "type": "R",
+   "nodes": [
+    "o2s2",
+    "t3b2"
+   ],
+   "value": "150",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R249",
+   "type": "R",
+   "nodes": [
+    "t3a2",
+    "t3b2"
+   ],
+   "value": "680",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R247",
+   "type": "R",
+   "nodes": [
+    "o2s3",
+    "t3c2"
+   ],
+   "value": "150",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R248",
+   "type": "R",
+   "nodes": [
+    "o2s4",
+    "t3d2"
+   ],
+   "value": "150",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "R250",
+   "type": "R",
+   "nodes": [
+    "t3c2",
+    "t3d2"
+   ],
+   "value": "680",
+   "tolerance": 0.05
+  },
+  {
+   "ref": "T203",
+   "type": "transformer",
+   "nodes": [
+    "t3a2",
+    "t3b2",
+    "t3c2",
+    "t3d2",
+    "s52",
+    "0",
+    "0",
+    "s82"
+   ],
+   "turns": [
+    1.0,
+    1.0,
+    17.0,
+    17.0
+   ],
+   "r": [
+    5.0,
+    5.0,
+    25.0,
+    25.0
+   ],
+   "leak": [
+    "1m",
+    "1m",
+    "0.5m",
+    "0.5m"
+   ],
+   "lm": 1.425,
+   "label": "T203 side-chain input transformer (primary 1-3 / 2-4, secondary 5 - 6,7 (CT, chassis) - 8)",
+   "note": "no published data: DAFx-12 Np/Ns = 1/17, Lm 5.7 H, Table 2 sidechain DCR / leakage; FITTED, unverified"
+  },
+  {
+   "ref": "R215A_L",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "w115al2",
+    "ct115a2"
+   ],
+   "value": "90k",
+   "taper": "B",
+   "control": "threshold",
+   "span": [
+    0.0,
+    0.5
+   ],
+   "note": "AC THRESHOLD 180K LIN centre-tapped (A-96039: R115A prints 100K, R115B / R215A / R215B 180K; ganged pair, 180K taken): lower half-track, chassis end to the centre tap"
+  },
+  {
+   "ref": "R215A_H",
+   "type": "pot",
+   "nodes": [
+    "ct115a2",
+    "w115ah2",
+    "s52"
+   ],
+   "value": "90k",
+   "taper": "B",
+   "control": "threshold",
+   "span": [
+    0.5,
+    1.0
+   ],
+   "note": "upper half-track, centre tap to T203 pin 5"
+  },
+  {
+   "ref": "R215A_SL",
+   "type": "switch",
+   "nodes": [
+    "w115al2",
+    "g105a2"
+   ],
+   "control": "threshold",
+   "invert": true,
+   "ron": 0.01,
+   "note": "wiper on the lower half"
+  },
+  {
+   "ref": "R215A_SH",
+   "type": "switch",
+   "nodes": [
+    "w115ah2",
+    "g105a2"
+   ],
+   "control": "threshold",
+   "ron": 0.01,
+   "note": "wiper on the upper half"
+  },
+  {
+   "ref": "R213",
+   "type": "R",
+   "nodes": [
+    "ct115a2",
+    "0"
+   ],
+   "value": "24k",
+   "tolerance": 0.05,
+   "note": "24K 5 % from the pot's centre tap to the chassis bus (A-96039: the second contact drawn on the track; DAFx-12 reads it the same way); the redraw omits it"
+  },
+  {
+   "ref": "R215B_L",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "w115bl2",
+    "ct115b2"
+   ],
+   "value": "90k",
+   "taper": "B",
+   "control": "threshold",
+   "span": [
+    0.0,
+    0.5
+   ],
+   "note": "lower half-track"
+  },
+  {
+   "ref": "R215B_H",
+   "type": "pot",
+   "nodes": [
+    "ct115b2",
+    "w115bh2",
+    "s82"
+   ],
+   "value": "90k",
+   "taper": "B",
+   "control": "threshold",
+   "span": [
+    0.5,
+    1.0
+   ],
+   "note": "upper half-track, centre tap to T203 pin 8"
+  },
+  {
+   "ref": "R215B_SL",
+   "type": "switch",
+   "nodes": [
+    "w115bl2",
+    "g105b2"
+   ],
+   "control": "threshold",
+   "invert": true,
+   "ron": 0.01,
+   "note": "wiper on the lower half"
+  },
+  {
+   "ref": "R215B_SH",
+   "type": "switch",
+   "nodes": [
+    "w115bh2",
+    "g105b2"
+   ],
+   "control": "threshold",
+   "ron": 0.01,
+   "note": "wiper on the upper half"
+  },
+  {
+   "ref": "R214",
+   "type": "R",
+   "nodes": [
+    "ct115b2",
+    "0"
+   ],
+   "value": "24k",
+   "tolerance": 0.05,
+   "note": "24K 5 % from the pot's centre tap to the chassis bus (A-96039: the second contact drawn on the track; DAFx-12 reads it the same way); the redraw omits it"
+  },
+  {
+   "ref": "V205A",
+   "type": "triode",
+   "nodes": [
+    "p105a2",
+    "g105a2",
+    "k1052"
+   ],
+   "model": "12AX7",
+   "label": "V205A 12AX7 (pins 1/2/3)"
+  },
+  {
+   "ref": "V205B",
+   "type": "triode",
+   "nodes": [
+    "p105b2",
+    "g105b2",
+    "k1052"
+   ],
+   "model": "12AX7",
+   "label": "V205B 12AX7 (pins 6/7/8)"
+  },
+  {
+   "ref": "R220",
+   "type": "R",
+   "nodes": [
+    "b240",
+    "p105a2"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "note": "100K 1W 5 %"
+  },
+  {
+   "ref": "R221",
+   "type": "R",
+   "nodes": [
+    "b240",
+    "p105b2"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "note": "100K 1W 5 %"
+  },
+  {
+   "ref": "R217",
+   "type": "pot",
+   "nodes": [
+    "k1052",
+    "w1172",
+    "0"
+   ],
+   "value": "100k",
+   "taper": "B",
+   "control": "dcthr2",
+   "note": "DC THRESHOLD 100K (screwdriver, beneath panel): track from the T203 centre-tap bus (chassis) to the 12AX7 cathodes"
+  },
+  {
+   "ref": "R216",
+   "type": "R",
+   "nodes": [
+    "b240",
+    "w1172"
+   ],
+   "value": "270k",
+   "note": "270K into the DC THRESHOLD wiper"
+  },
+  {
+   "ref": "R218",
+   "type": "R",
+   "nodes": [
+    "b240",
+    "k1052"
+   ],
+   "value": "1M"
+  },
+  {
+   "ref": "R219",
+   "type": "R",
+   "nodes": [
+    "k1052",
+    "0"
+   ],
+   "value": "18k",
+   "note": "18K (A-96039 R119 and R219; the redraw prints 1M)"
+  },
+  {
+   "ref": "C203",
+   "type": "C",
+   "nodes": [
+    "p105a2",
+    "g106a2"
+   ],
+   "value": "50n",
+   "note": ".05 400V"
+  },
+  {
+   "ref": "C204",
+   "type": "C",
+   "nodes": [
+    "p105b2",
+    "g106b2"
+   ],
+   "value": "50n",
+   "note": ".05 400V"
+  },
+  {
+   "ref": "R222",
+   "type": "R",
+   "nodes": [
+    "g106a2",
+    "0"
+   ],
+   "value": "1M"
+  },
+  {
+   "ref": "R223",
+   "type": "R",
+   "nodes": [
+    "g106b2",
+    "0"
+   ],
+   "value": "1M"
+  },
+  {
+   "ref": "V206A",
+   "type": "triode",
+   "nodes": [
+    "p106a2",
+    "g106a2",
+    "k106a2"
+   ],
+   "model": "12BH7A",
+   "label": "V206A 12BH7A (pins 1/2/3)"
+  },
+  {
+   "ref": "V206B",
+   "type": "triode",
+   "nodes": [
+    "p106b2",
+    "g106b2",
+    "k106b2"
+   ],
+   "model": "12BH7A",
+   "label": "V206B 12BH7A (pins 6/7/8)"
+  },
+  {
+   "ref": "R224",
+   "type": "R",
+   "nodes": [
+    "k106a2",
+    "0"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "note": "1000 1W 5 %"
+  },
+  {
+   "ref": "R225",
+   "type": "R",
+   "nodes": [
+    "k106b2",
+    "0"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "note": "1000 1W 5 %"
+  },
+  {
+   "ref": "R226",
+   "type": "R",
+   "nodes": [
+    "b450",
+    "p106a2"
+   ],
+   "value": "100k",
+   "note": "100K 2W"
+  },
+  {
+   "ref": "R227",
+   "type": "R",
+   "nodes": [
+    "b450",
+    "p106b2"
+   ],
+   "value": "100k",
+   "note": "100K 2W"
+  },
+  {
+   "ref": "R228",
+   "type": "R",
+   "nodes": [
+    "k106a2",
+    "gy2"
+   ],
+   "value": "2k7",
+   "tolerance": 0.05,
+   "note": "2700 1W 5 %"
+  },
+  {
+   "ref": "R229",
+   "type": "R",
+   "nodes": [
+    "k106b2",
+    "gg2"
+   ],
+   "value": "2k7",
+   "tolerance": 0.05,
+   "note": "2700 1W 5 pct to T204 G"
+  },
+  {
+   "ref": "C207",
+   "type": "C",
+   "nodes": [
+    "p106a2",
+    "g1072"
+   ],
+   "value": "100n",
+   "note": ".1 600V"
+  },
+  {
+   "ref": "C208",
+   "type": "C",
+   "nodes": [
+    "p106b2",
+    "g1082"
+   ],
+   "value": "100n",
+   "note": ".1 600V"
+  },
+  {
+   "ref": "R230",
+   "type": "R",
+   "nodes": [
+    "g1072",
+    "nc"
+   ],
+   "value": "150k",
+   "note": "150K (redraw: 150 ohm)"
+  },
+  {
+   "ref": "R231",
+   "type": "R",
+   "nodes": [
+    "g1082",
+    "nc"
+   ],
+   "value": "150k"
+  },
+  {
+   "ref": "R243",
+   "type": "R",
+   "nodes": [
+    "g1072",
+    "x1432"
+   ],
+   "value": "47k"
+  },
+  {
+   "ref": "C205",
+   "type": "C",
+   "nodes": [
+    "x1432",
+    "p1072"
+   ],
+   "value": "10p",
+   "note": "10 MMF 1.6 KV (C205; C105 is 20)"
+  },
+  {
+   "ref": "R244",
+   "type": "R",
+   "nodes": [
+    "g1082",
+    "x1442"
+   ],
+   "value": "47k",
+   "note": "47K"
+  },
+  {
+   "ref": "C206",
+   "type": "C",
+   "nodes": [
+    "x1442",
+    "p1082"
+   ],
+   "value": "20p",
+   "note": "20 MMF 1.6 KV"
+  },
+  {
+   "ref": "V207",
+   "type": "pentode",
+   "nodes": [
+    "p1072",
+    "sc1072",
+    "g1072",
+    "0"
+   ],
+   "model": "6973",
+   "label": "V207 6973 (plate 9, g1 3, cathode 7)"
+  },
+  {
+   "ref": "V208",
+   "type": "pentode",
+   "nodes": [
+    "p1082",
+    "sc1082",
+    "g1082",
+    "0"
+   ],
+   "model": "6973",
+   "label": "V208 6973 (plate 9, g1 6, g2 1, cathode 7)"
+  },
+  {
+   "ref": "R232",
+   "type": "R",
+   "nodes": [
+    "sc1072",
+    "v2"
+   ],
+   "value": "560"
+  },
+  {
+   "ref": "R233",
+   "type": "R",
+   "nodes": [
+    "sc1082",
+    "v2"
+   ],
+   "value": "560"
+  },
+  {
+   "ref": "T204",
+   "type": "transformer",
+   "nodes": [
+    "p1072",
+    "b450",
+    "b450",
+    "p1082",
+    "gy2",
+    "gg2",
+    "ay2",
+    "bk2"
+   ],
+   "turns": [
+    787.5,
+    787.5,
+    71.0,
+    252.0
+   ],
+   "r": [
+    79.5,
+    79.5,
+    8.7,
+    8.4
+   ],
+   "leak": [
+    "10m",
+    "10m",
+    "0.2m",
+    "1m"
+   ],
+   "lm": 3.6382e-05,
+   "label": "T204 side-chain output transformer (BL-CT-BR plate windings, G-Y/G tertiary, A-Y/BK secondary)",
+   "note": "turns from a teardown of the CTC-150 control output transformer (T-104 / T-204): primary 7 layers x 225 t = 1575 t #36, centre-tapped, so 787.5 t per plate half; tertiary 1 layer 71 t #36; secondary 252 t #29 (GroupDIY 'Winding Specs Of Audio Transfomerers For The Fairchild 670', posts #8 and #13, Jan. 2008; work/schematics/24000-fairchild-670/web/). Per plate half 11.09:1 to the tertiary and 3.125:1 to the secondary (DAFx-12 had 9.5:1 and 4:1). lm keeps the earlier 22.6 H per plate half (assumed). DCR from the same post: 159 ohm primary (79.5 per half), tertiary 8.7, secondary 8.4 ohm; leakage FITTED, unverified; winding sense chosen for negative feedback through R228/R229 (checked)"
+  },
+  {
+   "ref": "R234",
+   "type": "R",
+   "nodes": [
+    "gy2",
+    "0"
+   ],
+   "value": "560",
+   "note": "560 1W"
+  },
+  {
+   "ref": "R235",
+   "type": "R",
+   "nodes": [
+    "gg2",
+    "0"
+   ],
+   "value": "560",
+   "note": "560 1W"
+  },
+  {
+   "ref": "R236",
+   "type": "R",
+   "nodes": [
+    "ay2",
+    "bk2"
+   ],
+   "value": "3k9",
+   "note": "3900 1W"
+  },
+  {
+   "ref": "CR201",
+   "type": "D",
+   "nodes": [
+    "ay2",
+    "cvref2"
+   ],
+   "model": "1N538",
+   "label": "CR201 1N538 bridge"
+  },
+  {
+   "ref": "CR202",
+   "type": "D",
+   "nodes": [
+    "ctl2",
+    "ay2"
+   ],
+   "model": "1N538",
+   "label": "CR202 1N538 bridge"
+  },
+  {
+   "ref": "CR203",
+   "type": "D",
+   "nodes": [
+    "bk2",
+    "cvref2"
+   ],
+   "model": "1N538",
+   "label": "CR203 1N538 bridge"
+  },
+  {
+   "ref": "CR204",
+   "type": "D",
+   "nodes": [
+    "ctl2",
+    "bk2"
+   ],
+   "model": "1N538",
+   "label": "CR204 1N538 bridge"
+  },
+  {
+   "ref": "R237",
+   "type": "R",
+   "nodes": [
+    "ctl2",
+    "cvref2"
+   ],
+   "value": "220k"
+  },
+  {
+   "ref": "C209",
+   "type": "C",
+   "nodes": [
+    "ctl2",
+    "cvref2"
+   ],
+   "value": "2u",
+   "note": "2 uF 200V (redraw: .1)"
+  },
+  {
+   "ref": "S202A1",
+   "type": "switch",
+   "nodes": [
+    "ctl2",
+    "w112"
+   ],
+   "control": "tc2",
+   "positions": [
+    0
+   ]
+  },
+  {
+   "ref": "R241",
+   "type": "R",
+   "nodes": [
+    "w112",
+    "cvref2"
+   ],
+   "value": "68k"
+  },
+  {
+   "ref": "S202A3",
+   "type": "switch",
+   "nodes": [
+    "ctl2",
+    "w132"
+   ],
+   "control": "tc2",
+   "positions": [
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "ref": "C213",
+   "type": "C",
+   "nodes": [
+    "w132",
+    "cvref2"
+   ],
+   "value": "2u",
+   "note": "2 uF 200V"
+  },
+  {
+   "ref": "S202A6",
+   "type": "switch",
+   "nodes": [
+    "ctl2",
+    "w162"
+   ],
+   "control": "tc2",
+   "positions": [
+    5
+   ]
+  },
+  {
+   "ref": "R240",
+   "type": "R",
+   "nodes": [
+    "w162",
+    "x1402"
+   ],
+   "value": "100k"
+  },
+  {
+   "ref": "C212",
+   "type": "C",
+   "nodes": [
+    "x1402",
+    "cvref2"
+   ],
+   "value": "20u",
+   "note": "20 uF 150V"
+  },
+  {
+   "ref": "S202B2",
+   "type": "switch",
+   "nodes": [
+    "ctl2",
+    "w222"
+   ],
+   "control": "tc2",
+   "positions": [
+    1
+   ]
+  },
+  {
+   "ref": "R238",
+   "type": "R",
+   "nodes": [
+    "w222",
+    "cvref2"
+   ],
+   "value": "470k"
+  },
+  {
+   "ref": "S202B4",
+   "type": "switch",
+   "nodes": [
+    "ctl2",
+    "w242"
+   ],
+   "control": "tc2",
+   "positions": [
+    3
+   ]
+  },
+  {
+   "ref": "C211",
+   "type": "C",
+   "nodes": [
+    "w242",
+    "cvref2"
+   ],
+   "value": "4u",
+   "note": "4 uF 150V"
+  },
+  {
+   "ref": "S202B5",
+   "type": "switch",
+   "nodes": [
+    "ctl2",
+    "w252"
+   ],
+   "control": "tc2",
+   "positions": [
+    4,
+    5
+   ]
+  },
+  {
+   "ref": "R239",
+   "type": "R",
+   "nodes": [
+    "w252",
+    "x1392"
+   ],
+   "value": "100k"
+  },
+  {
+   "ref": "C210",
+   "type": "C",
+   "nodes": [
+    "x1392",
+    "cvref2"
+   ],
+   "value": "8u",
+   "note": "8 uF 150V"
+  },
+  {
+   "ref": "C215",
+   "type": "C",
+   "nodes": [
+    "cvref2",
+    "0"
+   ],
+   "value": "100n",
+   "note": ".1 200V (C215; C115's value prints as 'J' on A-96039, '???' on the redraw)"
+  },
+  {
+   "ref": "R242",
+   "type": "pot",
+   "nodes": [
+    "nb",
+    "cvref2",
+    "0"
+   ],
+   "value": "2k5",
+   "taper": "B",
+   "control": "zero2",
+   "note": "ZERO 2500 (screwdriver, front panel): from the -17 V bias rail to chassis"
+  },
+  {
+   "ref": "VMAINS",
+   "type": "V",
+   "nodes": [
+    "mains",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "165.5",
+    "freq": 60,
+    "phase": 90
+   },
+   "label": "117 V 60 Hz mains (manual p.4: 117 volts, 50-60 cycles)"
+  },
+  {
+   "ref": "T302",
+   "type": "transformer",
+   "nodes": [
+    "mains",
+    "0",
+    "hta",
+    "0",
+    "0",
+    "htb"
+   ],
+   "turns": [
+    1.0,
+    3.36,
+    3.36
+   ],
+   "r": [
+    1.5,
+    60.0,
+    60.0
+   ],
+   "leak": [
+    "5m",
+    "40m",
+    "40m"
+   ],
+   "lm": 20.0,
+   "label": "T302 power transformer, HT secondary R / R-Y (CT) / R",
+   "note": "no published data: HT turns FITTED to the drawing's 420-450 V after L301; the R-Y centre tap returns through V304 5651 pins 2-7 (the reference tube's base link) to chassis, drawn here straight to chassis"
+  },
+  {
+   "ref": "V301A",
+   "type": "D",
+   "nodes": [
+    "hta",
+    "hv"
+   ],
+   "model": "GZ34",
+   "label": "V301 GZ34 (the drawing's 6234 / '6Z34'; manual: 1-GZ34 (5V4)) plate 4"
+  },
+  {
+   "ref": "V301B",
+   "type": "D",
+   "nodes": [
+    "htb",
+    "hv"
+   ],
+   "model": "GZ34",
+   "label": "V301 GZ34 plate 6"
+  },
+  {
+   "ref": "C304",
+   "type": "C",
+   "nodes": [
+    "hv",
+    "0"
+   ],
+   "value": "4u",
+   "note": "4 uF 440 VAC"
+  },
+  {
+   "ref": "L301",
+   "type": "L",
+   "nodes": [
+    "hv",
+    "lx"
+   ],
+   "value": "8",
+   "note": "L301: value not printed; 8 H assumed"
+  },
+  {
+   "ref": "RL301",
+   "type": "R",
+   "nodes": [
+    "lx",
+    "b450"
+   ],
+   "value": "150",
+   "note": "L301 DCR, not printed; 150 ohm assumed"
+  },
+  {
+   "ref": "C305",
+   "type": "C",
+   "nodes": [
+    "b450",
+    "m450"
+   ],
+   "value": "140u",
+   "note": "140 uF 350V"
+  },
+  {
+   "ref": "C306",
+   "type": "C",
+   "nodes": [
+    "m450",
+    "0"
+   ],
+   "value": "140u",
+   "note": "140 uF 350V"
+  },
+  {
+   "ref": "R305",
+   "type": "R",
+   "nodes": [
+    "b450",
+    "m450"
+   ],
+   "value": "100k",
+   "note": "100K 1W"
+  },
+  {
+   "ref": "R306",
+   "type": "R",
+   "nodes": [
+    "m450",
+    "0"
+   ],
+   "value": "100k",
+   "note": "100K 1W"
+  },
+  {
+   "ref": "V302",
+   "type": "pentode",
+   "nodes": [
+    "b450",
+    "b450",
+    "g302",
+    "b240"
+   ],
+   "model": "EL34",
+   "label": "V302 EL34 series pass (plate 3, g2 4 and g3 1 to the 450 V line, g1 5, cathode 8)"
+  },
+  {
+   "ref": "R309",
+   "type": "R",
+   "nodes": [
+    "b450",
+    "g302"
+   ],
+   "value": "470k",
+   "note": "470K 1W"
+  },
+  {
+   "ref": "V303",
+   "type": "pentode",
+   "nodes": [
+    "g302",
+    "sg303",
+    "g303",
+    "k303"
+   ],
+   "model": "6084",
+   "label": "V303 6084 error amplifier (plate 6, g2 1, g1 9, cathode 3 with g3 8 and shields 2, 7)"
+  },
+  {
+   "ref": "R310",
+   "type": "R",
+   "nodes": [
+    "b240",
+    "sg303"
+   ],
+   "value": "100k"
+  },
+  {
+   "ref": "R311",
+   "type": "R",
+   "nodes": [
+    "sg303",
+    "k303"
+   ],
+   "value": "270k"
+  },
+  {
+   "ref": "V304",
+   "type": "D",
+   "nodes": [
+    "0",
+    "k303"
+   ],
+   "model": "5651",
+   "label": "V304 5651 voltage reference (anode 5, cathode 7)"
+  },
+  {
+   "ref": "R312",
+   "type": "R",
+   "nodes": [
+    "b240",
+    "r313t"
+   ],
+   "value": "150k",
+   "note": "150K 1W"
+  },
+  {
+   "ref": "R313",
+   "type": "pot",
+   "nodes": [
+    "r313b",
+    "g303",
+    "r313t"
+   ],
+   "value": "250k",
+   "taper": "B",
+   "control": "badj",
+   "note": "REG B+ ADJ 250K (inside; manual: set 240 V at V302 pin 8)"
+  },
+  {
+   "ref": "R314",
+   "type": "R",
+   "nodes": [
+    "r313b",
+    "0"
+   ],
+   "value": "100k",
+   "note": "100K 1W"
+  },
+  {
+   "ref": "C307A",
+   "type": "C",
+   "nodes": [
+    "b240",
+    "0"
+   ],
+   "value": "80u",
+   "note": "80 uF 450V"
+  },
+  {
+   "ref": "R315",
+   "type": "R",
+   "nodes": [
+    "b240",
+    "v2"
+   ],
+   "value": "27k",
+   "note": "27K 1W"
+  },
+  {
+   "ref": "R316",
+   "type": "R",
+   "nodes": [
+    "v2",
+    "0"
+   ],
+   "value": "100k",
+   "note": "100K 1W"
+  },
+  {
+   "ref": "C307B",
+   "type": "C",
+   "nodes": [
+    "v2",
+    "0"
+   ],
+   "value": "60u",
+   "note": "60 uF 350V"
+  },
+  {
+   "ref": "T301",
+   "type": "transformer",
+   "nodes": [
+    "mains",
+    "0",
+    "bs1",
+    "bs2"
+   ],
+   "turns": [
+    1.0,
+    0.2425
+   ],
+   "r": [
+    20.0,
+    3.0
+   ],
+   "leak": [
+    "10m",
+    "0.5m"
+   ],
+   "lm": 8.0,
+   "label": "T301 bias transformer",
+   "note": "no published data: turns FITTED to the drawing's -13 ... -14.5 V"
+  },
+  {
+   "ref": "GR301A",
+   "type": "D",
+   "nodes": [
+    "nr",
+    "bs1"
+   ],
+   "model": "1N4001",
+   "label": "GR301 bridge (rectifier type not given on the drawing)"
+  },
+  {
+   "ref": "GR301B",
+   "type": "D",
+   "nodes": [
+    "nr",
+    "bs2"
+   ],
+   "model": "1N4001",
+   "label": "GR301 bridge (rectifier type not given on the drawing)"
+  },
+  {
+   "ref": "GR301C",
+   "type": "D",
+   "nodes": [
+    "bs1",
+    "0"
+   ],
+   "model": "1N4001",
+   "label": "GR301 bridge (rectifier type not given on the drawing)"
+  },
+  {
+   "ref": "GR301D",
+   "type": "D",
+   "nodes": [
+    "bs2",
+    "0"
+   ],
+   "model": "1N4001",
+   "label": "GR301 bridge (rectifier type not given on the drawing)"
+  },
+  {
+   "ref": "C302",
+   "type": "C",
+   "nodes": [
+    "0",
+    "nr"
+   ],
+   "value": "250u",
+   "note": "250 uF 50V"
+  },
+  {
+   "ref": "L302",
+   "type": "L",
+   "nodes": [
+    "nr",
+    "nax"
+   ],
+   "value": "1.5",
+   "note": "1.5 H 200 mA DC (redraw)"
+  },
+  {
+   "ref": "RL302",
+   "type": "R",
+   "nodes": [
+    "nax",
+    "na"
+   ],
+   "value": "90",
+   "note": "L302 DCR: not printed; FITTED (see notes)"
+  },
+  {
+   "ref": "C303",
+   "type": "C",
+   "nodes": [
+    "0",
+    "na"
+   ],
+   "value": "1000u",
+   "note": "1000 uF 15V"
+  },
+  {
+   "ref": "R301",
+   "type": "R",
+   "nodes": [
+    "nr",
+    "nb"
+   ],
+   "value": "1k",
+   "note": "1K 1W (from the C302 node, not after L302: A-96039 and the redraw agree)"
+  },
+  {
+   "ref": "C308",
+   "type": "C",
+   "nodes": [
+    "0",
+    "nb"
+   ],
+   "value": "250u",
+   "note": "250 uF 50V (printed 'C108'); the redraw's -17 V"
+  },
+  {
+   "ref": "R302",
+   "type": "R",
+   "nodes": [
+    "nb",
+    "nc"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "note": "10K 5 %"
+  },
+  {
+   "ref": "C309",
+   "type": "C",
+   "nodes": [
+    "0",
+    "nc"
+   ],
+   "value": "25u",
+   "note": "25 uF 25V (printed 'C308')"
+  },
+  {
+   "ref": "R303",
+   "type": "R",
+   "nodes": [
+    "nc",
+    "0"
+   ],
+   "value": "27k",
+   "tolerance": 0.05,
+   "note": "27K 5 %; the drawing's -13 V to -14.5 V"
+  }
+ ],
+ "cuts": [
+  "lx",
+  "b450",
+  "m450",
+  "g302",
+  "b240",
+  "sg303",
+  "k303",
+  "g303",
+  "r313t",
+  "r313b",
+  "v2",
+  "nr",
+  "nax",
+  "na",
+  "nb",
+  "nc"
+ ],
+ "readouts": {
+  "gr": {
+   "law": "table",
+   "node": "ctl1",
+   "ref": "cvref1",
+   "table": [
+    [
+     -61.0,
+     21.18
+    ],
+    [
+     -59.73,
+     19.64
+    ],
+    [
+     -55.73,
+     16.86
+    ],
+    [
+     -52.57,
+     14.18
+    ],
+    [
+     -49.74,
+     11.65
+    ],
+    [
+     -46.65,
+     9.24
+    ],
+    [
+     -44.27,
+     7.8
+    ],
+    [
+     -42.46,
+     6.93
+    ],
+    [
+     -38.58,
+     5.55
+    ],
+    [
+     -35.42,
+     4.78
+    ],
+    [
+     -27.81,
+     3.59
+    ],
+    [
+     -22.26,
+     3.03
+    ],
+    [
+     -11.42,
+     2.08
+    ],
+    [
+     -7.25,
+     1.54
+    ],
+    [
+     -1.53,
+     0.27
+    ],
+    [
+     0.0,
+     0.0
+    ]
+   ],
+   "note": "Left channel's control voltage (T101 centre tap against the R142 ZERO reference, i.e. the rectifier's output across R137 / C109 / S102) mapped through the gain reduction measured on this circuit (1 kHz static sweeps at four AC / DC threshold settings fall on one curve within 0.3 dB). The panel meter reads 6386 plate current in its ZERO position; this is that reading expressed in dB. Re-measured 2026-11-12 against the current circuit (GZ34 output uncut, 6973 grid rail -12.9 V): 1 kHz static staircases at the factory condition and at AC THRESHOLD 0.35 / 0.5 / 0.65 with the attenuator at 0 dB put the gain reduction (against the small-signal gain) 0.28 dB (median; spread -0.07 to -0.69) above the earlier table between -54 and -7 V, so the table moved up by 0.28 dB there; points above 3 % THD (12-16 dB of limiting at 0 dB input attenuation) were left out."
+  }
+ },
+ "probes": [
+  "outl",
+  "outr",
+  "ctl1",
+  "cvref1",
+  "ku1",
+  "kl1",
+  "pu1",
+  "pl1",
+  "b240",
+  "b450",
+  "na",
+  "nb",
+  "nc"
+ ]
+}

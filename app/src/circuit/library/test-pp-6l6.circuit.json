@@ -1,0 +1,42 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "test-pp-6l6",
+  "version": 1,
+  "name": "6L6GC push-pull + output transformer + speaker (validation circuit)",
+  "description": "Two 6L6GC at fixed −45 V bias and 450 V, driven anti-phase (ideal 30x drivers into 0.1 µF / 220 kΩ / 1.5 kΩ grid networks), screens via 470 Ω. Centre-tapped output transformer: 4 kΩ plate-to-plate : 4 Ω (turns 1 + 1 : 0.0632), 50 Ω and 5 mH leakage per half-primary, 0.2 Ω secondary, 16 H plate-to-plate magnetizing inductance saturating near 1.5 V·s per half-primary. Thiele–Small 4 Ω speaker load (Re 3.5 Ω, Le 0.5 mH, fs 80 Hz, Qms 4, Qes 0.6).",
+  "sources": [ { "title": "N. Koren pentode model; Thiele–Small electrical equivalent (Leach, 'Introduction to Electroacoustics')" } ],
+  "io": { "input": "in", "output": "spk" },
+  "oversampling": 2,
+  "subcircuits": {
+    "speaker": {
+      "pins": ["a", "b"],
+      "parts": [
+        { "ref": "RE", "type": "R", "nodes": ["a", "x1"], "value": "3.5" },
+        { "ref": "LE", "type": "L", "nodes": ["x1", "x2"], "value": "0.5m" },
+        { "ref": "RES", "type": "R", "nodes": ["x2", "b"], "value": "23.3" },
+        { "ref": "LCES", "type": "L", "nodes": ["x2", "b"], "value": "11.6m" },
+        { "ref": "CMES", "type": "C", "nodes": ["x2", "b"], "value": "341u" }
+      ]
+    }
+  },
+  "parts": [
+    { "ref": "BPLUS", "type": "V", "nodes": ["bp", "0"], "value": "450" },
+    { "ref": "VBIAS", "type": "V", "nodes": ["bias", "0"], "value": "-45" },
+    { "ref": "EA", "type": "vcvs", "nodes": ["da", "0", "in", "0"], "gain": 30 },
+    { "ref": "EB", "type": "vcvs", "nodes": ["db", "0", "in", "0"], "gain": -30 },
+    { "ref": "CA", "type": "C", "nodes": ["da", "ga"], "value": "100n" },
+    { "ref": "CB", "type": "C", "nodes": ["db", "gb"], "value": "100n" },
+    { "ref": "RGA", "type": "R", "nodes": ["ga", "bias"], "value": "220k" },
+    { "ref": "RGB", "type": "R", "nodes": ["gb", "bias"], "value": "220k" },
+    { "ref": "RSA", "type": "R", "nodes": ["ga", "g1a"], "value": "1k5" },
+    { "ref": "RSB", "type": "R", "nodes": ["gb", "g1b"], "value": "1k5" },
+    { "ref": "V1", "type": "pentode", "nodes": ["pa", "g2a", "g1a", "0"], "model": "6L6GC" },
+    { "ref": "V2", "type": "pentode", "nodes": ["pb", "g2b", "g1b", "0"], "model": "6L6GC" },
+    { "ref": "RS2A", "type": "R", "nodes": ["bp", "g2a"], "value": "470" },
+    { "ref": "RS2B", "type": "R", "nodes": ["bp", "g2b"], "value": "470" },
+    { "ref": "OT", "type": "transformer", "nodes": ["pa", "bp", "bp", "pb", "spk", "0"],
+      "turns": [1, 1, 0.0632], "r": [50, 50, 0.2], "leak": ["5m", "5m", 0], "lm": 4, "lsat": 1.5 },
+    { "ref": "SPK", "type": "sub", "of": "speaker", "nodes": ["spk", "0"] }
+  ],
+  "probes": ["pa", "pb", "spk"]
+}

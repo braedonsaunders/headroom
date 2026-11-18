@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Pride and Joy Rhythm</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Pride and Joy Rhythm" preset-author="Headroom" preset-comment="Big, percussive Texas shuffle: loud, high-headroom blackface amps right at the edge, a barely-there overdrive push, then the studio Dimension chorus and room added at mixdown. Heavy strings and a hard right hand do the rest." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="15000">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.72"/>
+        <parameter id="Tn" value="0.55"/>
+        <parameter id="Dr" value="0.12"/>
+        <parameter id="Lmp" value="0.5"/>
+        <parameter id="Bs" value="0.5"/>
+        <parameter id="Cl" value="0.5"/>
+        <parameter id="Br" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="30000">
+    <component-audio version="1">
+      <parameters num-parameters="19">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.62"/>
+        <parameter id="Br" value="1"/>
+        <parameter id="Bs" value="0.42"/>
+        <parameter id="Md" value="0.55"/>
+        <parameter id="Tr" value="0.58"/>
+        <parameter id="Vr" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bia" value="0.5"/>
+        <parameter id="Hz" value="0.5"/>
+        <parameter id="RvL" value="0.12"/>
+        <parameter id="RvOn" value="1"/>
+        <parameter id="RvTm" value="0.5"/>
+        <parameter id="RvSz" value="0.5"/>
+        <parameter id="ViInt" value="0.5"/>
+        <parameter id="ViSpd" value="0.5"/>
+        <parameter id="ViOn" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.9901"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="13"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="142000">
+    <component-audio version="1">
+      <parameters num-parameters="11">
+        <parameter id="mode" value="0.5"/>
+        <parameter id="voices" value="0.5"/>
+        <parameter id="delay" value="0.5"/>
+        <parameter id="feedback" value="0.5"/>
+        <parameter id="rate" value="0.5"/>
+        <parameter id="amount" value="0.5"/>
+        <parameter id="width" value="0.5"/>
+        <parameter id="mix" value="0.3"/>
+        <parameter id="scatter" value="0.5"/>
+        <parameter id="invert" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.12"/>
+        <parameter id="Tm" value="0.5"/>
+        <parameter id="Sz" value="0.4"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Chr" value="0.5"/>
+        <parameter id="iM" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="30000" target-number="1" target-name="Vol" min-value="0.4" max-value="0.85" controller-name="Amp Volume"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="15000" target-number="1" target-name="Dr" min-value="0" max-value="0.6" controller-name="Push"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="30000" target-number="1" target-name="Tr" min-value="0.3" max-value="0.85" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="142000" target-number="1" target-name="mode" min-value="0" max-value="1" controller-name="Dimension"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.4" controller-name="Room"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="pride-and-joy-rhythm" category="Artist Tones" order="20" instrument="guitar" style="Texas Blues">
+  <description>Big, percussive Texas shuffle: loud, high-headroom blackface amps right at the edge, a barely-there overdrive push, then the studio Dimension chorus and room added at mixdown. Heavy strings and a hard right hand do the rest.</description>
+  <tags><tag>Artist Tones</tag><tag>Blues</tag><tag>Texas Blues</tag><tag>Shuffle</tag><tag>Rhythm</tag><tag>Clean-ish</tag></tags>
+  <inspired-by artist="Stevie Ray Vaughan" song="Pride and Joy" album="Texas Flood" part="Main shuffle rhythm" year="1983"/>
+  <sources>
+    <source url="https://en.wikipedia.org/wiki/Texas_Flood" title="Texas Flood (Wikipedia)"/>
+    <source url="https://blog.line6.com/2023/05/19/jas-obrecht-stevie-ray-vaughans-texas-flood-sessions/" title="Jas Obrecht: Stevie Ray Vaughan's Texas Flood sessions (Line 6 blog)"/>
+    <source url="https://www.loudersound.com/features/stevie-ray-vaughan-the-making-of-texas-flood" title="Louder: Stevie Ray Vaughan, the making of Texas Flood"/>
+    <source url="https://www.guitarworld.com/news/john-mayer-stevie-ray-vaughan-texas-flood-dumble-amp" title="Guitar World: John Mayer owns the Dumble SRV used on Texas Flood"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

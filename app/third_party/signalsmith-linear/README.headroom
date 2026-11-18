@@ -1,0 +1,4 @@
+signalsmith-linear 0.6.4 (https://github.com/Signalsmith-Audio/linear, tag 0.6.4) — the version pinned by
+Signalsmith Stretch 1.4.0's CMakeLists. Licence: MIT (LICENSE.txt). Unmodified headers; tests/ not vendored.
+Optional platform/ backends (Accelerate, IPP, CMSIS, pffft, xsimd) are only used when explicitly enabled; Headroom
+uses the built-in portable FFT.

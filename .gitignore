@@ -1,0 +1,18 @@
+# Allowlist: this folder also holds private research material. Only these paths are ever published.
+/*
+!/.gitignore
+!/.gitmodules
+!/README.md
+!/LICENSE
+!/.github/
+!/app/
+
+# Inside app/: build output, local media and scratch never go in the repo.
+/app/build*/
+/app/stage*/
+/app/samples/
+/app/Rig
+/app/**/__pycache__/
+/app/**/*.orig
+/app/**/*.bak
+.DS_Store

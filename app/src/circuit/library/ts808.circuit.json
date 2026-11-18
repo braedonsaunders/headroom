@@ -1,0 +1,514 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "ibanez-ts808",
+  "version": 1,
+  "name": "Tube Screamer TS808",
+  "description": "Ibanez TS808 overdrive: 2SC1815 emitter-follower input buffer, JRC4558 non-inverting clipping stage with a 1N914 pair in the feedback loop and the 4.7 kΩ / 47 nF (720 Hz) leg, 1 kΩ / 220 nF (723 Hz) passive low-pass into the JRC4558 active tone stage, Level pot and 2SC1815 output buffer with the TS808's 100 Ω / 10 kΩ output network. The electronic bypass switching (2SK30A JFETs) is omitted: in the effect-on state it is a closed switch in the signal path. Vref (R9/R10 10 kΩ divider + 47 µF) is an ideal 4.5 V node.",
+  "sources": [
+    {
+      "title": "Pedal Parts Ltd, 'Tube Screamer v2.0' build document: TS808 schematic and BOM (R1 1k, R2 510k, R3 10k, R5 10k, R6 4k7, R7 51k, R8 1k, R11 220R, R12 510k, R13 10k, R14 10k, R15 100R, R16 10k, R17 1k, R18 1k, R22 1M; C1 22n, C2 1u, C3 47n, C5 220n, C8 1u, C9 220n, C10 100n, C11 10u; Drive 500kA, Tone 20kB, Level 100kA)",
+      "url": "https://pedalparts.co.uk/docs/TubeScreamer2.pdf"
+    },
+    {
+      "title": "R. G. Keen, 'The Technology of the Tube Screamer' (geofex.com): tone control topology (20k pot between the two inputs of the second op-amp, wiper RC to ground)",
+      "url": "http://www.geofex.com/article_folders/tstech/tsxtech.htm"
+    },
+    {
+      "title": "Barbarach BC, 'What is a Tube Screamer?': 720 Hz clipping-stage high-pass, 723 Hz tone-stage low-pass, 3.3 kHz tone corner",
+      "url": "https://barbarach.com/what-is-a-tube-screamer/"
+    },
+    {
+      "title": "Ibanez TS808 original values where the kit differs: C4 51 pF feedback cap, 1N914 clipping diodes, 2SC1815 buffers, JRC4558 op-amp (widely documented; e.g. Yeh, Abel & Smith, DAFx 2007)"
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 1.0
+  },
+  "oversampling": 2,
+  "minRate": 176400,
+  "solver": "auto",
+  "multirate": {
+    "oversampled": [
+      "IC1A"
+    ],
+    "note": "Only the clipping partition (IC1A, its feedback network and the 1N914 pair) runs at 2x; the buffers and the tone stage run at the host rate with half-band converters at their exact one-way boundaries."
+  },
+  "controls": [
+    {
+      "id": "drive",
+      "label": "Drive",
+      "default": 0.5,
+      "params": [
+        "Dr"
+      ],
+      "group": "Main",
+      "note": "500 kΩ audio-taper pot in series with R7 51 kΩ: gain 1 + (51k + Rdrive)/4.7k above 720 Hz"
+    },
+    {
+      "id": "tone",
+      "label": "Tone",
+      "default": 0.5,
+      "params": [
+        "Tn"
+      ],
+      "group": "Main",
+      "note": "20 kΩ linear pot between the + and − inputs of IC1B; wiper to 220 nF + 220 Ω"
+    },
+    {
+      "id": "level",
+      "label": "Level",
+      "default": 0.5,
+      "params": [
+        "Vol"
+      ],
+      "group": "Main",
+      "note": "100 kΩ audio-taper output pot"
+    },
+    {
+      "id": "bass",
+      "label": "Bass (C3 mod)",
+      "default": 0.5,
+      "params": [
+        "Bs"
+      ],
+      "group": "Mods",
+      "note": "The well-known 'more bass' mod: the 720 Hz leg capacitor C3, 22 nF … 100 nF (stock 47 nF at the centre). Lower corner = more bass into the clipper"
+    },
+    {
+      "id": "bright",
+      "label": "Bright (C9 mod)",
+      "default": 0.5,
+      "params": [
+        "Br"
+      ],
+      "group": "Mods",
+      "note": "Tone-range mod: the tone-control wiper capacitor C9, 470 nF … 100 nF (stock 220 nF at the centre). Smaller = brighter, wider tone range"
+    },
+    {
+      "id": "clean",
+      "label": "Clean",
+      "default": 0.0,
+      "params": [
+        "Cl"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Catalogue control with no part in the TS808 circuit; stored for preset compatibility only"
+    },
+    {
+      "id": "lamp",
+      "label": "Lamp",
+      "default": 1.0,
+      "params": [
+        "Lmp"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Indicator LED on the legacy unit: no effect on the audio circuit (the LED and its 4.7 kOhm resistor sit across the 9 V supply). Stored for presets only"
+    },
+    {"id": "stereo", "label": "Stereo", "kind": "continuous", "default": 0.5, "params": ["CASSt"], "legacyOnly": true, "group": "Legacy", "note": "Catalogue stereo parameter; the circuit is mono, stored only"},
+    {"id": "power", "label": "On/Off", "kind": "switch", "default": 1.0, "params": ["Pwr"], "legacyOnly": true, "group": "Legacy", "note": "Host handles bypass; stored only"}
+  ],
+  "parts": [
+    {
+      "ref": "VCC",
+      "type": "V",
+      "nodes": [
+        "vcc",
+        "0"
+      ],
+      "value": "9",
+      "label": "9 V supply"
+    },
+    {
+      "ref": "VR",
+      "type": "V",
+      "nodes": [
+        "vr",
+        "0"
+      ],
+      "value": "4.5",
+      "label": "Vref (R9/R10 divider, 47 µF)",
+      "note": "Ideal bias node; the real divider's 47 µF makes it < 3.4 Ω above 1 kHz"
+    },
+    {
+      "ref": "R22",
+      "type": "R",
+      "nodes": [
+        "in",
+        "0"
+      ],
+      "value": "1M",
+      "tolerance": 0.05,
+      "label": "Input pull-down"
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "in",
+        "b1a"
+      ],
+      "value": "22n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "b1a",
+        "b1"
+      ],
+      "value": "1k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R2",
+      "type": "R",
+      "nodes": [
+        "b1",
+        "vr"
+      ],
+      "value": "510k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "Q1",
+      "type": "npn",
+      "nodes": [
+        "vcc",
+        "b1",
+        "e1"
+      ],
+      "model": "2SC1815",
+      "label": "Input buffer"
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "e1",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "e1",
+        "inp1"
+      ],
+      "value": "1u",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R5",
+      "type": "R",
+      "nodes": [
+        "inp1",
+        "vr"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "IC1A",
+      "type": "opamp",
+      "nodes": [
+        "inp1",
+        "inv1",
+        "out1",
+        "vcc",
+        "0"
+      ],
+      "model": "JRC4558",
+      "label": "Clipping stage"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "inv1",
+        "leg"
+      ],
+      "value": "4k7",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C3",
+      "type": "C",
+      "nodes": [
+        "leg",
+        "vr"
+      ],
+      "value": {
+        "nominal": "47n",
+        "control": "bass",
+        "min": "22n",
+        "max": "100n",
+        "law": "log"
+      },
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "inv1",
+        "fb"
+      ],
+      "value": "51k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "DRIVE",
+      "type": "pot",
+      "nodes": [
+        "fb",
+        "out1",
+        "out1"
+      ],
+      "value": "500k",
+      "taper": "A",
+      "control": "drive",
+      "label": "Drive"
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "inv1",
+        "out1"
+      ],
+      "value": "51p",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "D1",
+      "type": "D",
+      "nodes": [
+        "inv1",
+        "out1"
+      ],
+      "model": "1N914"
+    },
+    {
+      "ref": "D2",
+      "type": "D",
+      "nodes": [
+        "out1",
+        "inv1"
+      ],
+      "model": "1N914"
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "out1",
+        "t1"
+      ],
+      "value": "1k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C5",
+      "type": "C",
+      "nodes": [
+        "t1",
+        "0"
+      ],
+      "value": "220n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R16",
+      "type": "R",
+      "nodes": [
+        "t1",
+        "vr"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "IC1B",
+      "type": "opamp",
+      "nodes": [
+        "t1",
+        "inv2",
+        "out2",
+        "vcc",
+        "0"
+      ],
+      "model": "JRC4558",
+      "label": "Tone stage"
+    },
+    {
+      "ref": "TONE",
+      "type": "pot",
+      "nodes": [
+        "t1",
+        "tw",
+        "inv2"
+      ],
+      "value": "20k",
+      "taper": "B",
+      "control": "tone",
+      "label": "Tone"
+    },
+    {
+      "ref": "C9",
+      "type": "C",
+      "nodes": [
+        "tw",
+        "tr"
+      ],
+      "value": {
+        "nominal": "220n",
+        "control": "bright",
+        "min": "470n",
+        "max": "100n",
+        "law": "log"
+      },
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R11",
+      "type": "R",
+      "nodes": [
+        "tr",
+        "0"
+      ],
+      "value": "220",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R17",
+      "type": "R",
+      "nodes": [
+        "inv2",
+        "out2"
+      ],
+      "value": "1k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C8",
+      "type": "C",
+      "nodes": [
+        "out2",
+        "l1"
+      ],
+      "value": "1u",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R18",
+      "type": "R",
+      "nodes": [
+        "l1",
+        "l3"
+      ],
+      "value": "1k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "LEVEL",
+      "type": "pot",
+      "nodes": [
+        "vr",
+        "lw",
+        "l3"
+      ],
+      "value": "100k",
+      "taper": "A",
+      "control": "level",
+      "label": "Level"
+    },
+    {
+      "ref": "C10",
+      "type": "C",
+      "nodes": [
+        "lw",
+        "b2"
+      ],
+      "value": "100n",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R12",
+      "type": "R",
+      "nodes": [
+        "b2",
+        "vr"
+      ],
+      "value": "510k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "Q2",
+      "type": "npn",
+      "nodes": [
+        "vcc",
+        "b2",
+        "e2"
+      ],
+      "model": "2SC1815",
+      "label": "Output buffer"
+    },
+    {
+      "ref": "R14",
+      "type": "R",
+      "nodes": [
+        "e2",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "R15",
+      "type": "R",
+      "nodes": [
+        "e2",
+        "o1"
+      ],
+      "value": "100",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "C11",
+      "type": "C",
+      "nodes": [
+        "o1",
+        "out"
+      ],
+      "value": "10u",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "R13",
+      "type": "R",
+      "nodes": [
+        "out",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.05
+    }
+  ],
+  "probes": [
+    "e1",
+    "out1",
+    "t1",
+    "out2",
+    "out"
+  ],
+  "layout": {}
+}

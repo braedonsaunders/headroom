@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Garage Fuzz Combo</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Garage Fuzz Combo" preset-author="Headroom" preset-comment="A germanium fuzz into a small class-A 1x12 combo that's already cranked: trashy, loud and fun, with fuzz and amp grind piling up into a ragged roar. Riffs and two-piece-band chords; back the guitar volume off and the fuzz turns into a gritty crunch." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="166000">
+    <component-audio version="1">
+      <parameters num-parameters="5">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="volume" value="0.55"/>
+        <parameter id="fuzz" value="0.55"/>
+        <parameter id="mode" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="152000">
+    <component-audio version="1">
+      <parameters num-parameters="6">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="gain" value="0.7"/>
+        <parameter id="tone" value="0.7"/>
+        <parameter id="bright" value="1"/>
+        <parameter id="mod" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.8808"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="14"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.1"/>
+        <parameter id="Tm" value="0.5"/>
+        <parameter id="Sz" value="0.25"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Chr" value="0.5"/>
+        <parameter id="iM" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="166000" target-number="1" target-name="fuzz" min-value="0.2" max-value="0.9" controller-name="Fuzz"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="166000" target-number="1" target-name="volume" min-value="0.3" max-value="0.8" controller-name="Fuzz Level"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="152000" target-number="1" target-name="gain" min-value="0.4" max-value="0.95" controller-name="Amp Volume"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="152000" target-number="1" target-name="tone" min-value="0.25" max-value="0.8" controller-name="Tone"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.35" controller-name="Room"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="crunch-garage-fuzz-combo" category="Crunch" order="170" instrument="guitar" style="Garage">
+  <description>A germanium fuzz into a small class-A 1x12 combo that's already cranked: trashy, loud and fun, with fuzz and amp grind piling up into a ragged roar. Riffs and two-piece-band chords; back the guitar volume off and the fuzz turns into a gritty crunch.</description>
+  <tags><tag>Crunch</tag><tag>Garage</tag><tag>Fuzz</tag><tag>Rhythm</tag><tag>Riff</tag><tag>Lo-fi</tag></tags>
+  <sources>
+    <source url="https://www.guitarworld.com/gw-archive/interview-guitarist-dan-auerbach-discusses-gear-influences-and-latest-black-keys-album-el-camino" title="Guitar World: Dan Auerbach discusses gear, influences and El Camino"/>
+    <source url="https://www.vintageguitar.com/12131/dan-auerbach/" title="Vintage Guitar: Dan Auerbach"/>
+    <source url="https://www.guitarworld.com/features/jimmy-page-communication-breakdown-tone" title="Guitar World: the secrets behind Jimmy Page's tone on 'Communication Breakdown'"/>
+    <source url="https://tapeop.com/interviews/127/dan-auerbach" title="Tape Op #127: Dan Auerbach"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

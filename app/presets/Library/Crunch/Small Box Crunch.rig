@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Small Box Crunch</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Small Box Crunch" preset-author="Headroom" preset-comment="A handwired 15-watt EL84 1x12 turned up to where it's just starting to grind: bedroom-to-club crunch that's bouncy, a bit bassy and very touch-sensitive, with a small room around it. Strum lightly for chime, hit harder for grit; great for indie rhythm and riffy leads." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="176000">
+    <component-audio version="1">
+      <parameters num-parameters="11">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="volume" value="0.82"/>
+        <parameter id="cut" value="0.3"/>
+        <parameter id="depth" value="0"/>
+        <parameter id="brillianceFrequency" value="0.5"/>
+        <parameter id="vibratoSpeed" value="0.5"/>
+        <parameter id="tremoloSpeed" value="0.5"/>
+        <parameter id="brilliance" value="0.5"/>
+        <parameter id="effectsSelector" value="0"/>
+        <parameter id="tempoSync" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="1"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="14"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.15"/>
+        <parameter id="Tm" value="0.5"/>
+        <parameter id="Sz" value="0.25"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Chr" value="0.5"/>
+        <parameter id="iM" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="26000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Vol" value="0.5246"/>
+        <parameter id="F1" value="0.5"/>
+        <parameter id="G1" value="0.5"/>
+        <parameter id="Q1" value="0.5"/>
+        <parameter id="F2" value="0.5"/>
+        <parameter id="G2" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="Q2" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="176000" target-number="1" target-name="volume" min-value="0.45" max-value="1" controller-name="Volume"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="176000" target-number="1" target-name="brilliance" min-value="0.15" max-value="0.85" controller-name="Brilliance"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="176000" target-number="1" target-name="cut" min-value="0" max-value="0.7" controller-name="Tone Cut"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.35" controller-name="Room"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="crunch-small-box" category="Crunch" order="160" instrument="guitar" style="Indie Rock">
+  <description>A handwired 15-watt EL84 1x12 turned up to where it's just starting to grind: bedroom-to-club crunch that's bouncy, a bit bassy and very touch-sensitive, with a small room around it. Strum lightly for chime, hit harder for grit; great for indie rhythm and riffy leads.</description>
+  <tags><tag>Crunch</tag><tag>Indie Rock</tag><tag>Class-A</tag><tag>Rhythm</tag><tag>Low wattage</tag></tags>
+  <sources>
+    <source url="https://www.musicradar.com/news/guitars/bernard-butler-shows-off-his-guitar-collection-598904" title="MusicRadar: Bernard Butler shows off his guitar collection (2014)"/>
+    <source url="https://www.premierguitar.com/reviews/amps/vox-ac15" title="Premier Guitar: Vox AC15 Hand-Wired review"/>
+    <source url="https://www.premierguitar.com/gear/champions-of-chime-the-el84-roundup" title="Premier Guitar: Champions of Chime, the EL84 roundup"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

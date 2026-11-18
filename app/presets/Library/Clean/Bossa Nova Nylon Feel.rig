@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Bossa Nova Nylon Feel</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Bossa Nova Nylon Feel" preset-author="Headroom" preset-comment="A soft, close, dark clean that leans toward nylon-string warmth for bossa comping: the compressor rounds off the pick attack, a solid-state 2x12 runs with treble low and mids up, the top is shelved away and the room is tiny. Fingerstyle thumb-and-fingers; keep the bass notes light." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="48000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="V" value="0.75"/>
+        <parameter id="S" value="0.6"/>
+        <parameter id="A" value="0.6"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="T" value="0.82"/>
+        <parameter id="C" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="49000">
+    <component-audio version="1">
+      <parameters num-parameters="10">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V" value="0.44"/>
+        <parameter id="a" value="0.25"/>
+        <parameter id="M" value="0.64"/>
+        <parameter id="T" value="0.32"/>
+        <parameter id="B" value="0"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="d" value="0.5"/>
+        <parameter id="em" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.7669"/>
+        <parameter id="c" value="0.2"/>
+        <parameter id="Cab" value="8"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="32000">
+    <component-audio version="1">
+      <parameters num-parameters="13">
+        <parameter id="V" value="0"/>
+        <parameter id="mi" value="0.5"/>
+        <parameter id="ma" value="0.5"/>
+        <parameter id="r" value="0.5"/>
+        <parameter id="b1" value="0.14"/>
+        <parameter id="b2" value="0.5"/>
+        <parameter id="b3" value="0.52"/>
+        <parameter id="b4" value="0.5"/>
+        <parameter id="b5" value="0.45"/>
+        <parameter id="b6" value="0.5"/>
+        <parameter id="b7" value="0.24"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="b8" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.08"/>
+        <parameter id="Tm" value="0.1"/>
+        <parameter id="Sz" value="0.15"/>
+        <parameter id="H" value="0.4"/>
+        <parameter id="L" value="0.6"/>
+        <parameter id="Chr" value="0.5"/>
+        <parameter id="iM" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="32000" target-number="1" target-name="b7" min-value="0.05" max-value="0.5" controller-name="Softness"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="48000" target-number="1" target-name="S" min-value="0.5" max-value="0.955" controller-name="Round Attack"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="49000" target-number="1" target-name="M" min-value="0.45" max-value="0.8" controller-name="Mid"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="49000" target-number="1" target-name="a" min-value="0.3" max-value="0.65" controller-name="Bass"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.25" controller-name="Room"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="clean-bossa-nylon" category="Clean" order="210" instrument="guitar" style="Latin / Bossa">
+  <description>A soft, close, dark clean that leans toward nylon-string warmth for bossa comping: the compressor rounds off the pick attack, a solid-state 2x12 runs with treble low and mids up, the top is shelved away and the room is tiny. Fingerstyle thumb-and-fingers; keep the bass notes light.</description>
+  <tags><tag>Clean</tag><tag>Latin / Bossa</tag><tag>Jazz</tag><tag>Warm</tag><tag>Compressed</tag></tags>
+  <sources>
+    <source url="https://www.jazzguitar.be/forum/guitar-amps-gizmos/100045-good-guitar-tone-electric-bossa-nova.html" title="jazzguitar.be forum: good guitar tone for electric bossa nova"/>
+    <source url="https://www.jazzguitar.be/forum/guitar-amps-gizmos/44260-bossa-nova-guitar.html" title="jazzguitar.be forum: bossa nova guitar"/>
+    <source url="https://guitargear.net.au/articles/neck-pickup-wiring-archtops-tone-control" title="Guitar Gear: neck pickup wiring for archtops, why the tone control does more work"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

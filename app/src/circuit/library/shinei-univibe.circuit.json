@@ -1,0 +1,1616 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "shinei-univibe",
+  "version": 1,
+  "name": "Shin-ei Uni-Vibe (Univox, c. 1968)",
+  "description": "Shin-ei Uni-Vibe (Univox / Unicord model 905, late 1960s), mains powered. Supply: about 16 Vrms secondary, one rectifier diode into 1000 µF (≈ 21 V for the LFO and lamp), then 470 Ω / 220 µF / 470 Ω / 220 µF to the ≈ 16-17 V audio rail. Preamp: input 22 kΩ mixing resistors and 47 kΩ, then a three-transistor discrete 'op-amp' (Q1 2SC539 with 1.2 MΩ collector load and 1.2 MΩ DC feedback, Q2 with 47 kΩ / 6.8 kΩ ∥ 1 µF and the 330 pF compensation cap, Q3 phase splitter with 4.7 kΩ collector and 3.3 kΩ + 1.2 kΩ split emitter feeding back to Q1's emitter: gain ≈ 3.75). Four phase stages, each fed by a phase cap from the previous collector and a 1 µF block cap + LDR + 4.7 kΩ from the previous emitter; Cp = 15 nF, 220 nF, 470 pF, 4.7 nF. Stages 1-3: bootstrapped 100 kΩ bias from a 100 kΩ / 47 kΩ divider into a Darlington-fed phase splitter (4.7 kΩ / 4.7 kΩ); stage 4: a single emitter follower (68 kΩ / 47 kΩ divider, 22 kΩ emitter). Output mixer: Chorus = dry (preamp emitter) and wet 100 kΩ each; Vibrato = wet through 47 kΩ / 220 kΩ; 100 kΩ Volume. LFO: Darlington phase-shift oscillator (3.3 kΩ / 4.7 kΩ bias, 2.2 MΩ, 4.7 kΩ emitter) with three 1 µF caps, antiparallel diodes across the centre cap, and two legs of 220 kΩ ∥ (4.7 kΩ + 100 kΩ Speed gang) back to the emitter. Intensity (50 kΩ) feeds the lamp driver (100 kΩ collector-base / 47 kΩ base bias, 1 kΩ trimmer + 150 Ω emitter); the 28 V / 40 mA lamp sits between the 21 V reservoir and the driver collector; Cancel shorts the driver base. One lamp lights all four LDRs (light node L1).",
+  "sources": [
+    {
+      "title": "C. Darabundit, R. Wedelich, P. Bischoff, 'Digital grey box model of the Uni-Vibe effects pedal', DAFx-19: block schematic (Fig. 2), phase-stage analysis with block cap C_DC, measured Table 1 (Cp 15 nF / 220 nF / 470 pF / 4.7 nF; alpha / beta gains; LDR avg / min / max per stage), Speed ≈ 0-7.6 Hz, Cancel cuts lamp power, +21 VDC lamp supply, asymmetric LDR wavetables at 4 Hz",
+      "url": "https://www.dafx.de/paper-archive/2019/DAFx2019_paper_31.pdf"
+    },
+    {
+      "title": "R. G. Keen, 'The Technology of the Univibe' (GeoFex, 1998-2010): preamp, phase stage, final stage, output mixer, LFO / lamp driver and power-supply figures and text (28 V / 40 mA bulb, cold resistance just over 100 Ω, 14-18 VAC secondary, half-wave, 1000 µF / 470 Ω / 100 µF, 20 V LFO-lamp and 16 V audio rails, dual 100K log speed pot, trimmer + 150 Ω lamp emitter, stage DC voltages 4.8 / 3.4 / 11.6 V at 15 V, LFO base 8.6 V)",
+      "url": "http://www.geofex.com/article_folders/univibe/univtech.htm"
+    },
+    {
+      "title": "R. G. Keen, 'UniVibe (model 905, by Unicord, circa 1968)' full schematic, as compiled in 'All Electro-Harmonix Effects' (Experimentalists Anonymous) p. 17: all part values, 2SC828 transistors except the 2SC539 input transistor, CdS 'MXY-7BX4', 470 Ω / 470 Ω and 220 µF / 220 µF / 1000 µF supply filter, 1k lamp trimmer, dual 250K speed pots",
+      "url": "https://experimentalistsanonymous.com/diy/Schematics/Miscellaneous/All%20Electro-Harmonix%20Effects.pdf"
+    },
+    {
+      "title": "2SC828 datasheet summaries (Matsushita/Panasonic): VCEO 25 V, IC 50 mA, hFE 130-520 in Q/R/S grades at 2 mA, fT 220 MHz",
+      "url": "https://components101.com/transistors/2sc828-npn-amplifier-transistor"
+    },
+    {
+      "title": "Lamp thermal / light law (UNIVIBE_LAMP library model): work/circuit-netlists/wave-c/DEVICES.md §4.2 (Agrawal, tungsten filament model; lamp rerating exponents)"
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 1.0
+  },
+  "oversampling": 1,
+  "solver": "auto",
+  "models": {
+    "2SC828": {
+      "kind": "npn",
+      "is": 1e-14,
+      "bf": 250,
+      "br": 4,
+      "vaf": 100,
+      "note": "unverified: no published SPICE card for the Matsushita 2SC828 was found. Generic small-signal values with BF in the datasheet's hFE range (Q 130-260, R 180-360, S 260-520 at 2 mA); the grade fitted to the Uni-Vibe is unknown"
+    },
+    "UNIVIBE_LAMP_K": {
+      "kind": "lamp",
+      "vrated": 28,
+      "irated": 0.04,
+      "rcold_ratio": 0.15,
+      "tau": 0.01,
+      "tlambda": 20250,
+      "thot": 2500,
+      "alpha": 1.214,
+      "note": "UNIVIBE_LAMP with Keen's measured cold resistance: 'The cold resistance is just over 100 ohms' for the 28 V / 40 mA bulb, i.e. about 105 Ω / 700 Ω = 0.15 (the library default 1/13.5 = 52 Ω is derived from a 2500 K hot filament). unverified: tau 10 ms (library 20 ms; A) chosen so the lamp's light swings about 250:1 at 4 Hz and full Intensity, which lets the four cells reach DAFx-19's measured min/max with gamma 1.1-1.4; tlambda and thot as the library (A)"
+    },
+    "2SC539": {
+      "kind": "npn",
+      "is": 1e-14,
+      "bf": 250,
+      "br": 4,
+      "vaf": 100,
+      "note": "unverified: input transistor type per Keen's schematic ('2SC828 except input transistor' = 2SC539); no SPICE card found, generic values as 2SC828"
+    },
+    "UV_LDR1": {
+      "kind": "cds",
+      "rdark": 20000000.0,
+      "ron": 588.1,
+      "gamma": 1.033,
+      "kr": 1000,
+      "tau_l": 2.0,
+      "tau_h": 0,
+      "mh": 0,
+      "mr": 0,
+      "note": "unverified fit (D/A): stage 1 (15 nF) cell fitted so that, lit by this netlist's own lamp (UNIVIBE_LAMP_K) at Intensity 1 and Speed 0.9 (LFO 4.0 Hz in ngspice), it spans DAFx-19 Table 1's measured min 12.7 kΩ and max 2.79 MΩ (avg 0.405 MΩ; the fit's geometric mean is close to it). kr 1000 (so n follows a 4 Hz lamp at λ ≈ 1e-4..0.05), rdark 20 MΩ and tau_l 2 s as the library UNIVIBE_LDR. ron is the extrapolated resistance at the lamp's full rated light. Refit if the lamp model changes"
+    },
+    "UV_LDR2": {
+      "kind": "cds",
+      "rdark": 20000000.0,
+      "ron": 236.7,
+      "gamma": 1.132,
+      "kr": 1000,
+      "tau_l": 2.0,
+      "tau_h": 0,
+      "mh": 0,
+      "mr": 0,
+      "note": "unverified fit (D/A): stage 2 (220 nF) cell fitted so that, lit by this netlist's own lamp (UNIVIBE_LAMP_K) at Intensity 1 and Speed 0.9 (LFO 4.0 Hz in ngspice), it spans DAFx-19 Table 1's measured min 6.86 kΩ and max 2.59 MΩ (avg 0.233 MΩ; the fit's geometric mean is close to it). kr 1000 (so n follows a 4 Hz lamp at λ ≈ 1e-4..0.05), rdark 20 MΩ and tau_l 2 s as the library UNIVIBE_LDR. ron is the extrapolated resistance at the lamp's full rated light. Refit if the lamp model changes"
+    },
+    "UV_LDR3": {
+      "kind": "cds",
+      "rdark": 20000000.0,
+      "ron": 240.5,
+      "gamma": 1.165,
+      "kr": 1000,
+      "tau_l": 2.0,
+      "tau_h": 0,
+      "mh": 0,
+      "mr": 0,
+      "note": "unverified fit (D/A): stage 3 (470 pF) cell fitted so that, lit by this netlist's own lamp (UNIVIBE_LAMP_K) at Intensity 1 and Speed 0.9 (LFO 4.0 Hz in ngspice), it spans DAFx-19 Table 1's measured min 7.69 kΩ and max 3.32 MΩ (avg 0.29 MΩ; the fit's geometric mean is close to it). kr 1000 (so n follows a 4 Hz lamp at λ ≈ 1e-4..0.05), rdark 20 MΩ and tau_l 2 s as the library UNIVIBE_LDR. ron is the extrapolated resistance at the lamp's full rated light. Refit if the lamp model changes"
+    },
+    "UV_LDR4": {
+      "kind": "cds",
+      "rdark": 20000000.0,
+      "ron": 148.3,
+      "gamma": 1.256,
+      "kr": 1000,
+      "tau_l": 2.0,
+      "tau_h": 0,
+      "mh": 0,
+      "mr": 0,
+      "note": "unverified fit (D/A): stage 4 (4.7 nF) cell fitted so that, lit by this netlist's own lamp (UNIVIBE_LAMP_K) at Intensity 1 and Speed 0.9 (LFO 4.0 Hz in ngspice), it spans DAFx-19 Table 1's measured min 6.22 kΩ and max 4.16 MΩ (avg 0.24 MΩ; the fit's geometric mean is close to it). kr 1000 (so n follows a 4 Hz lamp at λ ≈ 1e-4..0.05), rdark 20 MΩ and tau_l 2 s as the library UNIVIBE_LDR. ron is the extrapolated resistance at the lamp's full rated light. Refit if the lamp model changes"
+    }
+  },
+  "controls": [
+    {
+      "id": "speed",
+      "label": "Speed (foot pedal)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "rate"
+      ],
+      "group": "Main",
+      "note": "Dual 100 kΩ gang in the two LFO legs (220 kΩ ∥ (4.7 kΩ + gang)); 0 = slowest, 1 = fastest. DAFx-19: ≈ 0 to 7.6 Hz over the pedal travel"
+    },
+    {
+      "id": "intensity",
+      "label": "Intensity",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "width"
+      ],
+      "group": "Main",
+      "note": "50 kΩ Amplitude pot between the LFO output and the lamp driver: sets the lamp's modulation depth, hence the sweep width. Legacy 'Width'"
+    },
+    {
+      "id": "volume",
+      "label": "Volume",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Main",
+      "note": "100 kΩ output pot after the Chorus/Vibrato switch. No legacy alias"
+    },
+    {
+      "id": "vibrato",
+      "label": "Chorus / Vibrato",
+      "kind": "switch",
+      "default": 0,
+      "params": [],
+      "group": "Main",
+      "note": "0 = Chorus (dry + wet 100 kΩ each), 1 = Vibrato (wet only through 47 kΩ / 220 kΩ). No legacy alias (the legacy 'Mode' 0-4 has no documented mapping)",
+      "face": true,
+      "options": [
+        "Chorus",
+        "Vibrato"
+      ]
+    },
+    {
+      "id": "cancel",
+      "label": "Cancel",
+      "kind": "switch",
+      "default": 0,
+      "params": [],
+      "group": "Main",
+      "note": "Heel switch on the foot pedal: shorts the lamp-driver base so the lamp goes dark and the LDRs go to megohms (the 'bypass' of the original; the signal still passes the stages)",
+      "face": true,
+      "options": [
+        "Effect",
+        "Cancel"
+      ]
+    },
+    {
+      "id": "lamp_trim",
+      "label": "Lamp bias trim (internal)",
+      "kind": "continuous",
+      "default": 1.0,
+      "params": [],
+      "group": "Internal",
+      "note": "1 kΩ trimmer in the lamp-driver emitter (with 150 Ω): sets the idle lamp current, factory-set to a 'medium yellow-orange' glow (Keen). Default 1.0 = trimmer at 0 Ω, i.e. the 150 Ω-only units ('some have only a fixed 150 ohm resistor'): with this lamp model any higher setting leaves the idle lamp near dark (θ < 0.45)"
+    },
+    {
+      "id": "blend",
+      "label": "Blend",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "blend"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No blend control on the Uni-Vibe (the Chorus/Vibrato switch selects fixed mixes); stored only"
+    },
+    {
+      "id": "mode",
+      "label": "Mode",
+      "kind": "continuous",
+      "default": 0.0,
+      "paramRange": [
+        0,
+        4
+      ],
+      "params": [
+        "mode"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Legacy 0-4 mode selector with no documented mapping onto the Chorus/Vibrato switch; stored only"
+    },
+    {
+      "id": "spread",
+      "label": "Spread",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "spread"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "The notch spread is fixed by the 15 nF / 220 nF / 470 pF / 4.7 nF phase caps; stored only"
+    },
+    {
+      "id": "color",
+      "label": "Color",
+      "kind": "continuous",
+      "default": 0.0,
+      "paramRange": [
+        0,
+        2
+      ],
+      "params": [
+        "color"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No color control on the Uni-Vibe; stored only"
+    },
+    {
+      "id": "mix",
+      "label": "Mix",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "mix"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "The mix is fixed by the switch (50/50 Chorus, wet-only Vibrato); stored only"
+    },
+    {
+      "id": "stereo",
+      "label": "Stereo",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "CASSt"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Catalogue stereo parameter; mono pedal, stored only"
+    },
+    {
+      "id": "power",
+      "label": "On/Off",
+      "kind": "switch",
+      "default": 1.0,
+      "params": [
+        "Pwr"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Host handles bypass; stored only"
+    }
+  ],
+  "cuts": [
+    "sa",
+    "vraw",
+    "v2",
+    "vaud",
+    "pf",
+    {
+      "node": "pc",
+      "loads": [
+        "CP1"
+      ]
+    },
+    {
+      "node": "pe",
+      "loads": [
+        "CDC1",
+        "CD"
+      ]
+    },
+    {
+      "node": "c1",
+      "loads": [
+        "CP2"
+      ]
+    },
+    {
+      "node": "e1",
+      "loads": [
+        "CDC2"
+      ]
+    },
+    {
+      "node": "c2",
+      "loads": [
+        "CP3"
+      ]
+    },
+    {
+      "node": "e2",
+      "loads": [
+        "CDC3"
+      ]
+    },
+    {
+      "node": "c3",
+      "loads": [
+        "CP4"
+      ]
+    },
+    {
+      "node": "e3",
+      "loads": [
+        "CDC4"
+      ]
+    }
+  ],
+  "parts": [
+    {
+      "ref": "VSEC",
+      "type": "V",
+      "nodes": [
+        "sec",
+        "0"
+      ],
+      "value": "0",
+      "ac": {
+        "amplitude": "22.6",
+        "freq": 60,
+        "phase": 90
+      },
+      "label": "Mains transformer secondary (16 Vrms)",
+      "note": "unverified: Keen measured 14-18 VAC secondaries ('16V a good middle of the road value'); 16 Vrms = 22.6 V peak. The other Keen drawing labels the winding 24 VAC. DAFx-19 reports +21 VDC at the lamp supply, consistent with 16 Vrms half-wave into 1000 µF. The 6.3 V pilot-lamp winding is omitted"
+    },
+    {
+      "ref": "RSEC",
+      "type": "R",
+      "nodes": [
+        "sec",
+        "sa"
+      ],
+      "value": "4.7",
+      "tolerance": 0,
+      "label": "Secondary winding resistance",
+      "note": "unverified: transformer secondary winding resistance (not published; a ~10 VA transformer, Keen's estimate). Limits the half-wave charging current"
+    },
+    {
+      "ref": "DR",
+      "type": "D",
+      "nodes": [
+        "sa",
+        "vraw"
+      ],
+      "model": "1N4001",
+      "label": "Half-wave rectifier",
+      "note": "Single rectifier diode (Keen: 'half wave rectified'); type not published, silicon 1N4001-class assumed"
+    },
+    {
+      "ref": "C1000",
+      "type": "C",
+      "nodes": [
+        "vraw",
+        "0"
+      ],
+      "value": "1000u",
+      "tolerance": 0.2,
+      "label": "Reservoir (LFO / lamp supply, ≈ 21 V)"
+    },
+    {
+      "ref": "RF1",
+      "type": "R",
+      "nodes": [
+        "vraw",
+        "v2"
+      ],
+      "value": "470",
+      "tolerance": 0.05,
+      "label": "Supply filter resistor 1"
+    },
+    {
+      "ref": "CF1",
+      "type": "C",
+      "nodes": [
+        "v2",
+        "0"
+      ],
+      "value": "220u",
+      "tolerance": 0.2,
+      "label": "Supply filter cap 1",
+      "note": "unverified: 220 µF in the Keen full schematic (EA compilation); Keen's GeoFex supply figure shows 100 µF"
+    },
+    {
+      "ref": "RF2",
+      "type": "R",
+      "nodes": [
+        "v2",
+        "vaud"
+      ],
+      "value": "470",
+      "tolerance": 0.05,
+      "label": "Supply filter resistor 2",
+      "note": "Keen's GeoFex article text says 100 Ω RC sections; both Keen drawings show 470 Ω"
+    },
+    {
+      "ref": "CF2",
+      "type": "C",
+      "nodes": [
+        "vaud",
+        "0"
+      ],
+      "value": "220u",
+      "tolerance": 0.2,
+      "label": "Audio rail cap (≈ 16-17 V)",
+      "note": "unverified: 220 µF (EA compilation) vs 100 µF (GeoFex figure)"
+    },
+    {
+      "ref": "RIN1",
+      "type": "R",
+      "nodes": [
+        "in",
+        "j"
+      ],
+      "value": "22k",
+      "tolerance": 0.05,
+      "label": "Input 1 mixing resistor"
+    },
+    {
+      "ref": "RIN2",
+      "type": "R",
+      "nodes": [
+        "j",
+        "0"
+      ],
+      "value": "22k",
+      "tolerance": 0.05,
+      "label": "Input 2 mixing resistor (jack unplugged)",
+      "note": "unverified: input 2's shorting jack grounds its 22 kΩ when nothing is plugged in (switch contact drawn to ground in both Keen drawings), so input 1 sees 22k into 22k ∥ 47k (−7.8 dB). Keen's article counts only the 22k + 47k (69 kΩ) load"
+    },
+    {
+      "ref": "RJ",
+      "type": "R",
+      "nodes": [
+        "j",
+        "0"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "Input mixing resistor to ground"
+    },
+    {
+      "ref": "CIN",
+      "type": "C",
+      "nodes": [
+        "j",
+        "pb"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Input coupling cap"
+    },
+    {
+      "ref": "QP1",
+      "type": "npn",
+      "nodes": [
+        "q1c",
+        "pb",
+        "q1e"
+      ],
+      "model": "2SC539",
+      "label": "Preamp Q1 (2SC539)"
+    },
+    {
+      "ref": "RP1",
+      "type": "R",
+      "nodes": [
+        "pf",
+        "q1c"
+      ],
+      "value": "1.2M",
+      "tolerance": 0.05,
+      "label": "Q1 collector load"
+    },
+    {
+      "ref": "RPF",
+      "type": "R",
+      "nodes": [
+        "vaud",
+        "pf"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Q1 supply filter resistor"
+    },
+    {
+      "ref": "CPF",
+      "type": "C",
+      "nodes": [
+        "pf",
+        "0"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Q1 supply filter cap"
+    },
+    {
+      "ref": "QP2",
+      "type": "npn",
+      "nodes": [
+        "q2c",
+        "q1c",
+        "q2e"
+      ],
+      "model": "2SC828",
+      "label": "Preamp Q2"
+    },
+    {
+      "ref": "RP2C",
+      "type": "R",
+      "nodes": [
+        "vaud",
+        "q2c"
+      ],
+      "value": "47k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "RP2E",
+      "type": "R",
+      "nodes": [
+        "q2e",
+        "0"
+      ],
+      "value": "6.8k",
+      "tolerance": 0.05
+    },
+    {
+      "ref": "CP2E",
+      "type": "C",
+      "nodes": [
+        "q2e",
+        "0"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Q2 emitter bypass"
+    },
+    {
+      "ref": "RPFB",
+      "type": "R",
+      "nodes": [
+        "q2e",
+        "pb"
+      ],
+      "value": "1.2M",
+      "tolerance": 0.05,
+      "label": "DC feedback to Q1 base"
+    },
+    {
+      "ref": "CCOMP",
+      "type": "C",
+      "nodes": [
+        "q2c",
+        "0"
+      ],
+      "value": "330p",
+      "tolerance": 0.2,
+      "label": "Compensation cap (Keen: C4, Q2 collector to ground)"
+    },
+    {
+      "ref": "QP3",
+      "type": "npn",
+      "nodes": [
+        "pc",
+        "q2c",
+        "pe"
+      ],
+      "model": "2SC828",
+      "label": "Preamp Q3 (phase splitter output)"
+    },
+    {
+      "ref": "RP3C",
+      "type": "R",
+      "nodes": [
+        "vaud",
+        "pc"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05,
+      "label": "Q3 collector (inverted drive to stage 1)"
+    },
+    {
+      "ref": "RP3E1",
+      "type": "R",
+      "nodes": [
+        "pe",
+        "q1e"
+      ],
+      "value": "3.3k",
+      "tolerance": 0.05,
+      "label": "Q3 split emitter (feedback)",
+      "note": "3.3k per both Keen drawings (his article text says 3.9k). Closed-loop gain ≈ 1 + 3.3k/1.2k = 3.75"
+    },
+    {
+      "ref": "RP3E2",
+      "type": "R",
+      "nodes": [
+        "q1e",
+        "0"
+      ],
+      "value": "1.2k",
+      "tolerance": 0.05,
+      "label": "Q3 split emitter (to ground)"
+    },
+    {
+      "ref": "CP1",
+      "type": "C",
+      "nodes": [
+        "pc",
+        "b1"
+      ],
+      "value": "15n",
+      "tolerance": 0.1,
+      "label": "Phase cap stage 1 (15 nF)"
+    },
+    {
+      "ref": "CDC1",
+      "type": "C",
+      "nodes": [
+        "pe",
+        "l1a"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Block cap stage 1 (DAFx-19 C_DC)"
+    },
+    {
+      "ref": "LDR1",
+      "type": "cds",
+      "nodes": [
+        "l1a",
+        "l1b"
+      ],
+      "light": "L1",
+      "model": "UV_LDR1",
+      "label": "LDR 1 (Shin-ei custom CdS, 'MXY-7BX4' housing)"
+    },
+    {
+      "ref": "RL1",
+      "type": "R",
+      "nodes": [
+        "l1b",
+        "b1"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05,
+      "label": "Stage 1 series resistor (DAFx-19 R6)"
+    },
+    {
+      "ref": "RB1",
+      "type": "R",
+      "nodes": [
+        "b1",
+        "t1"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Stage 1 bootstrapped bias resistor"
+    },
+    {
+      "ref": "RT1",
+      "type": "R",
+      "nodes": [
+        "vaud",
+        "t1"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Stage 1 bias divider (top)"
+    },
+    {
+      "ref": "RG1",
+      "type": "R",
+      "nodes": [
+        "t1",
+        "0"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "Stage 1 bias divider (bottom)"
+    },
+    {
+      "ref": "CBS1",
+      "type": "C",
+      "nodes": [
+        "e1",
+        "t1"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Stage 1 bootstrap cap"
+    },
+    {
+      "ref": "Q1A",
+      "type": "npn",
+      "nodes": [
+        "vaud",
+        "b1",
+        "m1"
+      ],
+      "model": "2SC828",
+      "label": "Stage 1 Darlington input"
+    },
+    {
+      "ref": "Q1B",
+      "type": "npn",
+      "nodes": [
+        "c1",
+        "m1",
+        "e1"
+      ],
+      "model": "2SC828",
+      "label": "Stage 1 phase splitter"
+    },
+    {
+      "ref": "RC1",
+      "type": "R",
+      "nodes": [
+        "vaud",
+        "c1"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05,
+      "label": "Stage 1 collector"
+    },
+    {
+      "ref": "RE1",
+      "type": "R",
+      "nodes": [
+        "e1",
+        "0"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05,
+      "label": "Stage 1 emitter"
+    },
+    {
+      "ref": "CP2",
+      "type": "C",
+      "nodes": [
+        "c1",
+        "b2"
+      ],
+      "value": "220n",
+      "tolerance": 0.1,
+      "label": "Phase cap stage 2 (220 nF)"
+    },
+    {
+      "ref": "CDC2",
+      "type": "C",
+      "nodes": [
+        "e1",
+        "l2a"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Block cap stage 2 (DAFx-19 C_DC)"
+    },
+    {
+      "ref": "LDR2",
+      "type": "cds",
+      "nodes": [
+        "l2a",
+        "l2b"
+      ],
+      "light": "L1",
+      "model": "UV_LDR2",
+      "label": "LDR 2 (Shin-ei custom CdS, 'MXY-7BX4' housing)"
+    },
+    {
+      "ref": "RL2",
+      "type": "R",
+      "nodes": [
+        "l2b",
+        "b2"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05,
+      "label": "Stage 2 series resistor (DAFx-19 R6)"
+    },
+    {
+      "ref": "RB2",
+      "type": "R",
+      "nodes": [
+        "b2",
+        "t2"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Stage 2 bootstrapped bias resistor"
+    },
+    {
+      "ref": "RT2",
+      "type": "R",
+      "nodes": [
+        "vaud",
+        "t2"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Stage 2 bias divider (top)"
+    },
+    {
+      "ref": "RG2",
+      "type": "R",
+      "nodes": [
+        "t2",
+        "0"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "Stage 2 bias divider (bottom)"
+    },
+    {
+      "ref": "CBS2",
+      "type": "C",
+      "nodes": [
+        "e2",
+        "t2"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Stage 2 bootstrap cap"
+    },
+    {
+      "ref": "Q2A",
+      "type": "npn",
+      "nodes": [
+        "vaud",
+        "b2",
+        "m2"
+      ],
+      "model": "2SC828",
+      "label": "Stage 2 Darlington input"
+    },
+    {
+      "ref": "Q2B",
+      "type": "npn",
+      "nodes": [
+        "c2",
+        "m2",
+        "e2"
+      ],
+      "model": "2SC828",
+      "label": "Stage 2 phase splitter"
+    },
+    {
+      "ref": "RC2",
+      "type": "R",
+      "nodes": [
+        "vaud",
+        "c2"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05,
+      "label": "Stage 2 collector"
+    },
+    {
+      "ref": "RE2",
+      "type": "R",
+      "nodes": [
+        "e2",
+        "0"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05,
+      "label": "Stage 2 emitter"
+    },
+    {
+      "ref": "CP3",
+      "type": "C",
+      "nodes": [
+        "c2",
+        "b3"
+      ],
+      "value": "470p",
+      "tolerance": 0.1,
+      "label": "Phase cap stage 3 (470 pF)"
+    },
+    {
+      "ref": "CDC3",
+      "type": "C",
+      "nodes": [
+        "e2",
+        "l3a"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Block cap stage 3 (DAFx-19 C_DC)"
+    },
+    {
+      "ref": "LDR3",
+      "type": "cds",
+      "nodes": [
+        "l3a",
+        "l3b"
+      ],
+      "light": "L1",
+      "model": "UV_LDR3",
+      "label": "LDR 3 (Shin-ei custom CdS, 'MXY-7BX4' housing)"
+    },
+    {
+      "ref": "RL3",
+      "type": "R",
+      "nodes": [
+        "l3b",
+        "b3"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05,
+      "label": "Stage 3 series resistor (DAFx-19 R6)"
+    },
+    {
+      "ref": "RB3",
+      "type": "R",
+      "nodes": [
+        "b3",
+        "t3"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Stage 3 bootstrapped bias resistor"
+    },
+    {
+      "ref": "RT3",
+      "type": "R",
+      "nodes": [
+        "vaud",
+        "t3"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Stage 3 bias divider (top)"
+    },
+    {
+      "ref": "RG3",
+      "type": "R",
+      "nodes": [
+        "t3",
+        "0"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "Stage 3 bias divider (bottom)"
+    },
+    {
+      "ref": "CBS3",
+      "type": "C",
+      "nodes": [
+        "e3",
+        "t3"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Stage 3 bootstrap cap"
+    },
+    {
+      "ref": "Q3A",
+      "type": "npn",
+      "nodes": [
+        "vaud",
+        "b3",
+        "m3"
+      ],
+      "model": "2SC828",
+      "label": "Stage 3 Darlington input"
+    },
+    {
+      "ref": "Q3B",
+      "type": "npn",
+      "nodes": [
+        "c3",
+        "m3",
+        "e3"
+      ],
+      "model": "2SC828",
+      "label": "Stage 3 phase splitter"
+    },
+    {
+      "ref": "RC3",
+      "type": "R",
+      "nodes": [
+        "vaud",
+        "c3"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05,
+      "label": "Stage 3 collector"
+    },
+    {
+      "ref": "RE3",
+      "type": "R",
+      "nodes": [
+        "e3",
+        "0"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05,
+      "label": "Stage 3 emitter"
+    },
+    {
+      "ref": "CP4",
+      "type": "C",
+      "nodes": [
+        "c3",
+        "b4"
+      ],
+      "value": "4.7n",
+      "tolerance": 0.1,
+      "label": "Phase cap stage 4 (4.7 nF)"
+    },
+    {
+      "ref": "CDC4",
+      "type": "C",
+      "nodes": [
+        "e3",
+        "l4a"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Block cap stage 4 (DAFx-19 C_DC)"
+    },
+    {
+      "ref": "LDR4",
+      "type": "cds",
+      "nodes": [
+        "l4a",
+        "l4b"
+      ],
+      "light": "L1",
+      "model": "UV_LDR4",
+      "label": "LDR 4 (Shin-ei custom CdS, 'MXY-7BX4' housing)"
+    },
+    {
+      "ref": "RL4",
+      "type": "R",
+      "nodes": [
+        "l4b",
+        "b4"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05,
+      "label": "Stage 4 series resistor (DAFx-19 R6)"
+    },
+    {
+      "ref": "RB4",
+      "type": "R",
+      "nodes": [
+        "b4",
+        "t4"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Stage 4 bootstrapped bias resistor"
+    },
+    {
+      "ref": "RT4",
+      "type": "R",
+      "nodes": [
+        "vaud",
+        "t4"
+      ],
+      "value": "68k",
+      "tolerance": 0.05,
+      "label": "Stage 4 bias divider (top)"
+    },
+    {
+      "ref": "RG4",
+      "type": "R",
+      "nodes": [
+        "t4",
+        "0"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "Stage 4 bias divider (bottom)"
+    },
+    {
+      "ref": "CBS4",
+      "type": "C",
+      "nodes": [
+        "e4",
+        "t4"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Stage 4 bootstrap cap"
+    },
+    {
+      "ref": "Q4A",
+      "type": "npn",
+      "nodes": [
+        "vaud",
+        "b4",
+        "e4"
+      ],
+      "model": "2SC828",
+      "label": "Stage 4 (final) emitter follower"
+    },
+    {
+      "ref": "RE4",
+      "type": "R",
+      "nodes": [
+        "e4",
+        "0"
+      ],
+      "value": "22k",
+      "tolerance": 0.05,
+      "label": "Final stage emitter"
+    },
+    {
+      "ref": "CW",
+      "type": "C",
+      "nodes": [
+        "e4",
+        "w"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Wet coupling cap"
+    },
+    {
+      "ref": "CD",
+      "type": "C",
+      "nodes": [
+        "pe",
+        "dr"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "Dry coupling cap"
+    },
+    {
+      "ref": "RMD",
+      "type": "R",
+      "nodes": [
+        "dr",
+        "ch"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Chorus mix: dry"
+    },
+    {
+      "ref": "RMW",
+      "type": "R",
+      "nodes": [
+        "w",
+        "ch"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Chorus mix: wet"
+    },
+    {
+      "ref": "RV1",
+      "type": "R",
+      "nodes": [
+        "w",
+        "vib"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "Vibrato divider (top)"
+    },
+    {
+      "ref": "RV2",
+      "type": "R",
+      "nodes": [
+        "vib",
+        "0"
+      ],
+      "value": "220k",
+      "tolerance": 0.05,
+      "label": "Vibrato divider (bottom)"
+    },
+    {
+      "ref": "SWCH",
+      "type": "switch",
+      "nodes": [
+        "ch",
+        "sc"
+      ],
+      "control": "vibrato",
+      "invert": true,
+      "label": "Chorus/Vibrato switch (Chorus)"
+    },
+    {
+      "ref": "SWVB",
+      "type": "switch",
+      "nodes": [
+        "vib",
+        "sc"
+      ],
+      "control": "vibrato",
+      "label": "Chorus/Vibrato switch (Vibrato)"
+    },
+    {
+      "ref": "VOL",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "out",
+        "sc"
+      ],
+      "value": "100k",
+      "taper": "A",
+      "control": "volume",
+      "label": "Volume",
+      "note": "unverified taper: 100 kΩ per Keen; audio taper assumed"
+    },
+    {
+      "ref": "RO1",
+      "type": "R",
+      "nodes": [
+        "vraw",
+        "lv"
+      ],
+      "value": "3.3k",
+      "tolerance": 0.05,
+      "label": "LFO bias divider (top)"
+    },
+    {
+      "ref": "RO2",
+      "type": "R",
+      "nodes": [
+        "lv",
+        "0"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05,
+      "label": "LFO bias divider (bottom)"
+    },
+    {
+      "ref": "RO3",
+      "type": "R",
+      "nodes": [
+        "lv",
+        "lb"
+      ],
+      "value": "2.2M",
+      "tolerance": 0.05,
+      "label": "LFO base bias"
+    },
+    {
+      "ref": "QO1",
+      "type": "npn",
+      "nodes": [
+        "vraw",
+        "lb",
+        "lm"
+      ],
+      "model": "2SC828",
+      "label": "LFO Darlington input (QO1)"
+    },
+    {
+      "ref": "QO2",
+      "type": "npn",
+      "nodes": [
+        "vraw",
+        "lm",
+        "le"
+      ],
+      "model": "2SC828",
+      "label": "LFO Darlington output (QO2)"
+    },
+    {
+      "ref": "ROE",
+      "type": "R",
+      "nodes": [
+        "le",
+        "0"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05,
+      "label": "LFO emitter resistor"
+    },
+    {
+      "ref": "CO1",
+      "type": "C",
+      "nodes": [
+        "lb",
+        "n1"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "LFO phase-shift cap 1"
+    },
+    {
+      "ref": "CO2",
+      "type": "C",
+      "nodes": [
+        "n1",
+        "n2"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "LFO phase-shift cap 2 (centre)"
+    },
+    {
+      "ref": "CO3",
+      "type": "C",
+      "nodes": [
+        "n2",
+        "0"
+      ],
+      "value": "1u",
+      "tolerance": 0.2,
+      "label": "LFO phase-shift cap 3"
+    },
+    {
+      "ref": "DO1",
+      "type": "D",
+      "nodes": [
+        "n1",
+        "n2"
+      ],
+      "model": "1N914",
+      "label": "LFO amplitude limiter",
+      "note": "unverified type: two antiparallel diodes across the centre cap (Keen); silicon small-signal assumed"
+    },
+    {
+      "ref": "DO2",
+      "type": "D",
+      "nodes": [
+        "n2",
+        "n1"
+      ],
+      "model": "1N914",
+      "label": "LFO amplitude limiter"
+    },
+    {
+      "ref": "RO221",
+      "type": "R",
+      "nodes": [
+        "n1",
+        "le"
+      ],
+      "value": "220k",
+      "tolerance": 0.05,
+      "label": "LFO leg 1 parallel resistor"
+    },
+    {
+      "ref": "RO471",
+      "type": "R",
+      "nodes": [
+        "n1",
+        "sp1"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05,
+      "label": "LFO leg 1 speed limit resistor"
+    },
+    {
+      "ref": "SPEEDA",
+      "type": "pot",
+      "nodes": [
+        "sp1",
+        "sp1",
+        "le"
+      ],
+      "value": "100k",
+      "taper": "C",
+      "control": "speed",
+      "label": "Speed (foot pedal), gang A",
+      "note": "unverified value: Keen's article: 'dual 100K log taper pot in the footpedal ... mechanically turned the correct direction'; his full schematic and its caption say dual 250K. Rheostat with R = 100k·(1 − t(x)) on the C taper, i.e. the log pot turned so that speed rises with x"
+    },
+    {
+      "ref": "RO222",
+      "type": "R",
+      "nodes": [
+        "n2",
+        "le"
+      ],
+      "value": "220k",
+      "tolerance": 0.05,
+      "label": "LFO leg 2 parallel resistor"
+    },
+    {
+      "ref": "RO472",
+      "type": "R",
+      "nodes": [
+        "n2",
+        "sp2"
+      ],
+      "value": "4.7k",
+      "tolerance": 0.05,
+      "label": "LFO leg 2 speed limit resistor"
+    },
+    {
+      "ref": "SPEEDB",
+      "type": "pot",
+      "nodes": [
+        "sp2",
+        "sp2",
+        "le"
+      ],
+      "value": "100k",
+      "taper": "C",
+      "control": "speed",
+      "label": "Speed (foot pedal), gang B",
+      "note": "unverified value: Keen's article: 'dual 100K log taper pot in the footpedal ... mechanically turned the correct direction'; his full schematic and its caption say dual 250K. Rheostat with R = 100k·(1 − t(x)) on the C taper, i.e. the log pot turned so that speed rises with x"
+    },
+    {
+      "ref": "VKICK",
+      "type": "V",
+      "nodes": [
+        "kick",
+        "0"
+      ],
+      "value": "10.5",
+      "ac": {
+        "amplitude": "1m",
+        "freq": 4,
+        "phase": 0
+      },
+      "label": "LFO start kick",
+      "note": "Simulation aid, not in the unit: 1 mV at 4 Hz through 10 MΩ into the LFO network node n1, as power-up transients start the real oscillator. Its DC value sits at n1's nominal bias (≈ the Darlington emitter, 10.5 V) so the 10 MΩ draws almost no DC (a 1 V mismatch shifts n1 by ≤ 10 mV through the ≤ 105 kΩ leg). Feeding the kick into the 2.2 MΩ-biased base instead would pull the LFO bias by volts"
+    },
+    {
+      "ref": "RKICK",
+      "type": "R",
+      "nodes": [
+        "kick",
+        "n1"
+      ],
+      "value": "10M",
+      "tolerance": 0
+    },
+    {
+      "ref": "CA1",
+      "type": "C",
+      "nodes": [
+        "le",
+        "ap"
+      ],
+      "value": "10u",
+      "tolerance": 0.2,
+      "label": "LFO output coupling cap"
+    },
+    {
+      "ref": "INT",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "aw",
+        "ap"
+      ],
+      "value": "50k",
+      "taper": "B",
+      "control": "intensity",
+      "label": "Intensity (Amplitude)",
+      "note": "unverified taper: 50 kΩ per Keen; linear assumed"
+    },
+    {
+      "ref": "CA2",
+      "type": "C",
+      "nodes": [
+        "aw",
+        "ad"
+      ],
+      "value": "10u",
+      "tolerance": 0.2,
+      "label": "Lamp-driver coupling cap"
+    },
+    {
+      "ref": "RA",
+      "type": "R",
+      "nodes": [
+        "ad",
+        "lb2"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "Lamp-driver base resistor",
+      "note": "47k on both drawings: Keen's full schematic (All Electro-Harmonix Effects.pdf p.17 @200 dpi, crop (100,1260)-(1400,1500): '10u - 47k' into the lamp driver) and the Univox 915 factory drawing (univibe_915.pdf p.1 @400 dpi, crop (150,700)-(750,1500) rotated: '47K'). Was 4.7k (2026-11-12 fix): that over-drove the lamp, so Intensity saturated at half travel"
+    },
+    {
+      "ref": "RLB1",
+      "type": "R",
+      "nodes": [
+        "lc",
+        "lb2"
+      ],
+      "value": "100k",
+      "tolerance": 0.05,
+      "label": "Lamp-driver collector-base bias"
+    },
+    {
+      "ref": "RLB2",
+      "type": "R",
+      "nodes": [
+        "lb2",
+        "0"
+      ],
+      "value": "47k",
+      "tolerance": 0.05,
+      "label": "Lamp-driver base to ground"
+    },
+    {
+      "ref": "SWCAN",
+      "type": "switch",
+      "nodes": [
+        "lb2",
+        "0"
+      ],
+      "control": "cancel",
+      "label": "Cancel (heel switch: shorts the lamp-driver base)"
+    },
+    {
+      "ref": "QL",
+      "type": "npn",
+      "nodes": [
+        "lc",
+        "lb2",
+        "lx"
+      ],
+      "model": "2SC828",
+      "label": "Lamp driver"
+    },
+    {
+      "ref": "TRIM",
+      "type": "pot",
+      "nodes": [
+        "lx",
+        "lx",
+        "ly"
+      ],
+      "value": "1k",
+      "taper": "B",
+      "control": "lamp_trim",
+      "label": "Lamp bias trimmer",
+      "note": "unverified: Keen: 500 Ω-1 kΩ trimmer plus 150 Ω ('some original models have only the trimpot, some have only a fixed 150 ohm'); his full schematic shows 1k"
+    },
+    {
+      "ref": "RLE",
+      "type": "R",
+      "nodes": [
+        "ly",
+        "0"
+      ],
+      "value": "150",
+      "tolerance": 0.05,
+      "label": "Lamp-driver emitter resistor"
+    },
+    {
+      "ref": "LAMP",
+      "type": "lamp",
+      "nodes": [
+        "vraw",
+        "lc"
+      ],
+      "light": "L1",
+      "model": "UNIVIBE_LAMP_K",
+      "label": "Incandescent lamp (28 V / 40 mA)"
+    }
+  ],
+  "probes": [
+    "pe",
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "out",
+    "le",
+    "lc",
+    "L1",
+    "vraw",
+    "vaud"
+  ],
+  "layout": {},
+  "multirate": {
+    "slow": {
+      "rate": 4000.0,
+      "nodes": [
+        "sa",
+        "vraw",
+        "v2",
+        "vaud",
+        "pf",
+        "lb",
+        "lc",
+        "L1",
+        "LDR1#n",
+        "LDR2#n",
+        "LDR3#n",
+        "LDR4#n"
+      ]
+    }
+  },
+  "readouts": {
+    "lfo": "L1"
+  }
+}

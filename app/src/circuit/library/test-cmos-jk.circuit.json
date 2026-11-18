@@ -1,0 +1,34 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "test-cmos-jk",
+  "version": 1,
+  "name": "CMOS J-K flip-flops, CD4027B (validation circuit)",
+  "description": "The octave front end of test-cmos-divider (a self-biased CD4069UB stage and an AC-coupled second CD4069UB biased to VDD/3) clocks three CD4027B sections on 9 V: U2A with J = K = 1 toggles (divide by two); U2B on the same clock with J = Q1 and K = Q1-bar is a D stage, so its Q follows Q1 one clock late; U3A, clocked by Q1 with J = K = 1, divides by four. Each Q drives a 10k + 10n low-pass, the nodes the SPICE gate compares.",
+  "sources": [
+    { "title": "TI CD4027B dual J-K master-slave flip-flop, SCHS032D (2021): truth table section 8.2, dynamic characteristics", "url": "https://www.ti.com/lit/ds/symlink/cd4027b.pdf" },
+    { "title": "TI CD4069UB hex inverter, SCHS054E (2019)", "url": "https://www.ti.com/lit/ds/symlink/cd4069ub.pdf" }
+  ],
+  "io": { "input": "in", "output": "o1" },
+  "oversampling": 2,
+  "parts": [
+    { "ref": "VDD", "type": "V", "nodes": ["vdd", "0"], "value": "9" },
+    { "ref": "C1", "type": "C", "nodes": ["in", "a1"], "value": "100n" },
+    { "ref": "RIN", "type": "R", "nodes": ["a1", "g1"], "value": "10k" },
+    { "ref": "U1A", "type": "inv", "nodes": ["g1", "y1", "vdd", "0"], "model": "CD4069UB" },
+    { "ref": "RFB", "type": "R", "nodes": ["y1", "g1"], "value": "1M" },
+    { "ref": "C5", "type": "C", "nodes": ["y1", "g2"], "value": "100n" },
+    { "ref": "R6", "type": "R", "nodes": ["vdd", "g2"], "value": "2M" },
+    { "ref": "R7", "type": "R", "nodes": ["g2", "0"], "value": "1M" },
+    { "ref": "U1B", "type": "inv", "nodes": ["g2", "ck", "vdd", "0"], "model": "CD4069UB" },
+    { "ref": "U2A", "type": "jkff", "nodes": ["vdd", "vdd", "ck", "0", "0", "q1", "qb1", "vdd", "0"], "model": "CD4027B" },
+    { "ref": "U2B", "type": "jkff", "nodes": ["q1", "qb1", "ck", "0", "0", "q2", "qb2", "vdd", "0"], "model": "CD4027B" },
+    { "ref": "U3A", "type": "jkff", "nodes": ["vdd", "vdd", "q1", "0", "0", "q3", "qb3", "vdd", "0"], "model": "CD4027B" },
+    { "ref": "R1", "type": "R", "nodes": ["q1", "o1"], "value": "10k" },
+    { "ref": "CO1", "type": "C", "nodes": ["o1", "0"], "value": "10n" },
+    { "ref": "R2", "type": "R", "nodes": ["q2", "o2"], "value": "10k" },
+    { "ref": "CO2", "type": "C", "nodes": ["o2", "0"], "value": "10n" },
+    { "ref": "R3", "type": "R", "nodes": ["q3", "o3"], "value": "10k" },
+    { "ref": "CO3", "type": "C", "nodes": ["o3", "0"], "value": "10n" }
+  ],
+  "probes": ["ck", "q1", "q2", "q3", "o1", "o2", "o3"]
+}

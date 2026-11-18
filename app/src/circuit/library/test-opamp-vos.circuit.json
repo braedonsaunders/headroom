@@ -1,0 +1,34 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "test-opamp-vos",
+  "version": 1,
+  "name": "Op-amp input offset voltage and bias currents (validation circuit, ENGINE_QUEUE item 31)",
+  "description": "Op-amp input errors (vos, ib, ios) on an LF353-class macro with the TI data sheet's typical values (VIO 5 mV, IIB 50 pA, IIO 25 pA). Stage A is the GK 800RB power-amp input idiom: an inverting stage whose only feedback is 1M in series with 0.1 uF, with a 1N4001 clamp across the pair. It has no DC feedback path, so without input errors the macro sits at the all-zero point; the offset drives the output until the clamp conducts, which gives a unique operating point. Stage B is a non-inverting gain of 101 fed from 1M, so its output DC is 101 x (vos - ib(+) x 1M) + 100k x ib(-). Stage C is an ideal (level 0) follower with vos 2 mV.",
+  "sources": [
+    { "title": "TI LF353 data sheet (SNOSBH7): VIO 5 mV typ, IIB 50 pA typ, IIO 25 pA typ, AVD 100 V/mV, GBW 4 MHz, SR 13 V/us", "url": "https://www.ti.com/lit/ds/symlink/lf353.pdf" }
+  ],
+  "io": { "input": "in", "output": "outa" },
+  "oversampling": 1,
+  "models": {
+    "LF353E": { "kind": "opamp", "level": 1, "a0": 1e5, "gbw": 4e6, "slew": 13e6, "swing_hi": 1.5, "swing_lo": 1.5, "cdom": 30e-12, "vos": 0.005, "ib": 50e-12, "ios": 25e-12 },
+    "IDEALV": { "kind": "opamp", "level": 0, "vos": 0.002 }
+  },
+  "parts": [
+    { "ref": "VCC", "type": "V", "nodes": ["vcc", "0"], "value": "15" },
+    { "ref": "VEE", "type": "V", "nodes": ["vee", "0"], "value": "-15" },
+    { "ref": "R1", "type": "R", "nodes": ["in", "sa"], "value": "47k" },
+    { "ref": "IC1", "type": "opamp", "nodes": ["0", "sa", "outa", "vcc", "vee"], "model": "LF353E" },
+    { "ref": "R30", "type": "R", "nodes": ["outa", "fa"], "value": "1M" },
+    { "ref": "C8", "type": "C", "nodes": ["fa", "sa"], "value": "100n" },
+    { "ref": "D7", "type": "D", "nodes": ["outa", "sa"], "model": "1N4001" },
+    { "ref": "RLA", "type": "R", "nodes": ["outa", "0"], "value": "10k" },
+    { "ref": "RS", "type": "R", "nodes": ["in", "pb"], "value": "1M" },
+    { "ref": "CS", "type": "C", "nodes": ["pb", "0"], "value": "100p" },
+    { "ref": "IC2", "type": "opamp", "nodes": ["pb", "sb", "outb", "vcc", "vee"], "model": "LF353E" },
+    { "ref": "RF", "type": "R", "nodes": ["outb", "sb"], "value": "100k" },
+    { "ref": "RG", "type": "R", "nodes": ["sb", "0"], "value": "1k" },
+    { "ref": "IC3", "type": "opamp", "nodes": ["in", "outc", "outc"], "model": "IDEALV" },
+    { "ref": "RLC", "type": "R", "nodes": ["outc", "0"], "value": "10k" }
+  ],
+  "probes": ["sa", "outa", "pb", "outb", "outc"]
+}

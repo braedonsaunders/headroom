@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Windmill Stack</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Windmill Stack" preset-author="Headroom" preset-comment="A 100-watt Partridge-transformer head with channel one on full, bass right down and treble high, into its matching 4x12: loud, clear, punchy crunch with huge headroom, where every note in a big chord stays distinct. A clean boost adds push. Made for windmill power chords and trio rock; the guitar volume sets the dirt." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="65000">
+    <component-audio version="1">
+      <parameters num-parameters="2">
+        <parameter id="B" value="0.65"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="87000">
+    <component-audio version="1">
+      <parameters num-parameters="14">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Mst" value="0.42"/>
+        <parameter id="nv" value="1"/>
+        <parameter id="bv" value="0"/>
+        <parameter id="bs" value="0.22"/>
+        <parameter id="md" value="0.55"/>
+        <parameter id="tr" value="0.85"/>
+        <parameter id="pr" value="0.5"/>
+        <parameter id="Pw" value="0.5"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bi" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.055"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="5"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.14"/>
+        <parameter id="Tm" value="0.5"/>
+        <parameter id="Sz" value="0.5"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Chr" value="0.5"/>
+        <parameter id="iM" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="87000" target-number="1" target-name="nv" min-value="0.5" max-value="1" controller-name="Volume"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="87000" target-number="1" target-name="Mst" min-value="0.4" max-value="0.9" controller-name="Master"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="87000" target-number="1" target-name="bs" min-value="0" max-value="0.6" controller-name="Bass"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="87000" target-number="1" target-name="tr" min-value="0.5" max-value="1" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.35" controller-name="Room"/></connection-data>
+  <connection-data><target controller-slot-id="5" component-id="65000" target-number="1" target-name="B" min-value="0" max-value="0.9" controller-name="Push"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="crunch-windmill-stack" category="Crunch" order="130" instrument="guitar" style="Classic Rock">
+  <description>A 100-watt Partridge-transformer head with channel one on full, bass right down and treble high, into its matching 4x12: loud, clear, punchy crunch with huge headroom, where every note in a big chord stays distinct. A clean boost adds push. Made for windmill power chords and trio rock; the guitar volume sets the dirt.</description>
+  <tags><tag>Crunch</tag><tag>Classic Rock</tag><tag>Power Trio</tag><tag>Rhythm</tag><tag>Power Chords</tag><tag>Boost</tag></tags>
+  <sources>
+    <source url="https://www.thewho.net/whotabs/gear/guitar/cp103.html" title="thewho.net: Hiwatt CP103 and DR103W (Pete's typical settings 1969-73)"/>
+    <source url="https://reverb.com/news/the-whos-live-at-leeds-a-primer-for-pete-townshends-tone" title="Reverb: The Who's Live at Leeds, a primer for Pete Townshend's tone"/>
+    <source url="https://en.wikipedia.org/wiki/Hiwatt" title="Hiwatt (Wikipedia)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

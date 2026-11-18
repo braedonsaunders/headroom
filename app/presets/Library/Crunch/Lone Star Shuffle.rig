@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Lone Star Shuffle</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Lone Star Shuffle" preset-author="Headroom" preset-comment="A loud 4x10 blackface combo right at the edge with a green overdrive pushing it into crunch. Heavy strings and a hard right hand make it bark; the grit thickens as you dig in. Great for shuffles, bridge or middle pickup, and turns into a lead tone on the neck." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="15000">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.65"/>
+        <parameter id="Tn" value="0.68"/>
+        <parameter id="Dr" value="0.55"/>
+        <parameter id="Lmp" value="0.5"/>
+        <parameter id="Bs" value="0.5"/>
+        <parameter id="Cl" value="0"/>
+        <parameter id="Br" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="30000">
+    <component-audio version="1">
+      <parameters num-parameters="19">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.72"/>
+        <parameter id="Br" value="1"/>
+        <parameter id="Bs" value="0.3"/>
+        <parameter id="Md" value="0.58"/>
+        <parameter id="Tr" value="0.75"/>
+        <parameter id="Vr" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bia" value="0.5"/>
+        <parameter id="Hz" value="0.5"/>
+        <parameter id="RvL" value="0.1"/>
+        <parameter id="RvOn" value="1"/>
+        <parameter id="RvTm" value="0.5"/>
+        <parameter id="RvSz" value="0.5"/>
+        <parameter id="ViInt" value="0"/>
+        <parameter id="ViSpd" value="0.5"/>
+        <parameter id="ViOn" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.5671"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="15"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.12"/>
+        <parameter id="Tm" value="0.5"/>
+        <parameter id="Sz" value="0.38"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Chr" value="0.5"/>
+        <parameter id="iM" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="15000" target-number="1" target-name="Dr" min-value="0.05" max-value="0.7" controller-name="Drive"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="30000" target-number="1" target-name="Vol" min-value="0.45" max-value="0.9" controller-name="Amp Volume"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="30000" target-number="1" target-name="Md" min-value="0.3" max-value="0.85" controller-name="Mids"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="30000" target-number="1" target-name="Tr" min-value="0.35" max-value="0.85" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.35" controller-name="Room"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="crunch-lone-star-shuffle" category="Crunch" order="50" instrument="guitar" style="Texas Blues">
+  <description>A loud 4x10 blackface combo right at the edge with a green overdrive pushing it into crunch. Heavy strings and a hard right hand make it bark; the grit thickens as you dig in. Great for shuffles, bridge or middle pickup, and turns into a lead tone on the neck.</description>
+  <tags><tag>Crunch</tag><tag>Blues</tag><tag>Texas Blues</tag><tag>Shuffle</tag><tag>Overdrive</tag><tag>Rhythm</tag><tag>Lead</tag></tags>
+  <sources>
+    <source url="https://www.guitarplayer.com/gear/classic-gear-fender-super-reverb" title="Guitar Player: Classic Gear, Fender Super Reverb"/>
+    <source url="https://en.wikipedia.org/wiki/Stevie_Ray_Vaughan%27s_musical_instruments" title="Stevie Ray Vaughan's musical instruments (Wikipedia)"/>
+    <source url="https://en.wikipedia.org/wiki/Jimmie_Vaughan" title="Jimmie Vaughan (Wikipedia)"/>
+    <source url="https://www.guitarworld.com/lessons/stevie-ray-vaughan-5-licks" title="Guitar World: Stevie Ray Vaughan virtually defined the art of the Texas shuffle"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

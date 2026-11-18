@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Blackgaze Daybreak</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Blackgaze Daybreak" preset-author="Headroom" preset-comment="A blackgaze wall: a sustaining fuzz into a 120-watt lead channel at moderate gain, a 4x12, a soft analog-style echo and a huge modulated reverb. Tremolo-pick open chords and let them bloom into a bright, overwhelming haze; Freeze holds the wash under a riff." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="43000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V" value="0.6"/>
+        <parameter id="S" value="0.5"/>
+        <parameter id="T" value="0.55"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="B" value="0.5"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="134000">
+    <component-audio version="1">
+      <parameters num-parameters="21">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="R0" value="0.5"/>
+        <parameter id="L1" value="0.38"/>
+        <parameter id="B2" value="0.45"/>
+        <parameter id="M3" value="0.55"/>
+        <parameter id="T4" value="0.55"/>
+        <parameter id="P5" value="0.8"/>
+        <parameter id="R6" value="0.45"/>
+        <parameter id="P7" value="0.5"/>
+        <parameter id="P8" value="0"/>
+        <parameter id="V9" value="0.5"/>
+        <parameter id="S10" value="0.5"/>
+        <parameter id="R11" value="0.5"/>
+        <parameter id="B12" value="0.5"/>
+        <parameter id="L13" value="1"/>
+        <parameter id="H14" value="0"/>
+        <parameter id="B15" value="0"/>
+        <parameter id="C16" value="0"/>
+        <parameter id="R17" value="0.5"/>
+        <parameter id="L18" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.5874"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="12"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="158000">
+    <component-audio version="1">
+      <parameters num-parameters="38">
+        <parameter id="mix" value="0.17"/>
+        <parameter id="input" value="0.7224"/>
+        <parameter id="output" value="0.6846"/>
+        <parameter id="pandry" value="0.5"/>
+        <parameter id="panwet" value="0.5"/>
+        <parameter id="stereowidth" value="0.5"/>
+        <parameter id="stereomode" value="0.5"/>
+        <parameter id="timemode" value="2"/>
+        <parameter id="time" value="0.4286"/>
+        <parameter id="feedback" value="0.4"/>
+        <parameter id="style" value="0"/>
+        <parameter id="ana_bbdtype" value="0"/>
+        <parameter id="modern_sat" value="0.5"/>
+        <parameter id="modern_depth" value="0"/>
+        <parameter id="modern_rate" value="0.5"/>
+        <parameter id="modern_stereo" value="0.5"/>
+        <parameter id="diff_amount" value="0.5"/>
+        <parameter id="diff_size" value="0.5"/>
+        <parameter id="diff_movement" value="0.5"/>
+        <parameter id="diff_dense" value="0.5"/>
+        <parameter id="ana_depth" value="0.5"/>
+        <parameter id="ana_rate" value="0.5"/>
+        <parameter id="ana_stereo" value="0.5"/>
+        <parameter id="tape_sat" value="0.5"/>
+        <parameter id="tape_age" value="0.5"/>
+        <parameter id="tape_wowflut" value="0.5"/>
+        <parameter id="tape_noise" value="0.5"/>
+        <parameter id="vd_quality" value="0"/>
+        <parameter id="vd_depth" value="0.5"/>
+        <parameter id="vd_rate" value="0.5"/>
+        <parameter id="vd_stereo" value="0.5"/>
+        <parameter id="locut" value="0.5"/>
+        <parameter id="hicut" value="0.4"/>
+        <parameter id="duckingamount" value="0"/>
+        <parameter id="duckingsensitivity" value="0.5"/>
+        <parameter id="duckingrelease" value="0.5"/>
+        <parameter id="duckingmeter" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="148000">
+    <component-audio version="1">
+      <parameters num-parameters="20">
+        <parameter id="mode" value="0"/>
+        <parameter id="densityMode" value="0.5"/>
+        <parameter id="freeze" value="0"/>
+        <parameter id="preDSync" value="0"/>
+        <parameter id="preDNumerator" value="0"/>
+        <parameter id="preDDenominator" value="0"/>
+        <parameter id="preDMode" value="0"/>
+        <parameter id="preD" value="0.5"/>
+        <parameter id="preDFeedback" value="0.5"/>
+        <parameter id="highCut" value="0.5"/>
+        <parameter id="lowShelf" value="0.5"/>
+        <parameter id="size" value="0.85"/>
+        <parameter id="diff" value="0.5"/>
+        <parameter id="revTime" value="0.75"/>
+        <parameter id="damp" value="0.45"/>
+        <parameter id="mod" value="0.5"/>
+        <parameter id="mix" value="0.28"/>
+        <parameter id="modFreq" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="reverbMix" value="0.5"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="43000" target-number="1" target-name="S" min-value="0.2" max-value="0.85" controller-name="Fuzz"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="134000" target-number="1" target-name="L1" min-value="0.3" max-value="0.8" controller-name="Gain"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="158000" target-number="1" target-name="mix" min-value="0" max-value="0.4" controller-name="Delay Mix"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="148000" target-number="1" target-name="mix" min-value="0.1" max-value="0.55" controller-name="Space"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="148000" target-number="1" target-name="freeze" min-value="0" max-value="1" controller-name="Freeze"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-tempo bpm="160.000"/>
+<headroom-library version="1" id="hg-blackgaze-daybreak" category="High Gain" order="110" instrument="guitar" style="Blackgaze">
+  <description>A blackgaze wall: a sustaining fuzz into a 120-watt lead channel at moderate gain, a 4x12, a soft analog-style echo and a huge modulated reverb. Tremolo-pick open chords and let them bloom into a bright, overwhelming haze; Freeze holds the wash under a riff.</description>
+  <tags><tag>High Gain</tag><tag>Blackgaze</tag><tag>Post-Metal</tag><tag>Wall of Sound</tag><tag>Fuzz</tag><tag>Delay</tag><tag>Reverb</tag></tags>
+  <sources>
+    <source url="https://www.premierguitar.com/artists/deafheavens-kerry-mccoy-grasping-at-hooks" title="Premier Guitar: Deafheaven's Kerry McCoy"/>
+    <source url="https://equipboard.com/albums/deafheaven-sunbather" title="Equipboard: Deafheaven, Sunbather"/>
+    <source url="https://www.premierguitar.com/artists/alcests-neige-describes-a-place-where-blackness-and-beauty-meet" title="Premier Guitar: Alcest's Neige"/>
+    <source url="https://www.guitarworld.com/features/wolves-in-the-throne-room-primordial-arcana" title="Guitar World: Wolves in the Throne Room, Primordial Arcana"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

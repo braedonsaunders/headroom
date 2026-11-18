@@ -1,0 +1,956 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "teletronix-la2a",
+  "version": 1,
+  "name": "Teletronix LA-2A Leveling Amplifier",
+  "description": "Teletronix Division of Babcock Electronics Corp. Model LA-2A Leveling Amplifier (schematic S-1014-1 M, 12-21-65, rev. 7-13-66, with 11-66 S/N 572+ Limit/Compress slope switch addendum): UTC HA-100X 600:60k input transformer (T1) -> R5 68 kOhm secondary termination -> R6 68 kOhm + R7 2.7 kOhm / SW2 Limit-Compress bridge + T4A/T4B CdS photoconductive gain-reduction cell -> R1 100 kOhm Gain pot -> V1 12AX7A two-stage voltage amplifier (R9/R13 220 kOhm, R10 1.5 kOhm, R14 2.7 kOhm) -> V2 12BH7A White cathode follower totem-pole line stage (R17 10 kOhm current-sense plate, C3 0.1 uF push-pull drive to lower grid, R18/R20 1 kOhm) with 20 dB overall negative feedback (R21 100 kOhm, R22 33 kOhm || C4 HF trim, R11 68 kOhm to V1a cathode) -> C5 10 uF parafeed coupling into UTC A-24 15k:600 output transformer (T2). Feedback sidechain: R2 100 kOhm Peak Reduction pot -> paralleled V3 12AX7A control amplifier (R33 220 kOhm, R31 1 kOhm || C8 0.03 uF, R32 1 kOhm) -> C9 0.02 uF -> R37 1 MOhm || C12 0.001 uF Limit Response pre-emphasis driving C6 0.01 uF + R30 47 kOhm and R3 1 MOhm Stereo Adjust -> V4 6AQ5A luminescent driver pentode (R34 22 kOhm, R35 220 kOhm / C7D 30 uF, R36 1 kOhm || C10 50 uF) -> C11 0.01 uF + R8 2.2 MOhm into T4B electroluminescent panel; NE-2 65 V regulated second T4B CdS meter bridge.",
+  "sources": [
+    {
+      "title": "Teletronix Div. of Babcock Electronics Corp., 'Instruction Manual: Leveling Amplifier Model LA-2A' (3-66, schematic S-1014-1 M rev. 7-13-66, and 11-66 S/N 572+ Limit/Compress switch addendum), Library of Congress Recording Preservation collection",
+      "url": "https://tile.loc.gov/storage-services/master/mbrs/recording_preservation/manuals/Teletronix%20Model%20LA-2A%20Leveling%20Amplifier.pdf"
+    },
+    {
+      "title": "Universal Audio, Inc., 'Model LA-2A Leveling Amplifier User's Guide' (LA2A-M01 Rev. 1.3, Figs. 5-7 schematics and theory of operation)",
+      "url": "https://media.uaudio.com/assetlibrary/l/a/la-2a_manual.pdf"
+    },
+    {
+      "title": "RCA Electron Tube Division datasheets: 12AX7A High-Mu Twin Triode, 12BH7A Medium-Mu Twin Triode, and 6AQ5A Beam Power Tube (250 V Class A1 characteristics and direct interelectrode capacitances)",
+      "url": "https://frank.pocnet.net/sheets/049/6/6AQ5A.pdf"
+    },
+    {
+      "title": "United Transformer Corp. (UTC) catalog specifications for HA-100X (600:60k Hipermalloy input) and A-24 (15k:600 plate-to-line parafeed output) transformers; Sowter Type 1009 / 1010 replacement inductance data",
+      "url": "https://www.sowter.co.uk/vintage-audio-transformers.php"
+    },
+    {
+      "title": "Headroom Wave C device research section 4 (Alfrey-Taylor electroluminescent panel law and bimolecular CdS photocell with trap/history memory)",
+      "url": "work/circuit-netlists/wave-c/DEVICES.md"
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 2.0,
+    "outputVoltsPerFS": 3.5
+  },
+  "oversampling": 1,
+  "solver": "auto",
+  "models": {
+    "12BH7A": {
+      "kind": "triode",
+      "mu": 23.641,
+      "ex": 1.2529,
+      "kg1": 561.15,
+      "kp": 96.243,
+      "kvb": 3636.8,
+      "cgk": 3.2e-12,
+      "cgp": 2.6e-12,
+      "cpk": 5e-13,
+      "gscale": 0.00062,
+      "gknee": 0.06,
+      "note": "12BH7A twin triode fitted (Headroom 2026, tools/circuit/tube_fit.py) to the RCA 12BH7-A 'Average Plate Characteristics, Each Triode Unit' (92CM-7742R1, 1955; 495 points, data in work/tube-curves/12BH7A) with the triode law's contact-potential offset vgo: RMS error, % of 50 mA, 11.7 -> 1.4 (Va < 50 V 2.0 -> 0.6) against the previous hand-fitted card; 250 V / -10.5 V gives gm 3.2 mA/V (sheet 3.1), rp 5.9k (5.3). RCA unshielded capacitances Cgk=3.2 pF, Cgp=2.6 pF, Cpk=0.5 pF",
+      "vgo": 0.60161
+    },
+    "6AQ5A": {
+      "kind": "pentode",
+      "mu": 10.7,
+      "ex": 1.31,
+      "kg1": 1710.0,
+      "kg2": 8350.0,
+      "kp": 41.16,
+      "kvb": 12.7,
+      "cg1k": 8e-12,
+      "cg1p": 4e-13,
+      "cpk": 8.5e-12,
+      "gscale": 0.001,
+      "gknee": 0.08,
+      "note": "RCA 6AQ5A 7-pin miniature beam power tube (electrically equivalent to 6V6GT up to 250 V): fitted to RCA 250 V / -12.5 V Class A1 point (Ia=45.0 mA, Ig2=4.5 mA) with RCA 6AQ5A direct interelectrode capacitances (Cin=8.0 pF, Cg1p=0.4 pF, Cout=8.5 pF)"
+    },
+    "T4B_CELL": {
+      "kind": "cds",
+      "rdark": 10000000.0,
+      "ron": 400.0,
+      "gamma": 0.75,
+      "kr": 110.0,
+      "tau_l": 3.5,
+      "tau_h": 2.5,
+      "mh": 0.25,
+      "mr": 2.5,
+      "note": "unverified: Clairex CL-505L CdS cell in Teletronix T4A/T4B module fitted to published LA-2A system specifications (ron=400 Ohm -> 40 dB max GR behind R6+R7=70.7 kOhm; gamma=0.75 with T4B_EL b=20 -> ~3:1 Compress slope; kr=55 s^-1 -> ~9 ms full-light attack and ~55 ms to 50% release; tau_h=2.5 s, mr=2.5 -> 0.6 s short release to ~4 s heavy-compression release)"
+    }
+  },
+  "controls": [
+    {
+      "id": "gain",
+      "label": "Gain",
+      "kind": "continuous",
+      "default": 0.35,
+      "params": [
+        "G0"
+      ],
+      "note": "Front-panel R1 100 kOhm audio-taper makeup Gain potentiometer feeding V1a grid (up to 40 +/- 1 dB system gain)"
+    },
+    {
+      "id": "peak_reduction",
+      "label": "Peak Reduction",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "P1"
+      ],
+      "note": "Front-panel R2 100 kOhm audio-taper Peak Reduction potentiometer feeding V3a/V3b sidechain grids"
+    },
+    {
+      "id": "mode",
+      "label": "Mode",
+      "kind": "switch",
+      "default": 0.0,
+      "options": [
+        "Compress",
+        "Limit"
+      ],
+      "params": [
+        "M2"
+      ],
+      "note": "SW2 leveling slope switch (S/N 572+ 11-66 addendum): 0 = Compress (~3:1 pure feedback across T4A pin 7, R7 bypassed to sidechain), 1 = Limit (infty:1 horizontal limiting with R7 2.7 kOhm feedforward bridge active)"
+    },
+    {
+      "id": "emphasis",
+      "label": "Limit Response",
+      "kind": "continuous",
+      "default": 0.0,
+      "params": [
+        "L4"
+      ],
+      "note": "Rear-panel R37 1 MOhm Limit Response HF pre-emphasis rheostat (shunted by C12 0.001 uF into C6 0.01 uF + R30 47 kOhm): 0 = flat clockwise factory studio setting, 1 = full 1 MOhm FM broadcast pre-emphasis (+10 dB more sensitivity at 15 kHz vs <= 1 kHz)"
+    },
+    {
+      "id": "stereo_adj",
+      "label": "Stereo Adjust",
+      "kind": "continuous",
+      "default": 1.0,
+      "params": [],
+      "group": "Internal",
+      "note": "Rear-panel R3 1 MOhm Stereo Balance potentiometer feeding V4 6AQ5A grid; factory standalone setting is full clockwise (1.0)"
+    },
+    {
+      "id": "c4_trim",
+      "label": "HF Feedback Trim",
+      "kind": "continuous",
+      "default": 0.05,
+      "params": [],
+      "group": "Internal",
+      "note": "Internal C4 50-380 pF NFB phase-lead / HF flatness trimmer across R22 33 kOhm (~165 pF default for +/-0.1 dB to 15 kHz)"
+    },
+    {
+      "id": "zero_adj",
+      "label": "Meter Zero",
+      "kind": "continuous",
+      "default": 0.45,
+      "params": [],
+      "group": "Internal",
+      "note": "Front-panel R4 1 MOhm VU meter zero-adjust rheostat in the NE-2 regulated T4B meter bridge"
+    },
+    {
+      "id": "legacy_dry",
+      "label": "Dry",
+      "kind": "continuous",
+      "default": 0.0,
+      "params": [
+        "D3"
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Hardware LA-2A has no parallel dry blend path"
+    },
+    {
+      "id": "legacy_sc",
+      "label": "Sidechain",
+      "kind": "switch",
+      "default": 0.0,
+      "params": [
+        "S5"
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "External sidechain insert flag (not present on original LA-2A)"
+    },
+    {
+      "id": "vu_mode",
+      "label": "VU Mode",
+      "kind": "selector",
+      "default": 1.0,
+      "paramRange": [
+        0.0,
+        2.0
+      ],
+      "options": [
+        "Out +10",
+        "GR",
+        "Out +4"
+      ],
+      "params": [
+        "VUMode"
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Front-panel meter selector switch (1: Output +10, 2: Gain Reduction, 3: Output +4)"
+    },
+    {
+      "id": "legacy_vum",
+      "label": "VU Meter",
+      "kind": "continuous",
+      "default": 0.0,
+      "params": [
+        "VUM"
+      ],
+      "group": "Legacy",
+      "legacyOnly": true,
+      "note": "Read-only legacy VU meter telemetry alias"
+    }
+  ],
+  "parts": [
+    {
+      "ref": "VB_RECT",
+      "type": "V",
+      "nodes": [
+        "b_rect",
+        "0"
+      ],
+      "value": 338.0,
+      "label": "T3 500V CT + CR1/CR2 1N3196 rectified reservoir (C7A 40 uF)",
+      "note": "DC reservoir voltage at C7A 40 uF/450 V producing the schematic's marked 275 V at C7B after R29 4.7 kOhm under ~11.2 mA Class-A tube load"
+    },
+    {
+      "ref": "R29",
+      "type": "R",
+      "nodes": [
+        "b_rect",
+        "b_275"
+      ],
+      "value": "4.7k",
+      "label": "R29 4.7 kOhm 2W B+ filter resistor"
+    },
+    {
+      "ref": "C7B",
+      "type": "C",
+      "nodes": [
+        "b_275",
+        "0"
+      ],
+      "value": "40u",
+      "label": "C7B 40 uF / 450 V main B+ filter (275 V)"
+    },
+    {
+      "ref": "R16",
+      "type": "R",
+      "nodes": [
+        "b_275",
+        "b_205"
+      ],
+      "value": "68k",
+      "label": "R16 68 kOhm V1 B+ decoupling resistor"
+    },
+    {
+      "ref": "C7C",
+      "type": "C",
+      "nodes": [
+        "b_205",
+        "0"
+      ],
+      "value": "30u",
+      "label": "C7C 30 uF / 450 V V1 B+ filter (205 V)"
+    },
+    {
+      "ref": "RS_IN",
+      "type": "R",
+      "nodes": [
+        "in",
+        "tb1_p"
+      ],
+      "value": 600.0,
+      "label": "600 Ohm balanced line source impedance"
+    },
+    {
+      "ref": "T1",
+      "type": "transformer",
+      "nodes": [
+        "tb1_p",
+        "0",
+        "t1_sec",
+        "0"
+      ],
+      "turns": [
+        1.0,
+        10.0
+      ],
+      "r": [
+        40.0,
+        3800.0
+      ],
+      "lm": 8.0,
+      "label": "T1 UTC HA-100X 600:60k input transformer",
+      "note": "Wired 600 Ohm primary (TB1 pins 1-5 via J1 jumper) to 60 kOhm secondary (pins 7-10, 8-9 strapped) = 1:10 step-up; UTC catalog primary DCR ~40 Ohm, unverified secondary DCR 3.8 kOhm and primary inductance 8 H (Sowter 1009 class)"
+    },
+    {
+      "ref": "R5",
+      "type": "R",
+      "nodes": [
+        "t1_sec",
+        "0"
+      ],
+      "value": "68k",
+      "label": "R5 68 kOhm T1 secondary termination"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "t1_sec",
+        "sc_tap"
+      ],
+      "value": "68k",
+      "label": "R6 68 kOhm optical attenuator series resistor"
+    },
+    {
+      "ref": "R7",
+      "type": "R",
+      "nodes": [
+        "sc_tap",
+        "t4_sig"
+      ],
+      "value": "2.7k",
+      "label": "R7 2.7 kOhm Limit slope compensation resistor"
+    },
+    {
+      "ref": "SW2",
+      "type": "switch",
+      "nodes": [
+        "sc_tap",
+        "t4_sig"
+      ],
+      "control": "mode",
+      "invert": true,
+      "ron": 1.0,
+      "roff": 1000000000.0,
+      "label": "SW2 Compress / Limit slope switch (S/N 572+)",
+      "note": "Closed in Compress (mode=0, pure feedback across T4A pin 7 for ~3:1 ratio); open in Limit (mode=1, R7 2.7 kOhm feedforward bridge active for horizontal limiting)"
+    },
+    {
+      "ref": "T4A_GR",
+      "type": "cds",
+      "nodes": [
+        "t4_sig",
+        "0"
+      ],
+      "light": "t4b_light",
+      "model": "T4B_CELL",
+      "couple": 1.0,
+      "label": "T4A/T4B gain-reduction CdS photocell (pins 7-8)"
+    },
+    {
+      "ref": "R1",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "v1a_g",
+        "t4_sig"
+      ],
+      "value": "100k",
+      "taper": "A",
+      "control": "gain",
+      "label": "R1 100 kOhm Gain potentiometer"
+    },
+    {
+      "ref": "V1A",
+      "type": "triode",
+      "nodes": [
+        "v1a_p",
+        "v1a_g",
+        "v1a_k"
+      ],
+      "model": "12AX7",
+      "label": "V1A 12AX7A input voltage amplifier (pins 1, 2, 3)"
+    },
+    {
+      "ref": "R9",
+      "type": "R",
+      "nodes": [
+        "b_205",
+        "v1a_p"
+      ],
+      "value": "220k",
+      "label": "R9 220 kOhm V1A plate load"
+    },
+    {
+      "ref": "R10",
+      "type": "R",
+      "nodes": [
+        "v1a_k",
+        "0"
+      ],
+      "value": "1.5k",
+      "label": "R10 1.5 kOhm V1A cathode & NFB return resistor (1.2 V)"
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "v1a_p",
+        "v1b_g"
+      ],
+      "value": "0.02u",
+      "label": "C1 0.02 uF V1A-to-V1B coupling capacitor"
+    },
+    {
+      "ref": "R12",
+      "type": "R",
+      "nodes": [
+        "v1b_g",
+        "0"
+      ],
+      "value": "470k",
+      "label": "R12 470 kOhm V1B grid leak"
+    },
+    {
+      "ref": "V1B",
+      "type": "triode",
+      "nodes": [
+        "v1b_p",
+        "v1b_g",
+        "v1b_k"
+      ],
+      "model": "12AX7",
+      "label": "V1B 12AX7A second voltage amplifier (pins 6, 7, 8)"
+    },
+    {
+      "ref": "R13",
+      "type": "R",
+      "nodes": [
+        "b_205",
+        "v1b_p"
+      ],
+      "value": "220k",
+      "label": "R13 220 kOhm V1B plate load (120 V)"
+    },
+    {
+      "ref": "R14",
+      "type": "R",
+      "nodes": [
+        "v1b_k",
+        "0"
+      ],
+      "value": "2.7k",
+      "label": "R14 2.7 kOhm V1B cathode resistor (1.1 V)"
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "v1b_p",
+        "v2a_g"
+      ],
+      "value": "0.1u",
+      "label": "C2 0.1 uF V1B-to-V2A coupling capacitor"
+    },
+    {
+      "ref": "R15",
+      "type": "R",
+      "nodes": [
+        "v2a_g",
+        "wcf_out"
+      ],
+      "value": "470k",
+      "label": "R15 470 kOhm V2A bootstrap grid bias resistor"
+    },
+    {
+      "ref": "V2A",
+      "type": "triode",
+      "nodes": [
+        "v2a_p",
+        "v2a_g",
+        "v2a_k"
+      ],
+      "model": "12BH7A",
+      "label": "V2A 12BH7A upper White cathode follower (pins 6, 7, 8)"
+    },
+    {
+      "ref": "R17",
+      "type": "R",
+      "nodes": [
+        "b_275",
+        "v2a_p"
+      ],
+      "value": "10k",
+      "label": "R17 10 kOhm V2A plate current-sense resistor (220 V)"
+    },
+    {
+      "ref": "R18",
+      "type": "R",
+      "nodes": [
+        "v2a_k",
+        "wcf_out"
+      ],
+      "value": "1k",
+      "label": "R18 1 kOhm V2A cathode bias resistor"
+    },
+    {
+      "ref": "C3",
+      "type": "C",
+      "nodes": [
+        "v2a_p",
+        "v2b_g"
+      ],
+      "value": "0.1u",
+      "label": "C3 0.1 uF WCF push-pull drive capacitor to V2B grid"
+    },
+    {
+      "ref": "R19",
+      "type": "R",
+      "nodes": [
+        "v2b_g",
+        "0"
+      ],
+      "value": "470k",
+      "label": "R19 470 kOhm V2B grid leak"
+    },
+    {
+      "ref": "V2B",
+      "type": "triode",
+      "nodes": [
+        "wcf_out",
+        "v2b_g",
+        "v2b_k"
+      ],
+      "model": "12BH7A",
+      "label": "V2B 12BH7A lower White cathode follower (pins 1, 2, 3)"
+    },
+    {
+      "ref": "R20",
+      "type": "R",
+      "nodes": [
+        "v2b_k",
+        "0"
+      ],
+      "value": "1k",
+      "label": "R20 1 kOhm V2B cathode resistor"
+    },
+    {
+      "ref": "R21",
+      "type": "R",
+      "nodes": [
+        "wcf_out",
+        "nfb_tap"
+      ],
+      "value": "100k",
+      "label": "R21 100 kOhm global negative feedback upper resistor"
+    },
+    {
+      "ref": "R22",
+      "type": "R",
+      "nodes": [
+        "nfb_tap",
+        "0"
+      ],
+      "value": "33k",
+      "label": "R22 33 kOhm global negative feedback shunt resistor"
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "nfb_tap",
+        "0"
+      ],
+      "value": {
+        "nominal": 6.65e-11,
+        "control": "c4_trim",
+        "min": 5e-11,
+        "max": 3.8e-10,
+        "law": "lin"
+      },
+      "label": "C4 50-380 pF HF feedback compensation trimmer"
+    },
+    {
+      "ref": "R11",
+      "type": "R",
+      "nodes": [
+        "nfb_tap",
+        "v1a_k"
+      ],
+      "value": "68k",
+      "label": "R11 68 kOhm negative feedback feed to V1A cathode"
+    },
+    {
+      "ref": "C5",
+      "type": "C",
+      "nodes": [
+        "wcf_out",
+        "t2_pri"
+      ],
+      "value": "10u",
+      "label": "C5 10 uF / 450 V parafeed output coupling capacitor"
+    },
+    {
+      "ref": "T2",
+      "type": "transformer",
+      "nodes": [
+        "t2_pri",
+        "0",
+        "out",
+        "0"
+      ],
+      "turns": [
+        5.0,
+        1.0
+      ],
+      "r": [
+        1430.0,
+        40.0
+      ],
+      "lm": 80.0,
+      "label": "T2 UTC A-24 15k:600 parafeed output transformer",
+      "note": "15 kOhm primary (pins 7-11, 9-10 strapped) to 600 Ohm secondary (pins 1-6, 3-4 strapped) = 5:1 step-down; UTC catalog primary DCR 1430 Ohm, secondary DCR ~40 Ohm, unverified primary inductance 80 H (Sowter 1010 class)"
+    },
+    {
+      "ref": "RLOAD",
+      "type": "R",
+      "nodes": [
+        "out",
+        "0"
+      ],
+      "value": 600.0,
+      "label": "600 Ohm balanced line termination (TB2 pins 8-10)"
+    },
+    {
+      "ref": "R2",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "v3a_g",
+        "sc_tap"
+      ],
+      "value": "100k",
+      "taper": "A",
+      "control": "peak_reduction",
+      "label": "R2 100 kOhm Peak Reduction potentiometer"
+    },
+    {
+      "ref": "V3",
+      "type": "triode",
+      "nodes": [
+        "v3_p",
+        "v3a_g",
+        "v3_k"
+      ],
+      "model": "12AX7",
+      "label": "V3 12AX7A paralleled sidechain control amplifier (pins 1/6, 2/7 via R32 1k, 3/8)",
+      "parallel": 2,
+      "note": "Two 12AX7A sections in parallel (R32 1 kOhm RF parasitic grid stopper between pins 7 and 2 omitted: 100 MHz pole)"
+    },
+    {
+      "ref": "R33",
+      "type": "R",
+      "nodes": [
+        "b_275",
+        "v3_p"
+      ],
+      "value": "220k",
+      "label": "R33 220 kOhm V3 parallel plate load"
+    },
+    {
+      "ref": "R31",
+      "type": "R",
+      "nodes": [
+        "v3_k",
+        "0"
+      ],
+      "value": "1k",
+      "label": "R31 1 kOhm V3 shared cathode resistor (0.75 V)"
+    },
+    {
+      "ref": "C8",
+      "type": "C",
+      "nodes": [
+        "v3_k",
+        "0"
+      ],
+      "value": "0.03u",
+      "label": "C8 0.03 uF V3 cathode HF bypass capacitor"
+    },
+    {
+      "ref": "C9",
+      "type": "C",
+      "nodes": [
+        "v3_p",
+        "sc_c9"
+      ],
+      "value": "0.02u",
+      "label": "C9 0.02 uF V3 sidechain coupling capacitor"
+    },
+    {
+      "ref": "R37",
+      "type": "R",
+      "nodes": [
+        "sc_c9",
+        "stereo_bus"
+      ],
+      "value": {
+        "nominal": 100.0,
+        "control": "emphasis",
+        "min": 100.0,
+        "max": 1000000.0,
+        "law": "lin"
+      },
+      "label": "R37 1 MOhm Limit Response HF pre-emphasis rheostat"
+    },
+    {
+      "ref": "C12",
+      "type": "C",
+      "nodes": [
+        "sc_c9",
+        "stereo_bus"
+      ],
+      "value": "0.001u",
+      "label": "C12 0.001 uF HF bypass across R37"
+    },
+    {
+      "ref": "C6",
+      "type": "C",
+      "nodes": [
+        "stereo_bus",
+        "c6_r30"
+      ],
+      "value": "0.01u",
+      "label": "C6 0.01 uF pre-emphasis shunt capacitor"
+    },
+    {
+      "ref": "R30",
+      "type": "R",
+      "nodes": [
+        "c6_r30",
+        "0"
+      ],
+      "value": "47k",
+      "label": "R30 47 kOhm pre-emphasis shunt resistor"
+    },
+    {
+      "ref": "R3",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "v4_g1",
+        "stereo_bus"
+      ],
+      "value": "1M",
+      "taper": "B",
+      "control": "stereo_adj",
+      "label": "R3 1 MOhm Stereo Balance potentiometer"
+    },
+    {
+      "ref": "V4",
+      "type": "pentode",
+      "nodes": [
+        "v4_p",
+        "v4_g2",
+        "v4_g1",
+        "v4_k"
+      ],
+      "model": "6AQ5A",
+      "label": "V4 6AQ5A electroluminescent panel driver (pins 5, 6, 1/7, 2)"
+    },
+    {
+      "ref": "R34",
+      "type": "R",
+      "nodes": [
+        "b_275",
+        "v4_p"
+      ],
+      "value": "22k",
+      "label": "R34 22 kOhm 2W V4 plate load"
+    },
+    {
+      "ref": "R35",
+      "type": "R",
+      "nodes": [
+        "b_275",
+        "v4_g2"
+      ],
+      "value": "220k",
+      "label": "R35 220 kOhm V4 screen dropping resistor"
+    },
+    {
+      "ref": "C7D",
+      "type": "C",
+      "nodes": [
+        "v4_g2",
+        "0"
+      ],
+      "value": "30u",
+      "label": "C7D 30 uF / 450 V V4 screen bypass capacitor"
+    },
+    {
+      "ref": "R36",
+      "type": "R",
+      "nodes": [
+        "v4_k",
+        "0"
+      ],
+      "value": "1k",
+      "label": "R36 1 kOhm V4 cathode bias resistor"
+    },
+    {
+      "ref": "C10",
+      "type": "C",
+      "nodes": [
+        "v4_k",
+        "0"
+      ],
+      "value": "50u",
+      "label": "C10 50 uF / 25 V V4 cathode bypass capacitor"
+    },
+    {
+      "ref": "C11",
+      "type": "C",
+      "nodes": [
+        "v4_p",
+        "t4_el"
+      ],
+      "value": "0.01u",
+      "label": "C11 0.01 uF T4B electroluminescent coupling capacitor"
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "t4_el",
+        "0"
+      ],
+      "value": "2.2M",
+      "label": "R8 2.2 MOhm T4A/T4B EL panel bleed resistor (pins 3-1/4)"
+    },
+    {
+      "ref": "T4B_EL",
+      "type": "elpanel",
+      "nodes": [
+        "t4_el",
+        "0"
+      ],
+      "light": "t4b_light",
+      "model": "T4B_EL",
+      "label": "T4A/T4B electroluminescent panel (pins 3-2)"
+    },
+    {
+      "ref": "R28",
+      "type": "R",
+      "nodes": [
+        "b_275",
+        "ne2_reg"
+      ],
+      "value": "470k",
+      "label": "R28 470 kOhm NE-2 regulator feed resistor"
+    },
+    {
+      "ref": "NE2_REG",
+      "type": "neon",
+      "nodes": [
+        "ne2_reg",
+        "0"
+      ],
+      "light": "ne2_glow",
+      "model": "NE2",
+      "label": "NE-2 65 V meter bridge voltage regulator"
+    },
+    {
+      "ref": "R26",
+      "type": "R",
+      "nodes": [
+        "mtr_top",
+        "0"
+      ],
+      "value": "330k",
+      "label": "R26 330 kOhm meter bridge shunt resistor"
+    },
+    {
+      "ref": "R4",
+      "type": "R",
+      "nodes": [
+        "ne2_reg",
+        "mtr_top"
+      ],
+      "value": {
+        "nominal": 450000.0,
+        "control": "zero_adj",
+        "min": 1000.0,
+        "max": 1000000.0,
+        "law": "lin"
+      },
+      "label": "R4 1 MOhm Zero Adjust rheostat"
+    },
+    {
+      "ref": "R25",
+      "type": "R",
+      "nodes": [
+        "mtr_top",
+        "0"
+      ],
+      "value": "33k",
+      "label": "R25 33 kOhm (18-68 kOhm factory selected) meter zero leg"
+    },
+    {
+      "ref": "R27",
+      "type": "R",
+      "nodes": [
+        "mtr_top",
+        "mtr_cell"
+      ],
+      "value": "10k",
+      "label": "R27 10 kOhm meter cell series resistor"
+    },
+    {
+      "ref": "T4A_MTR",
+      "type": "cds",
+      "nodes": [
+        "mtr_cell",
+        "0"
+      ],
+      "light": "t4b_light",
+      "model": "T4B_CELL",
+      "couple": 1.0,
+      "label": "T4A/T4B matched meter CdS photocell (pins 5-6)"
+    }
+  ],
+  "readouts": {
+    "gr": {
+      "law": "ratio",
+      "node": "mtr_cell",
+      "note": "The front-panel VU in Gain Reduction: the second T4B photocell (T4A_MTR, lit with the gain cell) in the NE-2 regulated R4/R25/R26/R27 meter bridge. Zeroed at the no-signal operating point like R4 Zero Adjust; 20*log10(v_rest/v) reads within 1.5 dB of the gain taken off from 0 to 15 dB (test_circuit_unit)."
+    }
+  },
+  "probes": [
+    "t4_sig",
+    "v1b_p",
+    "wcf_out",
+    "v4_p",
+    "t4b_light",
+    "mtr_cell",
+    "out"
+  ],
+  "cuts": [
+    "b_275",
+    "b_205"
+  ],
+  "multirate": {
+    "slow": {
+      "rate": 4000.0,
+      "nodes": [
+        "b_275",
+        "b_205",
+        "mtr_cell",
+        "ne2_reg",
+        "ne2_glow",
+        "T4A_GR#n",
+        "T4A_MTR#n"
+      ]
+    }
+  }
+}

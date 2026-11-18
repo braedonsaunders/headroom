@@ -1,0 +1,28 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "test-compander",
+  "version": 1,
+  "name": "NE570 compressor and expander (validation circuit)",
+  "description": "The Philips NE570 datasheet's basic expander (Fig. 7: input to G CELL IN and RECT IN through 2.2 uF each, R3 pin tied to the output, CRECT 2.2 uF) and basic compressor (Fig. 8: input through 2.2 uF to the R3 pin, the gain cell and rectifier fed from the output through 2.2 uF, DC feedback 47k + 47k with 10 uF to ground at the middle, output biased to (1 + 94k/30k)·1.8 V = 7.4 V) on a 15 V supply.",
+  "sources": [ { "title": "Philips Semiconductors, NE570 Compandor, product data 2003 Apr 03 (Figs. 2, 6-10)", "url": "https://www.experimentalistsanonymous.com/diy/Datasheets/NE570.pdf" } ],
+  "io": { "input": "in", "output": "cout" },
+  "oversampling": 2,
+  "parts": [
+    { "ref": "VCC", "type": "V", "nodes": ["vcc", "0"], "value": "15" },
+    { "ref": "CE1", "type": "C", "nodes": ["in", "eg"], "value": "2.2u" },
+    { "ref": "CE2", "type": "C", "nodes": ["in", "er"], "value": "2.2u" },
+    { "ref": "CER", "type": "C", "nodes": ["ec", "0"], "value": "2.2u" },
+    { "ref": "UE", "type": "sub", "of": "lib:ne570", "nodes": ["er", "ec", "eg", "einv", "eout", "eout", "vcc", "0"] },
+    { "ref": "CC1", "type": "C", "nodes": ["in", "cr3"], "value": "2.2u" },
+    { "ref": "UC", "type": "sub", "of": "lib:ne570", "nodes": ["crin", "cc", "cg", "cinv", "cr3", "cout", "vcc", "0"] },
+    { "ref": "CCR", "type": "C", "nodes": ["cc", "0"], "value": "2.2u" },
+    { "ref": "CF1", "type": "C", "nodes": ["cout", "cg"], "value": "2.2u" },
+    { "ref": "CF2", "type": "C", "nodes": ["cout", "crin"], "value": "2.2u" },
+    { "ref": "RDC1", "type": "R", "nodes": ["cout", "cdc"], "value": "47k" },
+    { "ref": "RDC2", "type": "R", "nodes": ["cdc", "cinv"], "value": "47k" },
+    { "ref": "CDC", "type": "C", "nodes": ["cdc", "0"], "value": "10u" },
+    { "ref": "RLE", "type": "R", "nodes": ["eout", "0"], "value": "100k" },
+    { "ref": "RLC", "type": "R", "nodes": ["cout", "0"], "value": "100k" }
+  ],
+  "probes": ["eout", "ec", "cc"]
+}

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Pedal Point Bass</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Pedal Point Bass" preset-author="Headroom" preset-comment="Let a chord ring and an octave-down synth bass blooms under it: the root on every other step, the chord tones between, locked to the groove you were strumming. Strum again and the bass steps aside until the next ring." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="900001">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="low" value="28"/>
+        <parameter id="high" value="88"/>
+        <parameter id="mode" value="0"/>
+        <parameter id="sens" value="0.55"/>
+        <parameter id="bend" value="2"/>
+        <parameter id="vel" value="0.5"/>
+        <parameter id="thru" value="1"/>
+        <parameter id="engine" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="900006">
+    <component-audio version="1">
+      <parameters num-parameters="22">
+        <parameter id="rate" value="1"/>
+        <parameter id="bloom" value="0.45"/>
+        <parameter id="bend" value="1"/>
+        <parameter id="tone" value="0.55"/>
+        <parameter id="dry" value="0.8"/>
+        <parameter id="level" value="0.5"/>
+        <parameter id="trigger" value="0"/>
+        <parameter id="engage" value="0"/>
+        <parameter id="pattern" value="6"/>
+        <parameter id="motion" value="0.5"/>
+        <parameter id="touch" value="0.5"/>
+        <parameter id="range" value="0"/>
+        <parameter id="extend" value="1"/>
+        <parameter id="key" value="0"/>
+        <parameter id="scale" value="0"/>
+        <parameter id="gate" value="0.55"/>
+        <parameter id="swing" value="0"/>
+        <parameter id="clock" value="1"/>
+        <parameter id="choke" value="0.7"/>
+        <parameter id="voice" value="0"/>
+        <parameter id="retrig" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="900002">
+    <component-audio version="1">
+      <parameters num-parameters="11">
+        <parameter id="rate" value="2"/>
+        <parameter id="octave" value="-1"/>
+        <parameter id="transpose" value="0"/>
+        <parameter id="harmony" value="0"/>
+        <parameter id="scale" value="0"/>
+        <parameter id="root" value="4"/>
+        <parameter id="arp" value="0"/>
+        <parameter id="hold" value="0"/>
+        <parameter id="bpm" value="120"/>
+        <parameter id="sync" value="1"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="900003">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="sound" value="14"/>
+        <parameter id="tone" value="0.5"/>
+        <parameter id="follow" value="0"/>
+        <parameter id="attack" value="0.4"/>
+        <parameter id="release" value="0.4"/>
+        <parameter id="level" value="0.42"/>
+        <parameter id="mix" value="0.4"/>
+        <parameter id="vibrato" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="79000">
+    <component-audio version="1">
+      <parameters num-parameters="11">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="vb" value="0.5"/>
+        <parameter id="vn" value="0.55"/>
+        <parameter id="t" value="0.55"/>
+        <parameter id="Pw" value="0.5"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bi" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="input" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.6818"/>
+        <parameter id="c" value="0"/>
+        <parameter id="Cab" value="14"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="127000">
+    <component-audio version="1">
+      <parameters num-parameters="4">
+        <parameter id="S1" value="4"/>
+        <parameter id="M2" value="0.15"/>
+        <parameter id="M3" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="900006" target-number="1" target-name="bloom" min-value="0.04" max-value="0.6" controller-name="Bloom Time"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="900006" target-number="1" target-name="motion" min-value="0" max-value="1" controller-name="Motion"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="900003" target-number="1" target-name="mix" min-value="0" max-value="0.7" controller-name="Bass"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="79000" target-number="1" target-name="vn" min-value="0.3" max-value="0.85" controller-name="Drive"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-tempo bpm="110.000"/>
+<headroom-library version="1" id="bl-pedal-point" category="Guitar + MIDI" order="60" instrument="guitar" style="Arpeggiated Bass">
+  <description>Let a chord ring and an octave-down synth bass blooms under it: the root on every other step, the chord tones between, locked to the groove you were strumming. Strum again and the bass steps aside until the next ring.</description>
+  <tags><tag>Bloom</tag><tag>Arpeggio</tag><tag>Crunch</tag><tag>Bass</tag><tag>Synth</tag><tag>Guitar + MIDI</tag><tag>Poly</tag></tags>
+  <sources>
+    <source url="https://en.wikipedia.org/wiki/Arpeggiator" title="Wikipedia: Arpeggiator"/>
+    <source url="https://www.ehx.com/products/freeze/" title="Electro-Harmonix: Freeze Sound Retainer"/>
+    <source url="https://en.wikipedia.org/wiki/Roland_GR-300" title="Wikipedia: Roland GR-300"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

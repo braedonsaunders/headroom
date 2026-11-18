@@ -1,0 +1,1422 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "marshall-1959rr-91000",
+ "version": 1,
+ "name": "Marshall 1959RR (factory cascaded 1959 Super Lead, 100 W, 4 x EL34)",
+ "description": "Marshall's FACTORY 1959RR: the Randy Rhoads 1959 Super Lead 100 W with a factory cascade, as drawn on Marshall circuit diagram 1959RR-01-60-02 Iss 2 (drawn D. Thomas 03-05-07, released 05-12-07). Built from the library's marshall-1959-plexi (Unicord 70-6-11, 1970) with every value and connection the 1959RR drawing changes, and the RR's own PSU, bias and power-stage parts. Guitar in INPUTS 2 HI (JS1; selectable): V1 pins 1-3 (R3 ∥ R4 68K, R7 100K, R2 820R / C2 330u) -> C3 22n -> VR1 'VOLUME 2' A1M -> R10 470K -> V1 pins 6-8 grid (shunted by R5 ∥ R6 68K through the empty INPUTS 1 jacks; R8 100K, R1 2K7 / C1 680n) -> C4 22n -> VR2 'VOLUME 1' A1M with C5 4n7 bright cap -> R9 470K ∥ C6 470p -> V2 pins 1-3 (R44 100K, R11 820R unbypassed) DC-coupled to the V2 cathode follower (R12 100K) -> C8 470p / R13 33K / C9 22n / C10 22n stack with VR3 B250K, VR5 A1M, VR4 B25K -> C11 22n -> 12AX7 long-tail pair (R22 82K / R25 100K, C15 47p, R17 470R, R20 10K tail, R16/R19 1M, C13 100n), global feedback R21 100K from the 4 Ω tap, presence R18 4K7 to ground and VR6 B25K rheostat + C12 100n -> C14/C16 22n, R23/R24 220K -> 4 x EL34 (5K6 grid stoppers, 1K 5W screens, R50/R51 1R cathode sense per pair; folded as two parallel-2 parts, exact) -> TX2 1.7 kΩ OT, 16 Ω tap into a 16 Ω 4x12. Supply: bridge on the HT winding (no centre tap; base two-diode equivalent), C20/C21 2 x (50u+50u) in series with R48/R49 56K balancing, choke TX3 to the screens (C22/C23 likewise with R42/R43), R27 + R26 10K 2W to the PI (C24 50u+50u), R15 10K 2W to V2 (C25), R14 10K 1W to V1 (C25). Bias: its own TX1 winding, R30 27K, D1, C18 10u (an ideal source at the C18 node, the library convention), R29 15K, C17 10u, R28 47K + PR1 20K trim. Standby closed, no master volume. Signal cut at the V2 cathode follower into the stack (as the base).",
+ "sources": [
+  {
+   "title": "Marshall Amplification circuit diagram 1959RR-01-60-02 Iss 2 ('1959RR', drawn D. Thomas 03-05-07, released 05-12-07; vector A3), as posted on the Hoffman Amplifiers / el34world forum, topic 23002",
+   "url": "https://el34world.com/Forum/index.php?action=dlattach;topic=23002.0;attach=69522"
+  },
+  {
+   "title": "Marshall 1959 schematic, Unicord Inc. drawing 70-6-11 rev B, July 1970 (the base netlist's drawing; larger scan)",
+   "url": "http://www.lynx.net/~jc/Marshall1959.gif"
+  },
+  {
+   "title": "Marshall 1959 schematic, Unicord 70-6-11 rev B, as hosted by Dr Tube (base netlist source)",
+   "url": "https://www.drtube.com/schematics/marshall/1959u.gif"
+  },
+  {
+   "title": "N. Koren, 'Improved vacuum tube models for SPICE simulations': 12AX7 and EL34 laws (library models)",
+   "url": "https://www.normankoren.com/Audio/Tubemodspice_article.html"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "spk",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 528.0
+ },
+ "oversampling": 2,
+ "minRate": 176400,
+ "lte": {"start": "bdf2", "tol": 16},
+ "newton": {"substeps": 10, "note": "Event substeps (docs §10.64): the tube ports of every LTE substep converge at 10x the full step's tube tolerance; every other port and the full step keep theirs. 9900X real / driven -1.3 / -2.6 %, block p99 -6.4 %; M4 Pro instructions mean / p99 -2.6 / -7.9 %. Engine fine-step truth within 0.4 %, SPICE gate within 0.001 % (abs), aliasing within 0.2 dB of 1x on both tones. CE_SUBTOL=1 restores 1x."},
+ "solver": "auto",
+ "cuts": [
+  "hra",
+  "hrb",
+  "bp1",
+  "bm1",
+  "ch",
+  "bp2",
+  "bm2",
+  "bp3a",
+  "bp3",
+  "bp4",
+  "bp5",
+  "bias",
+  "pr1t"
+ ],
+ "controls": [
+  {
+   "id": "volume1",
+   "label": "Volume I",
+   "default": 0.5,
+   "params": [
+    "V1"
+   ],
+   "group": "Main",
+   "note": "VR2 A1M, panel 'VOLUME 1': the INPUTS 1 triode's (V1 pins 6-8) volume with C5 4n7 bright cap, feeding V2 through R9 470K ∥ C6 470p. In the cascade it is the second volume: it sets the level from the cascaded pair into V2, the PI and the power stage (the drive and loudness)"
+  },
+  {
+   "id": "volume2",
+   "label": "Volume II",
+   "default": 0.5,
+   "params": [
+    "V2"
+   ],
+   "group": "Main",
+   "note": "VR1 A1M, panel 'VOLUME 2': the INPUTS 2 triode's (V1 pins 1-3) volume. In the 1959RR its wiper feeds the INPUTS 1 triode's grid through R10 470K, so in the cascade (guitar in INPUTS 2) it is the first volume: how hard the second triode is driven (the gain). It is silent at 0 for INPUTS 2; with the guitar in INPUTS 1 it only loads that triode's grid"
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "default": 0.5,
+   "params": [
+    "T"
+   ],
+   "group": "Main",
+   "note": "VR3 B250K, wiper = stack output to the PI"
+  },
+  {
+   "id": "middle",
+   "label": "Middle",
+   "default": 0.5,
+   "params": [
+    "M"
+   ],
+   "group": "Main",
+   "note": "VR4 B25K to ground with C10 on its wiper"
+  },
+  {
+   "id": "bass",
+   "label": "Bass",
+   "default": 0.5,
+   "params": [
+    "B"
+   ],
+   "group": "Main",
+   "note": "VR5 A1M as a rheostat"
+  },
+  {
+   "id": "presence",
+   "label": "Presence",
+   "default": 0.5,
+   "params": [
+    "Pr"
+   ],
+   "group": "Main",
+   "note": "VR6 B25K rheostat in series with C12 100n from the feedback node to ground, R18 4K7 from the feedback node to ground; clockwise shunts more treble out of the feedback"
+  },
+  {
+   "id": "input",
+   "label": "Input",
+   "kind": "switch",
+   "default": 1,
+   "face": true,
+   "options": [
+    "Input 1",
+    "Input 2 (cascade)"
+   ],
+   "group": "Inputs",
+   "note": "Which HI jack the guitar is in. Input 2 (on, default): INPUTS 2 HI (JS1), the factory cascade V1 pins 1-3 -> VOLUME 2 -> R10 470K -> V1 pins 6-8 -> VOLUME 1 -> V2; the empty INPUTS 1 jacks ground their tips, so R5 ∥ R6 (34 kΩ) shunt the cascade grid. Input 1 (off): INPUTS 1 HI (JS3), one triode as on a stock 1959 high-treble channel; the empty JS1 grounds the INPUTS 2 tips. The LO jacks are empty in both. No catalogue parameter"
+  },
+  {
+   "id": "bias_adjust",
+   "label": "Bias Adjust",
+   "default": 0.5,
+   "params": [],
+   "group": "Internal",
+   "note": "CIRCUIT-ONLY factory trim (no catalogue id): PR1 20K BIAS ADJUST, the rheostat at the bottom of the R28 47K bias divider. The default is the trim position the bias winding was fitted at (grids -38 V)"
+  },
+  {
+   "id": "power",
+   "label": "Power",
+   "default": 0.5,
+   "params": [
+    "Pw"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "No master volume or power scaling on the 1959RR; stored for presets only"
+  },
+  {
+   "id": "variac",
+   "label": "Variac",
+   "default": 0.5,
+   "params": [
+    "Var"
+   ],
+   "group": "Legacy",
+   "note": "Variac: scales the mains (the HT and the bias winding) from 75 % at 0 through nominal at 0.5 to 108 % at 1 (as the base 1959 netlist)",
+   "mod": true,
+   "modNote": "Not on the original amplifier: a variac on the mains. Offered as a mod; at 0.5 the amp sees its rated mains."
+  },
+  {
+   "id": "sag",
+   "label": "Sag",
+   "default": 0.5,
+   "params": [
+    "Sg"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Stored for presets; sag emerges from the silicon bridge, reservoir, choke and droppers"
+  },
+  {
+   "id": "response",
+   "label": "Response",
+   "default": 0.5,
+   "params": [
+    "Rsp"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "No part in the 1959RR circuit; stored for preset compatibility only"
+  },
+  {
+   "id": "bias",
+   "label": "Bias",
+   "default": 0.5,
+   "params": [
+    "Bi"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Stored for presets. The real amp's bias is the internal PR1 20K trim, modelled as the circuit-only bias_adjust control at its fitted position (as the SVT treats its factory trims)"
+  },
+  {
+   "id": "stereo",
+   "label": "Stereo",
+   "default": 0.5,
+   "params": [
+    "CASSt"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Mono unit; stored only"
+  },
+  {
+   "id": "on",
+   "label": "On/Off",
+   "default": 1.0,
+   "params": [
+    "Pwr"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Host handles bypass; stored only"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VHA",
+   "scale": {
+    "control": "variac",
+    "min": 0.75,
+    "max": 1.0833
+   },
+   "type": "V",
+   "nodes": [
+    "ha",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "485",
+    "freq": 60,
+    "phase": 90
+   },
+   "label": "HT secondary (equivalent half)",
+   "note": "unverified: the 1959RR drawing gives no winding voltage (mains transformer D2968, 230/220/110 V taps). Amplitude kept from the base 1959 netlist (fitted there to the 1970 chart's 453 V plates). The RR rectifies the whole HT winding in a bridge (D2-D5) with NO centre tap; modelled as the base's equivalent two-diode full-wave from anti-phase ground-referenced sources of the full-winding peak (one diode drop fewer than the bridge, absorbed by the fitted amplitude). 60 Hz kept from the base (the drawing lists 117 V and 230 V mains switches)"
+  },
+  {
+   "ref": "VHB",
+   "scale": {
+    "control": "variac",
+    "min": 0.75,
+    "max": 1.0833
+   },
+   "type": "V",
+   "nodes": [
+    "hb",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "485",
+    "freq": 60,
+    "phase": 270
+   },
+   "label": "HT secondary (equivalent half)"
+  },
+  {
+   "ref": "RPTA",
+   "type": "R",
+   "nodes": [
+    "ha",
+    "hra"
+   ],
+   "value": "12",
+   "label": "HT winding + reflected primary resistance",
+   "note": "unverified: kept from the base netlist (12 Ω per leg)"
+  },
+  {
+   "ref": "RPTB",
+   "type": "R",
+   "nodes": [
+    "hb",
+    "hrb"
+   ],
+   "value": "12",
+   "label": "HT winding + reflected primary resistance",
+   "note": "unverified: see RPTA"
+  },
+  {
+   "ref": "DRA",
+   "type": "D",
+   "nodes": [
+    "hra",
+    "bp1"
+   ],
+   "model": "1N4001",
+   "label": "Bridge D2-D5 (equivalent leg A)",
+   "note": "bridge D2/D3/D4/D5 on the 1959RR drawing (type not printed; the bias diode on the same sheet is a 1N4007, modelled with the 1N4001 card, the same die). F2 (H.T. fuse T1AE) and SW2 (standby, closed) are not modelled"
+  },
+  {
+   "ref": "DRB",
+   "type": "D",
+   "nodes": [
+    "hrb",
+    "bp1"
+   ],
+   "model": "1N4001",
+   "label": "Bridge D2-D5 (equivalent leg B)"
+  },
+  {
+   "ref": "C20A",
+   "type": "C",
+   "nodes": [
+    "bp1",
+    "bm1"
+   ],
+   "value": "50u",
+   "label": "Reservoir C20 section 1 (50uF+50uF 500V)",
+   "note": "1959RR drawing (1959RR-01-60-02 Iss 2) C20 50uF+50uF 500V, both sections from the bridge output to the stack midpoint"
+  },
+  {
+   "ref": "C20B",
+   "type": "C",
+   "nodes": [
+    "bp1",
+    "bm1"
+   ],
+   "value": "50u",
+   "label": "Reservoir C20 section 2"
+  },
+  {
+   "ref": "C21A",
+   "type": "C",
+   "nodes": [
+    "bm1",
+    "0"
+   ],
+   "value": "50u",
+   "label": "Reservoir C21 section 1 (50uF+50uF 500V)",
+   "note": "1959RR drawing (1959RR-01-60-02 Iss 2) C21 50uF+50uF 500V, both sections from the midpoint to ground"
+  },
+  {
+   "ref": "C21B",
+   "type": "C",
+   "nodes": [
+    "bm1",
+    "0"
+   ],
+   "value": "50u",
+   "label": "Reservoir C21 section 2"
+  },
+  {
+   "ref": "R48",
+   "type": "R",
+   "nodes": [
+    "bp1",
+    "bm1"
+   ],
+   "value": "56k",
+   "label": "Reservoir balancing R48 56K 2W"
+  },
+  {
+   "ref": "R49",
+   "type": "R",
+   "nodes": [
+    "bm1",
+    "0"
+   ],
+   "value": "56k",
+   "label": "Reservoir balancing R49 56K 2W"
+  },
+  {
+   "ref": "RCH",
+   "type": "R",
+   "nodes": [
+    "bp1",
+    "ch"
+   ],
+   "value": "150",
+   "label": "Choke TX3 DCR",
+   "note": "unverified: the choke (TX3, part D2475) has no value on the drawing; 150 Ω kept from the base netlist"
+  },
+  {
+   "ref": "LCH",
+   "type": "L",
+   "nodes": [
+    "ch",
+    "bp2"
+   ],
+   "value": "20",
+   "label": "Choke TX3 (D2475)",
+   "note": "unverified: 20 H kept from the base netlist (c.1967 hand-drawn Marshall value); the 1959RR drawing gives the part number only"
+  },
+  {
+   "ref": "C22A",
+   "type": "C",
+   "nodes": [
+    "bp2",
+    "bm2"
+   ],
+   "value": "50u",
+   "label": "Screen filter C22 section 1 (50uF+50uF 500V)"
+  },
+  {
+   "ref": "C22B",
+   "type": "C",
+   "nodes": [
+    "bp2",
+    "bm2"
+   ],
+   "value": "50u",
+   "label": "Screen filter C22 section 2"
+  },
+  {
+   "ref": "C23A",
+   "type": "C",
+   "nodes": [
+    "bm2",
+    "0"
+   ],
+   "value": "50u",
+   "label": "Screen filter C23 section 1 (50uF+50uF 500V)"
+  },
+  {
+   "ref": "C23B",
+   "type": "C",
+   "nodes": [
+    "bm2",
+    "0"
+   ],
+   "value": "50u",
+   "label": "Screen filter C23 section 2"
+  },
+  {
+   "ref": "R42",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "bm2"
+   ],
+   "value": "56k",
+   "label": "Screen-filter balancing R42 56K 2W"
+  },
+  {
+   "ref": "R43",
+   "type": "R",
+   "nodes": [
+    "bm2",
+    "0"
+   ],
+   "value": "56k",
+   "label": "Screen-filter balancing R43 56K 2W"
+  },
+  {
+   "ref": "R27",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "bp3a"
+   ],
+   "value": "10k",
+   "label": "Dropper R27 10K 2W (screen node to R26)"
+  },
+  {
+   "ref": "R26",
+   "type": "R",
+   "nodes": [
+    "bp3a",
+    "bp3"
+   ],
+   "value": "10k",
+   "label": "Dropper R26 10K 2W (to the PI node)",
+   "note": "R26 + R27 in series: 20 kΩ total, the base's single 20 kΩ 1 W"
+  },
+  {
+   "ref": "C24A",
+   "type": "C",
+   "nodes": [
+    "bp3",
+    "0"
+   ],
+   "value": "50u",
+   "label": "PI node filter C24 section 1 (50uF+50uF 500V)"
+  },
+  {
+   "ref": "C24B",
+   "type": "C",
+   "nodes": [
+    "bp3",
+    "0"
+   ],
+   "value": "50u",
+   "label": "PI node filter C24 section 2"
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "bp3",
+    "bp4"
+   ],
+   "value": "10k",
+   "label": "Dropper R15 10K 2W (to V2)"
+  },
+  {
+   "ref": "C25B",
+   "type": "C",
+   "nodes": [
+    "bp4",
+    "0"
+   ],
+   "value": "50u",
+   "label": "V2 node filter (C25 second section, 50uF 500V)"
+  },
+  {
+   "ref": "R14",
+   "type": "R",
+   "nodes": [
+    "bp4",
+    "bp5"
+   ],
+   "value": "10k",
+   "label": "Dropper R14 10K 1W (to V1)"
+  },
+  {
+   "ref": "C25A",
+   "type": "C",
+   "nodes": [
+    "bp5",
+    "0"
+   ],
+   "value": "50u",
+   "label": "V1 node filter (C25 first section, 50uF 500V)"
+  },
+  {
+   "ref": "VBIAS",
+   "scale": {
+    "control": "variac",
+    "min": 0.75,
+    "max": 1.0833
+   },
+   "type": "V",
+   "nodes": [
+    "bb1",
+    "0"
+   ],
+   "value": "-48",
+   "label": "Bias rectifier output (C18 node)",
+   "note": "unverified value, FITTED: the 1959RR's bias supply is its own TX1 winding -> R30 27K -> D1 1N4007 (cathode to R30) -> C18 10u (this node). As in the JCM800 / SLO-100 / 5150 / base 1959 netlists it is modelled as an ideal source at the filter node, because a negative-peak rectifier is not charged at the mains-crest operating point that --settle 0 and the SPICE .op use (with the winding modelled, the DC point has the EL34 grids at 0 V and 0.5 A per tube; measured). C18 sits across the source and is omitted; R30, D1 and the winding are represented by it. Value fitted so that PR1 at mid-travel puts the EL34 grids at -38 V, the base netlist's bias. Scaled by the variac with the HT"
+  },
+  {
+   "ref": "R29",
+   "type": "R",
+   "nodes": [
+    "bb1",
+    "bias"
+   ],
+   "value": "15k",
+   "label": "Bias R29 15K"
+  },
+  {
+   "ref": "C17",
+   "type": "C",
+   "nodes": [
+    "bias",
+    "0"
+   ],
+   "value": "10u",
+   "label": "Bias filter C17 10u (grid-feed node)"
+  },
+  {
+   "ref": "R28",
+   "type": "R",
+   "nodes": [
+    "bias",
+    "pr1t"
+   ],
+   "value": "47k",
+   "label": "Bias divider R28 47K"
+  },
+  {
+   "ref": "PR1",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "0",
+    "pr1t"
+   ],
+   "value": "20k",
+   "taper": "B",
+   "control": "bias_adjust",
+   "label": "PR1 20K Bias Adjust (rheostat to ground)",
+   "note": "wiper tied to the grounded end as drawn; taper not printed (a trimmer, linear assumed). 0 = 20 kΩ (grids -39.2 V, coldest), 0.5 = 10 kΩ (-38.0 V), 1 = 0 Ω (-36.4 V, hottest), with the fitted -48 V source"
+  },
+  {
+   "ref": "SWIN2",
+   "type": "switch",
+   "nodes": [
+    "in",
+    "j2"
+   ],
+   "control": "input",
+   "label": "Guitar in INPUTS 2 HI (JS1)"
+  },
+  {
+   "ref": "SWJS1",
+   "type": "switch",
+   "nodes": [
+    "j2",
+    "0"
+   ],
+   "control": "input",
+   "invert": true,
+   "label": "JS1 shorting contact (grounds the INPUTS 2 HI tip when JS1 is empty)"
+  },
+  {
+   "ref": "SWIN1",
+   "type": "switch",
+   "nodes": [
+    "in",
+    "j1"
+   ],
+   "control": "input",
+   "invert": true,
+   "label": "Guitar in INPUTS 1 HI (JS3)"
+  },
+  {
+   "ref": "SWJS3",
+   "type": "switch",
+   "nodes": [
+    "j1",
+    "0"
+   ],
+   "control": "input",
+   "label": "JS3 shorting contact (grounds the INPUTS 1 HI tip when JS3 is empty)"
+  },
+  {
+   "ref": "R45",
+   "type": "R",
+   "nodes": [
+    "j2",
+    "0"
+   ],
+   "value": "1M",
+   "label": "INPUTS 2 HI 1 MΩ (R45)"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "j2",
+    "g1a"
+   ],
+   "value": "68k",
+   "label": "INPUTS 2 HI stopper R3 68K"
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "j2",
+    "g1a"
+   ],
+   "value": "68k",
+   "label": "INPUTS 2 LO stopper R4 68K",
+   "note": "JS2 (LO) empty: its shorting contact ties its tip to the JS1 tip, so R3 and R4 are in parallel"
+  },
+  {
+   "ref": "R46",
+   "type": "R",
+   "nodes": [
+    "j1",
+    "0"
+   ],
+   "value": "1M",
+   "label": "INPUTS 1 HI 1 MΩ (R46)"
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "j1",
+    "g1b"
+   ],
+   "value": "68k",
+   "label": "INPUTS 1 HI stopper R5 68K",
+   "note": "with INPUTS 1 empty, JS3's contact grounds this tip, so R5 ∥ R6 (34 kΩ) shunt the cascade grid: the drawn 470K (R10) / 34K divider"
+  },
+  {
+   "ref": "R6",
+   "type": "R",
+   "nodes": [
+    "j1",
+    "g1b"
+   ],
+   "value": "68k",
+   "label": "INPUTS 1 LO stopper R6 68K",
+   "note": "JS4 (LO) empty: tip tied to the JS3 tip"
+  },
+  {
+   "ref": "V1A",
+   "type": "triode",
+   "nodes": [
+    "p1a",
+    "g1a",
+    "k1a"
+   ],
+   "model": "12AX7",
+   "label": "V1 pins 1-3 (INPUTS 2 triode, cascade first stage)"
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "bp5",
+    "p1a"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "V1 pin 1 plate load R7 100K"
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "k1a",
+    "0"
+   ],
+   "value": "820",
+   "tolerance": 0.05,
+   "label": "V1 pin 3 cathode R2 820R"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "k1a",
+    "0"
+   ],
+   "value": "330u",
+   "tolerance": 0.2,
+   "label": "V1 pin 3 cathode bypass C2 330u",
+   "note": "base 1970 netlist: 250 µF"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "p1a",
+    "v2t"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C3 22n to VR1 (Volume 2)"
+  },
+  {
+   "ref": "VR1",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "v2w",
+    "v2t"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "volume2",
+   "label": "VR1 A1M 'VOLUME 2'"
+  },
+  {
+   "ref": "R10",
+   "type": "R",
+   "nodes": [
+    "v2w",
+    "g1b"
+   ],
+   "value": "470k",
+   "tolerance": 0.05,
+   "label": "Cascade feed R10 470K (VR1 wiper to V1 pin 7)",
+   "note": "the 1959RR's factory cascade: VOLUME 2's wiper feeds the INPUTS 1 triode's grid (the base 1959 sends it to V2 through a 470 kΩ mixer)"
+  },
+  {
+   "ref": "V1B",
+   "type": "triode",
+   "nodes": [
+    "p1b",
+    "g1b",
+    "k1b"
+   ],
+   "model": "12AX7",
+   "label": "V1 pins 6-8 (INPUTS 1 triode, cascade second stage)"
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "bp5",
+    "p1b"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "V1 pin 6 plate load R8 100K"
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "k1b",
+    "0"
+   ],
+   "value": "2k7",
+   "tolerance": 0.05,
+   "label": "V1 pin 8 cathode R1 2K7"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "k1b",
+    "0"
+   ],
+   "value": "680n",
+   "tolerance": 0.1,
+   "label": "V1 pin 8 cathode bypass C1 680n"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "p1b",
+    "v1t"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C4 22n to VR2 (Volume 1)",
+   "note": "base 1970 netlist: 0.0022 µF"
+  },
+  {
+   "ref": "VR2",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "v1w",
+    "v1t"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "volume1",
+   "label": "VR2 A1M 'VOLUME 1'"
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "v1t",
+    "v1w"
+   ],
+   "value": "4n7",
+   "tolerance": 0.1,
+   "label": "Bright cap C5 4n7 (VR2 top to wiper)",
+   "note": "base 1970 netlist: 5000 pF"
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "v1w",
+    "g2a"
+   ],
+   "value": "470k",
+   "tolerance": 0.05,
+   "label": "Mixer R9 470K"
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "v1w",
+    "g2a"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "C6 470p across R9",
+   "note": "base 1970 netlist: 500 pF"
+  },
+  {
+   "ref": "V2A",
+   "type": "triode",
+   "nodes": [
+    "p2a",
+    "g2a",
+    "k2a"
+   ],
+   "model": "12AX7",
+   "label": "V2 pins 1-3 gain stage"
+  },
+  {
+   "ref": "R44",
+   "type": "R",
+   "nodes": [
+    "bp4",
+    "p2a"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "V2 pin 1 plate load R44 100K (fitted to V2)"
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "k2a",
+    "0"
+   ],
+   "value": "820",
+   "tolerance": 0.05,
+   "label": "V2 pin 3 cathode R11 820R, unbypassed",
+   "note": "the 1959RR drawing has no cathode capacitor here (base 1970: 0.68 µF)"
+  },
+  {
+   "ref": "V2B",
+   "type": "triode",
+   "nodes": [
+    "bp4",
+    "p2a",
+    "kcf"
+   ],
+   "model": "12AX7",
+   "label": "V2 pins 6-8 cathode follower",
+   "note": "plate (pin 6) straight to the V2 supply node, grid (pin 7) DC-coupled to pin 1"
+  },
+  {
+   "ref": "R12",
+   "type": "R",
+   "nodes": [
+    "kcf",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Cathode-follower load R12 100K"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "kcf",
+    "tt"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "Treble cap C8 470p",
+   "note": "base 1970 netlist: 500 pF"
+  },
+  {
+   "ref": "R13",
+   "type": "R",
+   "nodes": [
+    "kcf",
+    "ns"
+   ],
+   "value": "33k",
+   "tolerance": 0.05,
+   "label": "Slope R13 33K"
+  },
+  {
+   "ref": "C9",
+   "type": "C",
+   "nodes": [
+    "ns",
+    "tb"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Bass cap C9 22n"
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "ns",
+    "mw"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "Middle cap C10 22n (to the VR4 wiper)"
+  },
+  {
+   "ref": "VR3",
+   "type": "pot",
+   "nodes": [
+    "tb",
+    "tw",
+    "tt"
+   ],
+   "value": "250k",
+   "taper": "B",
+   "control": "treble",
+   "label": "VR3 B250K Treble"
+  },
+  {
+   "ref": "VR5",
+   "type": "pot",
+   "nodes": [
+    "mb",
+    "tb",
+    "tb"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "bass",
+   "label": "VR5 A1M Bass (wiper tied to the top lug)"
+  },
+  {
+   "ref": "VR4",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mw",
+    "mb"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "middle",
+   "label": "VR4 B25K Middle"
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "tw",
+    "g3a"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "PI coupling C11 22n"
+  },
+  {
+   "ref": "V3A",
+   "type": "triode",
+   "nodes": [
+    "p3a",
+    "g3a",
+    "k3"
+   ],
+   "model": "12AX7",
+   "label": "V3 pins 1-3 (LTP, driven side)"
+  },
+  {
+   "ref": "V3B",
+   "type": "triode",
+   "nodes": [
+    "p3b",
+    "g3b",
+    "k3"
+   ],
+   "model": "12AX7",
+   "label": "V3 pins 6-8 (LTP)"
+  },
+  {
+   "ref": "R22",
+   "type": "R",
+   "nodes": [
+    "bp3",
+    "p3a"
+   ],
+   "value": "82k",
+   "tolerance": 0.05,
+   "label": "PI plate load R22 82K"
+  },
+  {
+   "ref": "R25",
+   "type": "R",
+   "nodes": [
+    "bp3",
+    "p3b"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "PI plate load R25 100K"
+  },
+  {
+   "ref": "C15",
+   "type": "C",
+   "nodes": [
+    "p3a",
+    "p3b"
+   ],
+   "value": "47p",
+   "tolerance": 0.1,
+   "label": "C15 47p between the PI plates"
+  },
+  {
+   "ref": "R17",
+   "type": "R",
+   "nodes": [
+    "k3",
+    "tj"
+   ],
+   "value": "470",
+   "tolerance": 0.05,
+   "label": "PI cathode R17 470R"
+  },
+  {
+   "ref": "R20",
+   "type": "R",
+   "nodes": [
+    "tj",
+    "nfb"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "PI tail R20 10K"
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "g3a",
+    "tj"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "PI grid leak R16 1M"
+  },
+  {
+   "ref": "R19",
+   "type": "R",
+   "nodes": [
+    "g3b",
+    "tj"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "PI grid leak R19 1M"
+  },
+  {
+   "ref": "C13",
+   "type": "C",
+   "nodes": [
+    "g3b",
+    "nfb"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "C13 100n second grid to the feedback node"
+  },
+  {
+   "ref": "R21",
+   "type": "R",
+   "nodes": [
+    "t4",
+    "nfb"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Global feedback R21 100K from the 4 Ω tap",
+   "note": "base 1970 netlist: 47 kΩ from the 16 Ω tap"
+  },
+  {
+   "ref": "R18",
+   "type": "R",
+   "nodes": [
+    "nfb",
+    "0"
+   ],
+   "value": "4k7",
+   "tolerance": 0.05,
+   "label": "R18 4K7 feedback node to ground (fitted to VR6)"
+  },
+  {
+   "ref": "VR6",
+   "type": "pot",
+   "nodes": [
+    "prc",
+    "prc",
+    "nfb"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "presence",
+   "label": "VR6 B25K Presence (rheostat)",
+   "note": "wiper tied to the C12 end as drawn; clockwise (1) = 0 Ω, the most treble shunted out of the feedback (rotation sense not printed)"
+  },
+  {
+   "ref": "C12",
+   "type": "C",
+   "nodes": [
+    "prc",
+    "0"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "Presence cap C12 100n (fitted to VR6)"
+  },
+  {
+   "ref": "C14",
+   "type": "C",
+   "nodes": [
+    "p3a",
+    "ga"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C14 22n to V4/V5"
+  },
+  {
+   "ref": "C16",
+   "type": "C",
+   "nodes": [
+    "p3b",
+    "gb"
+   ],
+   "value": "22n",
+   "tolerance": 0.1,
+   "label": "C16 22n to V6/V7"
+  },
+  {
+   "ref": "R23",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "bias"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "Bias feed R23 220K (V4/V5)"
+  },
+  {
+   "ref": "R24",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "bias"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "Bias feed R24 220K (V6/V7)"
+  },
+  {
+   "ref": "R34_35",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "g4"
+   ],
+   "value": "2k8",
+   "label": "Grid stoppers R34 + R35 (5K6 each), folded",
+   "note": "the two 5K6 stoppers run from the same node to V4 and V5's grids: divided by 2 with the parallel fold (exact)"
+  },
+  {
+   "ref": "R36_37",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "g6"
+   ],
+   "value": "2k8",
+   "label": "Grid stoppers R36 + R37 (5K6 each), folded"
+  },
+  {
+   "ref": "V45",
+   "type": "pentode",
+   "nodes": [
+    "pa",
+    "sa",
+    "g4",
+    "ka"
+   ],
+   "model": "EL34",
+   "parallel": 2,
+   "label": "V4 + V5 EL34 (folded)",
+   "note": "V4 and V5 have identical resistors between the same nodes (5K6 grid, 1K 5W screen, plates and cathodes common), so the 'parallel': 2 fold is exact"
+  },
+  {
+   "ref": "V67",
+   "type": "pentode",
+   "nodes": [
+    "pb",
+    "sb",
+    "g6",
+    "kb"
+   ],
+   "model": "EL34",
+   "parallel": 2,
+   "label": "V6 + V7 EL34 (folded)"
+  },
+  {
+   "ref": "R38_39",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "sa"
+   ],
+   "value": "500",
+   "label": "Screen resistors R38 + R39 (1K 5W each), folded"
+  },
+  {
+   "ref": "R40_41",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "sb"
+   ],
+   "value": "500",
+   "label": "Screen resistors R40 + R41 (1K 5W each), folded"
+  },
+  {
+   "ref": "R50",
+   "type": "R",
+   "nodes": [
+    "ka",
+    "0"
+   ],
+   "value": "1",
+   "label": "Cathode sense R50 1R 1W flameproof (V4 + V5)"
+  },
+  {
+   "ref": "R51",
+   "type": "R",
+   "nodes": [
+    "kb",
+    "0"
+   ],
+   "value": "1",
+   "label": "Cathode sense R51 1R 1W flameproof (V6 + V7)"
+  },
+  {
+   "ref": "CWA",
+   "type": "C",
+   "nodes": [
+    "pa",
+    "wa"
+   ],
+   "value": "470p",
+   "label": "OT half-primary capacitance (A)",
+   "note": "unverified: half-primary self-capacitance with its loss as a lumped 470 pF + 2.2 kOhm from the plate to the centre tap (kept from the base netlist)"
+  },
+  {
+   "ref": "RWA",
+   "type": "R",
+   "nodes": [
+    "wa",
+    "bp1"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (A)"
+  },
+  {
+   "ref": "CWB",
+   "type": "C",
+   "nodes": [
+    "pb",
+    "wb"
+   ],
+   "value": "470p",
+   "label": "OT half-primary capacitance (B)",
+   "note": "unverified: half-primary self-capacitance with its loss as a lumped 470 pF + 2.2 kOhm from the plate to the centre tap (kept from the base netlist)"
+  },
+  {
+   "ref": "RWB",
+   "type": "R",
+   "nodes": [
+    "wb",
+    "bp1"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (B)"
+  },
+  {
+   "ref": "TX2",
+   "type": "transformer",
+   "nodes": [
+    "pa",
+    "bp1",
+    "bp1",
+    "pb",
+    "spk",
+    "t4",
+    "t4",
+    "0"
+   ],
+   "turns": [
+    1,
+    1,
+    0.097015,
+    0.097015
+   ],
+   "r": [
+    30,
+    30,
+    0.2,
+    0.2
+   ],
+   "leak": [
+    "5m",
+    "5m",
+    0,
+    0
+   ],
+   "lm": 5,
+   "lsat": 2.5,
+   "label": "Output transformer TX2 (C2668): 1.7 kΩ to 16 Ω with 8 Ω and 4 Ω taps",
+   "note": "secondary as two series windings: ground to the 4 Ω tap (t4) and the 4 Ω tap to the 16 Ω end (spk), half the 16 Ω turns each (tap voltage ∝ √Z: the 4 Ω tap sits at half the 16 Ω tap). The 8 Ω tap carries nothing here and is not a node. Centre tap on the reservoir (before the choke) as drawn. unverified: the drawing gives the part number only; 1.7 kΩ plate-to-plate, DCRs, leakage, lm and lsat kept from the base netlist. SW4 (impedance selector, drawn at 8) is set to 16 for the 16 Ω cab. Secondary phased so the feedback is negative"
+  },
+  {
+   "ref": "SPK1",
+   "type": "sub",
+   "of": "lib:spk-12in-16ohm-british",
+   "nodes": [
+    "spk",
+    "0"
+   ],
+   "label": "16 Ω 4x12 cab on the 16 Ω tap (as the base netlist)"
+  }
+ ],
+ "probes": [
+  "p1a",
+  "p1b",
+  "p2a",
+  "tw",
+  "p3a",
+  "pa",
+  "spk",
+  "bp1"
+ ],
+ "layout": {},
+ "multirate": {
+  "oversampled": [
+   "V45"
+  ],
+  "rates": {
+   "V45": 16
+  }, "events": true
+ }
+}

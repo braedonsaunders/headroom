@@ -1,0 +1,89 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "ehx-big-muff-pi",
+  "version": 1,
+  "name": "Electro-Harmonix Big Muff Pi (V1 'triangle', 67#1 standard variant, c. 1971)",
+  "description": "Electro-Harmonix Big Muff Pi, Version 1 'triangle' as traced by Kit Rae (variant 'V1 67#1', the 'standard' triangle circuit he estimates at 60-70 % of all triangle units, c. 1971, 1967 pot dates, FS36999 silicon NPNs, 1N914-class diodes, all linear pots). EH PCB numbering, so Q4 is the input stage and Q1 the output stage. Input: R2 33 kΩ, C1 0.1 µF into the Q4 shunt-feedback common-emitter booster (R14 100 kΩ base to ground, R9 470 kΩ ∥ C10 500 pF collector to base, R13 10 kΩ, R22 100 Ω). C4 0.1 µF into the 100 kΩ Sustain pot with R23 820 Ω at its foot. Two identical clipping stages Q3 and Q2 (C5/C13 0.1 µF, R19/R12 8.2 kΩ, R20/R16 100 kΩ, R17/R15 470 kΩ ∥ C12/C11 500 pF, C6/C7 0.1 µF in series with an antiparallel 1N914 pair from base to collector, R18 10 kΩ and R11 15 kΩ collectors, R21/R10 100 Ω emitters). Passive tone stack: low-pass R8 33 kΩ / C8 10 nF and high-pass C9 4 nF / R5 33 kΩ mixed by the 100 kΩ Tone pot. Q1 output stage (C3 0.1 µF, R7 390 kΩ / R3 100 kΩ divider bias, R6 12 kΩ, R4 2.7 kΩ), C2 0.1 µF into the 100 kΩ Volume pot. 9 V battery, effect-on (true-bypass) state.",
+  "sources": [
+    { "title": "Kit Rae, The Big Muff π Page, 'Big Muff Pi Versions and Schematics, Part 1 (1969-1974)': V1 'standard' triangle variant description (most common V1 circuit, R5/R8 33k) and schematic 'Version 1 BIG MUFF - V1 67#1' (circuit traced by Kit Rae; every value in this file). Archived copy used", "url": "http://www.bigmuffpage.com/Big_Muff_Pi_versions_schematics_part1.html" },
+    { "title": "Kit Rae, schematic image 'Kits_V1_Big_Muff_67_No_1_schematic.jpg'", "url": "http://www.bigmuffpage.com/images/schematics/Kits_V1_Big_Muff_67_No_1_schematic.jpg" },
+    { "title": "ElectroSmash, 'Big Muff Pi Analysis' (stage topology and operation, 1N914 clipping, bias chart of the 1977 V3 red/black for comparison: clipping-stage collectors 4.4 V, bases 0.7 V, emitters 0.07 V). Archived copy used", "url": "https://www.electrosmash.com/big-muff-pi-analysis" },
+    { "title": "Fairchild/ON 2N5088 SPICE model (library 2N5088: IS 5.911 fA, BF 1122, BR 1.271) used as the basis of the FS36999 stand-in" }
+  ],
+  "io": { "input": "in", "output": "out", "inputVoltsPerFS": 1.0, "outputVoltsPerFS": 1.0 },
+  "oversampling": 2,
+  "minRate": 176400,
+  "solver": "auto",
+  "cuts": [],
+  "models": {
+    "FS36999": {
+      "kind": "npn", "is": 5.911e-15, "bf": 250.0, "br": 1.271,
+      "note": "unverified: FS36999 is a Fairchild house number with no published SPICE card. IS and BR from the 2N5088 card (ElectroSmash lists 2N5088/BC239/BC549C as equivalents); BF 250 is an assumed mid-range vintage hFE"
+    }
+  },
+  "controls": [
+    { "id": "volume", "label": "Volume", "kind": "continuous", "default": 0.5, "params": ["V"], "group": "Main", "note": "100 kΩ linear pot after C2; wiper is the output" },
+    { "id": "sustain", "label": "Sustain", "kind": "continuous", "default": 0.5, "params": ["S"], "group": "Main", "note": "100 kΩ linear pot between C4 and R23 820 Ω; wiper feeds the first clipping stage" },
+    { "id": "tone", "label": "Tone", "kind": "continuous", "default": 0.5, "params": ["T"], "group": "Main", "note": "100 kΩ linear pot mixing the 33k/10n low-pass (counter-clockwise, bass) and the 4n/33k high-pass (clockwise, treble); mid scoop at the centre" },
+    { "id": "lamp", "label": "Lamp", "kind": "switch", "default": 0.0, "params": ["L"], "group": "Legacy", "legacyOnly": true, "note": "Legacy indicator lamp parameter. The V1 triangle has no LED; no circuit meaning, stored for preset round-trip" },
+    { "id": "bass", "label": "Bass", "kind": "continuous", "default": 0.5, "params": ["B"], "group": "Legacy", "legacyOnly": true, "note": "Legacy 'Bass' parameter. The Big Muff has only Volume, Sustain and Tone; no circuit meaning, stored only" },
+    { "id": "treble", "label": "Treble", "kind": "continuous", "default": 0.5, "params": ["R"], "group": "Legacy", "legacyOnly": true, "note": "Legacy 'Treble' parameter (id R). No such knob on the pedal; no circuit meaning, stored only" }
+  ],
+  "parts": [
+    { "ref": "VBAT", "type": "V", "nodes": ["vcc", "0"], "value": "9", "label": "9 V battery" },
+
+    { "ref": "R2", "type": "R", "nodes": ["in", "a1"], "value": "33k", "tolerance": 0.1, "label": "Input resistor" },
+    { "ref": "C1", "type": "C", "nodes": ["a1", "b4"], "value": "100n", "tolerance": 0.2 },
+    { "ref": "R14", "type": "R", "nodes": ["b4", "0"], "value": "100k", "tolerance": 0.1 },
+    { "ref": "R9", "type": "R", "nodes": ["b4", "c4"], "value": "470k", "tolerance": 0.1 },
+    { "ref": "C10", "type": "C", "nodes": ["b4", "c4"], "value": "500p", "tolerance": 0.2 },
+    { "ref": "R13", "type": "R", "nodes": ["vcc", "c4"], "value": "10k", "tolerance": 0.1, "note": "unverified: Kit Rae's trace says '10k or 15k' for this variant; 10k chosen" },
+    { "ref": "Q4", "type": "npn", "nodes": ["c4", "b4", "e4"], "model": "FS36999", "label": "Input booster" },
+    { "ref": "R22", "type": "R", "nodes": ["e4", "0"], "value": "100", "tolerance": 0.1 },
+
+    { "ref": "C4", "type": "C", "nodes": ["c4", "s1"], "value": "100n", "tolerance": 0.2 },
+    { "ref": "SUSTAIN", "type": "pot", "nodes": ["s0", "sw", "s1"], "value": "100k", "taper": "B", "control": "sustain", "label": "Sustain" },
+    { "ref": "R23", "type": "R", "nodes": ["s0", "0"], "value": "820", "tolerance": 0.1 },
+
+    { "ref": "C5", "type": "C", "nodes": ["sw", "n19"], "value": "100n", "tolerance": 0.2 },
+    { "ref": "R19", "type": "R", "nodes": ["n19", "b3"], "value": "8.2k", "tolerance": 0.1 },
+    { "ref": "R20", "type": "R", "nodes": ["b3", "0"], "value": "100k", "tolerance": 0.1 },
+    { "ref": "R17", "type": "R", "nodes": ["b3", "c3"], "value": "470k", "tolerance": 0.1 },
+    { "ref": "C12", "type": "C", "nodes": ["b3", "c3"], "value": "500p", "tolerance": 0.2 },
+    { "ref": "C6", "type": "C", "nodes": ["b3", "k3"], "value": "100n", "tolerance": 0.2 },
+    { "ref": "D3", "type": "D", "nodes": ["k3", "c3"], "model": "1N914", "note": "unverified: original diodes marked SYL GY920 (type unknown); Kit Rae: measure 0.5-0.6 V, 1N914/1N4148 equivalent" },
+    { "ref": "D4", "type": "D", "nodes": ["c3", "k3"], "model": "1N914" },
+    { "ref": "R18", "type": "R", "nodes": ["vcc", "c3"], "value": "10k", "tolerance": 0.1 },
+    { "ref": "Q3", "type": "npn", "nodes": ["c3", "b3", "e3"], "model": "FS36999", "label": "Clipping stage 1" },
+    { "ref": "R21", "type": "R", "nodes": ["e3", "0"], "value": "100", "tolerance": 0.1 },
+
+    { "ref": "C13", "type": "C", "nodes": ["c3", "n12"], "value": "100n", "tolerance": 0.2 },
+    { "ref": "R12", "type": "R", "nodes": ["n12", "b2"], "value": "8.2k", "tolerance": 0.1 },
+    { "ref": "R16", "type": "R", "nodes": ["b2", "0"], "value": "100k", "tolerance": 0.1 },
+    { "ref": "R15", "type": "R", "nodes": ["b2", "c2"], "value": "470k", "tolerance": 0.1 },
+    { "ref": "C11", "type": "C", "nodes": ["b2", "c2"], "value": "500p", "tolerance": 0.2 },
+    { "ref": "C7", "type": "C", "nodes": ["b2", "k2"], "value": "100n", "tolerance": 0.2 },
+    { "ref": "D1", "type": "D", "nodes": ["k2", "c2"], "model": "1N914" },
+    { "ref": "D2", "type": "D", "nodes": ["c2", "k2"], "model": "1N914" },
+    { "ref": "R11", "type": "R", "nodes": ["vcc", "c2"], "value": "15k", "tolerance": 0.1, "note": "Kit Rae: 15k (12k also used but rare)" },
+    { "ref": "Q2", "type": "npn", "nodes": ["c2", "b2", "e2"], "model": "FS36999", "label": "Clipping stage 2" },
+    { "ref": "R10", "type": "R", "nodes": ["e2", "0"], "value": "100", "tolerance": 0.1 },
+
+    { "ref": "R8", "type": "R", "nodes": ["c2", "tb"], "value": "33k", "tolerance": 0.1, "label": "Tone low-pass R" },
+    { "ref": "C8", "type": "C", "nodes": ["tb", "0"], "value": "10n", "tolerance": 0.2 },
+    { "ref": "C9", "type": "C", "nodes": ["c2", "tt"], "value": "4n", "tolerance": 0.2, "label": "Tone high-pass C (.004 µF)" },
+    { "ref": "R5", "type": "R", "nodes": ["tt", "0"], "value": "33k", "tolerance": 0.1 },
+    { "ref": "TONE", "type": "pot", "nodes": ["tb", "tw", "tt"], "value": "100k", "taper": "B", "control": "tone", "label": "Tone" },
+
+    { "ref": "C3", "type": "C", "nodes": ["tw", "b1"], "value": "100n", "tolerance": 0.2 },
+    { "ref": "R7", "type": "R", "nodes": ["vcc", "b1"], "value": "390k", "tolerance": 0.1 },
+    { "ref": "R3", "type": "R", "nodes": ["b1", "0"], "value": "100k", "tolerance": 0.1 },
+    { "ref": "R6", "type": "R", "nodes": ["vcc", "c1"], "value": "12k", "tolerance": 0.1 },
+    { "ref": "Q1", "type": "npn", "nodes": ["c1", "b1", "e1"], "model": "FS36999", "label": "Output stage" },
+    { "ref": "R4", "type": "R", "nodes": ["e1", "0"], "value": "2.7k", "tolerance": 0.1 },
+    { "ref": "C2", "type": "C", "nodes": ["c1", "v3"], "value": "100n", "tolerance": 0.2 },
+    { "ref": "VOLUME", "type": "pot", "nodes": ["0", "out", "v3"], "value": "100k", "taper": "B", "control": "volume", "label": "Volume" }
+  ],
+  "probes": ["c4", "sw", "c3", "c2", "tw", "c1", "out"],
+  "layout": {}
+}

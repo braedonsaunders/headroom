@@ -1,0 +1,3 @@
+miniaudio 0.11.26 (https://github.com/mackron/miniaudio, tag 0.11.26)
+Licence: public domain (Unlicense) OR MIT No Attribution — see LICENSE. Unmodified miniaudio.h / miniaudio.c.
+Used by src/audio/AudioIOMiniaudio.cpp (device I/O off macOS) and available to the decoders.

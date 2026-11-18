@@ -1,0 +1,1051 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "vox-ac30-tb",
+ "version": 1,
+ "name": "Vox AC30/6 Top Boost (JMI, 1964)",
+ "description": "JMI Vox AC30/6 with the factory Top Boost unit, as drawn on JMI OS/065 issue 4 (11 Sept 1964, AC30/6 'Normal' amplifier) plus OS/010 issue 2 (June 1963, 'Optional Brilliance Unit and connections to AC30/6'): Brilliant input 1 (68 kOhm stoppers, 1 MOhm on the idle jack), V1 ECC83 with the Brilliant and the idle Normal triodes on a shared 1.5 kOhm / 25 uF cathode and 220 kOhm plates, the 500 pF Brilliant coupling cap into the 500 kOhm log Brilliant volume (100 pF wiper to ground), the Top Boost ECC83 (100 kOhm / 1.5 kOhm / 25 uF gain stage direct-coupled to a 56 kOhm cathode follower) driving the Vox treble/bass stack (50 pF, 1 MOhm log treble, 100 kOhm, 2 x 0.022 uF, 1 MOhm log bass, 10 kOhm), the 220 kOhm channel mixer (the Normal channel's mixer resistor at volume zero), the ECC83 long-tail-pair phase inverter (100 kOhm plates, 1.2 kOhm + 47 kOhm tail, 1 MOhm grid leaks, second grid to the idle Vib/Trem volume), 0.15 uF couplings and 220 kOhm grid leaks, the Cut control (250 kOhm log rheostat + 4700 pF between the two output grids), 4 x EL84 in cathode-biased push-pull (shared 50 Ohm / 250 uF cathode, 1.5 kOhm grid stoppers, 100 Ohm screen resistors), the 4 kOhm anode-to-anode output transformer, 16 Ohm tap into 2 x 8 Ohm Celestion-class speakers in series, and the GZ34 supply (280-0-280 VAC, 16 uF reservoir at the OT centre tap, 10-20 H choke to the 320 V screen node, 22 kOhm / 22 kOhm / 10 kOhm droppers to the V1, phase-inverter and Top Boost nodes). No global negative feedback. The Vib/Trem channel (V7, V8, V9) is omitted: its volume is taken as zero.",
+ "sources": [
+  {
+   "title": "JMI drawing OS/065 issue 4 (11-9-64), 'Vox AC.30.36 Amplifier Circuit, Normal' (factory schematic image; values, node voltages 320/290/230/170/1.6/55 V, EL84 cathode 10 V quiescent, 4 kOhm anode-to-anode, 280-0-280 V 160 mA, 10-20 H 100 mA choke)",
+   "url": "https://www.voxac30.org.uk/images/schematics/closeups/large_os_065.jpg"
+  },
+  {
+   "title": "JMI drawing OS/010 issue 2 (14-6-63), 'Optional Brilliance Unit and connections to AC30/6' (Top Boost add-on: 100 kOhm, 1.5 kOhm, 25 uF, 56 kOhm, 50 pF, 2 x 0.022 uF, 100 kOhm, 10 kOhm, 1 MOhm log treble and bass, 100 pF added at VR2, 10 kOhm / 32 uF supply from the R10/R11 junction)",
+   "url": "https://www.voxac30.org.uk/images/schematics/thumbs3/top_boost_wallet.jpg"
+  },
+  {
+   "title": "voxac30.org.uk, Vox AC30 circuit diagrams (OS/065, OS/056, OS/057, OS/010, OS/013 sheets and their issue history)",
+   "url": "https://www.voxac30.org.uk/vox_ac30_circuit_diagrams.html"
+  },
+  {
+   "title": "voxac30.org.uk, The Vox Top Boost circuit (OS/010 issues, dates and HT annotations)",
+   "url": "https://www.voxac30.org.uk/vox_ac30_top_boost_circuit.html"
+  },
+  {
+   "title": "Vox Sound Ltd AC30/6 Top Boost sheet, 12 Feb 1971 (integrated Top Boost; used to confirm the stack topology, the 100 pF from the volume wiper to ground, the Cut network between the output grids and the 220 kOhm grid leaks)",
+   "url": "https://www.voxac30.org.uk/images/schematics/closeups/vsl_top_boost_1971.jpg"
+  },
+  {
+   "title": "AC30 voltage chart (annotated redraw from 'A Service Engineer's Guide to the Vox AC30 Valve Amplifier', hosted by el34world): Top Boost plate 180 V, Top Boost node 290 V, V1 plates 170 V, PI plates 230 V, 320 V, EL84 cathodes about 10 V",
+   "url": "https://el34world.com/charts/Schematics/files/Vox/Vox_ac30volt_factory.jpg"
+  },
+  {
+   "title": "voxac30.org.uk, beige 5000s page: 'speakers are, as standard, Celestion alnico blues (T530), 8 ohms each, the two wired for 16 ohms total impedance'",
+   "url": "https://www.voxac30.org.uk/vox_ac30_beige_5000s.html"
+  },
+  {
+   "title": "voxac30.org.uk, integrated Top Boost page: copper-panel integrated TB chassis have 50 Ohm bias resistors",
+   "url": "https://www.voxac30.org.uk/vox_ac30_top_boost_integrated.html"
+  },
+  {
+   "title": "Ampbooks, Circuit Analysis of the Vox AC30 (no negative feedback; long-tail pair with a 47 kOhm tail; Cut across the phase-inverter outputs)",
+   "url": "https://www.ampbooks.com/mobile/classic-circuits/vox-ac30/"
+  },
+  {
+   "title": "N. Koren, Improved vacuum tube models for SPICE simulations (library 12AX7 / pentode law)",
+   "url": "https://www.normankoren.com/Audio/Tubemodspice_article.html"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "spk",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 168,
+  "note": "outputVoltsPerFS calibrated (2026-11-09) to the mean RMS match gain (-18.5 dB) of the circuit_ab settings against the legacy model, so the A/B sits at the legacy loudness on average across clean and driven settings; final level is a listening-review decision"
+ },
+ "oversampling": 2,
+ "minRate": 352800,
+ "lte": {"tol": 8, "note": "Substeps start on backward Euler (docs §10.63), with the base at 384 kHz (minRate 352800) and VPA's events at 32 (4 substeps, 1.536 MHz). 3130 Hz gate tone (own-mains mask) -67.1 / -57.1 / -53.5 -> -79.3 / -70.9 / -61.4 dB at 0.25 / 0.5 / 1.0 FS; 2900 Hz -66.7 / -63.9 / -57.1 -> -67.0 / -64.6 / -59.7. At 1.0 FS the folds of the 768 kHz grid stay above -63 dB at every tone (2800-3300 Hz: -58.3 to -64.8, shipped -49 to -57); the BDF2 start reads -47.9 there. Engine T/8 truth, audio band, lead / rock DI: 0.063 / 0.141 -> 0.019 / 0.053 % (ngspice T/16 spk 0.083 -> 0.058 %); the SPICE gate at a fixed 176.4 kHz moves ac30_dimed spk 0.171 -> 0.709 %. 9900X real / driven: 29.5 / 41.5 -> 55.0 / 66.4 % of a core."},
+ "solver": "auto",
+ "cuts": [
+  "hra",
+  "hrb",
+  "bp1",
+  "ch",
+  "bp2",
+  "bp3",
+  "bp4",
+  "bp5"
+ ],
+ "controls": [
+  {
+   "id": "volume",
+   "label": "Brilliant Volume",
+   "default": 0.5,
+   "params": [
+    "Br"
+   ],
+   "group": "Brilliant channel",
+   "note": "VR2, 500 kOhm log, before the Top Boost valve (OS/010). The catalogue's 'B Volume' (Br); until 2026-11-11 this was bound to 'N Volume' (Vol), so rigs that turned the Normal channel off went silent"
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "default": 0.5,
+   "params": [
+    "Tb"
+   ],
+   "group": "Top Boost",
+   "note": "VR7, 1 MOhm log; wiper is the stack output; clockwise = toward the 50 pF end"
+  },
+  {
+   "id": "bass",
+   "label": "Bass",
+   "default": 0.5,
+   "params": [
+    "Bs"
+   ],
+   "group": "Top Boost",
+   "note": "VR8, 1 MOhm log; ends on the treble-pot bottom and ground, wiper on the 10 kOhm / 0.022 uF node; clockwise = more resistance above the wiper = more bass"
+  },
+  {
+   "id": "cut",
+   "label": "Cut",
+   "default": 0.5,
+   "params": [
+    "Tc"
+   ],
+   "group": "Main",
+   "note": "VR3, 250 kOhm log rheostat in series with 4700 pF between the two EL84 grid circuits. Mapped so 0 = least cut (full 250 kOhm in series) and 1 = most cut (wiper at the shorted end, 4700 pF straight across the grids): more Cut = less treble, as on the panel"
+  },
+  {
+   "id": "normal_volume",
+   "label": "Normal Volume",
+   "default": 0.5,
+   "params": [
+    "Vol"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "The catalogue's 'N Volume': the Normal channel (V1's idle triode) is not modelled, its mixer resistor is taken at volume zero, so the guitar plays through the Brilliant channel. As on the real amp the channels mix through resistors, so this volume does not load the Brilliant one. Imported racks that used only the Normal channel are moved to Brilliant at import (see docs/CIRCUIT_ENGINE.md 10.26). Stored for presets only"
+  },
+  {
+   "id": "trem_speed",
+   "label": "Tremolo Speed",
+   "default": 0.5,
+   "params": [
+    "TSp"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "The Vib/Trem channel (V7 preamp, V8 ECC82 modulator, V9 oscillator) is not modelled in v1; stored for presets"
+  },
+  {
+   "id": "trem_depth",
+   "label": "Tremolo Depth",
+   "default": 0.5,
+   "params": [
+    "TDt"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Vib/Trem channel not modelled; stored for presets"
+  },
+  {
+   "id": "power",
+   "label": "Power",
+   "default": 0.5,
+   "params": [
+    "Hz"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "no circuit meaning; mains fixed at 50 Hz (UK)"
+  },
+  {
+   "id": "variac",
+   "label": "Variac",
+   "default": 0.5,
+   "params": [
+    "Vr"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "stored for presets; mains amplitude is fixed in v1"
+  },
+  {
+   "id": "sag",
+   "label": "Sag",
+   "default": 0.5,
+   "params": [
+    "Sg"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "sag emerges from the GZ34 supply and the shared cathode resistor"
+  },
+  {
+   "id": "response",
+   "label": "Response",
+   "default": 0.5,
+   "params": [
+    "Rsp"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "no circuit counterpart"
+  },
+  {
+   "id": "bias",
+   "label": "Bias",
+   "default": 0.5,
+   "params": [
+    "Bia"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "cathode bias (50 Ohm / 250 uF) is set by the circuit; no adjustment on the real amp"
+  },
+  {
+   "id": "g5m",
+   "label": "G5M",
+   "default": 0.0,
+   "params": [
+    "G5M"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "legacy preset parameter with no counterpart on the AC30/6 TB front panel or in the OS/065 / OS/010 circuit; stored so presets round-trip, no circuit meaning"
+  },
+  {"id": "stereo", "label": "Stereo", "kind": "continuous", "default": 0.5, "params": ["CASSt"], "legacyOnly": true, "group": "Legacy", "note": "Catalogue stereo parameter; the circuit is mono, stored only"},
+  {"id": "legacy_Pwr", "label": "On/Off", "kind": "switch", "default": 1.0, "params": ["Pwr"], "legacyOnly": true, "group": "Legacy", "note": "Host handles bypass; stored only"}
+ ],
+ "parts": [
+  {
+   "ref": "VHA",
+   "type": "V",
+   "nodes": [
+    "ha",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "396",
+    "freq": 50,
+    "phase": 90
+   },
+   "label": "HT secondary (half)",
+   "note": "OS/065: 280-0-280 V, 160 mA; 280 Vrms = 396 V peak; UK 50 Hz mains"
+  },
+  {
+   "ref": "VHB",
+   "type": "V",
+   "nodes": [
+    "hb",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "396",
+    "freq": 50,
+    "phase": 270
+   },
+   "label": "HT secondary (half)"
+  },
+  {
+   "ref": "RPTA",
+   "type": "R",
+   "nodes": [
+    "ha",
+    "hra"
+   ],
+   "value": "30",
+   "label": "HT winding resistance (half)",
+   "note": "unverified: mains-transformer secondary resistance + regulation (not on the drawing); fitted so the settled screen node lands near the drawn 320 V"
+  },
+  {
+   "ref": "RPTB",
+   "type": "R",
+   "nodes": [
+    "hb",
+    "hrb"
+   ],
+   "value": "30",
+   "label": "HT winding resistance (half)",
+   "note": "unverified: see RPTA"
+  },
+  {
+   "ref": "DA",
+   "type": "D",
+   "nodes": [
+    "hra",
+    "bp1"
+   ],
+   "model": "GZ34",
+   "label": "V10 GZ34"
+  },
+  {
+   "ref": "DB",
+   "type": "D",
+   "nodes": [
+    "hrb",
+    "bp1"
+   ],
+   "model": "GZ34",
+   "label": "V10 GZ34"
+  },
+  {
+   "ref": "C39",
+   "type": "C",
+   "nodes": [
+    "bp1",
+    "0"
+   ],
+   "value": "16u",
+   "label": "Reservoir C39 16 uF 450 V (OT centre tap)"
+  },
+  {
+   "ref": "RCH",
+   "type": "R",
+   "nodes": [
+    "bp1",
+    "ch"
+   ],
+   "value": "150",
+   "label": "Choke DCR",
+   "note": "unverified: CH1 DC resistance not given; 150 Ohm assumed"
+  },
+  {
+   "ref": "LCH",
+   "type": "L",
+   "nodes": [
+    "ch",
+    "bp2"
+   ],
+   "value": "15",
+   "label": "Choke CH1",
+   "note": "unverified: drawn as '10-20 HY 100 mA'; 15 H taken as the middle of the range"
+  },
+  {
+   "ref": "C40",
+   "type": "C",
+   "nodes": [
+    "bp2",
+    "0"
+   ],
+   "value": "16u",
+   "label": "C40 16 uF 450 V (320 V screen node)"
+  },
+  {
+   "ref": "R10",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "bp3"
+   ],
+   "value": "22k",
+   "label": "R10 dropper to V1 (290 V)"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "bp3",
+    "0"
+   ],
+   "value": "8u",
+   "label": "C4 8 uF"
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "bp4"
+   ],
+   "value": "22k",
+   "label": "R11 dropper to the phase inverter"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "bp4",
+    "0"
+   ],
+   "value": "8u",
+   "label": "C8 8 uF"
+  },
+  {
+   "ref": "R6TB",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "bp5"
+   ],
+   "value": "10k",
+   "label": "Top Boost R6 10 kOhm (from the R10/R11 junction)"
+  },
+  {
+   "ref": "C5TB",
+   "type": "C",
+   "nodes": [
+    "bp5",
+    "0"
+   ],
+   "value": "32u",
+   "label": "Top Boost C5 32 uF"
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "in",
+    "g1a"
+   ],
+   "value": "68k",
+   "label": "R2 68 kOhm (Brilliant input 1)"
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "g1a",
+    "j2t"
+   ],
+   "value": "68k",
+   "label": "R1 68 kOhm (input 2, idle)",
+   "note": "input 2 jack empty: its tip rests on the switch contact that carries R3 to ground (OS/065)"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "j2t",
+    "0"
+   ],
+   "value": "1M",
+   "label": "R3 1 MOhm"
+  },
+  {
+   "ref": "V1A",
+   "type": "triode",
+   "nodes": [
+    "p1a",
+    "g1a",
+    "k1"
+   ],
+   "model": "12AX7",
+   "label": "V1 Brilliant triode (pins 1-2-3)"
+  },
+  {
+   "ref": "V1B",
+   "type": "triode",
+   "nodes": [
+    "p1b",
+    "g1b",
+    "k1"
+   ],
+   "model": "12AX7",
+   "label": "V1 Normal triode (idle, pins 6-7-8)",
+   "note": "shares the cathode with the Brilliant triode"
+  },
+  {
+   "ref": "RG1B",
+   "type": "R",
+   "nodes": [
+    "g1b",
+    "0"
+   ],
+   "value": "68k",
+   "label": "Normal grid return",
+   "note": "unverified simplification: Normal jacks empty, R13 68 kOhm to the grounded input-1 tip (R12 + R14 path in parallel ignored)"
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "k1",
+    "0"
+   ],
+   "value": "1k5",
+   "label": "R4 1.5 kOhm (shared)"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "k1",
+    "0"
+   ],
+   "value": "25u",
+   "label": "C1 25 uF 25 V"
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "bp3",
+    "p1a"
+   ],
+   "value": "220k",
+   "label": "R5 220 kOhm"
+  },
+  {
+   "ref": "R6",
+   "type": "R",
+   "nodes": [
+    "bp3",
+    "p1b"
+   ],
+   "value": "220k",
+   "label": "R6 220 kOhm",
+   "note": "the Normal channel's plate coupling (C2 0.047 uF, VR1) is omitted: VR1 at zero, no signal"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "p1a",
+    "vt"
+   ],
+   "value": "500p",
+   "label": "C3 500 pF Brilliant coupling"
+  },
+  {
+   "ref": "VR2",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "vw",
+    "vt"
+   ],
+   "value": "500k",
+   "taper": "A",
+   "control": "volume",
+   "label": "VR2 Brilliant volume 500 kOhm log"
+  },
+  {
+   "ref": "C100",
+   "type": "C",
+   "nodes": [
+    "vw",
+    "0"
+   ],
+   "value": "100p",
+   "label": "100 pF 'added' at VR2 (OS/010)",
+   "note": "drawn from the wiper to the far (earthy) end of VR2 on OS/010 and on the 1971 VSL sheet"
+  },
+  {
+   "ref": "VTB1",
+   "type": "triode",
+   "nodes": [
+    "ptb",
+    "vw",
+    "ktb"
+   ],
+   "model": "12AX7",
+   "label": "Top Boost ECC83 gain stage (pins 1-2-3)"
+  },
+  {
+   "ref": "RTB1",
+   "type": "R",
+   "nodes": [
+    "ktb",
+    "0"
+   ],
+   "value": "1k5",
+   "label": "TB R1 1.5 kOhm"
+  },
+  {
+   "ref": "CTB1",
+   "type": "C",
+   "nodes": [
+    "ktb",
+    "0"
+   ],
+   "value": "25u",
+   "label": "TB C1 25 uF 25 V"
+  },
+  {
+   "ref": "RTB5",
+   "type": "R",
+   "nodes": [
+    "bp5",
+    "ptb"
+   ],
+   "value": "100k",
+   "label": "TB R5 100 kOhm"
+  },
+  {
+   "ref": "VTB2",
+   "type": "triode",
+   "nodes": [
+    "bp5",
+    "ptb",
+    "kcf"
+   ],
+   "model": "12AX7",
+   "label": "Top Boost cathode follower (pins 6-7-8)",
+   "note": "grid direct-coupled to the gain-stage plate"
+  },
+  {
+   "ref": "RTB2",
+   "type": "R",
+   "nodes": [
+    "kcf",
+    "0"
+   ],
+   "value": "56k",
+   "label": "TB R2 56 kOhm"
+  },
+  {
+   "ref": "CTR",
+   "type": "C",
+   "nodes": [
+    "kcf",
+    "tt"
+   ],
+   "value": "50p",
+   "label": "TB C2 50 pF treble cap"
+  },
+  {
+   "ref": "TREBLE",
+   "type": "pot",
+   "nodes": [
+    "t2",
+    "tw",
+    "tt"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "treble",
+   "label": "VR7 Treble 1 MOhm log"
+  },
+  {
+   "ref": "CS1",
+   "type": "C",
+   "nodes": [
+    "t2",
+    "q"
+   ],
+   "value": "22n",
+   "label": "TB C3 0.022 uF"
+  },
+  {
+   "ref": "RSL",
+   "type": "R",
+   "nodes": [
+    "kcf",
+    "q"
+   ],
+   "value": "100k",
+   "label": "TB R3 100 kOhm"
+  },
+  {
+   "ref": "CS2",
+   "type": "C",
+   "nodes": [
+    "q",
+    "s"
+   ],
+   "value": "22n",
+   "label": "TB C4 0.022 uF",
+   "note": "OS/010 issue 2 note: was 0.02 uF"
+  },
+  {
+   "ref": "BASS",
+   "type": "pot",
+   "nodes": [
+    "t2",
+    "s",
+    "0"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "bass",
+   "label": "VR8 Bass 1 MOhm log"
+  },
+  {
+   "ref": "RB",
+   "type": "R",
+   "nodes": [
+    "s",
+    "0"
+   ],
+   "value": "10k",
+   "label": "TB R4 10 kOhm"
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "tw",
+    "mix"
+   ],
+   "value": "220k",
+   "label": "R9 220 kOhm Brilliant mixer"
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "mix",
+    "0"
+   ],
+   "value": "220k",
+   "label": "R7 220 kOhm Normal mixer",
+   "note": "Normal volume VR1 at zero: its wiper is ground"
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "mix",
+    "g2a"
+   ],
+   "value": "47n",
+   "label": "C5 0.047 uF"
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "g2a",
+    "tap"
+   ],
+   "value": "1M",
+   "label": "R8 1 MOhm"
+  },
+  {
+   "ref": "V2A",
+   "type": "triode",
+   "nodes": [
+    "p2a",
+    "g2a",
+    "k2"
+   ],
+   "model": "12AX7",
+   "label": "V2 LTP (pins 1-2-3)"
+  },
+  {
+   "ref": "V2B",
+   "type": "triode",
+   "nodes": [
+    "p2b",
+    "g2b",
+    "k2"
+   ],
+   "model": "12AX7",
+   "label": "V2 LTP (pins 6-7-8)"
+  },
+  {
+   "ref": "R17",
+   "type": "R",
+   "nodes": [
+    "g2b",
+    "tap"
+   ],
+   "value": "1M",
+   "label": "R17 1 MOhm"
+  },
+  {
+   "ref": "C7",
+   "type": "C",
+   "nodes": [
+    "g2b",
+    "0"
+   ],
+   "value": "47n",
+   "label": "C7 0.047 uF to the Vib/Trem volume",
+   "note": "VR4 (Vib/Trem volume, 500 kOhm log) at zero: its wiper is ground, so the second grid is AC-grounded through C7"
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "k2",
+    "tap"
+   ],
+   "value": "1k2",
+   "label": "R16 1.2 kOhm"
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "tap",
+    "0"
+   ],
+   "value": "47k",
+   "label": "R15 47 kOhm tail"
+  },
+  {
+   "ref": "R18",
+   "type": "R",
+   "nodes": [
+    "bp4",
+    "p2a"
+   ],
+   "value": "100k",
+   "label": "R18 100 kOhm"
+  },
+  {
+   "ref": "R19",
+   "type": "R",
+   "nodes": [
+    "bp4",
+    "p2b"
+   ],
+   "value": "100k",
+   "label": "R19 100 kOhm"
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "p2a",
+    "ga"
+   ],
+   "value": "150n",
+   "label": "C6 0.15 uF"
+  },
+  {
+   "ref": "C9",
+   "type": "C",
+   "nodes": [
+    "p2b",
+    "gb"
+   ],
+   "value": "150n",
+   "label": "C9 0.15 uF"
+  },
+  {
+   "ref": "R21",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "0"
+   ],
+   "value": "220k",
+   "label": "R21 220 kOhm grid leak"
+  },
+  {
+   "ref": "R20",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "0"
+   ],
+   "value": "220k",
+   "label": "R20 220 kOhm grid leak",
+   "note": "hand lettering on OS/065 could read 280k; 220 kOhm per the 1971 VSL sheet and the voltage-chart redraw"
+  },
+  {
+   "ref": "VR3",
+   "type": "pot",
+   "nodes": [
+    "cx",
+    "cx",
+    "ga"
+   ],
+   "value": "250k",
+   "taper": "A",
+   "control": "cut",
+   "label": "VR3 Cut 250 kOhm log (rheostat)",
+   "note": "wired so the series resistance (wiper to pin 3) falls as Cut turns up; unverified: which end of the log track the factory used (the drawing shows only the wiper strapped to one end)"
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "cx",
+    "gb"
+   ],
+   "value": "4n7",
+   "label": "C10 0.0047 uF"
+  },
+  {
+   "ref": "RSA",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "g1pa"
+   ],
+   "value": "750",
+   "label": "Grid stoppers R22 + R27",
+   "note": "two 1.5 kOhm (one per EL84) in parallel"
+  },
+  {
+   "ref": "RSB",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "g1pb"
+   ],
+   "value": "750",
+   "label": "Grid stoppers R23 + R28",
+   "note": "two 1.5 kOhm in parallel"
+  },
+  {
+   "ref": "VPA",
+   "type": "pentode",
+   "nodes": [
+    "pa",
+    "sa",
+    "g1pa",
+    "kp"
+   ],
+   "model": "EL84",
+   "parallel": 2,
+   "label": "V3 + V5 EL84"
+  },
+  {
+   "ref": "VPB",
+   "type": "pentode",
+   "nodes": [
+    "pb",
+    "sb",
+    "g1pb",
+    "kp"
+   ],
+   "model": "EL84",
+   "parallel": 2,
+   "label": "V4 + V6 EL84"
+  },
+  {
+   "ref": "RSCA",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "sa"
+   ],
+   "value": "50",
+   "label": "Screen resistors R25 + R29",
+   "note": "two 100 Ohm in parallel"
+  },
+  {
+   "ref": "RSCB",
+   "type": "R",
+   "nodes": [
+    "bp2",
+    "sb"
+   ],
+   "value": "50",
+   "label": "Screen resistors R26 + R30",
+   "note": "two 100 Ohm in parallel"
+  },
+  {
+   "ref": "R24",
+   "type": "R",
+   "nodes": [
+    "kp",
+    "0"
+   ],
+   "value": "50",
+   "label": "R24 50 Ohm shared cathode",
+   "note": "OS/065: 'R24 was 80 Ohm'; 50 Ohm on 1963-64 chassis"
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "kp",
+    "0"
+   ],
+   "value": "250u",
+   "label": "C11 250 uF 25 V"
+  },
+  {
+   "ref": "CWA",
+   "type": "C",
+   "nodes": [
+    "pa",
+    "wa"
+   ],
+   "value": "470p",
+   "label": "OT half-primary capacitance (A)",
+   "note": "unverified: half-primary self-capacitance with its loss as a lumped 470 pF + 2.2 kOhm from the plate to the centre tap (engine lesson from the AB763 Twin: a lossless lumped capacitance rings with the leakage and the NFB turns it into an oscillation; no capacitance gives kilovolt flyback spikes)"
+  },
+  {
+   "ref": "RWA",
+   "type": "R",
+   "nodes": [
+    "wa",
+    "bp1"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (A)",
+   "note": "see CWA"
+  },
+  {
+   "ref": "CWB",
+   "type": "C",
+   "nodes": [
+    "pb",
+    "wb"
+   ],
+   "value": "470p",
+   "label": "OT half-primary capacitance (B)",
+   "note": "see CWA"
+  },
+  {
+   "ref": "RWB",
+   "type": "R",
+   "nodes": [
+    "wb",
+    "bp1"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (B)",
+   "note": "see CWA"
+  },
+  {
+   "ref": "OT",
+   "type": "transformer",
+   "nodes": [
+    "pa",
+    "bp1",
+    "bp1",
+    "pb",
+    "spk",
+    "0"
+   ],
+   "turns": [
+    1,
+    1,
+    0.1265
+   ],
+   "r": [
+    70,
+    70,
+    0.6
+   ],
+   "leak": [
+    "8m",
+    "8m",
+    0
+   ],
+   "lm": 6,
+   "lsat": 1.2,
+   "label": "T1 output transformer, 4 kOhm anode to anode, 16 Ohm tap",
+   "note": "4 kOhm a-a from OS/065 (secondary turns 2/sqrt(4000/16)); unverified: DCR, leakage, primary inductance (24 H plate to plate) and saturation flux are typical values for a 30 W OT"
+  },
+  {
+   "ref": "SPK1",
+   "type": "sub",
+   "nodes": [
+    "spk",
+    "0"
+   ],
+   "of": "lib:spk-12in-8ohm-british",
+   "series": 2,
+   "label": "2 x 12-inch Celestion T530 class (8 Ohm each), in series",
+   "note": "two 8 Ohm speakers in series = 16 Ohm (voxac30.org.uk); the library British 8 Ohm block (G12M class) stands in for the alnico Blue. Solved as one block with \"series\": 2 (every R and L doubled, C halved): the same current flows through both identical drivers, so this is the same circuit exactly, with 4 fewer states in the 16x power group (2026-11-12; DI null against the two separate blocks -183 dB)"
+  }
+ ],
+ "probes": [
+  "p1a",
+  "ptb",
+  "kcf",
+  "tw",
+  "p2a",
+  "ga",
+  "pa",
+  "kp",
+  "spk",
+  "bp2"
+ ],
+ "layout": {},
+ "multirate": {"oversampled": ["VPA"], "rates": {"VPA": 32}, "events": true}
+}

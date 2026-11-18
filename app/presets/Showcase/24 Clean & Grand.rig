@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Clean &amp; Grand</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Clean &amp; Grand" preset-author="Headroom" preset-comment="Sparkling blackface clean doubled by a grand piano — the classic ballad layer."/>
+<rack>
+<non-fix-components>
+  <component id="7000">
+    <component-audio version="1">
+      <parameters num-parameters="1">
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="48000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="V" value="0.75"/>
+        <parameter id="S" value="0.55"/>
+        <parameter id="A" value="0.72969"/>
+        <parameter id="R" value="0.79532"/>
+        <parameter id="T" value="0.88516"/>
+        <parameter id="C" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="30000">
+    <component-audio version="1">
+      <parameters num-parameters="19">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.38"/>
+        <parameter id="Br" value="1"/>
+        <parameter id="Bs" value="0.42734"/>
+        <parameter id="Md" value="0.46316"/>
+        <parameter id="Tr" value="0.59644"/>
+        <parameter id="Vr" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0"/>
+        <parameter id="Bia" value="1"/>
+        <parameter id="Hz" value="0"/>
+        <parameter id="RvL" value="0.04811"/>
+        <parameter id="RvOn" value="1"/>
+        <parameter id="RvTm" value="0.303125"/>
+        <parameter id="RvSz" value="0.352344"/>
+        <parameter id="ViInt" value="0.58948"/>
+        <parameter id="ViSpd" value="0.43684"/>
+        <parameter id="ViOn" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.964"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="13"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="8000">
+    <component-audio version="1">
+      <parameters num-parameters="1">
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="900001">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="mode" value="0"/>
+        <parameter id="sens" value="0.55"/>
+        <parameter id="bend" value="2"/>
+        <parameter id="low" value="40"/>
+        <parameter id="high" value="88"/>
+        <parameter id="vel" value="0.5"/>
+        <parameter id="thru" value="1"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="900003">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="tone" value="0.5"/>
+        <parameter id="attack" value="0.5"/>
+        <parameter id="release" value="0.5"/>
+        <parameter id="vibrato" value="0"/>
+        <parameter id="follow" value="0.3"/>
+        <parameter id="level" value="0.8022"/>
+        <parameter id="mix" value="1"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="sound" value="24"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="9000">
+    <component-audio version="1">
+      <parameters num-parameters="6">
+        <parameter id="PanA" value="0.5"/>
+        <parameter id="PanB" value="0.5"/>
+        <parameter id="XFade" value="0.5"/>
+        <parameter id="DM" value="0.5"/>
+        <parameter id="iP" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="127000">
+    <component-audio version="1">
+      <parameters num-parameters="4">
+        <parameter id="S1" value="1"/>
+        <parameter id="M2" value="0.14"/>
+        <parameter id="M3" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="9000" target-number="1" target-name="XFade" min-value="0.1" max-value="0.85" controller-name="Guitar ↔ Piano"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="127000" target-number="1" target-name="M2" min-value="0" max-value="0.45" controller-name="Plate"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+</headroom-preset>

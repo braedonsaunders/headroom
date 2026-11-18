@@ -1,0 +1,133 @@
+/* Headroom — right pane concept "Listen" (docs/design/listen-pane.*). Uses the app's design tokens. */
+.lp { display: flex; flex-direction: column; gap: 10px; position: relative; min-height: 100%; }
+.lp .card { position: relative; }
+.lp-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.lp-eyebrow { font-size: 10px; font-weight: 650; letter-spacing: .7px; text-transform: uppercase; color: var(--text-3); }
+.lp-chip { font-size: 10px; color: var(--text-3); display: inline-flex; align-items: center; gap: 5px; }
+.lp-chip i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px var(--accent); display: inline-block; }
+.lp-chip.idle i { background: var(--text-3); box-shadow: none; }
+.lp-ib { border: 0; background: transparent; color: var(--text-3); padding: 2px; border-radius: 5px; display: inline-flex; }
+.lp-ib:hover { color: var(--text); background: var(--hover); }
+.lp-ib svg { width: 13px; height: 13px; }
+.lp-ib.on { color: var(--accent); }
+.lp-seg { display: inline-flex; background: var(--inset); border-radius: 7px; padding: 2px; box-shadow: inset 0 0 0 1px var(--line); }
+.lp-seg button { border: 0; background: transparent; font-size: 10px; font-weight: 600; color: var(--text-3); padding: 3px 6px; border-radius: 5px; }
+.lp-seg button.on { background: var(--card-2); color: var(--text); box-shadow: 0 1px 2px rgba(0,0,0,.35), inset 0 0 0 1px var(--line-2); }
+
+/* ---- Tuner strip ---- */
+.lp-tun { display: grid; grid-template-columns: 52px 1fr; gap: 10px; align-items: center; }
+.lp-note { white-space: nowrap; font-size: 34px; font-weight: 700; letter-spacing: -1px; line-height: 1; font-variant-numeric: tabular-nums; position: relative; transition: color .2s; }
+.lp-note sub { font-size: 12px; font-weight: 600; color: var(--text-3); letter-spacing: 0; margin-left: 1px; bottom: -0.1em; }
+.lp-note sup { font-size: 16px; font-weight: 650; vertical-align: top; position: relative; top: 2px; margin-left: 1px; }
+.lp-tun.intune .lp-note { color: var(--accent-strong); }
+.lp-cents { position: relative; height: 20px; }
+.lp-cents .tk { position: absolute; top: 6px; width: 1px; height: 8px; background: var(--line-3); }
+.lp-cents .tk.c { top: 2px; height: 16px; background: var(--text-3); width: 1.5px; }
+.lp-cents .zone { position: absolute; top: 3px; height: 14px; border-radius: 3px; background: var(--accent-soft); }
+.lp-cents .nd { position: absolute; top: 3px; width: 4px; height: 14px; margin-left: -2px; border-radius: 2px; background: var(--text-2); transition: left .09s linear, background .2s; }
+.lp-tun.intune .lp-cents .nd { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.lp-tun-meta { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--text-3); margin-top: 3px; font-variant-numeric: tabular-nums; }
+.lp-tun-meta b { color: var(--text-2); font-weight: 600; }
+.lp-trail-wrap { position: relative; margin-top: 8px; }
+.lp-trail { width: 100%; height: 34px; display: block; border-radius: 6px; background: var(--scope-bg); box-shadow: inset 0 0 0 1px var(--line); }
+.lp-trail-tag { position: absolute; left: 6px; top: 4px; font-size: 9.5px; color: var(--text-2); background: var(--card); padding: 1px 5px; border-radius: 4px; box-shadow: inset 0 0 0 1px var(--line-2); opacity: 0; transition: opacity .25s; font-variant-numeric: tabular-nums; }
+.lp-trail-tag.show { opacity: 1; }
+.lp-trail-tag b { color: var(--accent); }
+.lp-trail-tag.off b { color: #e3c14b; }
+.lp-strings { display: flex; gap: 3px; margin-top: 8px; }
+.lp-strings span { flex: 1; text-align: center; font-size: 9.5px; font-weight: 650; color: var(--text-3); padding: 2px 0; border-radius: 4px; background: var(--inset); box-shadow: inset 0 0 0 1px var(--line); transition: all .15s; }
+.lp-strings span.on { color: var(--accent-ink); background: var(--accent); box-shadow: none; }
+.lp-strings span.ok { color: var(--accent); }
+
+/* ---- Harmony ---- */
+.lp-key { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; margin-top: 2px; }
+.lp-key-name { font-size: 22px; font-weight: 700; letter-spacing: -.4px; line-height: 1.05; }
+.lp-key-name em { font-style: normal; color: var(--text-2); font-weight: 500; }
+.lp-key-alt { font-size: 10.5px; color: var(--text-3); margin-top: 3px; }
+.lp-key-alt b { color: var(--text-2); font-weight: 600; }
+.lp-conf { width: 38px; height: 38px; flex-shrink: 0; position: relative; }
+.lp-conf svg { width: 38px; height: 38px; transform: rotate(-90deg); }
+.lp-conf span { position: absolute; inset: 0; display: grid; place-items: center; font-size: 10px; font-weight: 650; font-variant-numeric: tabular-nums; color: var(--text-2); }
+.lp-chord { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; align-items: center; margin-top: 10px; padding: 8px 10px; border-radius: 9px; background: var(--inset); box-shadow: inset 0 0 0 1px var(--line); }
+.lp-chord-name { font-size: 26px; font-weight: 700; letter-spacing: -.6px; color: var(--accent-strong); line-height: 1; min-width: 64px; transition: opacity .12s; }
+.lp-chord-name sup { font-size: 13px; font-weight: 650; letter-spacing: 0; margin-left: 1px; }
+.lp-chord-side { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.lp-roman { font-family: var(--font-silk); font-size: 13px; font-weight: 650; letter-spacing: .5px; color: var(--text-2); }
+.lp-tones { display: flex; gap: 3px; flex-wrap: wrap; }
+.lp-tones span { font-size: 9.5px; font-weight: 650; padding: 1px 5px; border-radius: 4px; background: var(--card-2); color: var(--text-2); box-shadow: inset 0 0 0 1px var(--line); }
+.lp-tones span.r { color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent-soft); }
+.lp-prog { display: flex; gap: 3px; margin-top: 8px; }
+.lp-prog div { flex: 1 1 0; min-width: 0; padding: 4px 0 3px; border-radius: 6px; text-align: center; background: var(--inset); box-shadow: inset 0 0 0 1px var(--line); transition: background .2s, box-shadow .2s; }
+.lp-prog b small { font-size: 8px; font-weight: 600; margin-left: 1px; }
+.lp-prog b { display: block; font-size: 11px; font-weight: 650; color: var(--text-2); white-space: nowrap; }
+.lp-prog i { display: block; font-style: normal; font-family: var(--font-silk); font-size: 9.5px; color: var(--text-3); letter-spacing: .4px; }
+.lp-prog div.now { background: var(--accent-soft); box-shadow: inset 0 0 0 1px rgba(227,160,75,.45); }
+.lp-prog div.now b { color: var(--text); }
+.lp-prog div.ghost { opacity: .45; }
+.lp-sec { display: flex; align-items: center; justify-content: space-between; margin: 10px 0 4px; }
+.lp-fb { display: block; width: 100%; height: auto; }
+.lp-fb .str { stroke: var(--line-3); }
+.lp-fb .frt { stroke: var(--line-2); }
+.lp-fb .nut { stroke: var(--text-3); stroke-width: 2.5; }
+.lp-fb .inl { fill: var(--line-2); }
+.lp-fb .fn { fill: var(--text-3); font-size: 7px; font-family: var(--font-ui); font-weight: 600; text-anchor: middle; }
+.lp-fb .dot { fill: var(--card-2); stroke: var(--line-3); stroke-width: 1; transition: fill .15s; }
+.lp-fb .dot.ct { fill: rgba(227,160,75,.28); stroke: rgba(227,160,75,.7); }
+.lp-fb .dot.root { fill: var(--accent); stroke: var(--accent-strong); }
+.lp-fb .dot.hot { fill: #fff3dc; stroke: var(--accent-strong); filter: drop-shadow(0 0 4px var(--accent)); }
+body.light .lp-fb .dot.hot { fill: #ffd28a; }
+.lp-fb .lbl { font-size: 7px; font-weight: 700; text-anchor: middle; dominant-baseline: central; fill: var(--text-3); pointer-events: none; font-family: var(--font-ui); }
+.lp-fb .lbl.root { fill: var(--accent-ink); }
+.lp-fb .lbl.ct { fill: var(--text); }
+.lp-fb .lbl.hot { fill: #1d1407; }
+.lp-fb-legend { display: flex; gap: 10px; font-size: 9.5px; color: var(--text-3); margin-top: 5px; }
+.lp-fb-legend span { display: inline-flex; align-items: center; gap: 4px; }
+.lp-fb-legend i { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+
+/* ---- Tone ---- */
+.lp-spec { width: 100%; height: 72px; display: block; border-radius: 7px; background: var(--scope-bg); box-shadow: inset 0 0 0 1px var(--line); }
+.lp-bands { display: flex; justify-content: space-between; font-size: 9.5px; color: var(--text-3); margin-top: 4px; padding: 0 2px; font-variant-numeric: tabular-nums; }
+.lp-tone-read { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 7px; }
+.lp-tone-read { flex-wrap: nowrap !important; }
+.lp-tone-read span { white-space: nowrap; font-size: 10px; padding: 2px 6px; border-radius: 10px; background: var(--inset); color: var(--text-2); box-shadow: inset 0 0 0 1px var(--line); }
+
+/* ---- Signal ---- */
+.lp-meter { position: relative; height: 10px; border-radius: 5px; background: var(--meter-bg); box-shadow: inset 0 0 0 1px var(--line); overflow: hidden; margin-top: 2px; }
+.lp-meter .sweet { position: absolute; top: 0; bottom: 0; background: rgba(120, 200, 140, .13); box-shadow: inset 1px 0 0 rgba(120,200,140,.4), inset -1px 0 0 rgba(120,200,140,.4); }
+.lp-meter .floor { position: absolute; left: 0; top: 0; bottom: 0; background: repeating-linear-gradient(135deg, var(--line-2) 0 2px, transparent 2px 4px); }
+.lp-meter .gate { position: absolute; top: -1px; bottom: -1px; width: 0; border-left: 1.5px dashed var(--text-3); z-index: 2; }
+.lp-scale .g { color: var(--text-2); }
+.lp-scale .s { color: rgba(121,196,140,.85); }
+.lp-meter .fill { position: absolute; left: 0; top: 2px; bottom: 2px; border-radius: 3px; background: linear-gradient(90deg, #5f8f6c, #8cc59a 70%, #e3c14b 88%, #ff5a3c); transition: width .06s linear; }
+.lp-meter .pk { position: absolute; top: 1px; bottom: 1px; width: 2px; background: var(--text); border-radius: 1px; transition: left .25s; }
+.lp-scale { display: flex; justify-content: space-between; font-size: 8.5px; color: var(--text-3); margin-top: 3px; font-variant-numeric: tabular-nums; }
+.lp-health { display: flex; gap: 7px; align-items: flex-start; margin-top: 7px; font-size: 10.5px; color: var(--text-2); line-height: 1.35; }
+.lp-health i { width: 7px; height: 7px; border-radius: 50%; background: #79c48c; margin-top: 4px; flex-shrink: 0; box-shadow: 0 0 6px rgba(121,196,140,.6); }
+.lp-health.warn i { background: #e3c14b; box-shadow: 0 0 6px rgba(227,193,75,.6); }
+.lp-health b { color: var(--text); font-weight: 600; }
+.lp-stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 5px; margin-top: 8px; }
+.lp-stats div { background: var(--inset); border-radius: 7px; padding: 5px 7px; box-shadow: inset 0 0 0 1px var(--line); }
+.lp-stats .k { font-size: 9.5px; color: var(--text-3); font-weight: 600; }
+.lp-stats .v { font-size: 12.5px; font-weight: 650; font-variant-numeric: tabular-nums; margin-top: 1px; white-space: nowrap; }
+.lp-stats .v small { font-size: 9.5px; color: var(--text-3); font-weight: 500; margin-left: 1px; }
+
+/* ---- Inspector drawer (unit selected) ---- */
+.lp-drawer { position: absolute; left: -12px; right: -12px; bottom: -12px; top: auto; background: var(--chrome); border-top: 1px solid var(--line-2); box-shadow: 0 -18px 30px -12px rgba(0,0,0,.55); padding: 12px; transform: translateY(102%); transition: transform .32s cubic-bezier(.2,.8,.2,1); overflow: hidden; display: flex; flex-direction: column; gap: 10px; }
+.lp.sel .lp-drawer { transform: none; }
+.lp-drawer .grab { width: 34px; height: 4px; border-radius: 2px; background: var(--line-3); margin: -4px auto 2px; }
+.lp-drawer h4 { margin: 0; font-size: 14px; font-weight: 650; }
+.lp-drawer .sub { font-size: 10.5px; color: var(--text-3); margin-top: 1px; }
+.lp-dr-ctls { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px 4px; }
+.lp-kn { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 9.5px; color: var(--text-3); font-weight: 600; }
+.lp-kn svg { width: 34px; height: 34px; }
+.lp-kn b { font-size: 10px; color: var(--text-2); font-variant-numeric: tabular-nums; font-weight: 600; }
+.lp-dr-acts { display: flex; gap: 6px; margin-top: 2px; }
+.lp-dr-acts button { flex: 1; border: 0; font-size: 11px; font-weight: 600; padding: 6px 0; border-radius: 7px; background: var(--card-2); color: var(--text-2); box-shadow: inset 0 0 0 1px var(--line-2); }
+.lp-dr-presets { display: flex; flex-wrap: wrap; gap: 4px; }
+.lp-dr-presets span { font-size: 10px; padding: 3px 7px; border-radius: 6px; background: var(--inset); color: var(--text-2); box-shadow: inset 0 0 0 1px var(--line); }
+.lp-dr-presets span.on { background: var(--accent-soft); color: var(--accent); box-shadow: inset 0 0 0 1px rgba(227,160,75,.4); }
+
+/* ---- Silent state ---- */
+.lp.silent .lp-note { color: var(--text-3); }
+.lp.silent .lp-cents .nd { opacity: 0; }
+.lp.silent .lp-chord-name { color: var(--text-3); }

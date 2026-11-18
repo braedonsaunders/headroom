@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Hollowbody Bebop</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Hollowbody Bebop" preset-author="Headroom" preset-comment="The late-50s/60s studio jazz sound: a hollowbody into the normal channel of a small tweed combo, tone low, just loud enough that hard-picked lines thicken while comping stays clean. Warm, woody and a little compressed by the amp itself, in a small live room." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="79000">
+    <component-audio version="1">
+      <parameters num-parameters="11">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="vb" value="0.5"/>
+        <parameter id="vn" value="0.56"/>
+        <parameter id="t" value="0.56"/>
+        <parameter id="Pw" value="0.5"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bi" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+        <parameter id="input" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.3608"/>
+        <parameter id="c" value="0.25"/>
+        <parameter id="Cab" value="14"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.12"/>
+        <parameter id="Tm" value="0.2"/>
+        <parameter id="Sz" value="0.35"/>
+        <parameter id="H" value="0.4"/>
+        <parameter id="L" value="0.55"/>
+        <parameter id="Chr" value="0.5"/>
+        <parameter id="iM" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="79000" target-number="1" target-name="vn" min-value="0.4" max-value="0.68" controller-name="Volume"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="79000" target-number="1" target-name="t" min-value="0.12" max-value="0.6" controller-name="Tone"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="156000" target-number="1" target-name="c" min-value="0" max-value="0.8" controller-name="Mic Blend"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.3" controller-name="Room"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="clean-hollowbody-bebop" category="Clean" order="70" instrument="guitar" style="Jazz">
+  <description>The late-50s/60s studio jazz sound: a hollowbody into the normal channel of a small tweed combo, tone low, just loud enough that hard-picked lines thicken while comping stays clean. Warm, woody and a little compressed by the amp itself, in a small live room.</description>
+  <tags><tag>Clean</tag><tag>Jazz</tag><tag>Tweed</tag><tag>Warm</tag><tag>Room</tag></tags>
+  <sources>
+    <source url="https://www.organissimo.org/forum/topic/32537-what-kind-of-guitar-amp-did-rudy-van-gelder-have-in-the-60s/" title="Organissimo forum: Rudy Van Gelder's studio guitar amp in the 60s"/>
+    <source url="https://www.jazzguitar.be/forum/players/34066-grant-green-kenny-burrell-sound.html" title="jazzguitar.be forum: Grant Green / Kenny Burrell sound"/>
+    <source url="https://www.jazzguitarlessons.net/blog/kenny-burrell" title="JazzGuitarLessons.net: Kenny Burrell"/>
+    <source url="https://www.jazzguitar.be/blog/jazz-guitarists-guitar-gear/" title="jazzguitar.be: famous jazz guitarists and their gear"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

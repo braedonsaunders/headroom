@@ -1,0 +1,1217 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "eae-surveyor-170000",
+ "version": 1,
+ "name": "EAE Surveyor / Intersound IVP (catalogue 170000)",
+ "description": "EAE Surveyor = the Intersound IVP front end as the Surveyor Technical Manual defines it: input stage, Baxandall EQ, Tube Voice, then the IVP's master and discrete output stage. Signal path as drawn on the Aion FX IVP drawing (p.15): IN -> R1 10k/R2 2M -> C1 47u + R3 2M -> IC1 LF356N non-inverting stage (R6 43k || C2 47pF, divider R7 2M to ground plus R8 10k switched by the INPUT trim) -> C8 10u -> PREGAIN 50kB -> R9 20k into inverting IC2B (R10 43k || C9 47pF) -> C10 10u -> active Baxandall (R11/R12 5k6, R13 220k, R14/R15 3k3, BASS 50kB with C11 47n across the track, TREBLE 50kB with C12 470pF to the inverting node, IC2A) -> R16 20k -> R33 100k shunt -> C35 10u -> R34 20k -> IC5A unity buffer -> C38 10u -> R35 10k into inverting IC6A whose feedback is the TUBE DRIVE 50kA rheostat || C39 22pF -> C40 10u -> the Tube Voice: Q3/Q4 2N5088 long-tailed pair (Q3 base at the drive node, Q4 base on the R36 4k7/R37 10k divider off it, so the pair sees 32 % of the drive differentially), Q5 2N5088 tail sink (R40 430R, base divider R42 430k/R41 36k), R38/R39 1k1 collector loads, XFM1 42TM018 10k:10k transformer between the two collectors -> R43 47k -> R46 10k into the inverting IC7B (R48 20k || C44 47pF) with a Q6 2N3904 / Q7 2N3906 class-B booster inside the loop (D5/D6 1N914 bias, R49/R50 13k to the rails, R51/R52 10R) -> C45 10u -> R53 100k -> MASTER 50kA -> C46 10u -> non-inverting IC7A (R56 20k/R55 4k7, R54 20k return) with the same booster (D7/D8, R57/R58 13k, R59/R60 10R, Q8 2N3904/Q9 2N3906) -> R61 51R -> C49 100u -> LINE output tap with R62 100k to ground. Omitted, because the Surveyor does not have them: the clean channel (IC6B + CLEAN DRIVE), the four parametric bands (IC3/IC4 gyrators), the PRE-VOICE effects loop jacks, the OVERLOAD indicator, the bypass/channel switching, and the OUTPUT LINE/-10 dB toggle with R63/R64. Power: the IVP runs +/-15 V; the Aion board makes them with a 9 V DC-DC module, so VA/VB are ideal +/-15 V rails here (no mains, no ripple), with IC1's own R4/R5 51R + capacitor filters drawn as they are.",
+ "sources": [
+  {
+   "title": "Aion FX 'IVP Preamp' project documentation v2.0.0 (2025-10-16): full main-circuit schematic p.15, power/switching p.16, complete parts list pp.7-12, build and design notes pp.13-22. The Aion project is a direct clone of the rackmount Intersound IVP and its notes quote both IVP factory revisions; every value below is taken from this drawing and its parts list",
+   "url": "https://aionfx.com/app/files/docs/ivp_documentation.pdf"
+  },
+  {
+   "title": "EAE (Electronic Audio Experiments) Surveyor Technical Manual, Manual Revision 3 (2024-03-27, John W. Snyder): 'The Surveyor distills the IVP down to just the input stage, Baxandall EQ, and Tube Voice drive circuit. In the IVP, the EQ is placed before the drive circuit.' Control set Gain/Bass/Treble/Volume. No schematic",
+   "url": "https://eae.squarespace.com/s/Surveyor-Manual-Rev-3.pdf"
+  },
+  {
+   "title": "Intersound IVP owner's manual (Electro-Voice): panel and rear-panel control set (CH1/CH2 GAIN, LEVEL, four-band parametric EQ, TUBE VOICE/CLEAN, MASTER), +/-15 V supply. No schematic",
+   "url": "https://products.electrovoice.com/binary/IVP%20Owners%20Manual.pdf"
+  },
+  {
+   "title": "Xicon 42TM018 (Mouser 42TM018-RC): '10K CT to 10K CT' audio transformer, 1:1 turns, used as XFM1. No DCR/inductance/leakage figures are published, so the magnetic parameters are fitted and flagged in XFM1's note",
+   "url": "https://www.mouser.com/ProductDetail/Xicon/42TM018-RC"
+  }
+ ],
+ "minRate": 176400,
+ "io": {
+  "input": "in",
+  "output": "out",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 1.0
+ },
+ "oversampling": 2,
+ "solver": "auto",
+ "cuts": [
+  "vaf",
+  "vbf",
+  {
+   "node": "em",
+   "loads": [
+    "Q5"
+   ]
+  }
+ ],
+ "controls": [
+  {
+   "id": "gain",
+   "label": "Gain",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "gain"
+   ],
+   "group": "Main",
+   "note": "TUBE DRIVE 50kA: the rheostat in inverting IC6A's feedback (wiper tied to pin 3), 0 Ohm at 0 to 50 kOhm at 1 against R35 10k, i.e. 0 to -14 dB of drive into the Tube Voice. C39 22pF across it. Legacy 'Gain'"
+  },
+  {
+   "id": "bass",
+   "label": "Bass",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "bass"
+   ],
+   "group": "EQ",
+   "note": "BASS 50kB in the active Baxandall: pin 3 (clockwise end) at the R11 5k6 input node with C11 47n across the track, pin 1 at the R12 5k6 output node, wiper through R13 220k into IC2A's inverting input. Clockwise = bass boost. Legacy 'Bass'"
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "treble"
+   ],
+   "group": "EQ",
+   "note": "TREBLE 50kB in the same Baxandall: pin 3 (clockwise end) fed by R14 3k3, pin 1 through R15 3k3 to IC2A's output, wiper through C12 470pF into the inverting input. Clockwise = treble boost. Legacy 'Treble'"
+  },
+  {
+   "id": "volume",
+   "label": "Volume",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "volume"
+   ],
+   "group": "Main",
+   "note": "MASTER 50kA after the first booster stage: pin 3 at the signal (C45/R53), pin 1 grounded, wiper through C46 10u into IC7A. The IVP legend calls this pot MASTER. Legacy 'Volume'"
+  },
+  {
+   "id": "input",
+   "label": "Input",
+   "kind": "switch",
+   "default": 1,
+   "params": [],
+   "group": "Internal",
+   "note": "The IVP's front-panel INPUT SPDT, drawn as switch part SWI: contact 3 (+12 dB legend) closes R8 10k to ground (gain 1+43k/(10k||2M) = 5.32), contact 1 (-33 dB legend) is unconnected on this drawing so that position removes R8 (gain 1.02). The two positions differ by 14.3 dB, not 45 dB; Aion's documentation does not explain the panel legend. Not a Surveyor control - it is an internal trim here",
+   "face": true,
+   "options": [
+    "-33 dB",
+    "+12 dB"
+   ]
+  },
+  {
+   "id": "CASSt",
+   "label": "Stereo",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "CASSt"
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "legacyOnly: the IVP is mono; its XLR output is a passive transformer split of the -10 dB tap, not a stereo signal. The Surveyor is mono"
+  },
+  {
+   "id": "Pwr",
+   "label": "On/Off",
+   "kind": "continuous",
+   "default": 1.0,
+   "params": [
+    "Pwr"
+   ],
+   "group": "Legacy",
+   "legacyOnly": true,
+   "note": "legacyOnly: host bypass"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VA",
+   "type": "V",
+   "nodes": [
+    "va",
+    "0"
+   ],
+   "value": "15",
+   "label": "+15 V rail",
+   "note": "unverified supply form: the IVP runs +/-15 V; Aion's board generates them from a 9 V DC-DC module (TEC 3-0923, Z1 1N4743A input clamp, L1-L3 10uH). Modelled as the ideal rails it produces, so there is no DC-DC switching ripple"
+  },
+  {
+   "ref": "VB",
+   "type": "V",
+   "nodes": [
+    "0",
+    "vb"
+   ],
+   "value": "15",
+   "label": "-15 V rail",
+   "note": "same supply, negative half"
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "in",
+    "na"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Input series resistor"
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "na",
+    "0"
+   ],
+   "value": "2M",
+   "tolerance": 0.05,
+   "label": "2 MOhm input load after R1"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "na",
+    "nb"
+   ],
+   "value": "47u",
+   "tolerance": 0.2,
+   "label": "Input DC block 47 uF (the IVP's input is capacitor-coupled)"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "nb",
+    "0"
+   ],
+   "value": "2M",
+   "tolerance": 0.05,
+   "label": "2 MOhm return after the input cap"
+  },
+  {
+   "ref": "D1",
+   "type": "D",
+   "nodes": [
+    "vbf",
+    "nb"
+   ],
+   "model": "1N914",
+   "label": "Input clamp to the -15 V filtered node (cathode at the input)"
+  },
+  {
+   "ref": "D2",
+   "type": "D",
+   "nodes": [
+    "nb",
+    "vaf"
+   ],
+   "model": "1N914",
+   "label": "Input clamp to the +15 V filtered node (anode at the input)"
+  },
+  {
+   "ref": "IC1",
+   "type": "opamp",
+   "nodes": [
+    "nb",
+    "i1n",
+    "o1",
+    "vaf",
+    "vbf"
+   ],
+   "model": "TL072",
+   "label": "IC1 LF356N - JFET-input non-inverting input stage",
+   "note": "The engine has no LF356 card; TL072 is the nearest (JFET input, 3 MHz GBW, 13 V/us) and is what is used. unverified substitution, disclosed"
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "va",
+    "vaf"
+   ],
+   "value": "51R",
+   "tolerance": 0.05,
+   "label": "IC1 V+ filter (51 Ohm) with C4/C6"
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "vbf",
+    "vb"
+   ],
+   "value": "51R",
+   "tolerance": 0.05,
+   "label": "IC1 V- filter (51 Ohm) with C3/C5/C7"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "vaf",
+    "0"
+   ],
+   "value": "47u",
+   "tolerance": 0.2,
+   "label": "IC1 V+ decoupling 47 uF"
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "vaf",
+    "0"
+   ],
+   "value": "100n",
+   "tolerance": 0.2,
+   "label": "IC1 V+ decoupling 100 nF"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "vbf",
+    "0"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "IC1 V- decoupling 100 uF"
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "vbf",
+    "0"
+   ],
+   "value": "47u",
+   "tolerance": 0.2,
+   "label": "IC1 V- decoupling 47 uF"
+  },
+  {
+   "ref": "C7",
+   "type": "C",
+   "nodes": [
+    "vbf",
+    "0"
+   ],
+   "value": "100n",
+   "tolerance": 0.2,
+   "label": "IC1 V- decoupling 100 nF"
+  },
+  {
+   "ref": "R6",
+   "type": "R",
+   "nodes": [
+    "i1n",
+    "o1"
+   ],
+   "value": "43k",
+   "tolerance": 0.05,
+   "label": "IC1 feedback 43 kOhm"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "i1n",
+    "o1"
+   ],
+   "value": "47p",
+   "tolerance": 0.2,
+   "label": "IC1 feedback 47 pF (the stage's own bandwidth limit)"
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "i1n",
+    "0"
+   ],
+   "value": "2M",
+   "tolerance": 0.05,
+   "label": "IC1 gain-set leg, 2 MOhm to ground"
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "i1n",
+    "swi"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "IC1 gain-set leg, 10 kOhm switched by the INPUT trim (+12 dB position)"
+  },
+  {
+   "ref": "SWI",
+   "type": "switch",
+   "nodes": [
+    "swi",
+    "0"
+   ],
+   "control": "input",
+   "label": "INPUT trim SPDT contact 3 to the grounded common (Aion's drawing; contact 1 for the -33 dB legend is unconnected)",
+   "note": "closed = +12 dB (R8 in the divider), open = -33 dB position as drawn (R8 out; the drawing leaves contact 1 open)"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "o1",
+    "pgs"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "Coupling into PREGAIN"
+  },
+  {
+   "ref": "PREGAIN",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "pgw",
+    "pgs"
+   ],
+   "value": "50k",
+   "taper": "B",
+   "label": "PREGAIN 50kB - the IVP's pregain pot, wired as a divider (pin 3 = signal, pin 1 = ground, wiper = R9)",
+   "note": "bound to no control (the pot part defaults to mid-track, 0.5): the Surveyor has one Gain, the IVP has PREGAIN + TUBE DRIVE. Its documented position is not published, so it sits at 0.5 like every other unassigned trim in this library; -6 dB at that setting"
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "pgw",
+    "i2bn"
+   ],
+   "value": "20k",
+   "tolerance": 0.05,
+   "label": "Input resistor of the inverting buffer"
+  },
+  {
+   "ref": "IC2B",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "i2bn",
+    "o2b",
+    "va",
+    "vb"
+   ],
+   "model": "TL072",
+   "label": "IC2B inverting buffer"
+  },
+  {
+   "ref": "R10",
+   "type": "R",
+   "nodes": [
+    "i2bn",
+    "o2b"
+   ],
+   "value": "43k",
+   "tolerance": 0.05,
+   "label": "IC2B feedback 43 kOhm (-2.15x)"
+  },
+  {
+   "ref": "C9",
+   "type": "C",
+   "nodes": [
+    "i2bn",
+    "o2b"
+   ],
+   "value": "47p",
+   "tolerance": 0.2,
+   "label": "IC2B feedback 47 pF"
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "o2b",
+    "nin"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "Coupling into the Baxandall network's input node (node 'nin')",
+   "note": "geometry note: on the drawing the inverting node is a separate horizontal run. At y=170.50 pt the drawn wire runs 296.50-306.80 (C10's right plate to the R11 5k6 / R14 3k3 column) and then 322.74-342.68 (the R13 220k / C12 470pF column to IC2A pin 2) with a real 16 pt gap between them, so R11 and R14 tie to the network's input node and only R13 and C12 reach the virtual earth. Verified against the SVG segment list; the two collinear runs read as one line by eye, and joining them would give the stage about +65 dB with no tone action"
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "nin",
+    "n1"
+   ],
+   "value": "5k6",
+   "tolerance": 0.05,
+   "label": "Baxandall bass network resistor from the input node to the bass pot's pin 3"
+  },
+  {
+   "ref": "R14",
+   "type": "R",
+   "nodes": [
+    "nin",
+    "t3"
+   ],
+   "value": "3k3",
+   "tolerance": 0.05,
+   "label": "Baxandall treble network resistor from the input node to the treble pot's pin 3"
+  },
+  {
+   "ref": "BASS",
+   "type": "pot",
+   "nodes": [
+    "n2",
+    "bw",
+    "n1"
+   ],
+   "value": "50k",
+   "taper": "B",
+   "control": "bass",
+   "label": "BASS 50kB: pin 1 = n2 (R12 output side), wiper through R13 220k to the inverting input, pin 3 = n1 (R11 input side)"
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "n1",
+    "n2"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "47 nF across the bass track"
+  },
+  {
+   "ref": "R12",
+   "type": "R",
+   "nodes": [
+    "n2",
+    "o2"
+   ],
+   "value": "5k6",
+   "tolerance": 0.05,
+   "label": "Baxandall bass output resistor to IC2A's output"
+  },
+  {
+   "ref": "R13",
+   "type": "R",
+   "nodes": [
+    "bw",
+    "i2an"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "Bass wiper into the inverting input"
+  },
+  {
+   "ref": "TREBLE",
+   "type": "pot",
+   "nodes": [
+    "t1",
+    "tw",
+    "t3"
+   ],
+   "value": "50k",
+   "taper": "B",
+   "control": "treble",
+   "label": "TREBLE 50kB: pin 1 = t1 (R15 output side), wiper through C12 470pF to the inverting input, pin 3 = t3 (R14 input side)"
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "t1",
+    "o2"
+   ],
+   "value": "3k3",
+   "tolerance": 0.05,
+   "label": "Baxandall treble output resistor to IC2A's output"
+  },
+  {
+   "ref": "C12",
+   "type": "C",
+   "nodes": [
+    "tw",
+    "i2an"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "Treble wiper into the inverting input"
+  },
+  {
+   "ref": "IC2A",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "i2an",
+    "o2",
+    "va",
+    "vb"
+   ],
+   "model": "TL072",
+   "label": "IC2A - the active Baxandall's amplifier; its inverting node carries C10, R11, R13, R14 and C12"
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "o2",
+    "sp"
+   ],
+   "value": "20k",
+   "tolerance": 0.05,
+   "label": "Series resistor out of the EQ (on the IVP this feeds the four parametric bands; the Surveyor goes straight to the Voice split)"
+  },
+  {
+   "ref": "R33",
+   "type": "R",
+   "nodes": [
+    "sp",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Shunt leg of the 20k/100k split divider (-14 dB)"
+  },
+  {
+   "ref": "C35",
+   "type": "C",
+   "nodes": [
+    "sp",
+    "sp2"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "Coupling into the split buffer"
+  },
+  {
+   "ref": "R34",
+   "type": "R",
+   "nodes": [
+    "sp2",
+    "0"
+   ],
+   "value": "20k",
+   "tolerance": 0.05,
+   "label": "Split buffer bias return"
+  },
+  {
+   "ref": "IC5A",
+   "type": "opamp",
+   "nodes": [
+    "sp2",
+    "bu",
+    "bu",
+    "va",
+    "vb"
+   ],
+   "model": "JRC4558",
+   "label": "IC5A RC4558P unity-gain buffer before the clean/tube split"
+  },
+  {
+   "ref": "C38",
+   "type": "C",
+   "nodes": [
+    "bu",
+    "w"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "Coupling out of the split buffer (node W)"
+  },
+  {
+   "ref": "R35",
+   "type": "R",
+   "nodes": [
+    "w",
+    "i6an"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Input resistor of the Tube Voice driver"
+  },
+  {
+   "ref": "DRIVE",
+   "type": "pot",
+   "nodes": [
+    "i6an",
+    "o6",
+    "o6"
+   ],
+   "value": "50k",
+   "taper": "A",
+   "control": "gain",
+   "label": "TUBE DRIVE 50kA, wired as a rheostat: pin 1 at the inverting input, wiper tied to pin 3 at the stage output"
+  },
+  {
+   "ref": "C39",
+   "type": "C",
+   "nodes": [
+    "i6an",
+    "o6"
+   ],
+   "value": "22p",
+   "tolerance": 0.1,
+   "label": "22 pF across the drive rheostat"
+  },
+  {
+   "ref": "IC6A",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "i6an",
+    "o6",
+    "va",
+    "vb"
+   ],
+   "model": "JRC4558",
+   "label": "IC6A RC4558P Tube Voice driver (inverting, 0 to -5x)"
+  },
+  {
+   "ref": "C40",
+   "type": "C",
+   "nodes": [
+    "o6",
+    "d"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "Coupling into the Tube Voice pair"
+  },
+  {
+   "ref": "R36",
+   "type": "R",
+   "nodes": [
+    "d",
+    "e"
+   ],
+   "value": "4k7",
+   "tolerance": 0.05,
+   "label": "Divider to Q4's base: the pair sees 32 % of the drive differentially"
+  },
+  {
+   "ref": "R37",
+   "type": "R",
+   "nodes": [
+    "e",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Q4 base divider return (both bases sit at 0 V DC, no bias current)"
+  },
+  {
+   "ref": "Q3",
+   "type": "npn",
+   "nodes": [
+    "xf1",
+    "d",
+    "em"
+   ],
+   "model": "2N5088",
+   "label": "Q3 2N5088 long-tailed pair, driven base (Aion substitutes 2N5088 for the IVP's 2N5210)"
+  },
+  {
+   "ref": "Q4",
+   "type": "npn",
+   "nodes": [
+    "xf3",
+    "e",
+    "em"
+   ],
+   "model": "2N5088",
+   "label": "Q4 2N5088 long-tailed pair, reference base on the R36/R37 divider"
+  },
+  {
+   "ref": "Q5",
+   "type": "npn",
+   "nodes": [
+    "em",
+    "q5b",
+    "r40"
+   ],
+   "model": "2N5088",
+   "label": "Q5 2N5088 tail current sink",
+   "note": "Solver partition (cuts: em, loads Q5; circuit_cli autocut, docs/CIRCUIT_ENGINE.md section 10.27): the long-tailed pair's common emitter is a low-impedance node, and the tail sink's collector current hardly depends on it, so Q5 sees em one sample late. The 15-port group becomes 13 ports plus the sink's own small group; -11.7 % instructions on a DI (-18 % on the aliasing tone), null against the uncut netlist -143 dB rms on the DI (every switch position below -140 dB), surv cases unchanged to 0.001 pp, aliasing -117.2 -> -115.5 dB."
+  },
+  {
+   "ref": "R38",
+   "type": "R",
+   "nodes": [
+    "va",
+    "xf1"
+   ],
+   "value": "1k1",
+   "tolerance": 0.05,
+   "label": "Q3 collector load to +15 V"
+  },
+  {
+   "ref": "R39",
+   "type": "R",
+   "nodes": [
+    "va",
+    "xf3"
+   ],
+   "value": "1k1",
+   "tolerance": 0.05,
+   "label": "Q4 collector load to +15 V"
+  },
+  {
+   "ref": "R40",
+   "type": "R",
+   "nodes": [
+    "r40",
+    "vb"
+   ],
+   "value": "430R",
+   "tolerance": 0.05,
+   "label": "Q5 emitter resistor to -15 V (sets about 4 mA of tail current)"
+  },
+  {
+   "ref": "R41",
+   "type": "R",
+   "nodes": [
+    "q5b",
+    "vb"
+   ],
+   "value": "36k",
+   "tolerance": 0.05,
+   "label": "Q5 base divider lower leg"
+  },
+  {
+   "ref": "R42",
+   "type": "R",
+   "nodes": [
+    "va",
+    "q5b"
+   ],
+   "value": "430k",
+   "tolerance": 0.05,
+   "label": "Q5 base divider upper leg"
+  },
+  {
+   "ref": "XFM1",
+   "type": "transformer",
+   "nodes": [
+    "xf1",
+    "xf3",
+    "xf6",
+    "0"
+   ],
+   "turns": [
+    1,
+    1
+   ],
+   "r": [
+    350,
+    380
+   ],
+   "leak": [
+    "10m",
+    0
+   ],
+   "lm": 1.6,
+   "lsat": 0.02,
+   "label": "XFM1 42TM018 10k CT : 10k CT audio transformer, driven push-pull between pins 1 and 3",
+   "note": "As drawn, both centre taps are left unconnected (the drawing's pin 2 and pin 5 stubs terminate in space), so the full 10k winding sits between Q3's and Q4's collectors; the CT is not grounded, contrary to the assumption in PARKED_AND_HANDOFF.md, which the 700 dpi render and the drawing's vector geometry both contradict. unverified: no published DCR/inductance/leakage for the 42TM018 - turns 1:1 from '10KCT/10KCT', DCR 350/380 Ohm, leakage 10 mH, Lm 1.6 H (the 10 kOhm rating implies 1.6 H at 1 kHz), lsat 0.02 V.s are typical 42TM-class fits and are the single largest unverified element in this netlist"
+  },
+  {
+   "ref": "R43",
+   "type": "R",
+   "nodes": [
+    "xf6",
+    "xo"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "Series resistor out of the transformer into the Voice mixer (the PRE-VOICE send jack's tip sits here; omitted)"
+  },
+  {
+   "ref": "R46",
+   "type": "R",
+   "nodes": [
+    "xo",
+    "i7bn"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "Voice mixer input resistor (fed from the send jack's normalled contact when the loop is unplugged)"
+  },
+  {
+   "ref": "IC7B",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "i7bn",
+    "o7b",
+    "va",
+    "vb"
+   ],
+   "model": "JRC4558",
+   "label": "IC7B RC4558P inverting Voice mixer (-2x)"
+  },
+  {
+   "ref": "R48",
+   "type": "R",
+   "nodes": [
+    "i7bn",
+    "v1"
+   ],
+   "value": "20k",
+   "tolerance": 0.05,
+   "label": "IC7B feedback 20 kOhm, taken from the booster's output node"
+  },
+  {
+   "ref": "C44",
+   "type": "C",
+   "nodes": [
+    "i7bn",
+    "v1"
+   ],
+   "value": "47p",
+   "tolerance": 0.1,
+   "label": "IC7B feedback 47 pF"
+  },
+  {
+   "ref": "D5",
+   "type": "D",
+   "nodes": [
+    "b6",
+    "o7b"
+   ],
+   "model": "1N914",
+   "label": "Q6 base-emitter bias diode (anode at the base node, cathode at the op-amp output)"
+  },
+  {
+   "ref": "D6",
+   "type": "D",
+   "nodes": [
+    "o7b",
+    "b7"
+   ],
+   "model": "1N914",
+   "label": "Q7 base-emitter bias diode (anode at the op-amp output, cathode at the base node)"
+  },
+  {
+   "ref": "R49",
+   "type": "R",
+   "nodes": [
+    "va",
+    "b6"
+   ],
+   "value": "13k",
+   "tolerance": 0.05,
+   "label": "Q6 base pull-up, sets the class-B bias current"
+  },
+  {
+   "ref": "R50",
+   "type": "R",
+   "nodes": [
+    "b7",
+    "vb"
+   ],
+   "value": "13k",
+   "tolerance": 0.05,
+   "label": "Q7 base pull-down"
+  },
+  {
+   "ref": "Q6",
+   "type": "npn",
+   "nodes": [
+    "va",
+    "b6",
+    "e6"
+   ],
+   "model": "2N3904",
+   "label": "Q6 2N3904 booster, collector to +15 V (Aion substitute for the IVP's 2N4401)"
+  },
+  {
+   "ref": "Q7",
+   "type": "pnp",
+   "nodes": [
+    "vb",
+    "b7",
+    "e7"
+   ],
+   "model": "2N3906",
+   "label": "Q7 2N3906 booster, collector to -15 V (Aion substitute for the IVP's 2N4403)"
+  },
+  {
+   "ref": "R51",
+   "type": "R",
+   "nodes": [
+    "e6",
+    "v1"
+   ],
+   "value": "10R",
+   "tolerance": 0.05,
+   "label": "Q6 emitter resistor"
+  },
+  {
+   "ref": "R52",
+   "type": "R",
+   "nodes": [
+    "e7",
+    "v1"
+   ],
+   "value": "10R",
+   "tolerance": 0.05,
+   "label": "Q7 emitter resistor"
+  },
+  {
+   "ref": "C45",
+   "type": "C",
+   "nodes": [
+    "v1",
+    "mst"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "Coupling into the MASTER pot"
+  },
+  {
+   "ref": "R53",
+   "type": "R",
+   "nodes": [
+    "mst",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "MASTER pot DC return to ground"
+  },
+  {
+   "ref": "MASTER",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mw",
+    "mst"
+   ],
+   "value": "50k",
+   "taper": "A",
+   "control": "volume",
+   "label": "MASTER 50kA: pin 1 grounded, pin 3 at the signal, wiper through C46 10u into IC7A"
+  },
+  {
+   "ref": "C46",
+   "type": "C",
+   "nodes": [
+    "mw",
+    "pa7"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "Coupling into the output stage"
+  },
+  {
+   "ref": "R54",
+   "type": "R",
+   "nodes": [
+    "pa7",
+    "0"
+   ],
+   "value": "20k",
+   "tolerance": 0.05,
+   "label": "IC7A + input DC return"
+  },
+  {
+   "ref": "IC7A",
+   "type": "opamp",
+   "nodes": [
+    "pa7",
+    "i7an",
+    "o7a",
+    "va",
+    "vb"
+   ],
+   "model": "JRC4558",
+   "label": "IC7A RC4558P output stage (non-inverting, 1+20k/4k7 = 5.26x)"
+  },
+  {
+   "ref": "R55",
+   "type": "R",
+   "nodes": [
+    "i7an",
+    "0"
+   ],
+   "value": "4k7",
+   "tolerance": 0.05,
+   "label": "IC7A feedback lower leg"
+  },
+  {
+   "ref": "R56",
+   "type": "R",
+   "nodes": [
+    "v2",
+    "i7an"
+   ],
+   "value": "20k",
+   "tolerance": 0.05,
+   "label": "IC7A feedback, taken from the booster's output node"
+  },
+  {
+   "ref": "D7",
+   "type": "D",
+   "nodes": [
+    "b8",
+    "o7a"
+   ],
+   "model": "1N914",
+   "label": "Q8 base-emitter bias diode"
+  },
+  {
+   "ref": "D8",
+   "type": "D",
+   "nodes": [
+    "o7a",
+    "b9"
+   ],
+   "model": "1N914",
+   "label": "Q9 base-emitter bias diode"
+  },
+  {
+   "ref": "R57",
+   "type": "R",
+   "nodes": [
+    "va",
+    "b8"
+   ],
+   "value": "13k",
+   "tolerance": 0.05,
+   "label": "Q8 base pull-up"
+  },
+  {
+   "ref": "R58",
+   "type": "R",
+   "nodes": [
+    "b9",
+    "vb"
+   ],
+   "value": "13k",
+   "tolerance": 0.05,
+   "label": "Q9 base pull-down"
+  },
+  {
+   "ref": "Q8",
+   "type": "npn",
+   "nodes": [
+    "va",
+    "b8",
+    "e8"
+   ],
+   "model": "2N3904",
+   "label": "Q8 2N3904 output booster"
+  },
+  {
+   "ref": "Q9",
+   "type": "pnp",
+   "nodes": [
+    "vb",
+    "b9",
+    "e9"
+   ],
+   "model": "2N3906",
+   "label": "Q9 2N3906 output booster"
+  },
+  {
+   "ref": "R59",
+   "type": "R",
+   "nodes": [
+    "e8",
+    "v2"
+   ],
+   "value": "10R",
+   "tolerance": 0.05,
+   "label": "Q8 emitter resistor"
+  },
+  {
+   "ref": "R60",
+   "type": "R",
+   "nodes": [
+    "e9",
+    "v2"
+   ],
+   "value": "10R",
+   "tolerance": 0.05,
+   "label": "Q9 emitter resistor"
+  },
+  {
+   "ref": "R61",
+   "type": "R",
+   "nodes": [
+    "v2",
+    "co"
+   ],
+   "value": "51R",
+   "tolerance": 0.05,
+   "label": "Output series resistor"
+  },
+  {
+   "ref": "C49",
+   "type": "C",
+   "nodes": [
+    "co",
+    "out"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "Output coupling capacitor (into the LINE tap)"
+  },
+  {
+   "ref": "R62",
+   "type": "R",
+   "nodes": [
+    "out",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Output DC return / discharge resistor"
+  }
+ ],
+ "probes": [
+  "nb",
+  "o1",
+  "o2",
+  "nin",
+  "w",
+  "o6",
+  "em",
+  "xf1",
+  "xf6",
+  "v1",
+  "v2",
+  "out"
+ ],
+ "layout": {
+  "columns": {
+   "in": 0,
+   "nb": 2,
+   "o1": 4,
+   "pgs": 6,
+   "o2b": 8,
+   "nin": 10,
+   "o2": 14,
+   "sp": 17,
+   "w": 20,
+   "o6": 23,
+   "d": 25,
+   "xf1": 28,
+   "xf6": 31,
+   "v1": 34,
+   "mst": 36,
+   "v2": 41,
+   "out": 45
+  },
+  "rows": {
+   "va": 0,
+   "vb": 12
+  }
+ }
+}

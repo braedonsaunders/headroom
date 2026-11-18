@@ -1,0 +1,52 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "test-vca-rms",
+  "version": 1,
+  "name": "Linked stereo Blackmer VCA + RMS compressor (validation circuit)",
+  "description": "Two THAT 2180B VCAs in their datasheet application (Fig. 2: 10 uF + 20k into IN, 5.1k from pin 5 to VEE, OUT into an op-amp I/V converter with 20k || 22 pF), one per channel (io.input / io.inputR to io.output / io.outputR), sharing one THAT 2252 detector in its datasheet application (Fig. 4: 560k IBIAS, 2.2M timing resistor to VEE, 22M from OUT to IN, SYM to IN through 20 ohms as Fig. 9; CT 1 uF instead of 10 uF so attack and release show within a quarter second). The detector's virtual-ground input sums both channels through 20 uF + 10k each: a linked side-chain, as in a stereo bus compressor. Its output (6.1 mV/dB, 0 V at level match) drives both Ec- pins through the Ratio pot (a no-threshold dB-linear compressor, 1:1 to infinity:1); Makeup trims both Ec+ pins by about +-6 dB.",
+  "sources": [
+    { "title": "THAT Corporation, 2180 Series Blackmer Pre-Trimmed IC VCAs, document 600029 rev 02 (Figs. 2 and 5)", "url": "https://www.thatcorp.com/datashts/THAT_2180-Series_Datasheet.pdf" },
+    { "title": "THAT Corporation, 2252 IC RMS-Level Detector, document 600032 rev 03 (Figs. 3, 4 and 9)", "url": "https://www.thatcorp.com/datashts/THAT_2252_Datasheet.pdf" }
+  ],
+  "io": { "input": "in", "output": "out", "inputR": "inr", "outputR": "outr" },
+  "oversampling": 2,
+  "controls": [
+    { "id": "ratio", "label": "Ratio", "default": 0.5, "note": "Ec- = k * detector output: 1/(1-k):1 (0.5 = 2:1)" },
+    { "id": "makeup", "label": "Makeup", "default": 0.5, "note": "Ec+ trim, about -6 to +6 dB" }
+  ],
+  "parts": [
+    { "ref": "VCC", "type": "V", "nodes": ["vcc", "0"], "value": "15" },
+    { "ref": "VEE", "type": "V", "nodes": ["vee", "0"], "value": "-15" },
+    { "ref": "C1", "type": "C", "nodes": ["in", "n1"], "value": "10u" },
+    { "ref": "R1", "type": "R", "nodes": ["n1", "vin"], "value": "20k" },
+    { "ref": "U1", "type": "vca", "nodes": ["vin", "ecp", "ecn", "sym1", "p5", "0", "vcc", "vout"], "model": "THAT2180B" },
+    { "ref": "R5", "type": "R", "nodes": ["p5", "vee"], "value": "5.1k" },
+    { "ref": "IC1", "type": "opamp", "nodes": ["0", "vout", "out", "vcc", "vee"], "model": "NE5532" },
+    { "ref": "RF1", "type": "R", "nodes": ["vout", "out"], "value": "20k" },
+    { "ref": "CF1", "type": "C", "nodes": ["vout", "out"], "value": "22p" },
+    { "ref": "RL1", "type": "R", "nodes": ["out", "0"], "value": "10k" },
+    { "ref": "C3", "type": "C", "nodes": ["inr", "n3"], "value": "10u" },
+    { "ref": "R3", "type": "R", "nodes": ["n3", "vinr"], "value": "20k" },
+    { "ref": "U3", "type": "vca", "nodes": ["vinr", "ecp", "ecn", "sym3", "p5r", "0", "vcc", "voutr"], "model": "THAT2180B" },
+    { "ref": "R5R", "type": "R", "nodes": ["p5r", "vee"], "value": "5.1k" },
+    { "ref": "IC2", "type": "opamp", "nodes": ["0", "voutr", "outr", "vcc", "vee"], "model": "NE5532" },
+    { "ref": "RF2", "type": "R", "nodes": ["voutr", "outr"], "value": "20k" },
+    { "ref": "CF2", "type": "C", "nodes": ["voutr", "outr"], "value": "22p" },
+    { "ref": "RL2", "type": "R", "nodes": ["outr", "0"], "value": "10k" },
+    { "ref": "RMP", "type": "R", "nodes": ["vcc", "mp"], "value": "100k" },
+    { "ref": "MAKEUP", "type": "pot", "nodes": ["mp", "ecp", "mn"], "value": "1k", "taper": "B", "control": "makeup" },
+    { "ref": "RMN", "type": "R", "nodes": ["mn", "vee"], "value": "100k" },
+    { "ref": "C2", "type": "C", "nodes": ["in", "n2"], "value": "20u" },
+    { "ref": "R2", "type": "R", "nodes": ["n2", "sin"], "value": "10k" },
+    { "ref": "C4", "type": "C", "nodes": ["inr", "n4"], "value": "20u" },
+    { "ref": "R4", "type": "R", "nodes": ["n4", "sin"], "value": "10k" },
+    { "ref": "U2", "type": "rms", "nodes": ["sin", "ib", "0", "sym2", "vee", "cap", "ctl", "vcc"], "model": "THAT2252" },
+    { "ref": "RSYM", "type": "R", "nodes": ["sym2", "sin"], "value": "20" },
+    { "ref": "RB", "type": "R", "nodes": ["ib", "0"], "value": "560k" },
+    { "ref": "RT", "type": "R", "nodes": ["cap", "vee"], "value": "2.2M" },
+    { "ref": "CT", "type": "C", "nodes": ["cap", "0"], "value": "1u" },
+    { "ref": "RFB", "type": "R", "nodes": ["ctl", "sin"], "value": "22M" },
+    { "ref": "RATIO", "type": "pot", "nodes": ["ctl", "ecn", "0"], "value": "10k", "taper": "B", "control": "ratio", "invert": true }
+  ],
+  "probes": ["out", "outr", "ctl", "cap", "ecn"]
+}

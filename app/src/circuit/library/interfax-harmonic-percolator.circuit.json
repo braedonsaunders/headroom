@@ -1,0 +1,300 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "interfax-harmonic-percolator",
+  "version": 1,
+  "name": "Interfax Harmonic Percolator",
+  "description": "Interfax Harmonic Percolator, the 1970s two-transistor fuzz: a 2N404A germanium PNP and a 2N3565 silicon NPN with their emitters tied together, so the 47 uF tantalum on the shared emitter is the only AC path there. The Harmonics 100 kOhm audio pot attenuates the guitar at the input (100 pF to ground rolls off the top); 50 nF into Q1's base, 220 kOhm from Q1's base to its collector (the self-bias feedback that the traced schematic marks '?'), 10 kOhm collector load to ground. Q1's collector drives Q2's base through 100 nF; Q2's base also has 750 kOhm of DC feedback from its own collector, and 91 kOhm of collector load to +9 V. The 100 nF output cap feeds two 1N60 germanium diodes to ground (antiparallel), a 4.7 kOhm load and the 50 kOhm audio Balance control. Device gains are the traced schematic's annotations (2N404A hFE ~180, 2N3565 hFE ~120).",
+  "sources": [
+    {
+      "title": "Schematics Online, 'Interfax Harmonic Percolator' (annotated traced schematic: P1 Harmonics 100K A, P2 Balance 50K A, C1 100p ceramic, C2 50n polyester, C3 100n ceramic, C4 47uF tantalum, C6 100n ceramic, R1 750K, R2 220K (marked '?'), R3 91K, R4 10K, R6 4K7, D2/D3 1N60, Q1 2N404A hFE ~180, Q2 2N3565 hFE ~120)",
+      "url": "https://schematicsonline.com/schematic/interfax-harmonic-percolator/"
+    },
+    {
+      "title": "Schematics Online Harmonic Percolator PDF (same drawing, full page)",
+      "url": "https://schematicsonline.com/wp-content/uploads/2022/11/Interfax-Harmonic-Percolator.pdf"
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 1.0,
+    "outputVoltsPerFS": 1.0
+  },
+  "oversampling": 2,
+  "minRate": 176400,
+  "solver": "auto",
+  "models": {
+    "2N404A": {
+      "kind": "pnp",
+      "is": 1e-07,
+      "bf": 180.0,
+      "br": 10.0,
+      "ise": 4.35e-10,
+      "ne": 1.2,
+      "vaf": 60.0,
+      "rb": 200.0,
+      "icbo": 2e-06,
+      "vleak": 0.2,
+      "note": "unverified: no 2N404A SPICE card found. BF 180 is the value annotated on the traced schematic; IS 0.1 uA reproduces the germanium Vbe (~0.2 V) of this family; BR/VAF/ISE from the AC128 card; RB 200 assumed; ICBO 2 uA assumed (GE alloy-junction leakage)"
+    },
+    "2N3565": {
+      "kind": "npn",
+      "is": 1.5e-14,
+      "bf": 120.0,
+      "br": 5.0,
+      "vaf": 100.0,
+      "note": "unverified: no 2N3565 SPICE card found. BF 120 is the value annotated on the traced schematic; IS 15 fA typical of a 1960s low-noise planar NPN; BR 5, VAF 100 assumed"
+    }
+  },
+  "controls": [
+    {
+      "id": "harmonics",
+      "label": "Harmonics",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "harmonics"
+      ],
+      "paramRange": [
+        0.095,
+        1.0
+      ],
+      "group": "Main",
+      "note": "100 kOhm audio-taper input pot; clockwise = more signal into C2"
+    },
+    {
+      "id": "volume",
+      "label": "Balance",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "volume"
+      ],
+      "paramRange": [
+        0.0,
+        0.915
+      ],
+      "group": "Main",
+      "note": "50 kOhm audio-taper Balance pot after the 100 nF output cap Mapping: the catalogue's Volume runs 0.5..0.915 with default 0.5; it maps to the pot as raw/0.915, so the default sits near half volume (0.55) instead of fully off."
+    },
+    {
+      "id": "diodes",
+      "label": "Diodes",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "diodes"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Catalogue parameter with no counterpart: the Percolator always has its two 1N60 diodes to ground. Stored only"
+    },
+    {
+      "id": "power",
+      "label": "On/Off",
+      "kind": "switch",
+      "default": 1.0,
+      "params": [
+        "Pwr"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Host handles bypass; stored only"
+    }
+  ],
+  "parts": [
+    {
+      "ref": "VCC",
+      "type": "V",
+      "nodes": [
+        "vcc",
+        "0"
+      ],
+      "value": "9",
+      "label": "9 V supply"
+    },
+    {
+      "ref": "P1",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "w1",
+        "in"
+      ],
+      "value": "100k",
+      "taper": "A",
+      "control": "harmonics",
+      "label": "Harmonics"
+    },
+    {
+      "ref": "C1",
+      "type": "C",
+      "nodes": [
+        "w1",
+        "0"
+      ],
+      "value": "100p",
+      "tolerance": 0.2,
+      "label": "Input treble roll-off"
+    },
+    {
+      "ref": "C2",
+      "type": "C",
+      "nodes": [
+        "w1",
+        "b1"
+      ],
+      "value": "50n",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "R2",
+      "type": "R",
+      "nodes": [
+        "b1",
+        "c1"
+      ],
+      "value": "220k",
+      "tolerance": 0.1,
+      "label": "Q1 base-collector bias (drawn with a '?' on the traced schematic)"
+    },
+    {
+      "ref": "C3",
+      "type": "C",
+      "nodes": [
+        "c1",
+        "b2"
+      ],
+      "value": "100n",
+      "tolerance": 0.2,
+      "label": "Coupling Q1 collector to Q2 base"
+    },
+    {
+      "ref": "Q1",
+      "type": "pnp",
+      "nodes": [
+        "c1",
+        "b1",
+        "e12"
+      ],
+      "model": "2N404A",
+      "label": "Q1 2N404A germanium"
+    },
+    {
+      "ref": "R4",
+      "type": "R",
+      "nodes": [
+        "c1",
+        "0"
+      ],
+      "value": "10k",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "R1",
+      "type": "R",
+      "nodes": [
+        "c2",
+        "b2"
+      ],
+      "value": "750k",
+      "tolerance": 0.1,
+      "label": "Q2 DC feedback"
+    },
+    {
+      "ref": "Q2",
+      "type": "npn",
+      "nodes": [
+        "c2",
+        "b2",
+        "e12"
+      ],
+      "model": "2N3565",
+      "label": "Q2 2N3565 silicon"
+    },
+    {
+      "ref": "R3",
+      "type": "R",
+      "nodes": [
+        "vcc",
+        "c2"
+      ],
+      "value": "91k",
+      "tolerance": 0.1,
+      "label": "Q2 collector load"
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "e12",
+        "0"
+      ],
+      "value": "47u",
+      "tolerance": 0.2,
+      "label": "Shared-emitter tantalum"
+    },
+    {
+      "ref": "C6",
+      "type": "C",
+      "nodes": [
+        "c2",
+        "o1"
+      ],
+      "value": "100n",
+      "tolerance": 0.2
+    },
+    {
+      "ref": "D2",
+      "type": "D",
+      "nodes": [
+        "o1",
+        "0"
+      ],
+      "model": "1N34A",
+      "label": "1N60 germanium (1N34A class)"
+    },
+    {
+      "ref": "D3",
+      "type": "D",
+      "nodes": [
+        "0",
+        "o1"
+      ],
+      "model": "1N34A",
+      "label": "1N60 germanium, antiparallel"
+    },
+    {
+      "ref": "R6",
+      "type": "R",
+      "nodes": [
+        "o1",
+        "0"
+      ],
+      "value": "4k7",
+      "tolerance": 0.1
+    },
+    {
+      "ref": "P2",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "out",
+        "o1"
+      ],
+      "value": "50k",
+      "taper": "A",
+      "control": "volume",
+      "label": "Balance"
+    }
+  ],
+  "probes": [
+    "b1",
+    "c1",
+    "b2",
+    "c2",
+    "e12",
+    "out"
+  ],
+  "layout": {}
+}

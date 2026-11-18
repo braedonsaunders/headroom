@@ -1,0 +1,294 @@
+{
+ "schema": "headroom.blocks.v1",
+ "note": "Shared subcircuits, referenced from netlists as {\"type\":\"sub\",\"of\":\"lib:<name>\"}. Speakers are Thiele\u2013Small electrical equivalents (Re + Le + (Le2 || Re2) lossy voice coil in series with the motional parallel RLC: Res = Re\u00b7Qms/Qes, Lces = Re/(2\u03c0\u00b7fs\u00b7Qes), Cmes = Qes/(2\u03c0\u00b7fs\u00b7Re)); parameters are approximate datasheet-class values, labelled per block.",
+ "subcircuits": {
+  "spk-12in-8ohm-american": {
+   "pins": [
+    "a",
+    "b"
+   ],
+   "note": "12-inch 8 \u03a9 American ceramic/alnico speaker class (Jensen C12N-type), approximate (Re 6.0 \u03a9, fs 100 Hz, Qms 3.0, Qes 0.7); voice coil: Le 0.2 mH + (0.7 mH || 22 ohm) eddy-current (semi-inductance) branch, fitted to typical published impedance curves so the load turns resistive above a few kHz instead of rising as an ideal inductor",
+   "parts": [
+    {
+     "ref": "RE",
+     "type": "R",
+     "nodes": [
+      "a",
+      "x1"
+     ],
+     "value": 6.0
+    },
+    {
+     "ref": "LE",
+     "type": "L",
+     "nodes": [
+      "x1",
+      "x3"
+     ],
+     "value": 0.0002
+    },
+    {
+     "ref": "LE2",
+     "type": "L",
+     "nodes": [
+      "x3",
+      "x2"
+     ],
+     "value": 0.0007
+    },
+    {
+     "ref": "RE2",
+     "type": "R",
+     "nodes": [
+      "x3",
+      "x2"
+     ],
+     "value": 22.0
+    },
+    {
+     "ref": "RES",
+     "type": "R",
+     "nodes": [
+      "x2",
+      "b"
+     ],
+     "value": 25.714
+    },
+    {
+     "ref": "LCES",
+     "type": "L",
+     "nodes": [
+      "x2",
+      "b"
+     ],
+     "value": 0.013642
+    },
+    {
+     "ref": "CMES",
+     "type": "C",
+     "nodes": [
+      "x2",
+      "b"
+     ],
+     "value": 0.000185681
+    }
+   ]
+  },
+  "spk-12in-8ohm-british": {
+   "pins": [
+    "a",
+    "b"
+   ],
+   "note": "12-inch 8 \u03a9 British 25 W class (Celestion G12M-type), approximate (Re 6.4 \u03a9, fs 75 Hz, Qms 4.6, Qes 0.6); voice coil: Le 0.15 mH + (0.6 mH || 20 ohm) eddy-current (semi-inductance) branch, fitted to typical published impedance curves so the load turns resistive above a few kHz instead of rising as an ideal inductor",
+   "parts": [
+    {
+     "ref": "RE",
+     "type": "R",
+     "nodes": [
+      "a",
+      "x1"
+     ],
+     "value": 6.4
+    },
+    {
+     "ref": "LE",
+     "type": "L",
+     "nodes": [
+      "x1",
+      "x3"
+     ],
+     "value": 0.00015
+    },
+    {
+     "ref": "LE2",
+     "type": "L",
+     "nodes": [
+      "x3",
+      "x2"
+     ],
+     "value": 0.0006
+    },
+    {
+     "ref": "RE2",
+     "type": "R",
+     "nodes": [
+      "x3",
+      "x2"
+     ],
+     "value": 20.0
+    },
+    {
+     "ref": "RES",
+     "type": "R",
+     "nodes": [
+      "x2",
+      "b"
+     ],
+     "value": 49.067
+    },
+    {
+     "ref": "LCES",
+     "type": "L",
+     "nodes": [
+      "x2",
+      "b"
+     ],
+     "value": 0.022635
+    },
+    {
+     "ref": "CMES",
+     "type": "C",
+     "nodes": [
+      "x2",
+      "b"
+     ],
+     "value": 0.000198944
+    }
+   ]
+  },
+  "spk-12in-16ohm-british": {
+   "pins": [
+    "a",
+    "b"
+   ],
+   "note": "12-inch 16 \u03a9 British 25 W class (Celestion G12M-type, 16 \u03a9), approximate (Re 12.8 \u03a9, fs 75 Hz, Qms 4.6, Qes 0.6); voice coil: Le 0.3 mH + (1.2 mH || 40 ohm) eddy-current (semi-inductance) branch, fitted to typical published impedance curves so the load turns resistive above a few kHz instead of rising as an ideal inductor",
+   "parts": [
+    {
+     "ref": "RE",
+     "type": "R",
+     "nodes": [
+      "a",
+      "x1"
+     ],
+     "value": 12.8
+    },
+    {
+     "ref": "LE",
+     "type": "L",
+     "nodes": [
+      "x1",
+      "x3"
+     ],
+     "value": 0.0003
+    },
+    {
+     "ref": "LE2",
+     "type": "L",
+     "nodes": [
+      "x3",
+      "x2"
+     ],
+     "value": 0.0012
+    },
+    {
+     "ref": "RE2",
+     "type": "R",
+     "nodes": [
+      "x3",
+      "x2"
+     ],
+     "value": 40.0
+    },
+    {
+     "ref": "RES",
+     "type": "R",
+     "nodes": [
+      "x2",
+      "b"
+     ],
+     "value": 98.133
+    },
+    {
+     "ref": "LCES",
+     "type": "L",
+     "nodes": [
+      "x2",
+      "b"
+     ],
+     "value": 0.045271
+    },
+    {
+     "ref": "CMES",
+     "type": "C",
+     "nodes": [
+      "x2",
+      "b"
+     ],
+     "value": 9.9472e-05
+    }
+   ]
+  },
+  "spk-10in-8ohm-american": {
+   "pins": [
+    "a",
+    "b"
+   ],
+   "note": "10-inch 8 \u03a9 American speaker class (Jensen P10R-type), approximate (Re 6.0 \u03a9, fs 120 Hz, Qms 3.0, Qes 0.75); voice coil: Le 0.15 mH + (0.6 mH || 20 ohm) eddy-current (semi-inductance) branch, fitted to typical published impedance curves so the load turns resistive above a few kHz instead of rising as an ideal inductor",
+   "parts": [
+    {
+     "ref": "RE",
+     "type": "R",
+     "nodes": [
+      "a",
+      "x1"
+     ],
+     "value": 6.0
+    },
+    {
+     "ref": "LE",
+     "type": "L",
+     "nodes": [
+      "x1",
+      "x3"
+     ],
+     "value": 0.00015
+    },
+    {
+     "ref": "LE2",
+     "type": "L",
+     "nodes": [
+      "x3",
+      "x2"
+     ],
+     "value": 0.0006
+    },
+    {
+     "ref": "RE2",
+     "type": "R",
+     "nodes": [
+      "x3",
+      "x2"
+     ],
+     "value": 20.0
+    },
+    {
+     "ref": "RES",
+     "type": "R",
+     "nodes": [
+      "x2",
+      "b"
+     ],
+     "value": 24.0
+    },
+    {
+     "ref": "LCES",
+     "type": "L",
+     "nodes": [
+      "x2",
+      "b"
+     ],
+     "value": 0.01061
+    },
+    {
+     "ref": "CMES",
+     "type": "C",
+     "nodes": [
+      "x2",
+      "b"
+     ],
+     "value": 0.000165786
+    }
+   ]
+  }
+ }
+}

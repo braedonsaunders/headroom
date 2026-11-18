@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Clean-Dirty Stomp</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Clean-Dirty Stomp" preset-author="Headroom" preset-comment="Quiet-loud nu metal in one rig: a hard gate in front of a solid-state chorus clean and a tight early rectified head side by side. Ride the Clean/Dirty macro from creepy chorused verse arpeggios to gated stop-start riffs; the gate snaps every hit shut." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="19000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="T" value="0.58"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="A" value="0.5"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="G" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="7000">
+    <component-audio version="1">
+      <parameters num-parameters="1">
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="49000">
+    <component-audio version="1">
+      <parameters num-parameters="10">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="V" value="0.7"/>
+        <parameter id="a" value="0.5"/>
+        <parameter id="M" value="0.5"/>
+        <parameter id="T" value="0.6"/>
+        <parameter id="B" value="1"/>
+        <parameter id="R" value="0.3"/>
+        <parameter id="d" value="0.45"/>
+        <parameter id="em" value="1"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="8000">
+    <component-audio version="1">
+      <parameters num-parameters="1">
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="96000">
+    <component-audio version="1">
+      <parameters num-parameters="14">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Mast" value="0.55"/>
+        <parameter id="Gn" value="0.9"/>
+        <parameter id="Bs" value="0.7"/>
+        <parameter id="Mid" value="0.4"/>
+        <parameter id="Trb" value="0.6"/>
+        <parameter id="Prs" value="0.6"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="M" value="1"/>
+        <parameter id="Bias" value="0.5"/>
+        <parameter id="Hz" value="1"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="9000">
+    <component-audio version="1">
+      <parameters num-parameters="6">
+        <parameter id="PanA" value="0.5"/>
+        <parameter id="PanB" value="0.5"/>
+        <parameter id="XFade" value="0.94"/>
+        <parameter id="DM" value="0.5"/>
+        <parameter id="iP" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.3073"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="4"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="9000" target-number="1" target-name="XFade" min-value="0.04" max-value="0.94" controller-name="Clean / Dirty"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="96000" target-number="1" target-name="Gn" min-value="0.5" max-value="1" controller-name="Gain"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="96000" target-number="1" target-name="Mid" min-value="0.15" max-value="0.7" controller-name="Mids"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="19000" target-number="1" target-name="T" min-value="0.3" max-value="0.8" controller-name="Gate"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="49000" target-number="1" target-name="d" min-value="0" max-value="0.8" controller-name="Clean Chorus"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="hg-clean-dirty-stomp" category="High Gain" order="160" instrument="guitar" style="Nu Metal">
+  <description>Quiet-loud nu metal in one rig: a hard gate in front of a solid-state chorus clean and a tight early rectified head side by side. Ride the Clean/Dirty macro from creepy chorused verse arpeggios to gated stop-start riffs; the gate snaps every hit shut.</description>
+  <tags><tag>High Gain</tag><tag>Nu Metal</tag><tag>Rhythm</tag><tag>Gate</tag><tag>Clean</tag><tag>Dynamic</tag><tag>Stop-Start</tag></tags>
+  <sources>
+    <source url="https://www.premierguitar.com/gear/rig-rundown-korn" title="Premier Guitar: Rig Rundown, Korn"/>
+    <source url="https://www.musicradar.com/news/guitars/slipknots-mick-thomson-and-jim-root-talk-gear-tone-and-being-flat-broke-580682" title="MusicRadar: Slipknot's Mick Thomson and Jim Root talk gear"/>
+    <source url="https://equipboard.com/posts/the-best-noise-gate-pedals" title="Equipboard: The best noise gate pedals"/>
+    <source url="https://en.wikipedia.org/wiki/Mesa/Boogie_Rectifier" title="Mesa/Boogie Rectifier (Wikipedia)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

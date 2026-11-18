@@ -1,0 +1,2008 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "boss-ce1",
+  "version": 1,
+  "name": "Boss CE-1 Chorus Ensemble (Roland ET-10C, MN3002)",
+  "description": "Roland / Boss CE-1 Chorus Ensemble (model ET-10C, 1976), traced directly from the factory Roland ET-10C schematic including PCB wire-pad numbering, factory 440 Hz test-point oscillograms (A-N), and the Roland service note for IC-4 Schmitt thresholds (R80 = 120 kOhm, R81 = 150 kOhm for uPC1458). Mains-fed +-14 V tracking regulator (18 VAC CT -> D16-D19 1N4001 bridge -> C46/C47 220 uF -> Q17 2SB434 zener-referenced -14 V pass + Q16 2SC900 sense + Q15 2SD234 +14 V tracking pass -> R10/C4, R17/C10 +-13 V preamp rails). Input section: S1 HIGH/LOW sensitivity switch (LOW direct to VR11 50 kA Level Control; HIGH through Q1 2SC900 mic amp, 20 dB) -> IC-1 TA7136P non-inverting preamp (1 + 470k/10k = +33.6 dB) -> R13/C08/R15 pre-emphasis + R14/R16/C12/C11/Q2 3-pole Sallen-Key anti-aliasing filter -> IC-2 Panasonic MN3002 512-stage PMOS BBD (+4.41 V VBB substrate, -3.45 V VBias, -13.0 V VGG, -14 V VDD, 100 kOhm drain loads R24/R25 + VR01 5 kB clock-null trim) -> Q7 emitter follower -> R41/C26 de-emphasis + R42/R43/R44/C28/C29/C27/Q10 3-pole Sallen-Key reconstruction filter -> Q12 2SK30A shunt noise-killer JFET driven by IC-3 TA7136P (+43.1 dB) + D11/D12/C41/C42/D10 envelope detector -> Q13 2SK30A wet FET switch -> passive Dry (R47/C31/R49/R52/R51/R91) + Wet (R48/R90/R54/R92) mono-normalled output mixer. Dual-mode LFO (IC-4 uPC1458): Chorus mode (S4 = 0) runs IC-4A/B as a variable-rate Schmitt/integrator triangle LFO (0.40-3.05 Hz via VR12 10 kB Intensity); Vibrato mode (S4 = 1) reconfigures IC-4B into a 3-pole diode-AGC phase-shift sine oscillator (3.7-13.4 Hz via VR14 100 kC Rate, attenuated by VR13 50 kB Depth). Discrete Q3-Q6 (2SA493/2SC536F) clamped astable VCO (57-400 kHz, above audio Nyquist) fitted from a 21-point ngspice characterisation with D03/D04 clamping pump.",
+  "sources": [
+    {
+      "title": "Roland Corporation, 'BOSS Chorus Ensemble Model CE-1 Schematic Diagram' (drawing ET-10C, 1976: full circuit, PCB pad numbers, DC voltages and 440 Hz square-wave oscillograms A-N)",
+      "url": "https://archive.org/details/CE-1_SCHEMATICS"
+    },
+    {
+      "title": "Roland / Boss CE-1 Service Notes (IC-4 table: R80 = 120 kOhm, R81 = 150 kOhm required for NEC uPC1458; VR01 BBD balance procedure)",
+      "url": "https://archive.org/details/CE-1_SCHEMATICS"
+    },
+    {
+      "title": "Panasonic MN3002 512-stage PMOS Bucket Brigade Device specification (512 stages, VBB/VDD/VGG bias, 0.4% THD, 70 dB S/N)",
+      "url": "work/circuit-netlists/wave-c/DEVICES.md"
+    },
+    {
+      "title": "Toshiba TA7136P Low-Noise Preamplifier IC datasheet (Av0 = 90 dB typ, ICC = 0.85 mA typ, pin 2 = +IN, pin 3 = -IN, external lag compensation)",
+      "url": "https://datasheetspdf.com/pdf-file/530285/Toshiba/TA7136P/1"
+    },
+    {
+      "title": "NEC uPC1458C / TI MC1458 Dual Operational Amplifier datasheet (Av = 200 V/mV typ, GBW = 1 MHz, SR = 0.5 V/us, Vos = 1-5 mV)",
+      "url": "https://www.ti.com/lit/ds/symlink/mc1458.pdf"
+    },
+    {
+      "title": "Toshiba 2SK30ATM N-channel JFET datasheet (GR rank: IDSS 2.6-6.5 mA, VGS(off) -0.4 to -5.0 V)",
+      "url": "https://toshiba.semicon-storage.com/info/2SK30ATM_datasheet_en_20140301.pdf?did=19684"
+    }
+  ],
+  "io": {
+    "input": "in",
+    "output": "out",
+    "inputVoltsPerFS": 0.5,
+    "outputVoltsPerFS": 0.25
+  },
+  "oversampling": 1,
+  "solver": "auto",
+  "models": {
+    "TA7136P": {
+      "kind": "opamp",
+      "level": 1,
+      "a0": 31600,
+      "gbw": 1200000,
+      "slew": 1000000,
+      "swing_hi": 1.5,
+      "swing_lo": 1.5,
+      "iq": 0.00085,
+      "note": "Toshiba TA7136P datasheet: Av0 = 90 dB (31.6k) typ, ICC = 0.85 mA typ; GBW ~ 1.2 MHz and SR ~ 1 V/us with CE-1's 47 pF / 15 pF lag compensation"
+    },
+    "UPC1458": {
+      "kind": "opamp",
+      "level": 1,
+      "a0": 200000,
+      "gbw": 1000000,
+      "slew": 500000,
+      "swing_hi": 1.2,
+      "swing_lo": 1.2,
+      "iq": 0.00115,
+      "note": "NEC uPC1458C / MC1458 datasheet: Av = 200 V/mV, GBW = 1 MHz, SR = 0.5 V/us, +-12.8 V swing on +-14 V rails (25.6 Vpp at J vs schematic oscillogram J = 27 Vpp)"
+    },
+    "2SC900": {
+      "kind": "npn",
+      "is": 1e-14,
+      "bf": 500,
+      "br": 2,
+      "vaf": 80,
+      "note": "unverified: NEC 2SC900 E-rank hFE 400-800 (BF = 500); IS, BR and VAF generic low-noise silicon NPN values"
+    },
+    "2SD234": {
+      "kind": "npn",
+      "is": 1e-12,
+      "bf": 70,
+      "br": 4,
+      "note": "unverified: NEC 2SD234 TO-220 power NPN (hFE 40-240); generic power-NPN Ebers-Moll values for +14 V series regulator pass transistor"
+    },
+    "2SB434": {
+      "kind": "pnp",
+      "is": 1e-12,
+      "bf": 70,
+      "br": 4,
+      "note": "unverified: Toshiba 2SB434 TO-220 power PNP (hFE 40-240); generic power-PNP Ebers-Moll values for -14 V series regulator pass transistor"
+    },
+    "MN3002": {
+      "kind": "bbd",
+      "stages": 512,
+      "eps": 0.05,
+      "a2": 0.02,
+      "vlo": -6.5,
+      "vhi": -0.5,
+      "vshift": 8.55,
+      "rout": 100000,
+      "noise": 0.00025,
+      "note": "Panasonic MN3002 in CE-1's split-rail bias (VBB = +4.41 V, GND = 0 V, VBias = -3.45 V, VGG = -13.0 V, VDD = -14 V, external R24/R25 = 100 kOhm to 0 V): -6.5..-0.5 V input window centred on -3.45 V; rout = 100 kOhm + vshift = 8.55 V into R24/R25 = 100 kOhm reproduces -6.0 V DC at E and 0.50x (-6 dB) PMOS body-effect follower gain matching factory oscillograms D = 4 Vpp -> E = 2 Vpp"
+    }
+  },
+  "controls": [
+    {
+      "id": "level",
+      "label": "Level Control",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "Vol"
+      ],
+      "group": "Main",
+      "note": "VR11 50 kOhm audio-taper input attenuator ahead of IC-1 (+33.6 dB TA7136P preamp). High settings saturate IC-1 warmly as on the hardware CE-1"
+    },
+    {
+      "id": "mode",
+      "label": "Chorus / Vibrato",
+      "kind": "switch",
+      "default": 0,
+      "params": [
+        "Md"
+      ],
+      "group": "Main",
+      "note": "S4 DPDT mode foot switch: 0 = Chorus (IC-4A/B triangle LFO via VR12), 1 = Vibrato (IC-4B 3-pole phase-shift sine oscillator via VR14 Rate & VR13 Depth)"
+    },
+    {
+      "id": "intensity",
+      "label": "Chorus Intensity",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "CI"
+      ],
+      "group": "Chorus",
+      "note": "VR12 10 kOhm linear pot in the IC-4A -> IC-4B integrator charging divider (R82 100k / R65 1.5k / R57 100k): sweeps Chorus triangle LFO rate from 0.40 Hz to 3.05 Hz"
+    },
+    {
+      "id": "depth",
+      "label": "Vibrato Depth",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "VD"
+      ],
+      "group": "Vibrato",
+      "note": "VR13 50 kOhm linear pot dividing the Vibrato sine LFO before VCO control node I (active when Mode = Vibrato)"
+    },
+    {
+      "id": "rate",
+      "label": "Vibrato Rate",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "VR"
+      ],
+      "group": "Vibrato",
+      "note": "VR14 100 kOhm reverse-log (C-taper) rheostat in parallel with R89 220 kOhm inside IC-4B's phase-shift loop: sweeps Vibrato sine LFO from 3.7 Hz to 13.4 Hz"
+    },
+    {
+      "id": "sens",
+      "label": "Input Sensitivity",
+      "kind": "switch",
+      "default": 0,
+      "params": [],
+      "group": "Internal",
+      "note": "S1 rear/front input sensitivity switch: 0 = LOW (guitar/keyboard direct to VR11), 1 = HIGH (inserts Q1 2SC900 +20 dB mic amp)",
+      "face": true,
+      "options": [
+        "Low",
+        "High"
+      ]
+    },
+    {
+      "id": "bal",
+      "label": "BBD Balance VR01 (internal)",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [],
+      "group": "Internal",
+      "note": "VR01 5 kOhm linear trimpot across MN3002 pins 13 and 14"
+    },
+    {
+      "id": "stereoPlug",
+      "label": "Stereo Jack",
+      "kind": "switch",
+      "default": 0,
+      "params": [],
+      "group": "Internal",
+      "note": "Models the normalling switch on the STEREO jack: 0 = MONO jack operation (Dry R91 and Wet R92 summed passively at out), 1 = wet-only output N",
+      "face": true,
+      "options": [
+        "Mono",
+        "Stereo (wet only)"
+      ]
+    },
+    {
+      "id": "sync",
+      "label": "Sync",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "TS"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No tempo sync in the 1976 analog CE-1; stored for preset compatibility"
+    },
+    {
+      "id": "bass",
+      "label": "Bass",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "B"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No EQ controls on the CE-1; stored only"
+    },
+    {
+      "id": "mid",
+      "label": "Mid",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "Mid"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No EQ controls on the CE-1; stored only"
+    },
+    {
+      "id": "treble",
+      "label": "Treble",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "Trb"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "No EQ controls on the CE-1; stored only"
+    },
+    {
+      "id": "mix",
+      "label": "Mix",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "Mx"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Fixed passive dry/wet resistor mix in the CE-1; stored only"
+    },
+    {
+      "id": "lamp",
+      "label": "Lamp",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "L"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Indicator lamp state; stored only"
+    },
+    {
+      "id": "delayLegacy",
+      "label": "Delay",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "Dly"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "CE-1 delay time is fixed by the MN3002 + discrete VCO; stored only"
+    },
+    {
+      "id": "stereoLegacy",
+      "label": "Stereo",
+      "kind": "continuous",
+      "default": 0.5,
+      "params": [
+        "S"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Legacy stereo spread parameter; stored only"
+    },
+    {
+      "id": "power",
+      "label": "On/Off",
+      "kind": "switch",
+      "default": 1.0,
+      "params": [
+        "Pwr"
+      ],
+      "legacyOnly": true,
+      "group": "Legacy",
+      "note": "Host handles bypass; stored only"
+    }
+  ],
+  "parts": [
+    {
+      "ref": "VAC1",
+      "type": "V",
+      "nodes": [
+        "ac1_src",
+        "0"
+      ],
+      "value": 0,
+      "ac": {
+        "amplitude": 25.4,
+        "freq": 60
+      },
+      "label": "Mains transformer secondary upper 18 VAC winding"
+    },
+    {
+      "ref": "RW1",
+      "type": "R",
+      "nodes": [
+        "ac1_src",
+        "ac1"
+      ],
+      "value": "15",
+      "label": "Upper secondary winding resistance"
+    },
+    {
+      "ref": "VAC2",
+      "type": "V",
+      "nodes": [
+        "0",
+        "ac2_src"
+      ],
+      "value": 0,
+      "ac": {
+        "amplitude": 25.4,
+        "freq": 60
+      },
+      "label": "Mains transformer secondary lower 18 VAC winding"
+    },
+    {
+      "ref": "RW2",
+      "type": "R",
+      "nodes": [
+        "ac2_src",
+        "ac2"
+      ],
+      "value": "15",
+      "label": "Lower secondary winding resistance"
+    },
+    {
+      "ref": "D16",
+      "type": "D",
+      "nodes": [
+        "ac1",
+        "p_unreg"
+      ],
+      "model": "1N4001"
+    },
+    {
+      "ref": "D18",
+      "type": "D",
+      "nodes": [
+        "ac2",
+        "p_unreg"
+      ],
+      "model": "1N4001"
+    },
+    {
+      "ref": "D17",
+      "type": "D",
+      "nodes": [
+        "m_unreg",
+        "ac1"
+      ],
+      "model": "1N4001"
+    },
+    {
+      "ref": "D19",
+      "type": "D",
+      "nodes": [
+        "m_unreg",
+        "ac2"
+      ],
+      "model": "1N4001"
+    },
+    {
+      "ref": "C46",
+      "type": "C",
+      "nodes": [
+        "p_unreg",
+        "0"
+      ],
+      "value": "220u",
+      "family": "electrolytic"
+    },
+    {
+      "ref": "C47",
+      "type": "C",
+      "nodes": [
+        "0",
+        "m_unreg"
+      ],
+      "value": "220u",
+      "family": "electrolytic"
+    },
+    {
+      "ref": "R83",
+      "type": "R",
+      "nodes": [
+        "p_unreg",
+        "b15"
+      ],
+      "value": "1k8"
+    },
+    {
+      "ref": "C48",
+      "type": "C",
+      "nodes": [
+        "b15",
+        "0"
+      ],
+      "value": "220u",
+      "family": "electrolytic"
+    },
+    {
+      "ref": "R88",
+      "type": "R",
+      "nodes": [
+        "b17",
+        "m_unreg"
+      ],
+      "value": "1k8"
+    },
+    {
+      "ref": "VZ15",
+      "type": "V",
+      "nodes": [
+        "b17",
+        "0"
+      ],
+      "value": -14.65,
+      "label": "D15 05Z15A -14.65 V zener reference",
+      "note": "unverified: ideal -14.65 V zener stand-in for D15 05Z15A at Q17 base (engine has no reverse zener breakdown model; C49 220 uF across VZ15 omitted as inert)"
+    },
+    {
+      "ref": "Q17",
+      "type": "pnp",
+      "nodes": [
+        "m_unreg",
+        "b17",
+        "m14"
+      ],
+      "model": "2SB434",
+      "label": "Q17 -14 V pass transistor"
+    },
+    {
+      "ref": "Q15",
+      "type": "npn",
+      "nodes": [
+        "p_unreg",
+        "b15",
+        "p14"
+      ],
+      "model": "2SD234",
+      "label": "Q15 +14 V tracking pass transistor"
+    },
+    {
+      "ref": "R84",
+      "type": "R",
+      "nodes": [
+        "p14",
+        "q16b"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "D13",
+      "type": "D",
+      "nodes": [
+        "q16b",
+        "d13_14"
+      ],
+      "model": "1N914"
+    },
+    {
+      "ref": "D14",
+      "type": "D",
+      "nodes": [
+        "d13_14",
+        "d14k"
+      ],
+      "model": "1N914"
+    },
+    {
+      "ref": "R86",
+      "type": "R",
+      "nodes": [
+        "d14k",
+        "m14"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "Q16",
+      "type": "npn",
+      "nodes": [
+        "b15",
+        "q16b",
+        "0"
+      ],
+      "model": "2SC900",
+      "label": "Q16 +14 V tracking error sense transistor"
+    },
+    {
+      "ref": "C44",
+      "type": "C",
+      "nodes": [
+        "p14",
+        "0"
+      ],
+      "value": "220u",
+      "family": "electrolytic"
+    },
+    {
+      "ref": "C45",
+      "type": "C",
+      "nodes": [
+        "0",
+        "m14"
+      ],
+      "value": "220u",
+      "family": "electrolytic"
+    },
+    {
+      "ref": "R10",
+      "type": "R",
+      "nodes": [
+        "p14",
+        "p13"
+      ],
+      "value": "470"
+    },
+    {
+      "ref": "C4",
+      "type": "C",
+      "nodes": [
+        "p13",
+        "0"
+      ],
+      "value": "47u",
+      "family": "electrolytic"
+    },
+    {
+      "ref": "R17",
+      "type": "R",
+      "nodes": [
+        "m14",
+        "m13"
+      ],
+      "value": "470"
+    },
+    {
+      "ref": "C10",
+      "type": "C",
+      "nodes": [
+        "0",
+        "m13"
+      ],
+      "value": "47u",
+      "family": "electrolytic"
+    },
+    {
+      "ref": "S1A_LOW",
+      "type": "switch",
+      "nodes": [
+        "in",
+        "vr11_top"
+      ],
+      "control": "sens",
+      "invert": true,
+      "label": "S1 LOW direct input path"
+    },
+    {
+      "ref": "S1A_HIGH",
+      "type": "switch",
+      "nodes": [
+        "in",
+        "mic_in"
+      ],
+      "control": "sens",
+      "label": "S1 HIGH mic amp input"
+    },
+    {
+      "ref": "R01",
+      "type": "R",
+      "nodes": [
+        "mic_in",
+        "0"
+      ],
+      "value": "4k7"
+    },
+    {
+      "ref": "C02",
+      "type": "C",
+      "nodes": [
+        "mic_in",
+        "q1_in"
+      ],
+      "value": "1u",
+      "family": "electrolytic"
+    },
+    {
+      "ref": "R02",
+      "type": "R",
+      "nodes": [
+        "q1_in",
+        "q1b"
+      ],
+      "value": "1k5"
+    },
+    {
+      "ref": "C01",
+      "type": "C",
+      "nodes": [
+        "q1b",
+        "0"
+      ],
+      "value": "1n"
+    },
+    {
+      "ref": "R03",
+      "type": "R",
+      "nodes": [
+        "q1b",
+        "0"
+      ],
+      "value": "56k"
+    },
+    {
+      "ref": "R06",
+      "type": "R",
+      "nodes": [
+        "q1c",
+        "q1b"
+      ],
+      "value": "330k"
+    },
+    {
+      "ref": "R05",
+      "type": "R",
+      "nodes": [
+        "q1e",
+        "0"
+      ],
+      "value": "680"
+    },
+    {
+      "ref": "R07",
+      "type": "R",
+      "nodes": [
+        "p13",
+        "q1c"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "Q1",
+      "type": "npn",
+      "nodes": [
+        "q1c",
+        "q1b",
+        "q1e"
+      ],
+      "model": "2SC900",
+      "label": "Q1 HIGH-sensitivity mic preamp"
+    },
+    {
+      "ref": "C03",
+      "type": "C",
+      "nodes": [
+        "q1c",
+        "mic_out"
+      ],
+      "value": "1u",
+      "family": "electrolytic"
+    },
+    {
+      "ref": "R04",
+      "type": "R",
+      "nodes": [
+        "mic_out",
+        "0"
+      ],
+      "value": "100k"
+    },
+    {
+      "ref": "S1B_HIGH",
+      "type": "switch",
+      "nodes": [
+        "mic_out",
+        "vr11_top"
+      ],
+      "control": "sens",
+      "label": "S1 HIGH mic amp output"
+    },
+    {
+      "ref": "VR11",
+      "type": "pot",
+      "nodes": [
+        "0",
+        "vr11w",
+        "vr11_top"
+      ],
+      "value": "50k",
+      "taper": "A",
+      "control": "level",
+      "label": "VR11 50 kA Level Control"
+    },
+    {
+      "ref": "R8",
+      "type": "R",
+      "nodes": [
+        "vr11w",
+        "ic1_p"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "R11",
+      "type": "R",
+      "nodes": [
+        "c",
+        "ic1_m"
+      ],
+      "value": "470k"
+    },
+    {
+      "ref": "R12",
+      "type": "R",
+      "nodes": [
+        "ic1_m",
+        "c07_n"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "C07",
+      "type": "C",
+      "nodes": [
+        "c07_n",
+        "0"
+      ],
+      "value": "0.47u"
+    },
+    {
+      "ref": "IC1",
+      "type": "opamp",
+      "nodes": [
+        "ic1_p",
+        "ic1_m",
+        "c",
+        "p13",
+        "m13"
+      ],
+      "model": "TA7136P",
+      "label": "IC-1 TA7136P input preamp (+33.6 dB)"
+    },
+    {
+      "ref": "R13",
+      "type": "R",
+      "nodes": [
+        "c",
+        "pre_emp"
+      ],
+      "value": "22k"
+    },
+    {
+      "ref": "C08",
+      "type": "C",
+      "nodes": [
+        "c",
+        "pre_emp"
+      ],
+      "value": "6.8n"
+    },
+    {
+      "ref": "R15",
+      "type": "R",
+      "nodes": [
+        "pre_emp",
+        "0"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "R14",
+      "type": "R",
+      "nodes": [
+        "pre_emp",
+        "sk1_mid"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "R16",
+      "type": "R",
+      "nodes": [
+        "sk1_mid",
+        "q2b"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "C12",
+      "type": "C",
+      "nodes": [
+        "sk1_mid",
+        "q2e"
+      ],
+      "value": "4.7n"
+    },
+    {
+      "ref": "C11",
+      "type": "C",
+      "nodes": [
+        "q2b",
+        "0"
+      ],
+      "value": "1n"
+    },
+    {
+      "ref": "Q2",
+      "type": "npn",
+      "nodes": [
+        "p13",
+        "q2b",
+        "q2e"
+      ],
+      "model": "2SC900",
+      "label": "Q2 anti-aliasing Sallen-Key follower"
+    },
+    {
+      "ref": "R18",
+      "type": "R",
+      "nodes": [
+        "q2e",
+        "m14"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "C14",
+      "type": "C",
+      "nodes": [
+        "q2e",
+        "d"
+      ],
+      "value": "0.1u"
+    },
+    {
+      "ref": "R20",
+      "type": "R",
+      "nodes": [
+        "p14",
+        "vbb"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "C13",
+      "type": "C",
+      "nodes": [
+        "vbb",
+        "0"
+      ],
+      "value": "10u",
+      "family": "electrolytic"
+    },
+    {
+      "ref": "R19",
+      "type": "R",
+      "nodes": [
+        "vbb",
+        "vbias_ref"
+      ],
+      "value": "8k2"
+    },
+    {
+      "ref": "C15",
+      "type": "C",
+      "nodes": [
+        "0",
+        "vbias_ref"
+      ],
+      "value": "10u",
+      "family": "electrolytic"
+    },
+    {
+      "ref": "R22",
+      "type": "R",
+      "nodes": [
+        "vbias_ref",
+        "vgg"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "C16",
+      "type": "C",
+      "nodes": [
+        "0",
+        "vgg"
+      ],
+      "value": "10u",
+      "family": "electrolytic"
+    },
+    {
+      "ref": "R23",
+      "type": "R",
+      "nodes": [
+        "vgg",
+        "m14"
+      ],
+      "value": "1k"
+    },
+    {
+      "ref": "R21",
+      "type": "R",
+      "nodes": [
+        "vbias_ref",
+        "d"
+      ],
+      "value": "100k",
+      "label": "R21 MN3002 input bias (-3.45 V)"
+    },
+    {
+      "ref": "IC2",
+      "type": "bbd",
+      "nodes": [
+        "d",
+        "bbd_o1",
+        "bbd_o2",
+        "vc"
+      ],
+      "model": "MN3002",
+      "clock": {
+        "points": [
+          [
+            -1.0,
+            919267.2
+          ],
+          [
+            -0.6,
+            401585.3
+          ],
+          [
+            -0.3,
+            331735.5
+          ],
+          [
+            0.0,
+            284683.5
+          ],
+          [
+            0.5,
+            231678.7
+          ],
+          [
+            1.0,
+            196802.9
+          ],
+          [
+            1.5,
+            171600.9
+          ],
+          [
+            2.0,
+            152701.2
+          ],
+          [
+            2.5,
+            137637.2
+          ],
+          [
+            3.0,
+            125913.1
+          ],
+          [
+            4.0,
+            107811.2
+          ],
+          [
+            5.0,
+            95104.8
+          ],
+          [
+            6.0,
+            85536.6
+          ],
+          [
+            7.0,
+            78036.2
+          ],
+          [
+            8.0,
+            72032.8
+          ],
+          [
+            9.0,
+            67077.1
+          ],
+          [
+            10.0,
+            62956.4
+          ],
+          [
+            11.0,
+            59453.7
+          ],
+          [
+            12.0,
+            56732.0
+          ],
+          [
+            13.0,
+            56705.8
+          ],
+          [
+            14.0,
+            56701.9
+          ]
+        ]
+      },
+      "label": "IC-2 Panasonic MN3002 512-stage BBD"
+    },
+    {
+      "ref": "R25",
+      "type": "R",
+      "nodes": [
+        "bbd_o1",
+        "0"
+      ],
+      "value": "100k"
+    },
+    {
+      "ref": "R24",
+      "type": "R",
+      "nodes": [
+        "bbd_o2",
+        "0"
+      ],
+      "value": "100k"
+    },
+    {
+      "ref": "VR01",
+      "type": "pot",
+      "nodes": [
+        "bbd_o1",
+        "e",
+        "bbd_o2"
+      ],
+      "value": "5k",
+      "taper": "B",
+      "control": "bal",
+      "label": "VR01 5 kB BBD output balance"
+    },
+    {
+      "ref": "Q7",
+      "type": "npn",
+      "nodes": [
+        "0",
+        "e",
+        "q7e"
+      ],
+      "model": "2SC900",
+      "label": "Q7 post-BBD emitter follower"
+    },
+    {
+      "ref": "R40",
+      "type": "R",
+      "nodes": [
+        "q7e",
+        "m14"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "R41",
+      "type": "R",
+      "nodes": [
+        "q7e",
+        "de_emp"
+      ],
+      "value": "22k"
+    },
+    {
+      "ref": "C26",
+      "type": "C",
+      "nodes": [
+        "de_emp",
+        "0"
+      ],
+      "value": "4.7n"
+    },
+    {
+      "ref": "R42",
+      "type": "R",
+      "nodes": [
+        "de_emp",
+        "sk2_a"
+      ],
+      "value": "6k8"
+    },
+    {
+      "ref": "C28",
+      "type": "C",
+      "nodes": [
+        "sk2_a",
+        "q10e"
+      ],
+      "value": "1n"
+    },
+    {
+      "ref": "R43",
+      "type": "R",
+      "nodes": [
+        "sk2_a",
+        "sk2_b"
+      ],
+      "value": "15k"
+    },
+    {
+      "ref": "C29",
+      "type": "C",
+      "nodes": [
+        "sk2_b",
+        "q10e"
+      ],
+      "value": "1n"
+    },
+    {
+      "ref": "R44",
+      "type": "R",
+      "nodes": [
+        "sk2_b",
+        "q10b"
+      ],
+      "value": "15k"
+    },
+    {
+      "ref": "C27",
+      "type": "C",
+      "nodes": [
+        "q10b",
+        "0"
+      ],
+      "value": "470p"
+    },
+    {
+      "ref": "Q10",
+      "type": "npn",
+      "nodes": [
+        "0",
+        "q10b",
+        "q10e"
+      ],
+      "model": "2SC900",
+      "label": "Q10 reconstruction Sallen-Key follower"
+    },
+    {
+      "ref": "R46",
+      "type": "R",
+      "nodes": [
+        "q10e",
+        "m14"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "R71",
+      "type": "R",
+      "nodes": [
+        "c",
+        "nk_in"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "C38",
+      "type": "C",
+      "nodes": [
+        "nk_in",
+        "ic3_p"
+      ],
+      "value": "0.1u"
+    },
+    {
+      "ref": "R70",
+      "type": "R",
+      "nodes": [
+        "ic3_p",
+        "0"
+      ],
+      "value": "100k"
+    },
+    {
+      "ref": "R73",
+      "type": "R",
+      "nodes": [
+        "h",
+        "ic3_m"
+      ],
+      "value": "470k"
+    },
+    {
+      "ref": "R72",
+      "type": "R",
+      "nodes": [
+        "ic3_m",
+        "c39_n"
+      ],
+      "value": "3k3"
+    },
+    {
+      "ref": "C39",
+      "type": "C",
+      "nodes": [
+        "c39_n",
+        "0"
+      ],
+      "value": "1u",
+      "family": "electrolytic"
+    },
+    {
+      "ref": "IC3",
+      "type": "opamp",
+      "nodes": [
+        "ic3_p",
+        "ic3_m",
+        "h",
+        "p14",
+        "m14"
+      ],
+      "model": "TA7136P",
+      "label": "IC-3 TA7136P noise-killer sidechain amp (+43.1 dB)"
+    },
+    {
+      "ref": "C40",
+      "type": "C",
+      "nodes": [
+        "h",
+        "nk_rect"
+      ],
+      "value": "0.1u"
+    },
+    {
+      "ref": "D12",
+      "type": "D",
+      "nodes": [
+        "nk_rect",
+        "0"
+      ],
+      "model": "1N914"
+    },
+    {
+      "ref": "D11",
+      "type": "D",
+      "nodes": [
+        "nk_c41",
+        "nk_rect"
+      ],
+      "model": "1N914"
+    },
+    {
+      "ref": "C41",
+      "type": "C",
+      "nodes": [
+        "nk_c41",
+        "0"
+      ],
+      "value": "33n"
+    },
+    {
+      "ref": "R69",
+      "type": "R",
+      "nodes": [
+        "nk_c41",
+        "q12g"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "C42",
+      "type": "C",
+      "nodes": [
+        "0",
+        "q12g"
+      ],
+      "value": "47n"
+    },
+    {
+      "ref": "R68",
+      "type": "R",
+      "nodes": [
+        "q12g",
+        "0"
+      ],
+      "value": "330k"
+    },
+    {
+      "ref": "R67",
+      "type": "R",
+      "nodes": [
+        "0",
+        "nk_m3v"
+      ],
+      "value": "4k7"
+    },
+    {
+      "ref": "R66",
+      "type": "R",
+      "nodes": [
+        "nk_m3v",
+        "m14"
+      ],
+      "value": "22k"
+    },
+    {
+      "ref": "D10",
+      "type": "D",
+      "nodes": [
+        "nk_m3v",
+        "q12g"
+      ],
+      "model": "1N914",
+      "label": "-3 V envelope depth clamp on Q12 gate"
+    },
+    {
+      "ref": "R47",
+      "type": "R",
+      "nodes": [
+        "c",
+        "c31_in"
+      ],
+      "value": "12k"
+    },
+    {
+      "ref": "C31",
+      "type": "C",
+      "nodes": [
+        "c31_in",
+        "dry_att"
+      ],
+      "value": "0.47u"
+    },
+    {
+      "ref": "R49",
+      "type": "R",
+      "nodes": [
+        "dry_att",
+        "0"
+      ],
+      "value": "1k5"
+    },
+    {
+      "ref": "R52",
+      "type": "R",
+      "nodes": [
+        "dry_att",
+        "p5_m"
+      ],
+      "value": "3k3"
+    },
+    {
+      "ref": "R51",
+      "type": "R",
+      "nodes": [
+        "p5_m",
+        "0"
+      ],
+      "value": "4k7"
+    },
+    {
+      "ref": "C30",
+      "type": "C",
+      "nodes": [
+        "q10e",
+        "wet_ac"
+      ],
+      "value": "0.47u",
+      "family": "electrolytic"
+    },
+    {
+      "ref": "R48",
+      "type": "R",
+      "nodes": [
+        "wet_ac",
+        "nk"
+      ],
+      "value": "2k2"
+    },
+    {
+      "ref": "Q12",
+      "type": "njf",
+      "nodes": [
+        "nk",
+        "q12g",
+        "0"
+      ],
+      "model": "2SK30A",
+      "label": "Q12 2SK30A noise-killer shunt JFET"
+    },
+    {
+      "ref": "R50",
+      "type": "R",
+      "nodes": [
+        "nk",
+        "0"
+      ],
+      "value": "100k"
+    },
+    {
+      "ref": "R90",
+      "type": "R",
+      "nodes": [
+        "nk",
+        "q13d"
+      ],
+      "value": "2k2"
+    },
+    {
+      "ref": "R85",
+      "type": "R",
+      "nodes": [
+        "m14",
+        "pad7"
+      ],
+      "value": "15k",
+      "note": "S3 in EFFECT position ties R85 to pad 7, biasing Q11 OFF (-5.6 V)"
+    },
+    {
+      "ref": "R56",
+      "type": "R",
+      "nodes": [
+        "pad7",
+        "0"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "R55",
+      "type": "R",
+      "nodes": [
+        "pad7",
+        "q11g"
+      ],
+      "value": "1M"
+    },
+    {
+      "ref": "C32",
+      "type": "C",
+      "nodes": [
+        "q11g",
+        "0"
+      ],
+      "value": "22n"
+    },
+    {
+      "ref": "R53",
+      "type": "R",
+      "nodes": [
+        "dry_att",
+        "q11d"
+      ],
+      "value": "3k3"
+    },
+    {
+      "ref": "Q11",
+      "type": "njf",
+      "nodes": [
+        "q11d",
+        "q11g",
+        "p6_n"
+      ],
+      "model": "2SK30A",
+      "label": "Q11 Normal-mode dry JFET switch (pinched off in Effect)"
+    },
+    {
+      "ref": "R61",
+      "type": "R",
+      "nodes": [
+        "pad9",
+        "0"
+      ],
+      "value": "10k"
+    },
+    {
+      "ref": "R60",
+      "type": "R",
+      "nodes": [
+        "pad9",
+        "q13g"
+      ],
+      "value": "1M"
+    },
+    {
+      "ref": "C33",
+      "type": "C",
+      "nodes": [
+        "q13g",
+        "0"
+      ],
+      "value": "22n"
+    },
+    {
+      "ref": "Q13",
+      "type": "njf",
+      "nodes": [
+        "q13d",
+        "q13g",
+        "p6_n"
+      ],
+      "model": "2SK30A",
+      "label": "Q13 Effect-mode wet JFET switch (conducting in Effect)"
+    },
+    {
+      "ref": "R54",
+      "type": "R",
+      "nodes": [
+        "p6_n",
+        "0"
+      ],
+      "value": "4k7"
+    },
+    {
+      "ref": "R91",
+      "type": "R",
+      "nodes": [
+        "p5_m",
+        "m_tip"
+      ],
+      "value": "470"
+    },
+    {
+      "ref": "S_NORM",
+      "type": "switch",
+      "nodes": [
+        "m_tip",
+        "out"
+      ],
+      "control": "stereoPlug",
+      "invert": true,
+      "label": "STEREO jack normalling contact (sums Dry + Wet in MONO)"
+    },
+    {
+      "ref": "R92",
+      "type": "R",
+      "nodes": [
+        "p6_n",
+        "out"
+      ],
+      "value": "470"
+    },
+    {
+      "ref": "ROUT_BLEED",
+      "type": "R",
+      "nodes": [
+        "out",
+        "0"
+      ],
+      "value": "1M",
+      "note": "Following-stage / cable DC return (1 MOhm guitar amp input)"
+    },
+    {
+      "ref": "IC4A",
+      "type": "opamp",
+      "nodes": [
+        "ic4a_p",
+        "0",
+        "j",
+        "p14",
+        "m14"
+      ],
+      "model": "UPC1458",
+      "label": "IC-4A uPC1458 Chorus Schmitt comparator"
+    },
+    {
+      "ref": "R81",
+      "type": "R",
+      "nodes": [
+        "ic4a_p",
+        "j"
+      ],
+      "value": "150k",
+      "note": "Roland service table on ET-10C: R81 = 150 kOhm for uPC1458"
+    },
+    {
+      "ref": "R80",
+      "type": "R",
+      "nodes": [
+        "ic4a_p",
+        "kl"
+      ],
+      "value": "120k",
+      "note": "Roland service table on ET-10C: R80 = 120 kOhm for uPC1458"
+    },
+    {
+      "ref": "VKICK",
+      "type": "V",
+      "nodes": [
+        "kick",
+        "0"
+      ],
+      "value": 0,
+      "ac": {
+        "amplitude": "1m",
+        "freq": 1.0,
+        "phase": 0
+      },
+      "label": "LFO start kick",
+      "note": "Simulation aid, not in the pedal: 1 mV through 10 MOhm starts the Chorus/Vibrato oscillator deterministically from the 0 V DC equilibrium"
+    },
+    {
+      "ref": "RKICKA",
+      "type": "R",
+      "nodes": [
+        "kick",
+        "ic4a_p"
+      ],
+      "value": "10M"
+    },
+    {
+      "ref": "RKICKB",
+      "type": "R",
+      "nodes": [
+        "kick",
+        "p15_v"
+      ],
+      "value": "10M"
+    },
+    {
+      "ref": "R82",
+      "type": "R",
+      "nodes": [
+        "j",
+        "p19_ci"
+      ],
+      "value": "100k"
+    },
+    {
+      "ref": "VR12",
+      "type": "pot",
+      "nodes": [
+        "p18_ci",
+        "p10_ci",
+        "p19_ci"
+      ],
+      "value": "10k",
+      "taper": "B",
+      "control": "intensity",
+      "label": "VR12 10 kB Chorus Intensity"
+    },
+    {
+      "ref": "R65",
+      "type": "R",
+      "nodes": [
+        "p18_ci",
+        "0"
+      ],
+      "value": "1k5"
+    },
+    {
+      "ref": "R57",
+      "type": "R",
+      "nodes": [
+        "p10_ci",
+        "p8_c"
+      ],
+      "value": "100k"
+    },
+    {
+      "ref": "S4A_CH",
+      "type": "switch",
+      "nodes": [
+        "p8_c",
+        "p16_sw"
+      ],
+      "control": "mode",
+      "invert": true,
+      "label": "S4A Chorus integrator feed"
+    },
+    {
+      "ref": "S4A_VIB",
+      "type": "switch",
+      "nodes": [
+        "p14_v",
+        "p16_sw"
+      ],
+      "control": "mode",
+      "label": "S4A Vibrato phase-shift loop feed"
+    },
+    {
+      "ref": "R76",
+      "type": "R",
+      "nodes": [
+        "p16_sw",
+        "ic4b_m"
+      ],
+      "value": "18k"
+    },
+    {
+      "ref": "C43",
+      "type": "C",
+      "nodes": [
+        "ic4b_m",
+        "kl"
+      ],
+      "value": "82n"
+    },
+    {
+      "ref": "IC4B",
+      "type": "opamp",
+      "nodes": [
+        "0",
+        "ic4b_m",
+        "kl",
+        "p14",
+        "m14"
+      ],
+      "model": "UPC1458",
+      "label": "IC-4B uPC1458 Chorus integrator / Vibrato sine oscillator"
+    },
+    {
+      "ref": "R77",
+      "type": "R",
+      "nodes": [
+        "kl",
+        "p17_v"
+      ],
+      "value": "2k2"
+    },
+    {
+      "ref": "R89",
+      "type": "R",
+      "nodes": [
+        "p17_v",
+        "p15_v"
+      ],
+      "value": "220k"
+    },
+    {
+      "ref": "VR14",
+      "type": "pot",
+      "nodes": [
+        "p17_v",
+        "p17_v",
+        "p15_v"
+      ],
+      "value": "100k",
+      "taper": "C",
+      "control": "rate",
+      "label": "VR14 100 kC Vibrato Rate rheostat"
+    },
+    {
+      "ref": "D06",
+      "type": "D",
+      "nodes": [
+        "p15_v",
+        "0"
+      ],
+      "model": "1N914"
+    },
+    {
+      "ref": "D07",
+      "type": "D",
+      "nodes": [
+        "0",
+        "p15_v"
+      ],
+      "model": "1N914"
+    },
+    {
+      "ref": "C34",
+      "type": "C",
+      "nodes": [
+        "p15_v",
+        "m14"
+      ],
+      "value": "10u",
+      "family": "electrolytic"
+    },
+    {
+      "ref": "R64",
+      "type": "R",
+      "nodes": [
+        "p15_v",
+        "p14_v"
+      ],
+      "value": "3k9"
+    },
+    {
+      "ref": "C35",
+      "type": "C",
+      "nodes": [
+        "p14_v",
+        "m14"
+      ],
+      "value": "4.7u",
+      "family": "electrolytic"
+    },
+    {
+      "ref": "R79",
+      "type": "R",
+      "nodes": [
+        "kl",
+        "p18_vco"
+      ],
+      "value": "4k7"
+    },
+    {
+      "ref": "R78",
+      "type": "R",
+      "nodes": [
+        "p14",
+        "p18_vco"
+      ],
+      "value": "8k2"
+    },
+    {
+      "ref": "VR13",
+      "type": "pot",
+      "nodes": [
+        "p12_vco",
+        "vdw",
+        "p18_vco"
+      ],
+      "value": "50k",
+      "taper": "B",
+      "control": "depth",
+      "label": "VR13 50 kB Vibrato Depth"
+    },
+    {
+      "ref": "R63",
+      "type": "R",
+      "nodes": [
+        "p12_vco",
+        "0"
+      ],
+      "value": "4k7"
+    },
+    {
+      "ref": "S4B_CH",
+      "type": "switch",
+      "nodes": [
+        "p18_vco",
+        "ctl_i"
+      ],
+      "control": "mode",
+      "invert": true,
+      "label": "S4B Chorus VCO sweep feed"
+    },
+    {
+      "ref": "S4B_VIB",
+      "type": "switch",
+      "nodes": [
+        "vdw",
+        "ctl_i"
+      ],
+      "control": "mode",
+      "label": "S4B Vibrato VCO sweep feed"
+    },
+    {
+      "ref": "D05",
+      "type": "D",
+      "nodes": [
+        "0",
+        "ctl_i"
+      ],
+      "model": "1N914",
+      "label": "D05 negative-excursion VCO control clamp"
+    },
+    {
+      "ref": "R35",
+      "type": "R",
+      "nodes": [
+        "ctl_i",
+        "vc"
+      ],
+      "value": "1k"
+    },
+    {
+      "ref": "C22",
+      "type": "C",
+      "nodes": [
+        "vc",
+        "0"
+      ],
+      "value": "1u",
+      "family": "electrolytic"
+    },
+    {
+      "ref": "RPUMP",
+      "type": "R",
+      "nodes": [
+        "p14",
+        "vcp"
+      ],
+      "value": "16k",
+      "note": "Cycle-averaged equivalent of the Q3-Q6 astable's 2*C18*f_cp*(13.4 V - vc) clamping charge pumped through D03/D04 into C22 (verified against transistor-level ngspice: V(I) = 0.9..11.8 V = 10.9 Vpp, matching factory oscillogram I = 11 Vpp)"
+    },
+    {
+      "ref": "DPUMP",
+      "type": "D",
+      "nodes": [
+        "vcp",
+        "vc"
+      ],
+      "model": "1N914"
+    }
+  ],
+  "probes": [
+    "p14",
+    "m14",
+    "c",
+    "d",
+    "e",
+    "q10e",
+    "q12g",
+    "kl",
+    "vc",
+    "out"
+  ],
+  "cuts": [
+    {
+      "node": "p14",
+      "loads": [
+        "R20",
+        "IC3",
+        "IC4A",
+        "IC4B",
+        "R78",
+        "RPUMP"
+      ]
+    },
+    {
+      "node": "m14",
+      "loads": [
+        "R18",
+        "R23",
+        "R40",
+        "R46",
+        "IC3",
+        "R66",
+        "R85",
+        "IC4A",
+        "IC4B",
+        "C34",
+        "C35"
+      ]
+    },
+    {
+      "node": "p13",
+      "loads": [
+        "R07",
+        "IC1",
+        "Q2"
+      ]
+    },
+    {
+      "node": "m13",
+      "loads": [
+        "IC1"
+      ]
+    },
+    {
+      "node": "vbias_ref",
+      "loads": [
+        "R21"
+      ]
+    },
+    {
+      "node": "q12g",
+      "loads": [
+        "Q12"
+      ]
+    },
+    {
+      "node": "q7e",
+      "loads": [
+        "R41"
+      ]
+    }
+  ],
+  "multirate": {
+    "slow": {
+      "rate": 3000.0,
+      "nodes": [
+        "p_unreg",
+        "vbb",
+        "kl",
+        "vc"
+      ]
+    }
+  },
+  "readouts": {
+    "lfo": "kl"
+  }
+}

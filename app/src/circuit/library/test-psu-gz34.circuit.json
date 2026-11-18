@@ -1,0 +1,23 @@
+{
+  "schema": "headroom.circuit.v1",
+  "id": "test-psu-gz34",
+  "version": 1,
+  "name": "GZ34 full-wave supply with sag (validation circuit)",
+  "description": "Centre-tapped 2 x 350 Vrms 60 Hz secondary (two anti-phase sources), GZ34 full-wave rectifier, 32 µF reservoir, 100 Ω + 4 H choke, 32 µF filter cap. The load draws 60 mA idle plus a current set by the input (0.1 A/V) through a VCCS: sag and ripple emerge from the circuit.",
+  "sources": [ { "title": "Mullard GZ34 data (forward drop), classic Fender/Marshall supply topology" } ],
+  "io": { "input": "in", "output": "bp2" },
+  "oversampling": 1,
+  "parts": [
+    { "ref": "VA", "type": "V", "nodes": ["sa", "0"], "value": "0", "ac": { "amplitude": "495", "freq": 60, "phase": 90 } },
+    { "ref": "VB", "type": "V", "nodes": ["sb", "0"], "value": "0", "ac": { "amplitude": "495", "freq": 60, "phase": 270 } },
+    { "ref": "DA", "type": "D", "nodes": ["sa", "bp1"], "model": "GZ34" },
+    { "ref": "DB", "type": "D", "nodes": ["sb", "bp1"], "model": "GZ34" },
+    { "ref": "C1", "type": "C", "nodes": ["bp1", "0"], "value": "32u" },
+    { "ref": "RCH", "type": "R", "nodes": ["bp1", "ch"], "value": "100" },
+    { "ref": "LCH", "type": "L", "nodes": ["ch", "bp2"], "value": "4" },
+    { "ref": "C2", "type": "C", "nodes": ["bp2", "0"], "value": "32u" },
+    { "ref": "RLOAD", "type": "R", "nodes": ["bp2", "0"], "value": "7.5k" },
+    { "ref": "GLOAD", "type": "vccs", "nodes": ["bp2", "0", "in", "0"], "gain": 0.1 }
+  ],
+  "probes": ["bp1", "bp2"]
+}

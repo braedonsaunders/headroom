@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Chime With Teeth</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Chime With Teeth" preset-author="Headroom" preset-comment="A 30-watt class-A 2x12 combo with the treble-boosted channel cranked until the EL84s compress: jangly chime on top, with a raw, rasping crunch when you strum hard. Single coils and open chords ring; humbuckers get a thick, toothy roar. Tone Cut tames the top." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="38000">
+    <component-audio version="1">
+      <parameters num-parameters="15">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0"/>
+        <parameter id="Br" value="1"/>
+        <parameter id="Tb" value="0.62"/>
+        <parameter id="Bs" value="0.5"/>
+        <parameter id="Tc" value="0.38"/>
+        <parameter id="TSp" value="0.3"/>
+        <parameter id="TDt" value="0"/>
+        <parameter id="Hz" value="0.5"/>
+        <parameter id="Vr" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0.5"/>
+        <parameter id="Bia" value="0.5"/>
+        <parameter id="G5M" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.711"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="0"/>
+        <parameter id="V" value="0.5"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="33000">
+    <component-audio version="1">
+      <parameters num-parameters="8">
+        <parameter id="Wet" value="0.13"/>
+        <parameter id="Tm" value="0.5"/>
+        <parameter id="Sz" value="0.35"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="Chr" value="0.5"/>
+        <parameter id="iM" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="38000" target-number="1" target-name="Br" min-value="0.45" max-value="1" controller-name="Volume"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="38000" target-number="1" target-name="Tb" min-value="0.35" max-value="0.85" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="38000" target-number="1" target-name="Bs" min-value="0.3" max-value="0.8" controller-name="Bass"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="38000" target-number="1" target-name="Tc" min-value="0.1" max-value="0.75" controller-name="Tone Cut"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="33000" target-number="1" target-name="Wet" min-value="0" max-value="0.35" controller-name="Room"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="crunch-chime-with-teeth" category="Crunch" order="150" instrument="guitar" style="British Rock">
+  <description>A 30-watt class-A 2x12 combo with the treble-boosted channel cranked until the EL84s compress: jangly chime on top, with a raw, rasping crunch when you strum hard. Single coils and open chords ring; humbuckers get a thick, toothy roar. Tone Cut tames the top.</description>
+  <tags><tag>Crunch</tag><tag>British Rock</tag><tag>Chime</tag><tag>Class-A</tag><tag>Rhythm</tag><tag>Jangle</tag></tags>
+  <sources>
+    <source url="https://en.wikipedia.org/wiki/Vox_AC30" title="Vox AC30 (Wikipedia)"/>
+    <source url="https://faderandknob.com/blog/vox-ac30-settings-guide" title="Fader &amp; Knob: Vox AC30 settings, from jangle to crunch"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

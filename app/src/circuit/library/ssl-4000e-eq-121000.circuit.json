@@ -1,0 +1,2967 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "ssl-4000e-eq-121000",
+ "version": 1,
+ "name": "SSL 4000 E Channel EQ (82E242)",
+ "description": "Solid State Logic 82E242 'Equaliser Filters' card (the black-knob E EQ), drawing T82242.70, ASSY REV 5, with the Nov 85 ECO values. Filters first, as the 611 mother board routes them: input -> RV5 / R56 -> HPF (C34 220n into R55 + gang c, T11 buffer, then a T12 Sallen-Key with C36 / C37 220n, R59 / R60 1K8 + gangs a / b, gain set by R58 7K5 over R57 + RV6): 18 dB/oct on the 47K A/log triple -> S4 -> LPF (unity Sallen-Key T13, 680R + 10K LIN gangs, C43 68n / C44 3n3) -> S1 -> EQ: two inverting summing amplifiers (T3 with the HF and HMF bands, T8 with the LMF and LF bands); each band's 25K LIN centre-tapped boost/cut pot sits between the section's input (1K0) and its output (1K0), its wiper drives the band's filter, and the band output returns to the summing node through 4K75; each wiper also has 1K8 to 0 V and 12K to the other band's output of the same section, as drawn. HF / LF: first-order shelf stages (T1 / T9) whose J112 switch closes a positive-feedback loop through 100 uF (the bell) and a second J112 that changes T2 / T10's gain; HMF / LMF: T4 / T6 band-pass with the Q pot's first gang in the + divider and its second gang in T5 / T7's gain. 13 x NE5534 on +-18 V (R77 / R78 22R, C48 / C49 10u, 26 x 10n). Trimmers RV1-RV6 set by SSL's ECO procedure (see the notes).",
+ "sources": [
+  {
+   "title": "Solid State Logic, 'EQUALISER FILTERS', drawing T82242.70 (card 82E242), ASSY REV 5, revision table to Rev 4 Jan 86; archive.org scan (4860 x 3271, 294 ppi) in the item 'SSL 4000/6000 Individual Cards', file '82E242 Equalizer Filters.pdf' p.4; p.3 is a Rev 3 scan (3300 x 2332)",
+   "url": "https://archive.org/details/82-e-12-logic-card"
+  },
+  {
+   "title": "K&A Electronics, ssl_82E242.pdf: the same drawing, ASSY REV 5, independent 100 dpi scan (value cross-check)",
+   "url": "http://www.ka-electronics.com/images/SSL/ssl_82E242.pdf"
+  },
+  {
+   "title": "SSL fax 15 Nov 1985 (Trevor S), 'The 82E242 Rev. 4': published band specification (HF +-15 dB shelf / +-18 dB bell, 1.5-20 kHz, Q 1.0; HMF 600 Hz-10 kHz, LMF 160 Hz-2.2 kHz, Q 0.5-4.5, +-15 dB at lowest Q / +-18 dB at highest; LF 40-450 Hz, Q 1.7), the component changes (R6/R44 5K1, R7/R45 2K4, R81 33K, R87 7K5, R69/R71 680R, RV1/RV4 10K) and the trimmer set-up",
+   "url": "http://www.ka-electronics.com/images/SSL/ssl_82E242_eco.pdf"
+  },
+  {
+   "title": "82E242 edge-connector list (T82002.50, 611G mother board): every pot's ACW / CW / wiper pin; same archive.org file p.1",
+   "url": "https://archive.org/details/82-e-12-logic-card"
+  }
+ ],
+ "io": {
+  "input": "in",
+  "output": "out",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 1.0
+ },
+ "oversampling": 2,
+ "solver": "auto",
+ "cuts": [
+  "vp",
+  "vn",
+  {
+   "node": "fo",
+   "loads": [
+    "C22"
+   ]
+  }
+ ],
+ "models": {
+  "NE5534_22P": {
+   "kind": "opamp",
+   "level": 1,
+   "a0": 100000.0,
+   "gbw": 10000000.0,
+   "slew": 6000000.0,
+   "swing_hi": 1.5,
+   "swing_lo": 1.5,
+   "vhi": 16.5,
+   "vlo": -16.5,
+   "note": "NE5534N (drawing note 1: all ICs 5534N) with Cc = 22 pF on pins 5-8: AVD 100 V/mV, unity-gain bandwidth 10 MHz, slew 6 V/us (TI datasheet, Cc = 22 pF); output swing about 1.5 V from each +-18 V rail. The comp cap is carried by gbw/slew"
+  },
+  "NE5534_10P": {
+   "kind": "opamp",
+   "level": 1,
+   "a0": 100000.0,
+   "gbw": 14000000.0,
+   "slew": 9000000.0,
+   "swing_hi": 1.5,
+   "swing_lo": 1.5,
+   "vhi": 16.5,
+   "vlo": -16.5,
+   "note": "NE5534N with Cc = 10 pF (T2, T3, T8, T10, T12): between the datasheet's Cc = 0 (13 V/us) and 22 pF (6 V/us) figures; gbw 14 MHz, slew 9 V/us are interpolated (approximate). Inaudible at these closed-loop gains"
+  },
+  "J112": {
+   "kind": "njf",
+   "vto": -2.5,
+   "beta": 0.005,
+   "lambda": 0.01,
+   "is": 1e-14,
+   "cgs": 7e-12,
+   "cgd": 7e-12,
+   "note": "J112 N-channel switch JFET (drawing). Approximate, datasheet-centred: VGS(off) -1 to -5 V, rDS(on) <= 50 ohm (here 40 ohm), IDSS >= 5 mA; Ciss/Crss about 7 pF. Used only fully on (gate forward-biased through 10M) or pinched off (gate at about -18 V)"
+  },
+  "ZENER_3V3": {
+   "kind": "diode",
+   "is": 1e-14,
+   "n": 1.0,
+   "rs": 20,
+   "bv": 3.3,
+   "ibv": 0.005,
+   "nbv": 1.5,
+   "note": "D1 3V3 zener (type not marked): BV 3.3 V at 5 mA, generic. It only loads the +18 V rail (6.4 mA through R92)"
+  }
+ },
+ "controls": [
+  {
+   "id": "hfgain",
+   "label": "HF Gain",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "H0"
+   ],
+   "group": "EQ",
+   "note": "HF BOOST/CUT 25K LIN with a centre tap (4K7 to 0 V on the 611 mother board); CW = boost"
+  },
+  {
+   "id": "hffreq",
+   "label": "HF Freq",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "H1"
+   ],
+   "group": "EQ",
+   "note": "HF f 50K Alog/Alog dual: both T1 legs (3K0 + gang a with 2n2; 3K6 + gang b)"
+  },
+  {
+   "id": "hfbell",
+   "label": "HF Bell",
+   "kind": "switch",
+   "default": 0,
+   "group": "EQ",
+   "note": "HF shelf/bell switch (edge pins 1-2): drives both J112s (T1 bell loop through C6, R81 across R9)",
+   "params": [
+    "H2"
+   ]
+  },
+  {
+   "id": "hmfgain",
+   "label": "HMF Gain",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "H3"
+   ],
+   "group": "EQ",
+   "note": "HMF BOOST/CUT 25K LIN centre-tapped"
+  },
+  {
+   "id": "hmffreq",
+   "label": "HMF Freq",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "H4"
+   ],
+   "group": "EQ",
+   "note": "HMF f 50K Alog Alog dual"
+  },
+  {
+   "id": "hmfq",
+   "label": "HMF Q",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "H5"
+   ],
+   "group": "EQ",
+   "note": "HMF Q 10K log log dual: T4's + divider and T5's gain"
+  },
+  {
+   "id": "lmfgain",
+   "label": "LMF Gain",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "L6"
+   ],
+   "group": "EQ",
+   "note": "LMF BOOST/CUT 25K LIN centre-tapped"
+  },
+  {
+   "id": "lmffreq",
+   "label": "LMF Freq",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "L7"
+   ],
+   "group": "EQ",
+   "note": "LMF f 50K Alog Alog dual"
+  },
+  {
+   "id": "lmfq",
+   "label": "LMF Q",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "L8"
+   ],
+   "group": "EQ",
+   "note": "LMF Q 10K log log dual"
+  },
+  {
+   "id": "lfgain",
+   "label": "LF Gain",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "L9"
+   ],
+   "group": "EQ",
+   "note": "LF BOOST/CUT 25K LIN centre-tapped"
+  },
+  {
+   "id": "lffreq",
+   "label": "LF Freq",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "L10"
+   ],
+   "group": "EQ",
+   "note": "LF f 50K Alog Alog dual"
+  },
+  {
+   "id": "lfbell",
+   "label": "LF Bell",
+   "kind": "switch",
+   "default": 0,
+   "group": "EQ",
+   "note": "LF shelf/bell switch: Sw4 shorts C16 // C17 in SHELF, Sw3 (pins 38-39) drives both J112s in BELL",
+   "params": [
+    "L11"
+   ]
+  },
+  {
+   "id": "hpf",
+   "label": "HP Freq",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "H12"
+   ],
+   "group": "Filters",
+   "note": "LF filter 47K A/log triple: the three 18 dB/oct poles (C34, C36, C37 220 nF with 1K8 + gang each)"
+  },
+  {
+   "id": "lpf",
+   "label": "LP Freq",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "L13"
+   ],
+   "group": "Filters",
+   "note": "HF filter 10K LIN dual: the 12 dB/oct Sallen-Key (C43 68n, C44 3n3, 680R + gang each); CW = lower"
+  },
+  {
+   "id": "hpf_in",
+   "label": "HP In",
+   "kind": "switch",
+   "default": 0,
+   "group": "Filters",
+   "note": "S4 on the LF filter shaft (the knob's ACW click). Default out",
+   "face": true
+  },
+  {
+   "id": "lpf_in",
+   "label": "LP In",
+   "kind": "switch",
+   "default": 0,
+   "group": "Filters",
+   "note": "S1 on the HF filter shaft. Default out",
+   "face": true
+  },
+  {
+   "id": "mode",
+   "label": "Mode",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "M12"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "E/G flavour switch of the behavioural model; this netlist is the E card 82E242 only. Stored only"
+  },
+  {
+   "id": "output",
+   "label": "Output",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "O14"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "The 82E242 card has no output level control (T8 is unity, R54 10R to pin 43). Stored only"
+  },
+  {
+   "id": "power",
+   "label": "On/Off",
+   "kind": "switch",
+   "default": 1,
+   "params": [
+    "Pwr"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "The 611E EQ IN switch (on the switch card, not this card) is the host's unit bypass. Stored only"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VP18",
+   "type": "V",
+   "nodes": [
+    "vps",
+    "0"
+   ],
+   "value": "18",
+   "label": "console +18 V (edge pin 53)"
+  },
+  {
+   "ref": "VN18",
+   "type": "V",
+   "nodes": [
+    "vns",
+    "0"
+   ],
+   "value": "-18",
+   "label": "console -18 V (edge pin 52)"
+  },
+  {
+   "ref": "R77",
+   "type": "R",
+   "nodes": [
+    "vps",
+    "vp"
+   ],
+   "value": "22",
+   "tolerance": 0.05,
+   "label": "R77 22R +18 V feed"
+  },
+  {
+   "ref": "R78",
+   "type": "R",
+   "nodes": [
+    "vns",
+    "vn"
+   ],
+   "value": "22",
+   "tolerance": 0.05,
+   "label": "R78 22R -18 V feed"
+  },
+  {
+   "ref": "C48",
+   "type": "C",
+   "nodes": [
+    "vp",
+    "0"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "C48 10u +18 V reservoir (to 0 V pin 49)"
+  },
+  {
+   "ref": "C49",
+   "type": "C",
+   "nodes": [
+    "0",
+    "vn"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "C49 10u -18 V reservoir"
+  },
+  {
+   "ref": "C53",
+   "type": "C",
+   "nodes": [
+    "vp",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C53 10n/63V decoupler at T1 +18 V ('adjacent T1 through 13 numbered C53-78')"
+  },
+  {
+   "ref": "C54",
+   "type": "C",
+   "nodes": [
+    "0",
+    "vn"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C54 10n/63V decoupler at T1 -18 V"
+  },
+  {
+   "ref": "C55",
+   "type": "C",
+   "nodes": [
+    "vp",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C55 10n/63V decoupler at T2 +18 V ('adjacent T1 through 13 numbered C53-78')"
+  },
+  {
+   "ref": "C56",
+   "type": "C",
+   "nodes": [
+    "0",
+    "vn"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C56 10n/63V decoupler at T2 -18 V"
+  },
+  {
+   "ref": "C57",
+   "type": "C",
+   "nodes": [
+    "vp",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C57 10n/63V decoupler at T3 +18 V ('adjacent T1 through 13 numbered C53-78')"
+  },
+  {
+   "ref": "C58",
+   "type": "C",
+   "nodes": [
+    "0",
+    "vn"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C58 10n/63V decoupler at T3 -18 V"
+  },
+  {
+   "ref": "C59",
+   "type": "C",
+   "nodes": [
+    "vp",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C59 10n/63V decoupler at T4 +18 V ('adjacent T1 through 13 numbered C53-78')"
+  },
+  {
+   "ref": "C60",
+   "type": "C",
+   "nodes": [
+    "0",
+    "vn"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C60 10n/63V decoupler at T4 -18 V"
+  },
+  {
+   "ref": "C61",
+   "type": "C",
+   "nodes": [
+    "vp",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C61 10n/63V decoupler at T5 +18 V ('adjacent T1 through 13 numbered C53-78')"
+  },
+  {
+   "ref": "C62",
+   "type": "C",
+   "nodes": [
+    "0",
+    "vn"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C62 10n/63V decoupler at T5 -18 V"
+  },
+  {
+   "ref": "C63",
+   "type": "C",
+   "nodes": [
+    "vp",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C63 10n/63V decoupler at T6 +18 V ('adjacent T1 through 13 numbered C53-78')"
+  },
+  {
+   "ref": "C64",
+   "type": "C",
+   "nodes": [
+    "0",
+    "vn"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C64 10n/63V decoupler at T6 -18 V"
+  },
+  {
+   "ref": "C65",
+   "type": "C",
+   "nodes": [
+    "vp",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C65 10n/63V decoupler at T7 +18 V ('adjacent T1 through 13 numbered C53-78')"
+  },
+  {
+   "ref": "C66",
+   "type": "C",
+   "nodes": [
+    "0",
+    "vn"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C66 10n/63V decoupler at T7 -18 V"
+  },
+  {
+   "ref": "C67",
+   "type": "C",
+   "nodes": [
+    "vp",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C67 10n/63V decoupler at T8 +18 V ('adjacent T1 through 13 numbered C53-78')"
+  },
+  {
+   "ref": "C68",
+   "type": "C",
+   "nodes": [
+    "0",
+    "vn"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C68 10n/63V decoupler at T8 -18 V"
+  },
+  {
+   "ref": "C69",
+   "type": "C",
+   "nodes": [
+    "vp",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C69 10n/63V decoupler at T9 +18 V ('adjacent T1 through 13 numbered C53-78')"
+  },
+  {
+   "ref": "C70",
+   "type": "C",
+   "nodes": [
+    "0",
+    "vn"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C70 10n/63V decoupler at T9 -18 V"
+  },
+  {
+   "ref": "C71",
+   "type": "C",
+   "nodes": [
+    "vp",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C71 10n/63V decoupler at T10 +18 V ('adjacent T1 through 13 numbered C53-78')"
+  },
+  {
+   "ref": "C72",
+   "type": "C",
+   "nodes": [
+    "0",
+    "vn"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C72 10n/63V decoupler at T10 -18 V"
+  },
+  {
+   "ref": "C73",
+   "type": "C",
+   "nodes": [
+    "vp",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C73 10n/63V decoupler at T11 +18 V ('adjacent T1 through 13 numbered C53-78')"
+  },
+  {
+   "ref": "C74",
+   "type": "C",
+   "nodes": [
+    "0",
+    "vn"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C74 10n/63V decoupler at T11 -18 V"
+  },
+  {
+   "ref": "C75",
+   "type": "C",
+   "nodes": [
+    "vp",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C75 10n/63V decoupler at T12 +18 V ('adjacent T1 through 13 numbered C53-78')"
+  },
+  {
+   "ref": "C76",
+   "type": "C",
+   "nodes": [
+    "0",
+    "vn"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C76 10n/63V decoupler at T12 -18 V"
+  },
+  {
+   "ref": "C77",
+   "type": "C",
+   "nodes": [
+    "vp",
+    "0"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C77 10n/63V decoupler at T13 +18 V ('adjacent T1 through 13 numbered C53-78')"
+  },
+  {
+   "ref": "C78",
+   "type": "C",
+   "nodes": [
+    "0",
+    "vn"
+   ],
+   "value": "10n",
+   "tolerance": 0.2,
+   "label": "C78 10n/63V decoupler at T13 -18 V"
+  },
+  {
+   "ref": "D1",
+   "type": "D",
+   "nodes": [
+    "dz",
+    "vp"
+   ],
+   "model": "ZENER_3V3",
+   "label": "D1 3V3 zener from +18 V (cathode) to the '0' pin reference"
+  },
+  {
+   "ref": "R92",
+   "type": "R",
+   "nodes": [
+    "dz",
+    "vn"
+   ],
+   "value": "5.1k",
+   "tolerance": 0.05,
+   "label": "R92 5K1 D1 bias to -18 V"
+  },
+  {
+   "ref": "RV5",
+   "type": "R",
+   "nodes": [
+    "in",
+    "hp0"
+   ],
+   "value": "300",
+   "label": "RV5 500R UNITY GAIN SET trimmer (wiper strapped to its lower end), set for unity filter gain",
+   "tolerance": 0
+  },
+  {
+   "ref": "R56",
+   "type": "R",
+   "nodes": [
+    "hp0",
+    "0"
+   ],
+   "value": "300",
+   "tolerance": 0.01,
+   "label": "R56 300R"
+  },
+  {
+   "ref": "C34",
+   "type": "C",
+   "nodes": [
+    "hp0",
+    "hp1"
+   ],
+   "value": "220n",
+   "tolerance": 0.05,
+   "label": "C34 220nF HPF pole 1 (C25 N/C beside it: not fitted)"
+  },
+  {
+   "ref": "R79B",
+   "type": "R",
+   "nodes": [
+    "hp1",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.01,
+   "label": "R79 1M T11 + bias (the drawing has a second R79, 100K in the HF band)"
+  },
+  {
+   "ref": "R55",
+   "type": "R",
+   "nodes": [
+    "hp1",
+    "hp7"
+   ],
+   "value": "1.8k",
+   "tolerance": 0.01,
+   "label": "R55 1K8 -> edge pin 7"
+  },
+  {
+   "ref": "RVLFc",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "0",
+    "hp7"
+   ],
+   "value": "47k",
+   "taper": "C",
+   "control": "hpf",
+   "label": "LF filter 47K A/log triple, gang c: CW end at pin 7, wiper strapped to the ACW end at 0 V (rheostat CW->wiper)"
+  },
+  {
+   "ref": "T11",
+   "type": "opamp",
+   "nodes": [
+    "hp1",
+    "t11o",
+    "t11o",
+    "vp",
+    "vn"
+   ],
+   "model": "NE5534_22P",
+   "label": "T11 5534 unity buffer (C35 22pF)"
+  },
+  {
+   "ref": "C36",
+   "type": "C",
+   "nodes": [
+    "t11o",
+    "hp2"
+   ],
+   "value": "220n",
+   "tolerance": 0.05,
+   "label": "C36 220nF"
+  },
+  {
+   "ref": "C37",
+   "type": "C",
+   "nodes": [
+    "hp2",
+    "hp3"
+   ],
+   "value": "220n",
+   "tolerance": 0.05,
+   "label": "C37 220nF"
+  },
+  {
+   "ref": "R59",
+   "type": "R",
+   "nodes": [
+    "hp2",
+    "hp56"
+   ],
+   "value": "1.8k",
+   "tolerance": 0.01,
+   "label": "R59 1K8 -> pin 56 (LF filter wiper a)"
+  },
+  {
+   "ref": "RVLFa",
+   "type": "pot",
+   "nodes": [
+    "hp56",
+    "hp56",
+    "hp54"
+   ],
+   "value": "47k",
+   "taper": "C",
+   "control": "hpf",
+   "label": "LF filter gang a: wiper a (pin 56) strapped to its ACW end, CW a = pin 54 (the HPF output after R64): Sallen-Key feedback leg"
+  },
+  {
+   "ref": "R60",
+   "type": "R",
+   "nodes": [
+    "hp3",
+    "hp55"
+   ],
+   "value": "1.8k",
+   "tolerance": 0.01,
+   "label": "R60 1K8 -> pin 55 (LF filter CW b)"
+  },
+  {
+   "ref": "RVLFb",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "0",
+    "hp55"
+   ],
+   "value": "47k",
+   "taper": "C",
+   "control": "hpf",
+   "label": "LF filter gang b: CW b = pin 55, wiper strapped to the ACW end at 0 V"
+  },
+  {
+   "ref": "T12",
+   "type": "opamp",
+   "nodes": [
+    "hp3",
+    "t12m",
+    "t12o",
+    "vp",
+    "vn"
+   ],
+   "model": "NE5534_10P",
+   "label": "T12 5534 Sallen-Key gain stage (C38 10pF)"
+  },
+  {
+   "ref": "R57",
+   "type": "R",
+   "nodes": [
+    "r57",
+    "0"
+   ],
+   "value": "5.6k",
+   "tolerance": 0.01,
+   "label": "R57 5K6 (LF FILTER CORNER leg to 0 V)"
+  },
+  {
+   "ref": "RV6",
+   "type": "R",
+   "nodes": [
+    "r57",
+    "t12m"
+   ],
+   "value": "1.9k",
+   "label": "RV6 5K LF FILTER CORNER trimmer (wiper strapped to the T12 end): sets T12's gain 1 + R58/(R57 + RV6), i.e. the Sallen-Key Q",
+   "tolerance": 0
+  },
+  {
+   "ref": "R58",
+   "type": "R",
+   "nodes": [
+    "t12m",
+    "t12o"
+   ],
+   "value": "7.5k",
+   "tolerance": 0.01,
+   "label": "R58 7K5"
+  },
+  {
+   "ref": "C39",
+   "type": "C",
+   "nodes": [
+    "t12o",
+    "hp39"
+   ],
+   "value": "220u",
+   "tolerance": 0.2,
+   "label": "C39 220uF/25V"
+  },
+  {
+   "ref": "R61",
+   "type": "R",
+   "nodes": [
+    "t12o",
+    "hp39"
+   ],
+   "value": "100k",
+   "tolerance": 0.01,
+   "label": "R61 100K electrolytic bias"
+  },
+  {
+   "ref": "R63",
+   "type": "R",
+   "nodes": [
+    "hp39",
+    "vp"
+   ],
+   "value": "1M",
+   "tolerance": 0.01,
+   "label": "R63 1M to +18 V ('+VE')"
+  },
+  {
+   "ref": "C40",
+   "type": "C",
+   "nodes": [
+    "hp39",
+    "hp40"
+   ],
+   "value": "220u",
+   "tolerance": 0.2,
+   "label": "C40 220uF/25V"
+  },
+  {
+   "ref": "R65",
+   "type": "R",
+   "nodes": [
+    "hp40",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.01,
+   "label": "R65 10K"
+  },
+  {
+   "ref": "R64",
+   "type": "R",
+   "nodes": [
+    "hp40",
+    "hp54"
+   ],
+   "value": "10",
+   "tolerance": 0.01,
+   "label": "R64 10R -> pin 54"
+  },
+  {
+   "ref": "S4in",
+   "type": "switch",
+   "nodes": [
+    "hp54",
+    "hp51"
+   ],
+   "control": "hpf_in",
+   "ron": 0.05,
+   "label": "S4 (on the LF filter shaft): HPF in"
+  },
+  {
+   "ref": "S4out",
+   "type": "switch",
+   "nodes": [
+    "in",
+    "hp51"
+   ],
+   "control": "hpf_in",
+   "invert": true,
+   "ron": 0.05,
+   "label": "S4: HPF out (pin 42 straight through)"
+  },
+  {
+   "ref": "R66",
+   "type": "R",
+   "nodes": [
+    "hp51",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.01,
+   "label": "R66 10K"
+  },
+  {
+   "ref": "C41",
+   "type": "C",
+   "nodes": [
+    "hp51",
+    "l41"
+   ],
+   "value": "220u",
+   "tolerance": 0.2,
+   "label": "C41 220uF/25V"
+  },
+  {
+   "ref": "R67",
+   "type": "R",
+   "nodes": [
+    "l41",
+    "vp"
+   ],
+   "value": "1M",
+   "tolerance": 0.01,
+   "label": "R67 1M to +18 V"
+  },
+  {
+   "ref": "C42",
+   "type": "C",
+   "nodes": [
+    "l41",
+    "l42"
+   ],
+   "value": "220u",
+   "tolerance": 0.2,
+   "label": "C42 220uF/25V"
+  },
+  {
+   "ref": "R68",
+   "type": "R",
+   "nodes": [
+    "l42",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.01,
+   "label": "R68 100K"
+  },
+  {
+   "ref": "R70",
+   "type": "R",
+   "nodes": [
+    "l42",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.01,
+   "label": "R70 10K"
+  },
+  {
+   "ref": "R69",
+   "type": "R",
+   "nodes": [
+    "l42",
+    "l44"
+   ],
+   "value": "680",
+   "tolerance": 0.01,
+   "label": "R69 680R -> pin 44 (ECO Nov 85: 680R)"
+  },
+  {
+   "ref": "RVHFa",
+   "type": "pot",
+   "nodes": [
+    "l44",
+    "l45",
+    "l45"
+   ],
+   "value": "10k",
+   "taper": "B",
+   "control": "lpf",
+   "label": "HF filter 10K LIN dual gang a: ACW a = pin 44, wiper a strapped to the CW end at pin 45 (rheostat ACW->wiper)"
+  },
+  {
+   "ref": "RVHFb",
+   "type": "pot",
+   "nodes": [
+    "l45",
+    "l46",
+    "l46"
+   ],
+   "value": "10k",
+   "taper": "B",
+   "control": "lpf",
+   "label": "HF filter gang b: ACW b = pin 45, wiper b = pin 46 strapped to its CW end"
+  },
+  {
+   "ref": "C43",
+   "type": "C",
+   "nodes": [
+    "l45",
+    "t13o"
+   ],
+   "value": "6.8n",
+   "tolerance": 0.05,
+   "label": "C43 Sallen-Key feedback cap. The drawing reads 68n on all three scans; 6n8 is fitted here: 68n contradicts SSL's published LPF (12 dB/oct, lowest corner 3 kHz) with a Q 2.3 / +7 dB resonant peak and a 1 kHz lowest corner, while 6n8 gives Q 0.72 and 3.1 kHz, and the 82E02's identical LPF (T12, 470R + 10K LIN + 470R) uses C24 6n8 / C25 3n3. Flagged in the notes"
+  },
+  {
+   "ref": "R71",
+   "type": "R",
+   "nodes": [
+    "l46",
+    "t13p"
+   ],
+   "value": "680",
+   "tolerance": 0.01,
+   "label": "R71 680R (ECO Nov 85: 680R)"
+  },
+  {
+   "ref": "C44",
+   "type": "C",
+   "nodes": [
+    "t13p",
+    "0"
+   ],
+   "value": "3.3n",
+   "tolerance": 0.05,
+   "label": "C44 3n3"
+  },
+  {
+   "ref": "T13",
+   "type": "opamp",
+   "nodes": [
+    "t13p",
+    "t13o",
+    "t13o",
+    "vp",
+    "vn"
+   ],
+   "model": "NE5534_22P",
+   "label": "T13 5534 unity follower (C45 22pF)"
+  },
+  {
+   "ref": "C46",
+   "type": "C",
+   "nodes": [
+    "t13o",
+    "l46m"
+   ],
+   "value": "220u",
+   "tolerance": 0.2,
+   "label": "C46 220uF/25V"
+  },
+  {
+   "ref": "R72",
+   "type": "R",
+   "nodes": [
+    "t13o",
+    "l46m"
+   ],
+   "value": "100k",
+   "tolerance": 0.01,
+   "label": "R72 100K electrolytic bias"
+  },
+  {
+   "ref": "R74",
+   "type": "R",
+   "nodes": [
+    "l46m",
+    "vp"
+   ],
+   "value": "1M",
+   "tolerance": 0.01,
+   "label": "R74 1M to +18 V"
+  },
+  {
+   "ref": "C47",
+   "type": "C",
+   "nodes": [
+    "l46m",
+    "l47"
+   ],
+   "value": "220u",
+   "tolerance": 0.2,
+   "label": "C47 220uF/25V"
+  },
+  {
+   "ref": "R76",
+   "type": "R",
+   "nodes": [
+    "l47",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.01,
+   "label": "R76 10K"
+  },
+  {
+   "ref": "R75",
+   "type": "R",
+   "nodes": [
+    "l47",
+    "l47p"
+   ],
+   "value": "10",
+   "tolerance": 0.01,
+   "label": "R75 10R -> pin 47 contact"
+  },
+  {
+   "ref": "S1in",
+   "type": "switch",
+   "nodes": [
+    "l47p",
+    "fo"
+   ],
+   "control": "lpf_in",
+   "ron": 0.05,
+   "label": "S1 (on the HF filter shaft): LPF in"
+  },
+  {
+   "ref": "S1out",
+   "type": "switch",
+   "nodes": [
+    "hp51",
+    "fo"
+   ],
+   "control": "lpf_in",
+   "invert": true,
+   "ron": 0.05,
+   "label": "S1: LPF out"
+  },
+  {
+   "ref": "C22",
+   "type": "C",
+   "nodes": [
+    "fo",
+    "ein"
+   ],
+   "value": "220u",
+   "tolerance": 0.2,
+   "label": "C22 220uF/25V EQ input coupling",
+   "note": "Solver partition (cuts: fo, loads C22; circuit_cli autocut, docs/CIRCUIT_ENGINE.md section 10.27): the filter section's output node (0.1 ohm, an op-amp output through S1in/S1out) drives only this coupling cap into the 100k EQ input, so C22 sees it one sample late. 25+19-port groups become 19+19+6; -10.6 % instructions on a DI, null against the uncut netlist -115.7 dB rms on the DI (worst switch position -74.3 dB, HPF in), every ssleq case within +0.001 pp, aliasing -104.6 -> -104.3 dB."
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "ein",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.01,
+   "label": "R1 100K"
+  },
+  {
+   "ref": "R50",
+   "type": "R",
+   "nodes": [
+    "vp",
+    "ein"
+   ],
+   "value": "1M",
+   "tolerance": 0.01,
+   "label": "R50 1M electrolytic bias (rail label '+1?' damaged on all three scans; the card's only positive rail is +18 V)"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "ein",
+    "bus1"
+   ],
+   "value": "220u",
+   "tolerance": 0.2,
+   "label": "C1 220uF/25V"
+  },
+  {
+   "ref": "R10",
+   "type": "R",
+   "nodes": [
+    "bus1",
+    "s3"
+   ],
+   "value": "4.75k",
+   "tolerance": 0.005,
+   "label": "R10 4K75 input to T3 (* = 0.5 % on the drawing)"
+  },
+  {
+   "ref": "R12",
+   "type": "R",
+   "nodes": [
+    "s3",
+    "t3o"
+   ],
+   "value": "4.75k",
+   "tolerance": 0.005,
+   "label": "R12 4K75 T3 feedback (* = 0.5 % on the drawing)"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "s3",
+    "t3o"
+   ],
+   "value": "220p",
+   "tolerance": 0.05,
+   "label": "C8 220pF T3 feedback (label reads C6/C8; C6 is the 100 uF HF bell cap)"
+  },
+  {
+   "ref": "R13",
+   "type": "R",
+   "nodes": [
+    "s3",
+    "t5o"
+   ],
+   "value": "4.75k",
+   "tolerance": 0.005,
+   "label": "R13 4K75 from the HMF band output (T5) (* = 0.5 % on the drawing)"
+  },
+  {
+   "ref": "R14",
+   "type": "R",
+   "nodes": [
+    "s3",
+    "t2o"
+   ],
+   "value": "4.75k",
+   "tolerance": 0.005,
+   "label": "R14 4K75 from the HF band output (T2) (* = 0.5 % on the drawing)"
+  },
+  {
+   "ref": "T3",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "s3",
+    "t3o",
+    "vp",
+    "vn"
+   ],
+   "model": "NE5534_10P",
+   "label": "T3 5534 summing amplifier (C25 10pF)"
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "bus1",
+    "h4"
+   ],
+   "value": "1k",
+   "tolerance": 0.005,
+   "label": "R2 1K0 -> HF gain pin 4 (CW) (* = 0.5 % on the drawing)"
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "h3",
+    "t3o"
+   ],
+   "value": "1k",
+   "tolerance": 0.005,
+   "label": "R15 1K0 HF gain pin 3 (ACW) -> T3 output (* = 0.5 % on the drawing)"
+  },
+  {
+   "ref": "VRHFa",
+   "type": "pot",
+   "nodes": [
+    "h3",
+    "vrhf_wa",
+    "vrhf_ct"
+   ],
+   "value": "12.5k",
+   "taper": "B",
+   "control": "hfgain",
+   "span": [
+    0.0,
+    0.5
+   ],
+   "label": "HF BOOST/CUT 25K LIN centre-tapped: ACW half-track (pin ACW -> centre tap)"
+  },
+  {
+   "ref": "VRHFb",
+   "type": "pot",
+   "nodes": [
+    "vrhf_ct",
+    "vrhf_wb",
+    "h4"
+   ],
+   "value": "12.5k",
+   "taper": "B",
+   "control": "hfgain",
+   "span": [
+    0.5,
+    1.0
+   ],
+   "label": "HF BOOST/CUT 25K LIN centre-tapped: CW half-track (centre tap -> pin CW)"
+  },
+  {
+   "ref": "VRHFSa",
+   "type": "switch",
+   "nodes": [
+    "vrhf_wa",
+    "w5"
+   ],
+   "control": "hfgain",
+   "invert": true,
+   "ron": 0.01,
+   "label": "HF BOOST/CUT 25K LIN centre-tapped: wiper on the ACW half (below the centre detent)"
+  },
+  {
+   "ref": "VRHFSb",
+   "type": "switch",
+   "nodes": [
+    "vrhf_wb",
+    "w5"
+   ],
+   "control": "hfgain",
+   "ron": 0.01,
+   "label": "HF BOOST/CUT 25K LIN centre-tapped: wiper on the CW half (at and above the centre detent)"
+  },
+  {
+   "ref": "M41",
+   "type": "R",
+   "nodes": [
+    "vrhf_ct",
+    "0"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.01,
+   "label": "R41 4K7 HF gain centre tap to 0 V (on the 611 mother board)"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "w5",
+    "0"
+   ],
+   "value": "1.8k",
+   "tolerance": 0.01,
+   "label": "R3 1K8 HF wiper (pin 5) to 0 V"
+  },
+  {
+   "ref": "R95",
+   "type": "R",
+   "nodes": [
+    "w5",
+    "t5o"
+   ],
+   "value": "12k",
+   "tolerance": 0.01,
+   "label": "R95 12K HF wiper -> HMF band output (T5), as drawn"
+  },
+  {
+   "ref": "VRHFFa",
+   "type": "pot",
+   "nodes": [
+    "h9",
+    "h9",
+    "w5"
+   ],
+   "value": "50k",
+   "taper": "C",
+   "control": "hffreq",
+   "label": "HF f 50K Alog/Alog gang a: CW a (no edge pin) at the HF wiper, wiper a = pin 9 strapped to its ACW end"
+  },
+  {
+   "ref": "CHF",
+   "type": "C",
+   "nodes": [
+    "w5",
+    "h9"
+   ],
+   "value": "220p",
+   "tolerance": 0.05,
+   "label": "220p across HF f gang a (no designator on the drawing)"
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "h9",
+    "n4"
+   ],
+   "value": "3k",
+   "tolerance": 0.01,
+   "label": "R4 3K0"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "n4",
+    "t1m"
+   ],
+   "value": "2.2n",
+   "tolerance": 0.05,
+   "label": "C3 2n2"
+  },
+  {
+   "ref": "T1",
+   "type": "opamp",
+   "nodes": [
+    "t1p",
+    "t1m",
+    "t1o",
+    "vp",
+    "vn"
+   ],
+   "model": "NE5534_22P",
+   "label": "T1 5534 (C26 22pF)"
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "t1m",
+    "h6"
+   ],
+   "value": "3.6k",
+   "tolerance": 0.01,
+   "label": "R5 3K6 -> pin 6 (HF f CW b)"
+  },
+  {
+   "ref": "VRHFFb",
+   "type": "pot",
+   "nodes": [
+    "t1o",
+    "t1o",
+    "h6"
+   ],
+   "value": "50k",
+   "taper": "C",
+   "control": "hffreq",
+   "label": "HF f gang b: CW b = pin 6, wiper b = pin 10 strapped to its ACW end at T1's output"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "t1m",
+    "t1o"
+   ],
+   "value": "220p",
+   "tolerance": 0.05,
+   "label": "C4 220pF"
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "t1m",
+    "hq"
+   ],
+   "value": "2.2n",
+   "tolerance": 0.05,
+   "label": "C5 2n2 to the bell node"
+  },
+  {
+   "ref": "R6",
+   "type": "R",
+   "nodes": [
+    "t1p",
+    "0"
+   ],
+   "value": "5.1k",
+   "tolerance": 0.01,
+   "label": "R6 5K1 (ECO Nov 85: 5K1)"
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "t1p",
+    "n7"
+   ],
+   "value": "2.4k",
+   "tolerance": 0.01,
+   "label": "R7 2K4 (ECO Nov 85: 2K4)"
+  },
+  {
+   "ref": "RV1",
+   "type": "R",
+   "nodes": [
+    "n7",
+    "hq"
+   ],
+   "value": "2.15k",
+   "label": "RV1 10K SET HF Q trimmer (wiper strapped to one end), set per SSL's procedure: +18 dB bell boost with HF f at mid",
+   "tolerance": 0
+  },
+  {
+   "ref": "F1",
+   "type": "njf",
+   "nodes": [
+    "t1o",
+    "g1",
+    "hs"
+   ],
+   "model": "J112",
+   "label": "J112 (unnumbered) HF bell switch: T1 output to C6"
+  },
+  {
+   "ref": "R79",
+   "type": "R",
+   "nodes": [
+    "t1o",
+    "hs"
+   ],
+   "value": "100k",
+   "tolerance": 0.01,
+   "label": "R79 100K J112 channel bias"
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "hs",
+    "hq"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "C6 100uF/10V bell coupling"
+  },
+  {
+   "ref": "R80",
+   "type": "R",
+   "nodes": [
+    "g1",
+    "p1"
+   ],
+   "value": "10M",
+   "tolerance": 0.01,
+   "label": "R80 10M gate feed from pin 1"
+  },
+  {
+   "ref": "C7",
+   "type": "C",
+   "nodes": [
+    "t1o",
+    "n8"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "C7 100uF/20V"
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "n8",
+    "t2m"
+   ],
+   "value": "3k",
+   "tolerance": 0.01,
+   "label": "R8 3K0"
+  },
+  {
+   "ref": "T2",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "t2m",
+    "t2o",
+    "vp",
+    "vn"
+   ],
+   "model": "NE5534_10P",
+   "label": "T2 5534 (C50 10p)"
+  },
+  {
+   "ref": "R9",
+   "type": "R",
+   "nodes": [
+    "t2m",
+    "t2o"
+   ],
+   "value": "43k",
+   "tolerance": 0.01,
+   "label": "R9 43K"
+  },
+  {
+   "ref": "R81",
+   "type": "R",
+   "nodes": [
+    "t2m",
+    "n81"
+   ],
+   "value": "33k",
+   "tolerance": 0.01,
+   "label": "R81 33K (ECO Nov 85: 33K), switched across R9 in bell"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "n81",
+    "f2s"
+   ],
+   "value": "2.2u",
+   "tolerance": 0.2,
+   "label": "C2 2u2"
+  },
+  {
+   "ref": "F2",
+   "type": "njf",
+   "nodes": [
+    "t2o",
+    "g2",
+    "f2s"
+   ],
+   "model": "J112",
+   "label": "F2 J112 bell gain switch"
+  },
+  {
+   "ref": "R82",
+   "type": "R",
+   "nodes": [
+    "f2s",
+    "t2o"
+   ],
+   "value": "100k",
+   "tolerance": 0.01,
+   "label": "R82 100K J112 channel bias"
+  },
+  {
+   "ref": "R83",
+   "type": "R",
+   "nodes": [
+    "g2",
+    "p1"
+   ],
+   "value": "10M",
+   "tolerance": 0.01,
+   "label": "R83 10M gate feed from pin 1"
+  },
+  {
+   "ref": "R84",
+   "type": "R",
+   "nodes": [
+    "p1",
+    "vn"
+   ],
+   "value": "330k",
+   "tolerance": 0.01,
+   "label": "R84 330K pin 1 to -18 V (shelf: both J112s pinched off)"
+  },
+  {
+   "ref": "R90",
+   "type": "R",
+   "nodes": [
+    "vp",
+    "p2"
+   ],
+   "value": "10k",
+   "tolerance": 0.01,
+   "label": "R90 10K +18 V to pin 2"
+  },
+  {
+   "ref": "SWHF",
+   "type": "switch",
+   "nodes": [
+    "p1",
+    "p2"
+   ],
+   "control": "hfbell",
+   "ron": 1,
+   "label": "HF shelf/bell switch across edge pins 1-2 (closed = bell)"
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "bus1",
+    "m12"
+   ],
+   "value": "1k",
+   "tolerance": 0.005,
+   "label": "R11 1K0 -> HMF gain pin 12 (CW) (* = 0.5 % on the drawing)"
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "m11",
+    "t3o"
+   ],
+   "value": "1k",
+   "tolerance": 0.005,
+   "label": "R16 1K0 HMF gain pin 11 (ACW) -> T3 output (* = 0.5 % on the drawing)"
+  },
+  {
+   "ref": "VRHMFa",
+   "type": "pot",
+   "nodes": [
+    "m11",
+    "vrhmf_wa",
+    "vrhmf_ct"
+   ],
+   "value": "12.5k",
+   "taper": "B",
+   "control": "hmfgain",
+   "span": [
+    0.0,
+    0.5
+   ],
+   "label": "HMF BOOST/CUT 25K LIN centre-tapped: ACW half-track (pin ACW -> centre tap)"
+  },
+  {
+   "ref": "VRHMFb",
+   "type": "pot",
+   "nodes": [
+    "vrhmf_ct",
+    "vrhmf_wb",
+    "m12"
+   ],
+   "value": "12.5k",
+   "taper": "B",
+   "control": "hmfgain",
+   "span": [
+    0.5,
+    1.0
+   ],
+   "label": "HMF BOOST/CUT 25K LIN centre-tapped: CW half-track (centre tap -> pin CW)"
+  },
+  {
+   "ref": "VRHMFSa",
+   "type": "switch",
+   "nodes": [
+    "vrhmf_wa",
+    "w13"
+   ],
+   "control": "hmfgain",
+   "invert": true,
+   "ron": 0.01,
+   "label": "HMF BOOST/CUT 25K LIN centre-tapped: wiper on the ACW half (below the centre detent)"
+  },
+  {
+   "ref": "VRHMFSb",
+   "type": "switch",
+   "nodes": [
+    "vrhmf_wb",
+    "w13"
+   ],
+   "control": "hmfgain",
+   "ron": 0.01,
+   "label": "HMF BOOST/CUT 25K LIN centre-tapped: wiper on the CW half (at and above the centre detent)"
+  },
+  {
+   "ref": "M40",
+   "type": "R",
+   "nodes": [
+    "vrhmf_ct",
+    "0"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.01,
+   "label": "R40 4K7 HMF gain centre tap to 0 V (on the 611 mother board)"
+  },
+  {
+   "ref": "R17",
+   "type": "R",
+   "nodes": [
+    "w13",
+    "0"
+   ],
+   "value": "1.8k",
+   "tolerance": 0.01,
+   "label": "R17 1K8 HMF wiper (pin 13) to 0 V"
+  },
+  {
+   "ref": "R94",
+   "type": "R",
+   "nodes": [
+    "w13",
+    "t2o"
+   ],
+   "value": "12k",
+   "tolerance": 0.01,
+   "label": "R94 12K HMF wiper -> HF band output (T2), as drawn"
+  },
+  {
+   "ref": "VRHMFFa",
+   "type": "pot",
+   "nodes": [
+    "m14",
+    "m14",
+    "w13"
+   ],
+   "value": "50k",
+   "taper": "C",
+   "control": "hmffreq",
+   "label": "HMF f 50K Alog Alog gang a: CW a (no edge pin) at the HMF wiper, wiper a = pin 14 strapped to its ACW end"
+  },
+  {
+   "ref": "R18",
+   "type": "R",
+   "nodes": [
+    "m14",
+    "n18"
+   ],
+   "value": "3k",
+   "tolerance": 0.01,
+   "label": "R18 3K0"
+  },
+  {
+   "ref": "C9",
+   "type": "C",
+   "nodes": [
+    "n18",
+    "t4m"
+   ],
+   "value": "4.7n",
+   "tolerance": 0.05,
+   "label": "C9 4n7"
+  },
+  {
+   "ref": "T4",
+   "type": "opamp",
+   "nodes": [
+    "t4p",
+    "t4m",
+    "t4o",
+    "vp",
+    "vn"
+   ],
+   "model": "NE5534_22P",
+   "label": "T4 5534 (C28 22pF)"
+  },
+  {
+   "ref": "R19",
+   "type": "R",
+   "nodes": [
+    "t4m",
+    "m16"
+   ],
+   "value": "3.6k",
+   "tolerance": 0.01,
+   "label": "R19 3K6 -> pin 16 (HMF f CW b)"
+  },
+  {
+   "ref": "VRHMFFb",
+   "type": "pot",
+   "nodes": [
+    "t4o",
+    "t4o",
+    "m16"
+   ],
+   "value": "50k",
+   "taper": "C",
+   "control": "hmffreq",
+   "label": "HMF f gang b: CW b = pin 16, wiper b = pin 15 strapped to its ACW end at T4's output"
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "t4m",
+    "t4o"
+   ],
+   "value": "4.7n",
+   "tolerance": 0.05,
+   "label": "C10 4n7"
+  },
+  {
+   "ref": "R62",
+   "type": "R",
+   "nodes": [
+    "t4p",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.01,
+   "label": "R62 100K"
+  },
+  {
+   "ref": "VRHMFQa",
+   "type": "pot",
+   "nodes": [
+    "m19",
+    "t4p",
+    "m18"
+   ],
+   "value": "10k",
+   "taper": "A",
+   "control": "hmfq",
+   "label": "HMF Q 10K log log gang a: ACW a = pin 19, wiper a = pin 17 (T4 +), CW a = pin 18"
+  },
+  {
+   "ref": "R21",
+   "type": "R",
+   "nodes": [
+    "m18",
+    "m19"
+   ],
+   "value": "1.8k",
+   "tolerance": 0.01,
+   "label": "R21 1K8 across HMF Q gang a"
+  },
+  {
+   "ref": "R20",
+   "type": "R",
+   "nodes": [
+    "0",
+    "m18"
+   ],
+   "value": "470",
+   "tolerance": 0.01,
+   "label": "R20 470R"
+  },
+  {
+   "ref": "R22",
+   "type": "R",
+   "nodes": [
+    "m19",
+    "n22"
+   ],
+   "value": "910",
+   "tolerance": 0.01,
+   "label": "R22 910R"
+  },
+  {
+   "ref": "RV2",
+   "type": "R",
+   "nodes": [
+    "n22",
+    "hx"
+   ],
+   "value": "185",
+   "label": "RV2 500R SET HMF Q trimmer, set per SSL's procedure: +18 dB at highest Q, HMF f at mid",
+   "tolerance": 0
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "t4o",
+    "hx"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "C11 100uF/3V"
+  },
+  {
+   "ref": "R23",
+   "type": "R",
+   "nodes": [
+    "hx",
+    "t5m"
+   ],
+   "value": "750",
+   "tolerance": 0.01,
+   "label": "R23 750R"
+  },
+  {
+   "ref": "T5",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "t5m",
+    "t5o",
+    "vp",
+    "vn"
+   ],
+   "model": "NE5534_22P",
+   "label": "T5 5534 (C29 22p)"
+  },
+  {
+   "ref": "R24",
+   "type": "R",
+   "nodes": [
+    "t5m",
+    "m21"
+   ],
+   "value": "750",
+   "tolerance": 0.01,
+   "label": "R24 750R -> pin 21 (HMF Q wiper b)"
+  },
+  {
+   "ref": "VRHMFQb",
+   "type": "pot",
+   "nodes": [
+    "t5o",
+    "m21",
+    "m21"
+   ],
+   "value": "10k",
+   "taper": "A",
+   "control": "hmfq",
+   "label": "HMF Q gang b: ACW b = pin 20 at T5's output, wiper b = pin 21 strapped to its CW end"
+  },
+  {
+   "ref": "R38",
+   "type": "R",
+   "nodes": [
+    "t3o",
+    "s8"
+   ],
+   "value": "4.75k",
+   "tolerance": 0.005,
+   "label": "R38 4K75 T3 output -> T8 (* = 0.5 % on the drawing)"
+  },
+  {
+   "ref": "R35",
+   "type": "R",
+   "nodes": [
+    "s8",
+    "t8o"
+   ],
+   "value": "4.75k",
+   "tolerance": 0.005,
+   "label": "R35 4K75 T8 feedback (* = 0.5 % on the drawing)"
+  },
+  {
+   "ref": "C15",
+   "type": "C",
+   "nodes": [
+    "s8",
+    "t8o"
+   ],
+   "value": "220p",
+   "tolerance": 0.05,
+   "label": "C15 220pF T8 feedback"
+  },
+  {
+   "ref": "R36",
+   "type": "R",
+   "nodes": [
+    "s8",
+    "t7o"
+   ],
+   "value": "4.75k",
+   "tolerance": 0.005,
+   "label": "R36 4K75 from the LMF band output (T7) (* = 0.5 % on the drawing)"
+  },
+  {
+   "ref": "R37",
+   "type": "R",
+   "nodes": [
+    "s8",
+    "t10o"
+   ],
+   "value": "4.75k",
+   "tolerance": 0.005,
+   "label": "R37 4K75 from the LF band output (T10) (* = 0.5 % on the drawing)"
+  },
+  {
+   "ref": "T8",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "s8",
+    "t8o",
+    "vp",
+    "vn"
+   ],
+   "model": "NE5534_10P",
+   "label": "T8 5534 summing amplifier (C31 10pF)"
+  },
+  {
+   "ref": "R25",
+   "type": "R",
+   "nodes": [
+    "t3o",
+    "l23"
+   ],
+   "value": "1k",
+   "tolerance": 0.005,
+   "label": "R25 1K0 -> LMF gain pin 23 (CW) (* = 0.5 % on the drawing)"
+  },
+  {
+   "ref": "R27",
+   "type": "R",
+   "nodes": [
+    "l22",
+    "t8o"
+   ],
+   "value": "1k",
+   "tolerance": 0.005,
+   "label": "R27 1K0 LMF gain pin 22 (ACW) -> T8 output (* = 0.5 % on the drawing)"
+  },
+  {
+   "ref": "VRLMFa",
+   "type": "pot",
+   "nodes": [
+    "l22",
+    "vrlmf_wa",
+    "vrlmf_ct"
+   ],
+   "value": "12.5k",
+   "taper": "B",
+   "control": "lmfgain",
+   "span": [
+    0.0,
+    0.5
+   ],
+   "label": "LMF BOOST/CUT 25K LIN centre-tapped: ACW half-track (pin ACW -> centre tap)"
+  },
+  {
+   "ref": "VRLMFb",
+   "type": "pot",
+   "nodes": [
+    "vrlmf_ct",
+    "vrlmf_wb",
+    "l23"
+   ],
+   "value": "12.5k",
+   "taper": "B",
+   "control": "lmfgain",
+   "span": [
+    0.5,
+    1.0
+   ],
+   "label": "LMF BOOST/CUT 25K LIN centre-tapped: CW half-track (centre tap -> pin CW)"
+  },
+  {
+   "ref": "VRLMFSa",
+   "type": "switch",
+   "nodes": [
+    "vrlmf_wa",
+    "w24"
+   ],
+   "control": "lmfgain",
+   "invert": true,
+   "ron": 0.01,
+   "label": "LMF BOOST/CUT 25K LIN centre-tapped: wiper on the ACW half (below the centre detent)"
+  },
+  {
+   "ref": "VRLMFSb",
+   "type": "switch",
+   "nodes": [
+    "vrlmf_wb",
+    "w24"
+   ],
+   "control": "lmfgain",
+   "ron": 0.01,
+   "label": "LMF BOOST/CUT 25K LIN centre-tapped: wiper on the CW half (at and above the centre detent)"
+  },
+  {
+   "ref": "M39",
+   "type": "R",
+   "nodes": [
+    "vrlmf_ct",
+    "0"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.01,
+   "label": "R39 4K7 LMF gain centre tap to 0 V (on the 611 mother board)"
+  },
+  {
+   "ref": "R26",
+   "type": "R",
+   "nodes": [
+    "w24",
+    "0"
+   ],
+   "value": "1.8k",
+   "tolerance": 0.01,
+   "label": "R26 1K8 LMF wiper (pin 24) to 0 V"
+  },
+  {
+   "ref": "R96",
+   "type": "R",
+   "nodes": [
+    "w24",
+    "t10o"
+   ],
+   "value": "12k",
+   "tolerance": 0.01,
+   "label": "R96 12K LMF wiper -> LF band output (T10), as drawn"
+  },
+  {
+   "ref": "VRLMFFa",
+   "type": "pot",
+   "nodes": [
+    "l25",
+    "l25",
+    "w24"
+   ],
+   "value": "50k",
+   "taper": "C",
+   "control": "lmffreq",
+   "label": "LMF f 50K Alog Alog gang a: CW a (no edge pin) at the LMF wiper, wiper a = pin 25 strapped to its ACW end"
+  },
+  {
+   "ref": "R28",
+   "type": "R",
+   "nodes": [
+    "l25",
+    "n28"
+   ],
+   "value": "3k",
+   "tolerance": 0.01,
+   "label": "R28 3K0"
+  },
+  {
+   "ref": "C12",
+   "type": "C",
+   "nodes": [
+    "n28",
+    "t6m"
+   ],
+   "value": "22n",
+   "tolerance": 0.05,
+   "label": "C12 22n"
+  },
+  {
+   "ref": "T6",
+   "type": "opamp",
+   "nodes": [
+    "t6p",
+    "t6m",
+    "t6o",
+    "vp",
+    "vn"
+   ],
+   "model": "NE5534_22P",
+   "label": "T6 5534 (C32 22pF)"
+  },
+  {
+   "ref": "R29",
+   "type": "R",
+   "nodes": [
+    "t6m",
+    "l27"
+   ],
+   "value": "3.6k",
+   "tolerance": 0.01,
+   "label": "R29 3K6 -> pin 27 (LMF f CW b)"
+  },
+  {
+   "ref": "VRLMFFb",
+   "type": "pot",
+   "nodes": [
+    "t6o",
+    "t6o",
+    "l27"
+   ],
+   "value": "50k",
+   "taper": "C",
+   "control": "lmffreq",
+   "label": "LMF f gang b: CW b = pin 27, wiper b = pin 26 strapped to its ACW end at T6's output"
+  },
+  {
+   "ref": "C13",
+   "type": "C",
+   "nodes": [
+    "t6m",
+    "t6o"
+   ],
+   "value": "22n",
+   "tolerance": 0.05,
+   "label": "C13 22n"
+  },
+  {
+   "ref": "R98",
+   "type": "R",
+   "nodes": [
+    "t6p",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.01,
+   "label": "R98 100K"
+  },
+  {
+   "ref": "VRLMFQa",
+   "type": "pot",
+   "nodes": [
+    "l30",
+    "t6p",
+    "l29"
+   ],
+   "value": "10k",
+   "taper": "A",
+   "control": "lmfq",
+   "label": "LMF Q 10K log log gang a: ACW a = pin 30, wiper a = pin 28 (T6 +), CW a = pin 29"
+  },
+  {
+   "ref": "R31",
+   "type": "R",
+   "nodes": [
+    "l29",
+    "l30"
+   ],
+   "value": "1.8k",
+   "tolerance": 0.01,
+   "label": "R31 1K8 across LMF Q gang a"
+  },
+  {
+   "ref": "R30",
+   "type": "R",
+   "nodes": [
+    "0",
+    "l29"
+   ],
+   "value": "470",
+   "tolerance": 0.01,
+   "label": "R30 470R"
+  },
+  {
+   "ref": "R32",
+   "type": "R",
+   "nodes": [
+    "l30",
+    "n32"
+   ],
+   "value": "910",
+   "tolerance": 0.01,
+   "label": "R32 910R"
+  },
+  {
+   "ref": "RV3",
+   "type": "R",
+   "nodes": [
+    "n32",
+    "lx"
+   ],
+   "value": "175",
+   "label": "RV3 500R SET LMF Q trimmer, set per SSL's procedure: +18 dB at highest Q, LMF f at mid",
+   "tolerance": 0
+  },
+  {
+   "ref": "C14",
+   "type": "C",
+   "nodes": [
+    "t6o",
+    "lx"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "C14 100uF/10V"
+  },
+  {
+   "ref": "R33",
+   "type": "R",
+   "nodes": [
+    "lx",
+    "t7m"
+   ],
+   "value": "750",
+   "tolerance": 0.01,
+   "label": "R33 750R"
+  },
+  {
+   "ref": "T7",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "t7m",
+    "t7o",
+    "vp",
+    "vn"
+   ],
+   "model": "NE5534_22P",
+   "label": "T7 5534 (C33 22pF)"
+  },
+  {
+   "ref": "R34",
+   "type": "R",
+   "nodes": [
+    "t7m",
+    "l32"
+   ],
+   "value": "750",
+   "tolerance": 0.01,
+   "label": "R34 750R -> pin 32 (LMF Q wiper b)"
+  },
+  {
+   "ref": "VRLMFQb",
+   "type": "pot",
+   "nodes": [
+    "t7o",
+    "l32",
+    "l32"
+   ],
+   "value": "10k",
+   "taper": "A",
+   "control": "lmfq",
+   "label": "LMF Q gang b: ACW b = pin 31 at T7's output, wiper b = pin 32 strapped to its CW end"
+  },
+  {
+   "ref": "R39",
+   "type": "R",
+   "nodes": [
+    "t3o",
+    "f41"
+   ],
+   "value": "1k",
+   "tolerance": 0.005,
+   "label": "R39 1K0 -> LF gain pin 41 (CW) (* = 0.5 % on the drawing)"
+  },
+  {
+   "ref": "R40",
+   "type": "R",
+   "nodes": [
+    "f40",
+    "t8o"
+   ],
+   "value": "1k",
+   "tolerance": 0.005,
+   "label": "R40 1K0 LF gain pin 40 (ACW) -> T8 output (* = 0.5 % on the drawing)"
+  },
+  {
+   "ref": "VRLFa",
+   "type": "pot",
+   "nodes": [
+    "f40",
+    "vrlf_wa",
+    "vrlf_ct"
+   ],
+   "value": "12.5k",
+   "taper": "B",
+   "control": "lfgain",
+   "span": [
+    0.0,
+    0.5
+   ],
+   "label": "LF BOOST/CUT 25K LIN centre-tapped: ACW half-track (pin ACW -> centre tap)"
+  },
+  {
+   "ref": "VRLFb",
+   "type": "pot",
+   "nodes": [
+    "vrlf_ct",
+    "vrlf_wb",
+    "f41"
+   ],
+   "value": "12.5k",
+   "taper": "B",
+   "control": "lfgain",
+   "span": [
+    0.5,
+    1.0
+   ],
+   "label": "LF BOOST/CUT 25K LIN centre-tapped: CW half-track (centre tap -> pin CW)"
+  },
+  {
+   "ref": "VRLFSa",
+   "type": "switch",
+   "nodes": [
+    "vrlf_wa",
+    "w33"
+   ],
+   "control": "lfgain",
+   "invert": true,
+   "ron": 0.01,
+   "label": "LF BOOST/CUT 25K LIN centre-tapped: wiper on the ACW half (below the centre detent)"
+  },
+  {
+   "ref": "VRLFSb",
+   "type": "switch",
+   "nodes": [
+    "vrlf_wb",
+    "w33"
+   ],
+   "control": "lfgain",
+   "ron": 0.01,
+   "label": "LF BOOST/CUT 25K LIN centre-tapped: wiper on the CW half (at and above the centre detent)"
+  },
+  {
+   "ref": "M38",
+   "type": "R",
+   "nodes": [
+    "vrlf_ct",
+    "0"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.01,
+   "label": "R38 4K7 LF gain centre tap to 0 V (on the 611 mother board)"
+  },
+  {
+   "ref": "R41",
+   "type": "R",
+   "nodes": [
+    "w33",
+    "0"
+   ],
+   "value": "1.8k",
+   "tolerance": 0.01,
+   "label": "R41 1K8 LF wiper (pin 33) to 0 V"
+  },
+  {
+   "ref": "R97",
+   "type": "R",
+   "nodes": [
+    "w33",
+    "t7o"
+   ],
+   "value": "12k",
+   "tolerance": 0.01,
+   "label": "R97 12K LF wiper -> LMF band output (T7), as drawn"
+  },
+  {
+   "ref": "VRLFFa",
+   "type": "pot",
+   "nodes": [
+    "f34",
+    "f34",
+    "w33"
+   ],
+   "value": "50k",
+   "taper": "C",
+   "control": "lffreq",
+   "label": "LF f 50K Alog Alog gang a: CW a (no edge pin) at the LF wiper, wiper a = pin 34 strapped to its ACW end"
+  },
+  {
+   "ref": "C16",
+   "type": "C",
+   "nodes": [
+    "f34",
+    "f37"
+   ],
+   "value": "33n",
+   "tolerance": 0.05,
+   "label": "C16 33nF"
+  },
+  {
+   "ref": "C17",
+   "type": "C",
+   "nodes": [
+    "f34",
+    "f37"
+   ],
+   "value": "47n",
+   "tolerance": 0.05,
+   "label": "C17 47nF"
+  },
+  {
+   "ref": "SWLF4",
+   "type": "switch",
+   "nodes": [
+    "f34",
+    "f37"
+   ],
+   "control": "lfbell",
+   "invert": true,
+   "ron": 0.05,
+   "label": "LF shelf/bell Sw4 (pin 37 / the LF f a end): SHELF shorts C16 // C17"
+  },
+  {
+   "ref": "R42",
+   "type": "R",
+   "nodes": [
+    "f37",
+    "t9m"
+   ],
+   "value": "4.3k",
+   "tolerance": 0.01,
+   "label": "R42 4K3"
+  },
+  {
+   "ref": "T9",
+   "type": "opamp",
+   "nodes": [
+    "t9p",
+    "t9m",
+    "t9o",
+    "vp",
+    "vn"
+   ],
+   "model": "NE5534_22P",
+   "label": "T9 5534 (C30 22pF)"
+  },
+  {
+   "ref": "R43",
+   "type": "R",
+   "nodes": [
+    "t9m",
+    "f35"
+   ],
+   "value": "4.7k",
+   "tolerance": 0.01,
+   "label": "R43 4K7 -> pin 35 (LF f CW b)"
+  },
+  {
+   "ref": "VRLFFb",
+   "type": "pot",
+   "nodes": [
+    "t9o",
+    "t9o",
+    "f35"
+   ],
+   "value": "50k",
+   "taper": "C",
+   "control": "lffreq",
+   "label": "LF f gang b: CW b = pin 35, wiper b = pin 36 strapped to its ACW end at T9's output"
+  },
+  {
+   "ref": "C18",
+   "type": "C",
+   "nodes": [
+    "t9m",
+    "t9o"
+   ],
+   "value": "33n",
+   "tolerance": 0.05,
+   "label": "C18 33nF"
+  },
+  {
+   "ref": "C19",
+   "type": "C",
+   "nodes": [
+    "t9m",
+    "t9o"
+   ],
+   "value": "47n",
+   "tolerance": 0.05,
+   "label": "C19 47nF"
+  },
+  {
+   "ref": "R44",
+   "type": "R",
+   "nodes": [
+    "t9p",
+    "0"
+   ],
+   "value": "5.1k",
+   "tolerance": 0.01,
+   "label": "R44 5K1 (ECO Nov 85: 5K1)"
+  },
+  {
+   "ref": "R45",
+   "type": "R",
+   "nodes": [
+    "t9p",
+    "n45"
+   ],
+   "value": "2.4k",
+   "tolerance": 0.01,
+   "label": "R45 2K4 (ECO Nov 85: 2K4)"
+  },
+  {
+   "ref": "RV4",
+   "type": "R",
+   "nodes": [
+    "n45",
+    "lq"
+   ],
+   "value": "740",
+   "label": "RV4 SET LF Q trimmer (5K on this drawing, 10K per the Nov 85 ECO), set per SSL's procedure: +18 dB bell boost with LF f at mid",
+   "tolerance": 0
+  },
+  {
+   "ref": "F4",
+   "type": "njf",
+   "nodes": [
+    "t9o",
+    "g4",
+    "f4s"
+   ],
+   "model": "J112",
+   "label": "F4 J112 LF bell switch: T9 output to C20"
+  },
+  {
+   "ref": "R85",
+   "type": "R",
+   "nodes": [
+    "t9o",
+    "f4s"
+   ],
+   "value": "100k",
+   "tolerance": 0.01,
+   "label": "R85 100K J112 channel bias"
+  },
+  {
+   "ref": "C20",
+   "type": "C",
+   "nodes": [
+    "f4s",
+    "lq"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "C20 100uF/10V bell coupling"
+  },
+  {
+   "ref": "R86",
+   "type": "R",
+   "nodes": [
+    "g4",
+    "p38"
+   ],
+   "value": "10M",
+   "tolerance": 0.01,
+   "label": "R86 10M gate feed from pin 38"
+  },
+  {
+   "ref": "C21",
+   "type": "C",
+   "nodes": [
+    "t9o",
+    "n47"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "C21 100uF/10V"
+  },
+  {
+   "ref": "R47",
+   "type": "R",
+   "nodes": [
+    "n47",
+    "t10m"
+   ],
+   "value": "3k",
+   "tolerance": 0.01,
+   "label": "R47 3K0"
+  },
+  {
+   "ref": "T10",
+   "type": "opamp",
+   "nodes": [
+    "0",
+    "t10m",
+    "t10o",
+    "vp",
+    "vn"
+   ],
+   "model": "NE5534_10P",
+   "label": "T10 5534 (C52 10p)"
+  },
+  {
+   "ref": "R48",
+   "type": "R",
+   "nodes": [
+    "t10m",
+    "t10o"
+   ],
+   "value": "43k",
+   "tolerance": 0.01,
+   "label": "R48 43K"
+  },
+  {
+   "ref": "R87",
+   "type": "R",
+   "nodes": [
+    "t10m",
+    "n87"
+   ],
+   "value": "7.5k",
+   "tolerance": 0.01,
+   "label": "R87 7K5 (ECO Nov 85: 7K5), switched across R48 in bell"
+  },
+  {
+   "ref": "C51",
+   "type": "C",
+   "nodes": [
+    "n87",
+    "f5s"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "C51 100uF/10V"
+  },
+  {
+   "ref": "F5",
+   "type": "njf",
+   "nodes": [
+    "t10o",
+    "g5",
+    "f5s"
+   ],
+   "model": "J112",
+   "label": "J112 (unnumbered) LF bell gain switch"
+  },
+  {
+   "ref": "R88",
+   "type": "R",
+   "nodes": [
+    "f5s",
+    "t10o"
+   ],
+   "value": "100k",
+   "tolerance": 0.01,
+   "label": "R88 100K J112 channel bias"
+  },
+  {
+   "ref": "R89",
+   "type": "R",
+   "nodes": [
+    "g5",
+    "p38"
+   ],
+   "value": "10M",
+   "tolerance": 0.01,
+   "label": "R89 10M gate feed from pin 38"
+  },
+  {
+   "ref": "R93",
+   "type": "R",
+   "nodes": [
+    "p38",
+    "vn"
+   ],
+   "value": "330k",
+   "tolerance": 0.01,
+   "label": "R93 330K pin 38 to -18 V"
+  },
+  {
+   "ref": "R91",
+   "type": "R",
+   "nodes": [
+    "vp",
+    "p39"
+   ],
+   "value": "10k",
+   "tolerance": 0.01,
+   "label": "R91 10K +18 V to pin 39"
+  },
+  {
+   "ref": "SWLF3",
+   "type": "switch",
+   "nodes": [
+    "p38",
+    "p39"
+   ],
+   "control": "lfbell",
+   "ron": 1,
+   "label": "LF shelf/bell Sw3 across edge pins 38-39 (closed = bell)"
+  },
+  {
+   "ref": "C23",
+   "type": "C",
+   "nodes": [
+    "t8o",
+    "o23"
+   ],
+   "value": "220u",
+   "tolerance": 0.2,
+   "label": "C23 220uF/25V (2 x 220 uF back to back)"
+  },
+  {
+   "ref": "R51",
+   "type": "R",
+   "nodes": [
+    "t8o",
+    "o23"
+   ],
+   "value": "100k",
+   "tolerance": 0.01,
+   "label": "R51 100K electrolytic bias"
+  },
+  {
+   "ref": "R52",
+   "type": "R",
+   "nodes": [
+    "o23",
+    "vp"
+   ],
+   "value": "1M",
+   "tolerance": 0.01,
+   "label": "R52 1M to +18 V"
+  },
+  {
+   "ref": "C24",
+   "type": "C",
+   "nodes": [
+    "o23",
+    "o24"
+   ],
+   "value": "220u",
+   "tolerance": 0.2,
+   "label": "C24 220uF/25V"
+  },
+  {
+   "ref": "R53",
+   "type": "R",
+   "nodes": [
+    "o24",
+    "0"
+   ],
+   "value": "10k",
+   "tolerance": 0.01,
+   "label": "R53 10K"
+  },
+  {
+   "ref": "R54",
+   "type": "R",
+   "nodes": [
+    "o24",
+    "out"
+   ],
+   "value": "10",
+   "tolerance": 0.01,
+   "label": "R54 10R -> EQ OUTPUT pin 43"
+  }
+ ],
+ "probes": [
+  "hp51",
+  "fo",
+  "t3o",
+  "t2o",
+  "t5o",
+  "t7o",
+  "t10o",
+  "t8o",
+  "out"
+ ],
+ "layout": {}
+}

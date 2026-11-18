@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Headroom
+GenericName=Guitar Amp Simulator
+Comment=Guitar and bass amp, cabinet and effects simulator
+Exec=headroom %F
+Icon=headroom
+Terminal=false
+Categories=AudioVideo;Audio;Music;
+Keywords=guitar;amp;amplifier;cabinet;effects;NAM;
+StartupWMClass=Headroom

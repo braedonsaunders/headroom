@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Nashville Chicken Pickin'</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Nashville Chicken Pickin'" preset-author="Headroom" preset-comment="Snappy session-country clean: a squashy stomp compressor into a small blackface combo with treble up, a single slapback repeat around 110 ms and a touch of the amp's spring. Bridge pickup, hybrid picking, palm-muted notes against popped open strings. Squeeze sets the snap; Slap Time moves the echo." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="48000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="V" value="0.9"/>
+        <parameter id="S" value="0.6"/>
+        <parameter id="A" value="0.25"/>
+        <parameter id="R" value="0.3"/>
+        <parameter id="T" value="0.6"/>
+        <parameter id="C" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="172000">
+    <component-audio version="1">
+      <parameters num-parameters="14">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="volume" value="0.42"/>
+        <parameter id="bright" value="1"/>
+        <parameter id="treble" value="0.64"/>
+        <parameter id="bass" value="0.45"/>
+        <parameter id="reverb intensity" value="0.12"/>
+        <parameter id="reverb on" value="1"/>
+        <parameter id="reverb mode" value="0"/>
+        <parameter id="speed" value="0.5"/>
+        <parameter id="intensity" value="0.5"/>
+        <parameter id="tremolo on" value="0"/>
+        <parameter id="tremolo sag" value="0.5"/>
+        <parameter id="tempo sync" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.9356"/>
+        <parameter id="c" value="0.45"/>
+        <parameter id="Cab" value="14"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="158000">
+    <component-audio version="1">
+      <parameters num-parameters="38">
+        <parameter id="mix" value="0.3"/>
+        <parameter id="input" value="0.7224"/>
+        <parameter id="output" value="0.7224"/>
+        <parameter id="pandry" value="0.5"/>
+        <parameter id="panwet" value="0.5"/>
+        <parameter id="stereowidth" value="0.5"/>
+        <parameter id="stereomode" value="0.5"/>
+        <parameter id="timemode" value="0"/>
+        <parameter id="time" value="0.048"/>
+        <parameter id="feedback" value="0.05"/>
+        <parameter id="style" value="0"/>
+        <parameter id="ana_bbdtype" value="0"/>
+        <parameter id="modern_sat" value="0.5"/>
+        <parameter id="modern_depth" value="0"/>
+        <parameter id="modern_rate" value="0.5"/>
+        <parameter id="modern_stereo" value="0.5"/>
+        <parameter id="diff_amount" value="0.5"/>
+        <parameter id="diff_size" value="0.5"/>
+        <parameter id="diff_movement" value="0.5"/>
+        <parameter id="diff_dense" value="0.5"/>
+        <parameter id="ana_depth" value="0.5"/>
+        <parameter id="ana_rate" value="0.5"/>
+        <parameter id="ana_stereo" value="0.5"/>
+        <parameter id="tape_sat" value="0.5"/>
+        <parameter id="tape_age" value="0.5"/>
+        <parameter id="tape_wowflut" value="0.5"/>
+        <parameter id="tape_noise" value="0.5"/>
+        <parameter id="vd_quality" value="0"/>
+        <parameter id="vd_depth" value="0.5"/>
+        <parameter id="vd_rate" value="0.5"/>
+        <parameter id="vd_stereo" value="0.5"/>
+        <parameter id="locut" value="0.5"/>
+        <parameter id="hicut" value="0.55"/>
+        <parameter id="duckingamount" value="0"/>
+        <parameter id="duckingsensitivity" value="0.5"/>
+        <parameter id="duckingrelease" value="0.5"/>
+        <parameter id="duckingmeter" value="0"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="48000" target-number="1" target-name="S" min-value="0.35" max-value="0.955" controller-name="Squeeze"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="158000" target-number="1" target-name="mix" min-value="0" max-value="0.45" controller-name="Slap"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="158000" target-number="1" target-name="time" min-value="0" max-value="0.1" controller-name="Slap Time"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="172000" target-number="1" target-name="treble" min-value="0.5" max-value="0.85" controller-name="Treble"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="172000" target-number="1" target-name="reverb intensity" min-value="0" max-value="0.4" controller-name="Spring"/></connection-data>
+  <connection-data><target controller-slot-id="5" component-id="172000" target-number="1" target-name="volume" min-value="0.3" max-value="0.55" controller-name="Amp Volume"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="clean-chicken-pickin" category="Clean" order="30" instrument="guitar" style="Country">
+  <description>Snappy session-country clean: a squashy stomp compressor into a small blackface combo with treble up, a single slapback repeat around 110 ms and a touch of the amp's spring. Bridge pickup, hybrid picking, palm-muted notes against popped open strings. Squeeze sets the snap; Slap Time moves the echo.</description>
+  <tags><tag>Clean</tag><tag>Country</tag><tag>Compressed</tag><tag>Slapback</tag><tag>Spring Reverb</tag></tags>
+  <sources>
+    <source url="https://faderandknob.com/blog/nashville-session-clean-tele-compressor" title="Fader &amp; Knob: Nashville session clean tone, Telecaster + compressor settings"/>
+    <source url="https://tonestakr.com/guitarists/brent-mason/" title="Tonestakr: Brent Mason guitar tone and rig guide"/>
+    <source url="https://gearspace.com/board/so-many-guitars-so-little-time/1279362-how-get-chicken-pickin-guitar-sounds-vst-compressor.html" title="Gearspace: chicken pickin sounds from a compressor"/>
+    <source url="https://tonestakr.com/gear/amp/fender-deluxe-reverb/settings/" title="Tonestakr: Deluxe Reverb settings for blues and country"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

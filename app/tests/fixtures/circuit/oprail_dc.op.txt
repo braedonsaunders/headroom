@@ -1,0 +1,10 @@
+# ngspice .op reference: test-opamp-rails v1 (node voltage)
+in  0.000000e+00
+v9  9.000000e+00
+vf  8.913254e+00
+vref  4.456627e+00
+pin  4.456627e+00
+nin  4.456605e+00
+o  4.456605e+00
+ng  4.456605e+00
+out  4.456605e+00

@@ -1,0 +1,11 @@
+# ngspice .op reference: dallas-fuzz-face-ge v1 (node voltage)
+in  0.000000e+00
+vee  -9.00000e+00
+b1  -2.02660e-01
+c1  -6.32472e-01
+c2  -5.37392e+00
+e2  -4.17821e-01
+x  -8.80343e+00
+fw  -2.08910e-01
+v3  0.000000e+00
+out  0.000000e+00

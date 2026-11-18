@@ -1,0 +1,1910 @@
+{
+ "schema": "headroom.circuit.v1",
+ "id": "soldano-slo100-122000",
+ "version": 2,
+ "name": "Soldano SLO-100 Super Lead Overdrive",
+ "description": "Soldano SLO-100 Super Lead Overdrive, 1996 factory drawing, complete: input stage, Crunch/Clean divider, clean and overdrive channels, LDR1/2/4/LDR3 channel and master switching, FX send buffer / FX return recovery, DC-coupled tone-stack cathode follower and the late-in-circuit JCM800-style stack, long-tail-pair phase inverter with 4-ohm-tap feedback, presence and depth, four 6L6GC, output transformer and the 16 ohm cab.",
+ "sources": [
+  {
+   "title": "Soldano SLO-100 factory schematic, drawn March 15 1996, sheet 1 of 2 (preamp, crunch/clean switching, FX loop, supply) and sheet 2 of 2 (tone stack, master volumes, LTP, power amp, footswitch/LDR box), R1-R70 / C1-C41 designators",
+   "url": "https://el34world.com/charts/Schematics/files/Soldano/Soldano_slo100.pdf",
+   "note": "The PDF is an Acrobat image-conversion of a raster scan: pdfimages reports each page as a single 1995x1269 (sheet 1) / 2022x1084 (sheet 2) 8-bit image at 72 ppi, i.e. the source contains no more than that. Those native pixels are legible at 1:1 (68K, 0.02uF, 470K, 500K, 1M, 39K, 220K, 0.001 all read cleanly); rendering the page at 300 dpi only interpolates. Every value in this netlist was read from the native raster, not from a 300 dpi render."
+  },
+  {
+   "title": "Rob Robinette, 'How the Soldano Super Lead Overdrive SLO-100 & 50 Watt Amplifiers Work' - annotated redraw of the same drawing (V2.6, 5068x2037, vector text) plus the SLO-Nakid redraw (4034x1828) and the article text",
+   "url": "https://robrobinette.com/How_the_Saldano_SLO-100_Works.htm",
+   "note": "Used as the independent second source for the OD chain, the attenuator values and the channel-switching functions: 'the first OD Channel divider is a 470k Attenuator resistor + the 500k OD Gain pot ... bypassed with a .002uF Treble Peaker'; 'a large 470k grid stop resistor'; 'a 470k + 1M attenuator dumps 32%'; 'the .001uF plate load bypass cap'; 'Soldano used a .001uF Bright cap' on the OD Gain pot; 'the Clean signal joins the Overdrive Channel at Preamp 4 with no mixing resistors'; 'in Overdrive Mode both the Clean and OD Channel signal paths are active'; 'LDR + and - : power on = LED on and switch closed'."
+  },
+  {
+   "title": "Soldano SLO-100 annotated manual / errata copy (manualmachine)",
+   "url": "https://manualmachine.com/soldano/slo100/5143923-schematic/",
+   "note": "Production changes (FX recovery cathode bypass 25 uF, 1 k FX return load, plate-load bypass 0.001 uF)."
+  },
+  {
+   "title": "Soldano factory modification text ('slo100not.txt', pages 5-8 of the same el34world PDF)",
+   "note": "Confirms that the clean/crunch channel is also in circuit in lead mode and that its level is 'much lower'."
+  }
+ ],
+ "minRate": 176400,
+ "lte": {"start": "bdf2", "tol": 16},
+ "newton": {"groups": {"V6": 1e-4}},
+  "io": {
+  "input": "in",
+  "output": "spk",
+  "inputVoltsPerFS": 1.0,
+  "outputVoltsPerFS": 214.0,
+  "note": "outputVoltsPerFS = 1.5 x the 143 V peak measured at the dimed OD channel (1.0 V in, 220 Hz, overdrive 1, master 1). The dimed Clean channel peaks at 68 V (43.4 V RMS into 16 ohm = 117 W); the OD channel is the larger of the two, so 214 V is the 1.5x figure for the amp."
+ },
+ "oversampling": 4,
+ "solver": "auto",
+ "cuts": [
+  "hra",
+  "hrb",
+  "raw",
+  "plates",
+  "ch1",
+  "screens",
+  "b2",
+  "b3",
+  "b4"
+ ],
+ "multirate": {
+  "slow": {
+   "rate": 12000.0,
+   "nodes": [
+    "od_k",
+    "cl_k",
+    "lt_od",
+    "lt_cl",
+    "CELL1#n",
+    "CELL2#n",
+    "CELL3#n",
+    "CELL4#n"
+   ]
+  }
+ },
+ "models": {
+  "VTL5C1_CELL": {
+   "kind": "cds",
+   "rdark": 50000000.0,
+   "ron": 376.2,
+   "gamma": 0.795,
+   "kr": 230,
+   "tau_l": 0.0025,
+   "tau_h": 0.035,
+   "mh": 0.4,
+   "mr": 1.5,
+   "note": "VTL5C1 CdS cell, PerkinElmer datasheet: 5 k / 600 / 200 ohm at 1 / 10 / 40 mA LED current, 50 Mohm dark, 2.5 ms on / 35 ms off. ron and gamma fitted to the three on-resistance points through this LED card (steady state 5.15 k / 555 / 210 ohm); the previous card (600 ohm at 2 mA) read 15.8 k / 900 / 246 ohm, i.e. 4.7 k at the old 2.4 mA drive"
+  },
+  "VTL5C1_LED": {
+   "kind": "led",
+   "is": 2.7551e-09,
+   "n": 3.9696,
+   "rs": 0.0,
+   "iref": 0.002,
+   "tau_light": 0.0001,
+   "note": "VTL5C1 LED, VTL5C3/2 Shockley card scaled to the 2 mA full-light reference"
+  }
+ },
+ "controls": [
+  {
+   "id": "normal",
+   "label": "Normal",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "P0"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "Clean channel gain: 500 k Clean Gain pot P2 after the Crunch/Clean attenuator"
+  },
+  {
+   "id": "overdrive",
+   "label": "Overdrive",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "P1"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "OD channel gain: 500 k OD Gain pot P1 between the V1A attenuator and V2A"
+  },
+  {
+   "id": "channel",
+   "label": "Channel",
+   "kind": "selector",
+   "default": 1.0,
+   "options": [
+    "Clean",
+    "OD"
+   ],
+   "params": [
+    "O2"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "OD = LDR2 & LDR3 on, LDR1 & LDR4 off; Clean = LDR1 & LDR4 on, LDR2 & LDR3 off. The LDRs are switch models here (no VTL5C1 card in the engine)."
+  },
+  {
+   "id": "bass",
+   "label": "Bass",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "B3"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "1 M Bass pot in the late-in-circuit JCM800-style stack"
+  },
+  {
+   "id": "mid",
+   "label": "Mid",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "M4"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "25 k Mid pot"
+  },
+  {
+   "id": "treble",
+   "label": "Treble",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "T5"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "250 k Treble pot"
+  },
+  {
+   "id": "master",
+   "label": "Master",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "M6"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Main",
+   "note": "Master: drives both 1 M master pots (OD MV and Norm MV); the channel LDRs (LDR3 in OD, LDR4 in Clean) pass the active channel's wiper to the PI, so the knob works on both channels. The amp has one master per channel; the catalogue has one Master"
+  },
+  {
+   "id": "presence",
+   "label": "Presence",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "P7"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "25 k-L presence rheostat with 0.1 uF from the feedback node to ground; up = less resistance = less treble feedback = more presence"
+  },
+  {
+   "id": "depth",
+   "label": "Depth",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "D8"
+   ],
+   "paramRange": [
+    0,
+    1
+   ],
+   "group": "Tone",
+   "note": "Optional Depth/Resonance 1 M-A pot in series with the 4-ohm-tap feedback (with 0.1 uF and a 0.0047 uF bridge); the annotated drawing marks it optional. Up = less low-frequency feedback = more bass"
+  },
+  {
+   "id": "crunch",
+   "label": "Crunch",
+   "kind": "switch",
+   "default": 0.0,
+   "group": "Main",
+   "note": "S1 Crunch/Clean. 0 (the position drawn on the 1996 sheet) = Clean: input 470 k + 470 k by 39 k divider, about 96 % of the signal dumped. 1 = Crunch: the extra 470 k bypassed and the 39 k shunt lifted, leaving only the 470 k into the Clean Gain pot (48 % dump). Independent of the Channel switch.",
+   "face": true,
+   "options": [
+    "Clean",
+    "Crunch"
+   ]
+  },
+  {
+   "id": "bright",
+   "label": "Bright",
+   "kind": "switch",
+   "default": 0.0,
+   "group": "Main",
+   "note": "S2 Bright/Norm: Bright = 470 pF instead of the 470 k into the Clean Gain pot top (drawing: Bright off)",
+   "face": true,
+   "options": [
+    "Normal",
+    "Bright"
+   ]
+  },
+  {
+   "id": "pw",
+   "label": "Power",
+   "kind": "continuous",
+   "default": 0.0,
+   "params": [
+    "P9"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Host-side power scaling; stored only"
+  },
+  {
+   "id": "variac",
+   "label": "VAC",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "V10"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "No variac; stored only"
+  },
+  {
+   "id": "sag",
+   "label": "Sag",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "S11"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Sag emerges from the supply; stored only"
+  },
+  {
+   "id": "response",
+   "label": "Response",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "R12"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "No counterpart; stored only"
+  },
+  {
+   "id": "bias",
+   "label": "Bias",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "B13"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "The bias is a rear trim; no front-panel control, stored only"
+  },
+  {
+   "id": "lamp",
+   "label": "Lamp",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "L14"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Pilot lamp; stored only"
+  },
+  {
+   "id": "stereo",
+   "label": "Stereo",
+   "kind": "continuous",
+   "default": 0.5,
+   "params": [
+    "CASSt"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Stored only"
+  },
+  {
+   "id": "power",
+   "label": "On/Off",
+   "kind": "switch",
+   "default": 1.0,
+   "params": [
+    "Pwr"
+   ],
+   "legacyOnly": true,
+   "group": "Legacy",
+   "note": "Host handles bypass"
+  }
+ ],
+ "parts": [
+  {
+   "ref": "VHA",
+   "type": "V",
+   "nodes": [
+    "ha",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "509.117",
+    "freq": 60,
+    "phase": 90
+   },
+   "label": "HT secondary half (360 Vrms, 509 V peak), phase A",
+   "note": "The SLO PT is a 120 VAC primary / 360 VAC HT winding into a bridge; the project's two-source full-wave equivalent is used (JCM800/5E3 convention). One diode drop instead of the bridge's two."
+  },
+  {
+   "ref": "VHB",
+   "type": "V",
+   "nodes": [
+    "hb",
+    "0"
+   ],
+   "value": "0",
+   "ac": {
+    "amplitude": "509.117",
+    "freq": 60,
+    "phase": 270
+   },
+   "label": "HT secondary half, phase B"
+  },
+  {
+   "ref": "RPTA",
+   "type": "R",
+   "nodes": [
+    "ha",
+    "hra"
+   ],
+   "value": "15",
+   "label": "HT winding + reflected primary resistance (A), unverified typical"
+  },
+  {
+   "ref": "RPTB",
+   "type": "R",
+   "nodes": [
+    "hb",
+    "hrb"
+   ],
+   "value": "15",
+   "label": "HT winding + reflected primary resistance (B), unverified typical"
+  },
+  {
+   "ref": "D1",
+   "type": "D",
+   "nodes": [
+    "hra",
+    "raw"
+   ],
+   "model": "1N4001",
+   "label": "HT rectifier A (1N4001 card for the 1N4007)"
+  },
+  {
+   "ref": "D2",
+   "type": "D",
+   "nodes": [
+    "hrb",
+    "raw"
+   ],
+   "model": "1N4001",
+   "label": "HT rectifier B (1N4001 card for the 1N4007)"
+  },
+  {
+   "ref": "CRES",
+   "type": "C",
+   "nodes": [
+    "raw",
+    "0"
+   ],
+   "value": "100u",
+   "tolerance": 0.2,
+   "label": "Reservoir 2x200 uF/300 V in series = 100 uF",
+   "note": "The drawn series pair is a voltage-rating arrangement; the equivalent 100 uF is modelled. The 220 k balancing pair is kept as 440 k."
+  },
+  {
+   "ref": "RRES",
+   "type": "R",
+   "nodes": [
+    "raw",
+    "0"
+   ],
+   "value": "440k",
+   "label": "Reservoir balance/bleed 2x220 k in series"
+  },
+  {
+   "ref": "RSTB",
+   "type": "R",
+   "nodes": [
+    "raw",
+    "plates"
+   ],
+   "value": "0.1",
+   "label": "Standby switch (closed; 0.1 Ohm link)"
+  },
+  {
+   "ref": "LCH",
+   "type": "L",
+   "nodes": [
+    "plates",
+    "ch1"
+   ],
+   "value": "2",
+   "label": "Smoothing choke 2 H (drawing: \"10K 2H\"; the 10 K is the dropper RB2, not the choke DCR)"
+  },
+  {
+   "ref": "RCH",
+   "type": "R",
+   "nodes": [
+    "ch1",
+    "screens"
+   ],
+   "value": "60",
+   "label": "Choke DCR 60 Ohm (unverified: from the drawn 2 V plates-to-screens drop at ~32 mA)"
+  },
+  {
+   "ref": "RB2",
+   "type": "R",
+   "nodes": [
+    "screens",
+    "b2"
+   ],
+   "value": "10k",
+   "label": "Screens to B2 dropper 10 k 3 W (drawing: 497/495 V -> 378 V)"
+  },
+  {
+   "ref": "CB2",
+   "type": "C",
+   "nodes": [
+    "b2",
+    "0"
+   ],
+   "value": "40u",
+   "tolerance": 0.2,
+   "label": "B2 filter 40 uF/450 V"
+  },
+  {
+   "ref": "RB3",
+   "type": "R",
+   "nodes": [
+    "b2",
+    "b3"
+   ],
+   "value": "15k",
+   "label": "B2 to B3 (V2) dropper 15 k, 10 uF/450 V -> 350 V"
+  },
+  {
+   "ref": "CB3",
+   "type": "C",
+   "nodes": [
+    "b3",
+    "0"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "B3 filter 10 uF/450 V"
+  },
+  {
+   "ref": "RB4",
+   "type": "R",
+   "nodes": [
+    "b2",
+    "b4"
+   ],
+   "value": "15k",
+   "label": "B2 to B4 (V1) dropper 15 k, 10 uF/450 V -> 350 V"
+  },
+  {
+   "ref": "CB4",
+   "type": "C",
+   "nodes": [
+    "b4",
+    "0"
+   ],
+   "value": "10u",
+   "tolerance": 0.2,
+   "label": "B4 filter 10 uF/450 V"
+  },
+  {
+   "ref": "VBIAS",
+   "type": "V",
+   "nodes": [
+    "bias",
+    "0"
+   ],
+   "value": "-55",
+   "label": "Bias supply filter node (-55 V)",
+   "note": "The annotated drawing's bias network (220 k/15 k/10 k/25 k trim, 1N4007, 10 uF/100 V) is modelled as the filter node, as the JCM800/Plexi/AB763 netlists do, because a negative-peak rectifier is not charged at the mains-crest operating point used by --settle 0. -55 V is fitted so the library 6L6GC idles near 30 mA at 495 V."
+  },
+  {
+   "ref": "J1",
+   "type": "R",
+   "nodes": [
+    "in",
+    "in_j"
+   ],
+   "value": "1",
+   "label": "Input jack contact"
+  },
+  {
+   "ref": "R2",
+   "type": "R",
+   "nodes": [
+    "in_j",
+    "g1b"
+   ],
+   "value": "68k",
+   "tolerance": 0.05,
+   "label": "Input grid stopper 68 k"
+  },
+  {
+   "ref": "R1",
+   "type": "R",
+   "nodes": [
+    "g1b",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "Input grid leak 1 M"
+  },
+  {
+   "ref": "V1B",
+   "type": "triode",
+   "nodes": [
+    "p1b",
+    "g1b",
+    "k1b"
+   ],
+   "model": "12AX7",
+   "label": "V1B Clean & OD Preamp 1"
+  },
+  {
+   "ref": "R4",
+   "type": "R",
+   "nodes": [
+    "b4",
+    "p1b"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "V1B plate load 220 k"
+  },
+  {
+   "ref": "R3",
+   "type": "R",
+   "nodes": [
+    "k1b",
+    "0"
+   ],
+   "value": "1k8",
+   "tolerance": 0.05,
+   "label": "V1B cathode 1.8 k"
+  },
+  {
+   "ref": "C1",
+   "type": "C",
+   "nodes": [
+    "k1b",
+    "0"
+   ],
+   "value": "1u",
+   "tolerance": 0.2,
+   "label": "V1B cathode bypass 1 uF"
+  },
+  {
+   "ref": "C2",
+   "type": "C",
+   "nodes": [
+    "p1b",
+    "cr"
+   ],
+   "value": "20n",
+   "tolerance": 0.1,
+   "label": "V1B plate coupling 0.02 uF"
+  },
+  {
+   "ref": "R5",
+   "type": "R",
+   "nodes": [
+    "cr",
+    "cr_a"
+   ],
+   "value": "470k",
+   "tolerance": 0.05,
+   "label": "Crunch/Clean attenuator 470 k"
+  },
+  {
+   "ref": "C3",
+   "type": "C",
+   "nodes": [
+    "cr",
+    "cr_a"
+   ],
+   "value": "2n",
+   "tolerance": 0.1,
+   "label": "Crunch/Clean attenuator 0.002 uF"
+  },
+  {
+   "ref": "R6",
+   "type": "R",
+   "nodes": [
+    "cr_a",
+    "cr_b"
+   ],
+   "value": "470k",
+   "tolerance": 0.05,
+   "label": "Crunch/Clean 470 k"
+  },
+  {
+   "ref": "R7",
+   "type": "R",
+   "nodes": [
+    "cr_b",
+    "r39"
+   ],
+   "value": "39k",
+   "tolerance": 0.05,
+   "label": "Clean-divider 39 k (in circuit only in the Clean throw, S1 pole 2)"
+  },
+  {
+   "ref": "SW_CR2",
+   "type": "switch",
+   "nodes": [
+    "r39",
+    "0"
+   ],
+   "control": "crunch",
+   "positions": [
+    0
+   ],
+   "label": "S1 Clean throw: connects the 39 k divider shunt to ground (closed = Clean)"
+  },
+  {
+   "ref": "SW_CR",
+   "type": "switch",
+   "nodes": [
+    "cr_a",
+    "cr_b"
+   ],
+   "control": "crunch",
+   "positions": [
+    1
+   ],
+   "label": "S1 Crunch throw: bypasses the 470 k extra divider resistor (closed = Crunch)"
+  },
+  {
+   "ref": "C5",
+   "type": "C",
+   "nodes": [
+    "cr_b",
+    "bb"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "S2 Bright/Norm 470 pF: Bright throw (the cap feeds the Clean Gain pot top through SW_BRB)"
+  },
+  {
+   "ref": "SW_BR",
+   "type": "switch",
+   "nodes": [
+    "bb",
+    "p2t"
+   ],
+   "control": "bright",
+   "positions": [
+    1
+   ],
+   "label": "S2 Bright throw: 470 pF into the Clean Gain pot top (closed = Bright)"
+  },
+  {
+   "ref": "R_CT",
+   "type": "R",
+   "nodes": [
+    "cr_b",
+    "bn"
+   ],
+   "value": "470k",
+   "label": "470 k Normal-path resistor into the Clean Gain pot top (the divider that dumps 48%)"
+  },
+  {
+   "ref": "SW_BRN",
+   "type": "switch",
+   "nodes": [
+    "bn",
+    "p2t"
+   ],
+   "control": "bright",
+   "positions": [
+    0
+   ],
+   "label": "S2 Normal throw: 470 k into the Clean Gain pot top (closed = Bright off)"
+  },
+  {
+   "ref": "P2",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "g1a",
+    "p2t"
+   ],
+   "value": "500k",
+   "taper": "A",
+   "control": "normal",
+   "label": "P2 Clean Gain 500 k; top fed from the Bright/Norm switch (470 k Normal path or 470 pF Bright path)"
+  },
+  {
+   "ref": "V1A",
+   "type": "triode",
+   "nodes": [
+    "p1a",
+    "g1a",
+    "k1a"
+   ],
+   "model": "12AX7",
+   "label": "V1A Clean Preamp 2"
+  },
+  {
+   "ref": "R15",
+   "type": "R",
+   "nodes": [
+    "b4",
+    "p1a"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "V1A plate load 100 k"
+  },
+  {
+   "ref": "R16",
+   "type": "R",
+   "nodes": [
+    "k1a",
+    "0"
+   ],
+   "value": "2k2",
+   "tolerance": 0.05,
+   "label": "V1A cathode 2.2 k"
+  },
+  {
+   "ref": "C7",
+   "type": "C",
+   "nodes": [
+    "p1a",
+    "att1"
+   ],
+   "value": "20n",
+   "tolerance": 0.1,
+   "label": "V1A coupling 0.02 uF"
+  },
+  {
+   "ref": "C8",
+   "type": "C",
+   "nodes": [
+    "p1a",
+    "att1"
+   ],
+   "value": "120p",
+   "tolerance": 0.1,
+   "label": "V1A coupling 120 pF"
+  },
+  {
+   "ref": "R17",
+   "type": "R",
+   "nodes": [
+    "att1",
+    "a1"
+   ],
+   "value": "2M2",
+   "tolerance": 0.05,
+   "label": "V1A attenuator 2.2 M"
+  },
+  {
+   "ref": "R18",
+   "type": "R",
+   "nodes": [
+    "a1",
+    "0"
+   ],
+   "value": "330k",
+   "tolerance": 0.05,
+   "label": "V1A attenuator 330 k (dumps 87%)"
+  },
+  {
+   "ref": "C_BR",
+   "type": "C",
+   "nodes": [
+    "cr_a",
+    "g2a"
+   ],
+   "value": "1n",
+   "label": "0.001 uF Bright cap across the OD Gain pot (top to wiper)"
+  },
+  {
+   "ref": "P1",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "g2a",
+    "cr_a"
+   ],
+   "value": "500k",
+   "taper": "A",
+   "control": "overdrive",
+   "label": "P1 OD Gain 500 k, top on the treble-peaker/switch node (V1b path), wiper through the 470 k grid stop"
+  },
+  {
+   "ref": "R8",
+   "type": "R",
+   "nodes": [
+    "g2a",
+    "g2a_r"
+   ],
+   "value": "470k",
+   "tolerance": 0.05,
+   "label": "OD gain to V2A grid 470 k"
+  },
+  {
+   "ref": "V2A",
+   "type": "triode",
+   "nodes": [
+    "p2a",
+    "g2a_r",
+    "k2a"
+   ],
+   "model": "12AX7",
+   "label": "V2A OD Preamp 2"
+  },
+  {
+   "ref": "R11",
+   "type": "R",
+   "nodes": [
+    "b3",
+    "p2a"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "V2A plate load 100 k"
+  },
+  {
+   "ref": "R13",
+   "type": "R",
+   "nodes": [
+    "k2a",
+    "0"
+   ],
+   "value": "1k8",
+   "tolerance": 0.05,
+   "label": "V2A cathode 1.8 k (drawing \"1.8K\"), bypassed by C4"
+  },
+  {
+   "ref": "C4",
+   "type": "C",
+   "nodes": [
+    "k2a",
+    "0"
+   ],
+   "value": "1u",
+   "tolerance": 0.2,
+   "label": "V2A cathode bypass 1 uF"
+  },
+  {
+   "ref": "C6",
+   "type": "C",
+   "nodes": [
+    "p2a",
+    "att2"
+   ],
+   "value": "20n",
+   "tolerance": 0.1,
+   "label": "V2A coupling 0.02 uF"
+  },
+  {
+   "ref": "R12",
+   "type": "R",
+   "nodes": [
+    "att2",
+    "g2b"
+   ],
+   "value": "470k",
+   "tolerance": 0.05,
+   "label": "Cold-clipper grid 470 k"
+  },
+  {
+   "ref": "VR1",
+   "type": "R",
+   "nodes": [
+    "g2b",
+    "0"
+   ],
+   "value": "1M",
+   "label": "Cold-clipper grid 1 M (OD gain trim / LDR1 shunt)"
+  },
+  {
+   "ref": "V2B",
+   "type": "triode",
+   "nodes": [
+    "p2b",
+    "g2b",
+    "k2b"
+   ],
+   "model": "12AX7",
+   "label": "V2B OD Preamp 3 / cold clipper"
+  },
+  {
+   "ref": "R20",
+   "type": "R",
+   "nodes": [
+    "b3",
+    "p2b"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Cold-clipper plate load 100 k"
+  },
+  {
+   "ref": "C24",
+   "type": "C",
+   "nodes": [
+    "b3",
+    "p2b"
+   ],
+   "value": "1n",
+   "tolerance": 0.1,
+   "label": "Cold-clipper plate-load bypass 0.001 uF"
+  },
+  {
+   "ref": "R14",
+   "type": "R",
+   "nodes": [
+    "k2b",
+    "0"
+   ],
+   "value": "39k",
+   "tolerance": 0.05,
+   "label": "Cold-clipper cathode 39 k (unbypassed)"
+  },
+  {
+   "ref": "C10",
+   "type": "C",
+   "nodes": [
+    "p2b",
+    "x2"
+   ],
+   "value": "20n",
+   "tolerance": 0.1,
+   "label": "0.02 uF cold-clipper coupling into the LDR2 anti-pop node"
+  },
+  {
+   "ref": "RAP",
+   "type": "R",
+   "nodes": [
+    "x2",
+    "0"
+   ],
+   "value": "2M2",
+   "label": "2.2 M anti-pop / grid leak on the LDR2 node (drawing: 2.2M Anti-Pop)"
+  },
+  {
+   "ref": "V3B",
+   "type": "triode",
+   "nodes": [
+    "p3b",
+    "g3b",
+    "k3b"
+   ],
+   "model": "12AX7",
+   "label": "V3B OD Preamp 4"
+  },
+  {
+   "ref": "R22",
+   "type": "R",
+   "nodes": [
+    "b2",
+    "p3b"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "V3B plate load 220 k"
+  },
+  {
+   "ref": "R23",
+   "type": "R",
+   "nodes": [
+    "k3b",
+    "0"
+   ],
+   "value": "1k8",
+   "tolerance": 0.05,
+   "label": "V3B cathode 1.8 k"
+  },
+  {
+   "ref": "C11",
+   "type": "C",
+   "nodes": [
+    "k3b",
+    "0"
+   ],
+   "value": "1u",
+   "tolerance": 0.2,
+   "label": "V3B cathode bypass 1 uF"
+  },
+  {
+   "ref": "V3A",
+   "type": "triode",
+   "nodes": [
+    "b2",
+    "p3b",
+    "k3a"
+   ],
+   "model": "12AX7",
+   "label": "V3A FX buffer DC-coupled cathode follower (grid = V3B plate, plate on B2)"
+  },
+  {
+   "ref": "R24",
+   "type": "R",
+   "nodes": [
+    "k3a",
+    "fxs"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "FX buffer cathode load 100 k",
+   "note": "Solver partition (cuts: k3a, loads R24): the V3A cathode follower's output splits the preamp (V1B-V3A) from the FX recovery, tone stack, PI and power amp, which were one 80-unknown / 39-port group. The follower's ~1/gm source drives only this 100 k into the 2.2 k send divider, so the one-sample lag is below the SPICE gate's resolution (slo_od 0.084 -> 0.085 %, slo_clean 0.050 % and slo_ac unchanged, slo_od_hot spk 0.78 % uncut -> 0.74 %; aliasing gate -64.5 -> -62.3 dB) and the live unit drops from about 135 % to about 81 % of one core on a guitar DI at 48 kHz (-27 % instructions; 2026-11-11). Before the split every audio callback overran. The V4A follower (k4a) is not cut: it drives the tone stack and cuts off on hard drive, and a cut there costs slo_od 0.08 -> 1.35 %."
+  },
+  {
+   "ref": "C13",
+   "type": "C",
+   "nodes": [
+    "fxs",
+    "fxsend"
+   ],
+   "value": "1u",
+   "tolerance": 0.2,
+   "label": "FX send coupling 1 uF"
+  },
+  {
+   "ref": "J2",
+   "type": "R",
+   "nodes": [
+    "fxsend",
+    "g4b"
+   ],
+   "value": "1",
+   "label": "FX Send/Return normalized jack (return tip straight to the V4B grid and its 1 M leak)"
+  },
+  {
+   "ref": "RL",
+   "type": "R",
+   "nodes": [
+    "fxs",
+    "0"
+   ],
+   "value": "1k",
+   "tolerance": 0.05,
+   "label": "1 k in parallel with RL (1996 sheet 1 note: 'Place 1K parallel to RL to reduce FX send lvl to 0dBm'; Robinette: RL 1K, '2.2K was original value, FX was too hot'). 688 ohm total send load; was wrongly a series 1 k at the return"
+  },
+  {
+   "ref": "R26",
+   "type": "R",
+   "nodes": [
+    "g4b",
+    "0"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "FX recovery grid leak 1 M"
+  },
+  {
+   "ref": "V4B",
+   "type": "triode",
+   "nodes": [
+    "p4b",
+    "g4b",
+    "k4b"
+   ],
+   "model": "12AX7",
+   "label": "V4B FX recovery"
+  },
+  {
+   "ref": "R28",
+   "type": "R",
+   "nodes": [
+    "b2",
+    "p4b"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "V4B FX recovery plate load 220 k on B2"
+  },
+  {
+   "ref": "R27",
+   "type": "R",
+   "nodes": [
+    "k4b",
+    "0"
+   ],
+   "value": "2k2",
+   "tolerance": 0.05,
+   "label": "V4B cathode 2.2 k"
+  },
+  {
+   "ref": "C25",
+   "type": "C",
+   "nodes": [
+    "k4b",
+    "0"
+   ],
+   "value": "25u",
+   "tolerance": 0.2,
+   "label": "V4B cathode bypass 25 uF (production change; 1 uF also used)"
+  },
+  {
+   "ref": "V4A",
+   "type": "triode",
+   "nodes": [
+    "b2",
+    "p4b",
+    "k4a"
+   ],
+   "model": "12AX7",
+   "label": "V4A tone-stack buffer DC-coupled cathode follower (plate on B2)"
+  },
+  {
+   "ref": "R29",
+   "type": "R",
+   "nodes": [
+    "k4a",
+    "0"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "Tone-stack buffer cathode load 100 k"
+  },
+  {
+   "ref": "C_T1",
+   "type": "C",
+   "nodes": [
+    "k4a",
+    "tt"
+   ],
+   "value": "470p",
+   "tolerance": 0.1,
+   "label": "Tone stack treble cap 470 pF"
+  },
+  {
+   "ref": "R_SL",
+   "type": "R",
+   "nodes": [
+    "k4a",
+    "ns"
+   ],
+   "value": "47k",
+   "tolerance": 0.05,
+   "label": "Tone stack slope 47 k"
+  },
+  {
+   "ref": "C_T2",
+   "type": "C",
+   "nodes": [
+    "ns",
+    "nt"
+   ],
+   "value": "20n",
+   "tolerance": 0.1,
+   "label": "Tone stack bass cap 0.02 uF (slope node -> treble bottom)"
+  },
+  {
+   "ref": "TREB",
+   "type": "pot",
+   "nodes": [
+    "nt",
+    "tw",
+    "tt"
+   ],
+   "value": "250k",
+   "taper": "B",
+   "control": "treble",
+   "label": "Treble 250 k lin (250KL on Robinette's redraw and on the MK II drawing; the 1996 sheet prints no suffix)"
+  },
+  {
+   "ref": "BASS",
+   "type": "pot",
+   "nodes": [
+    "mb",
+    "nt",
+    "nt"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "bass",
+   "label": "Bass 1 M rheostat between the treble bottom and the mid top"
+  },
+  {
+   "ref": "MID",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "mw",
+    "mb"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "mid",
+   "label": "Mid 25 k"
+  },
+  {
+   "ref": "C_T3",
+   "type": "C",
+   "nodes": [
+    "ns",
+    "mw"
+   ],
+   "value": "20n",
+   "tolerance": 0.1,
+   "label": "Tone stack mid cap 0.02 uF (slope node -> mid wiper)"
+  },
+  {
+   "ref": "RTM",
+   "type": "R",
+   "nodes": [
+    "tw",
+    "mv_in"
+   ],
+   "value": "1",
+   "label": "Treble wiper to the master volumes"
+  },
+  {
+   "ref": "ODMV",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "odmv_w",
+    "mv_in"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "master",
+   "label": "OD Master Volume 1 M (front-panel Master)"
+  },
+  {
+   "ref": "NMV",
+   "type": "pot",
+   "nodes": [
+    "0",
+    "nmv_w",
+    "mv_in"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "master",
+   "label": "Norm MV 1 M (clean master). Ganged to the one catalogue Master with the OD MV (LDR3/LDR4 pick the active channel's wiper), as the MK II binding does; at the 0.5 default this is identical to the old fixed 0.5"
+  },
+  {
+   "ref": "C_PI",
+   "type": "C",
+   "nodes": [
+    "mv_out",
+    "g5a"
+   ],
+   "value": "20n",
+   "tolerance": 0.1,
+   "label": "PI input coupling 0.02 uF"
+  },
+  {
+   "ref": "R_PI1",
+   "type": "R",
+   "nodes": [
+    "g5a",
+    "tj"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "PI upper grid leak 1 M to tj"
+  },
+  {
+   "ref": "V5A",
+   "type": "triode",
+   "nodes": [
+    "pa1",
+    "g5a",
+    "pt"
+   ],
+   "model": "12AX7",
+   "label": "V5A LTP phase inverter"
+  },
+  {
+   "ref": "V5B",
+   "type": "triode",
+   "nodes": [
+    "pb1",
+    "g5b",
+    "pt"
+   ],
+   "model": "12AX7",
+   "label": "V5B LTP phase inverter"
+  },
+  {
+   "ref": "R82",
+   "type": "R",
+   "nodes": [
+    "b2",
+    "pa1"
+   ],
+   "value": "82k",
+   "tolerance": 0.05,
+   "label": "PI plate load 82 k on B2 378 V"
+  },
+  {
+   "ref": "R100",
+   "type": "R",
+   "nodes": [
+    "b2",
+    "pb1"
+   ],
+   "value": "100k",
+   "tolerance": 0.05,
+   "label": "PI plate load 100 k on B2 378 V"
+  },
+  {
+   "ref": "RTAIL",
+   "type": "R",
+   "nodes": [
+    "tj",
+    "nfb"
+   ],
+   "value": "10k",
+   "tolerance": 0.05,
+   "label": "PI tail 10 k (tj -> feedback node nfb)"
+  },
+  {
+   "ref": "R_PI2",
+   "type": "R",
+   "nodes": [
+    "g5b",
+    "tj"
+   ],
+   "value": "1M",
+   "tolerance": 0.05,
+   "label": "PI lower grid leak 1 M to tj"
+  },
+  {
+   "ref": "C_AC",
+   "type": "C",
+   "nodes": [
+    "g5b",
+    "nfb"
+   ],
+   "value": "100n",
+   "tolerance": 0.2,
+   "label": "PI lower grid AC shunt 0.1 uF to the feedback node (1996 sheet 2 '.1uF'; was 1 uF)"
+  },
+  {
+   "ref": "C_SN",
+   "type": "C",
+   "nodes": [
+    "pa1",
+    "pb1"
+   ],
+   "value": "47p",
+   "tolerance": 0.1,
+   "label": "PI 47 pF snubber"
+  },
+  {
+   "ref": "C_OA",
+   "type": "C",
+   "nodes": [
+    "pa1",
+    "ga"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "PI plate coupling 0.047 uF"
+  },
+  {
+   "ref": "C_OB",
+   "type": "C",
+   "nodes": [
+    "pb1",
+    "gb"
+   ],
+   "value": "47n",
+   "tolerance": 0.1,
+   "label": "PI cathode coupling 0.047 uF"
+  },
+  {
+   "ref": "RGL1",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "bias"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "V6/V7 grid leak 220 k"
+  },
+  {
+   "ref": "RGL2",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "bias"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "V8/V9 grid leak 220 k"
+  },
+  {
+   "ref": "RS6",
+   "type": "R",
+   "nodes": [
+    "ga",
+    "g6"
+   ],
+   "value": "1k1",
+   "tolerance": 0.05,
+   "label": "V6 grid stopper 2.2 k",
+   "note": "pair of 2k2 folded with the output tubes"
+  },
+  {
+   "ref": "RS8",
+   "type": "R",
+   "nodes": [
+    "gb",
+    "g8"
+   ],
+   "value": "1k1",
+   "tolerance": 0.05,
+   "label": "V8 grid stopper 2.2 k",
+   "note": "pair of 2k2 folded with the output tubes"
+  },
+  {
+   "ref": "RSC6",
+   "type": "R",
+   "nodes": [
+    "screens",
+    "s6"
+   ],
+   "value": "237.5",
+   "tolerance": 0.05,
+   "label": "V6 screen stopper 475 Ohm",
+   "note": "pair of 475 folded with the output tubes"
+  },
+  {
+   "ref": "RSC8",
+   "type": "R",
+   "nodes": [
+    "screens",
+    "s8"
+   ],
+   "value": "237.5",
+   "tolerance": 0.05,
+   "label": "V8 screen stopper 475 Ohm",
+   "note": "pair of 475 folded with the output tubes"
+  },
+  {
+   "ref": "V6",
+   "type": "pentode",
+   "nodes": [
+    "pa",
+    "s6",
+    "g6",
+    "0"
+   ],
+   "model": "6L6GC",
+   "label": "V6 6L6GC",
+   "parallel": 2,
+   "note": "V6 + V7: two matched tubes in parallel (folded; their grid stoppers and screen resistors are halved, grid caps doubled)"
+  },
+  {
+   "ref": "V8",
+   "type": "pentode",
+   "nodes": [
+    "pb",
+    "s8",
+    "g8",
+    "0"
+   ],
+   "model": "6L6GC",
+   "label": "V8 6L6GC",
+   "parallel": 2,
+   "note": "V8 + V9: two matched tubes in parallel (folded; their grid stoppers and screen resistors are halved, grid caps doubled)"
+  },
+  {
+   "ref": "OT",
+   "type": "transformer",
+   "nodes": [
+    "pa",
+    "plates",
+    "plates",
+    "pb",
+    "spk",
+    "0",
+    "fb4",
+    "0"
+   ],
+   "turns": [
+    1,
+    1,
+    0.194,
+    0.097
+   ],
+   "r": [
+    20,
+    20,
+    0.2,
+    0.1
+   ],
+   "leak": [
+    "3m",
+    "3m",
+    0,
+    0
+   ],
+   "lm": 80,
+   "lsat": 5,
+   "label": "Soldano 100 W output transformer",
+   "note": "unverified: the drawing gives no Raa/DCR; 1.7 k p-p, 16 ohm tap turns 2*sqrt(16/1700), 4 ohm tap half of that; 20 ohm per half, 3 mH leakage, lm 80 H, lsat 5 V s are typical-class values. Feedback is taken from the 4 ohm tap (the drawing's note)."
+  },
+  {
+   "ref": "CWA",
+   "type": "C",
+   "nodes": [
+    "pa",
+    "cwa"
+   ],
+   "value": "470p",
+   "label": "OT half-primary winding capacitance (A)"
+  },
+  {
+   "ref": "RCWA",
+   "type": "R",
+   "nodes": [
+    "cwa",
+    "plates"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (A)"
+  },
+  {
+   "ref": "CWB",
+   "type": "C",
+   "nodes": [
+    "pb",
+    "cwb"
+   ],
+   "value": "470p",
+   "label": "OT half-primary winding capacitance (B)"
+  },
+  {
+   "ref": "RCWB",
+   "type": "R",
+   "nodes": [
+    "cwb",
+    "plates"
+   ],
+   "value": "2k2",
+   "label": "OT winding-capacitance loss (B)"
+  },
+  {
+   "ref": "SPK",
+   "type": "sub",
+   "of": "lib:spk-12in-16ohm-british",
+   "nodes": [
+    "spk",
+    "0"
+   ],
+   "label": "Soldano 4x12-class 16 ohm cab (single Thiele-Small equivalent)"
+  },
+  {
+   "ref": "RNFB",
+   "type": "R",
+   "nodes": [
+    "fb_c",
+    "nfb"
+   ],
+   "value": "39k",
+   "tolerance": 0.05,
+   "label": "Feedback 39 k into the feedback node; its far end goes through the 0.1 uF and the Depth network to the 4 ohm tap"
+  },
+  {
+   "ref": "C_FB",
+   "type": "C",
+   "nodes": [
+    "fb_d",
+    "fb_c"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "Feedback-loop series 0.1 uF between the Depth network and the 39 k (Robinette's annotated SLO-100 redraw)"
+  },
+  {
+   "ref": "CPRES",
+   "type": "C",
+   "nodes": [
+    "nfb",
+    "pr_in"
+   ],
+   "value": "100n",
+   "tolerance": 0.1,
+   "label": "Presence 0.1 uF from the feedback node"
+  },
+  {
+   "ref": "PRES",
+   "type": "pot",
+   "nodes": [
+    "pr_in",
+    "pr_in",
+    "0"
+   ],
+   "value": "25k",
+   "taper": "B",
+   "control": "presence",
+   "label": "Presence 25 k-L rheostat: 0.1 uF to the wiper, the clockwise lug to ground (1996 sheet 2), so the series resistance is 25k*(1-x) and full presence is 0 ohm (most treble taken out of the feedback)"
+  },
+  {
+   "ref": "CDEP",
+   "type": "C",
+   "nodes": [
+    "fb4",
+    "fb_d"
+   ],
+   "value": "4n7",
+   "tolerance": 0.1,
+   "label": "Depth 0.0047 uF across the Depth pot, in series with the feedback from the 4 ohm tap"
+  },
+  {
+   "ref": "DEPTH",
+   "type": "pot",
+   "nodes": [
+    "fb_d",
+    "fb4",
+    "fb4"
+   ],
+   "value": "1M",
+   "taper": "A",
+   "control": "depth",
+   "label": "Depth 1 M-A rheostat in series with the feedback, bridged by 0.0047 uF (Robinette: 'removes low frequencies from the NFB loop'; marked optional). Resistance rises with rotation (audio taper from the ccw lug, as on the MK II drawing): 0 = full feedback, 1 = 1 M || 4.7 nF, least bass feedback"
+  },
+  {
+   "ref": "V5LDR",
+   "type": "V",
+   "nodes": [
+    "v5ldr",
+    "0"
+   ],
+   "value": "5",
+   "label": "LDR LED supply 5 V (footswitch supply)"
+  },
+  {
+   "ref": "SW_LED_OD",
+   "type": "switch",
+   "nodes": [
+    "v5ldr",
+    "od_a"
+   ],
+   "control": "channel",
+   "positions": [
+    1
+   ],
+   "label": "OD LED switch (closed in OD)"
+  },
+  {
+   "ref": "RLED_OD",
+   "type": "R",
+   "nodes": [
+    "od_a",
+    "od_k"
+   ],
+   "value": "398",
+   "label": "OD LED drive: 8.7 mA per LED, the footswitch circuit's OD state (switch open: 6 V reservoir -> 33 / 47 ohm -> 61.9 ohm -> VR2 || VR3 -> 33 ohm), as a 5 V Thevenin equivalent"
+  },
+  {
+   "ref": "LED_OD",
+   "type": "led",
+   "nodes": [
+    "od_k",
+    "0"
+   ],
+   "light": "lt_od",
+   "model": "VTL5C1_LED",
+   "label": "OD channel LDR LED (2 mA)",
+   "note": "multirate.slow (12 kHz): the two LED drivers, their light nodes and the four cells' light history run every 16th sample at the 192 kHz unit rate (2026-11-11). They are constant at a fixed channel and were a quarter of the unit's cost (eight small Newton groups). The SPICE cases and the aliasing figure are unchanged; a channel switch's 20 ms crossfade stays within 3 dB per 2 ms window of the full-rate one, and the unit's median callback at 48 kHz / 128 on a guitar DI drops from about 2.2-2.3 to 1.8-2.0 ms against the 2.67 ms period (loaded machine)."
+  },
+  {
+   "ref": "SW_LED_CL",
+   "type": "switch",
+   "nodes": [
+    "v5ldr",
+    "cl_a"
+   ],
+   "control": "channel",
+   "positions": [
+    0
+   ],
+   "label": "Clean LED switch (closed in Clean)"
+  },
+  {
+   "ref": "RLED_CL",
+   "type": "R",
+   "nodes": [
+    "cl_a",
+    "cl_k"
+   ],
+   "value": "97.3",
+   "label": "Clean LED drive: 34 mA per LED, the footswitch circuit's Clean state (switch closed: 6 V reservoir -> 33 / 47 ohm, 61.9 ohm across VR1 || VR4), as a 5 V Thevenin equivalent"
+  },
+  {
+   "ref": "LED_CL",
+   "type": "led",
+   "nodes": [
+    "cl_k",
+    "0"
+   ],
+   "light": "lt_cl",
+   "model": "VTL5C1_LED",
+   "label": "Clean channel LDR LED (2 mA)"
+  },
+  {
+   "ref": "CELL1",
+   "type": "cds",
+   "nodes": [
+    "g2b",
+    "0"
+   ],
+   "light": "lt_cl",
+   "model": "VTL5C1_CELL",
+   "label": "LDR1 OD kill (lit in Clean, about 235 ohm at 34 mA)"
+  },
+  {
+   "ref": "CELL2",
+   "type": "cds",
+   "nodes": [
+    "x2",
+    "a1"
+   ],
+   "light": "lt_od",
+   "model": "VTL5C1_CELL",
+   "label": "LDR2 (VR2): cold-clipper output into the Clean/OD preamp-4 summing node a1 (lit in OD)"
+  },
+  {
+   "ref": "CELL3",
+   "type": "cds",
+   "nodes": [
+    "odmv_w",
+    "mv_out"
+   ],
+   "light": "lt_od",
+   "model": "VTL5C1_CELL",
+   "label": "LDR3 (VR3) OD master select: OD MV wiper -> PI coupling (on in OD)"
+  },
+  {
+   "ref": "CELL4",
+   "type": "cds",
+   "nodes": [
+    "nmv_w",
+    "mv_out"
+   ],
+   "light": "lt_cl",
+   "model": "VTL5C1_CELL",
+   "label": "LDR4 (VR4) Normal master select: Norm MV wiper -> PI coupling (on in Clean)"
+  },
+  {
+   "ref": "RK4",
+   "type": "R",
+   "nodes": [
+    "pt",
+    "tj"
+   ],
+   "value": "470",
+   "tolerance": 0.05,
+   "label": "PI shared cathode 470 Ohm"
+  },
+  {
+   "ref": "RFB",
+   "type": "R",
+   "nodes": [
+    "nfb",
+    "0"
+   ],
+   "value": "4k7",
+   "tolerance": 0.05,
+   "label": "Feedback shunt 4.7 k"
+  },
+  {
+   "ref": "RCL",
+   "type": "R",
+   "nodes": [
+    "a1",
+    "g3b"
+   ],
+   "value": "220k",
+   "tolerance": 0.05,
+   "label": "Clean path 220 k grid stop into OD preamp 4 (always connected: the Clean channel is always on)"
+  },
+  {
+   "ref": "RLS",
+   "type": "R",
+   "nodes": [
+    "fxs",
+    "0"
+   ],
+   "value": "2k2",
+   "tolerance": 0.05,
+   "label": "FX send load RL 2.2 k (send tap across it)"
+  }
+ ],
+ "probes": [
+  "g1b",
+  "p1b",
+  "g1a",
+  "p1a",
+  "a1",
+  "g2a",
+  "p2a",
+  "g2b",
+  "p2b",
+  "x2",
+  "g3b",
+  "p3b",
+  "k3a",
+  "fxs",
+  "g4b",
+  "p4b",
+  "k4a",
+  "tw",
+  "odmv_w",
+  "nmv_w",
+  "mv_out",
+  "g5a",
+  "pt",
+  "tj",
+  "nfb",
+  "pa1",
+  "pb1",
+  "ga",
+  "gb",
+  "pa",
+  "pb",
+  "b2",
+  "b3",
+  "b4",
+  "plates",
+  "screens",
+  "bias",
+  "spk",
+  "cr_b",
+  "p2t"
+ ]
+}

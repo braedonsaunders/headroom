@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<headroom-preset version="1">
+<headroom-info><soundinfo><properties><name>Djent Precision</name><author>Headroom</author></properties></soundinfo></headroom-info>
+<headroom-rig>
+<metadata preset-name="Djent Precision" preset-author="Headroom" preset-comment="Surgical djent rhythm for seven- and eight-strings: a very hard gate, a drive-at-zero overdrive and a German twin-channel high-gain head with tight lows and forward upper mids, into a V30 4x12. Every palm-muted 'djent' snaps, and odd-time stops are silent." based-on="" based-on-path=""/>
+<rack>
+<non-fix-components>
+  <component id="19000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="T" value="0.6"/>
+        <parameter id="H" value="0.5"/>
+        <parameter id="A" value="0.5"/>
+        <parameter id="R" value="0.5"/>
+        <parameter id="L" value="0.5"/>
+        <parameter id="G" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="15000">
+    <component-audio version="1">
+      <parameters num-parameters="9">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="Vol" value="0.95"/>
+        <parameter id="Tn" value="0.7"/>
+        <parameter id="Dr" value="0"/>
+        <parameter id="Lmp" value="0.5"/>
+        <parameter id="Bs" value="0.5"/>
+        <parameter id="Cl" value="0.5"/>
+        <parameter id="Br" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="81000">
+    <component-audio version="1">
+      <parameters num-parameters="15">
+        <parameter id="CASSt" value="0.5"/>
+        <parameter id="c" value="1"/>
+        <parameter id="g" value="0.68"/>
+        <parameter id="b" value="0.42"/>
+        <parameter id="m" value="0.6"/>
+        <parameter id="t" value="0.62"/>
+        <parameter id="p" value="0.6"/>
+        <parameter id="v" value="0.6"/>
+        <parameter id="Mst" value="0.55"/>
+        <parameter id="Pw" value="0"/>
+        <parameter id="Var" value="0.5"/>
+        <parameter id="Sg" value="0.5"/>
+        <parameter id="Rsp" value="0"/>
+        <parameter id="Bi" value="0.6969"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+  <component id="156000">
+    <component-audio version="1">
+      <parameters num-parameters="7">
+        <parameter id="LL" value="0.5"/>
+        <parameter id="MV" value="0.8983"/>
+        <parameter id="c" value="0.5"/>
+        <parameter id="Cab" value="12"/>
+        <parameter id="V" value="0"/>
+        <parameter id="st" value="0.5"/>
+        <parameter id="Pwr" value="1"/>
+      </parameters>
+    </component-audio>
+  </component>
+</non-fix-components>
+</rack>
+<realtimecontroldb>
+<remotecontroldb>
+<component-event-listeners>
+  <connection-data><target controller-slot-id="0" component-id="81000" target-number="1" target-name="g" min-value="0.45" max-value="0.9" controller-name="Gain"/></connection-data>
+  <connection-data><target controller-slot-id="1" component-id="81000" target-number="1" target-name="b" min-value="0.2" max-value="0.7" controller-name="Low End"/></connection-data>
+  <connection-data><target controller-slot-id="2" component-id="81000" target-number="1" target-name="m" min-value="0.35" max-value="0.85" controller-name="Mids"/></connection-data>
+  <connection-data><target controller-slot-id="3" component-id="15000" target-number="1" target-name="Tn" min-value="0.4" max-value="0.9" controller-name="Attack"/></connection-data>
+  <connection-data><target controller-slot-id="4" component-id="19000" target-number="1" target-name="T" min-value="0.4" max-value="0.85" controller-name="Gate"/></connection-data>
+</component-event-listeners>
+</remotecontroldb>
+</realtimecontroldb>
+</headroom-rig>
+<headroom-library version="1" id="hg-djent-precision" category="High Gain" order="190" instrument="guitar" style="Djent">
+  <description>Surgical djent rhythm for seven- and eight-strings: a very hard gate, a drive-at-zero overdrive and a German twin-channel high-gain head with tight lows and forward upper mids, into a V30 4x12. Every palm-muted 'djent' snaps, and odd-time stops are silent.</description>
+  <tags><tag>High Gain</tag><tag>Djent</tag><tag>Prog Metal</tag><tag>Rhythm</tag><tag>Extended Range</tag><tag>Gate</tag><tag>Boosted</tag></tags>
+  <sources>
+    <source url="https://www.premierguitar.com/artists/meshuggahs-marten-hagstrom-a-higher-standard" title="Premier Guitar: Meshuggah's Mårten Hagström"/>
+    <source url="https://www.guitarworld.com/features/interview-meshuggah-discuss-their-new-album-koloss" title="Guitar World: Meshuggah discuss Koloss"/>
+    <source url="https://www.sweetwater.com/insync/how-to-dial-in-a-modern-metal-tone-with-misha-mansoor/" title="Sweetwater: How to dial in a modern metal tone with Misha Mansoor"/>
+    <source url="https://www.musicradar.com/news/tesseract-subconsciously-we-might-have-been-going-for-a-darker-tone" title="MusicRadar: TesseracT on their tone"/>
+    <source url="https://www.premierguitar.com/gear/rig-rundown-animals-as-leaders-tosin-abasi-and-javier-reyes-2013" title="Premier Guitar: Rig Rundown, Animals as Leaders (2013)"/>
+  </sources>
+</headroom-library>
+</headroom-preset>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.headroom.studio</id>
+  <name>Headroom</name>
+  <summary>Guitar and bass amp simulator</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>LicenseRef-proprietary</project_license>
+  <description>
+    <p>Headroom models tube amps, cabinets and effects in real time, loads Neural Amp Modeler captures,
+    and turns your guitar into MIDI.</p>
+  </description>
+  <launchable type="desktop-id">headroom.desktop</launchable>
+  <categories><category>Audio</category><category>Music</category></categories>
+  <content_rating type="oars-1.1"/>
+</component>
