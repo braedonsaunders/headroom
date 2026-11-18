@@ -43,15 +43,15 @@ fail=0 warn=0 count=0
 while IFS= read -r -d '' f; do
     rel=${f#"$root"/}
     count=$((count + 1))
-    for p in "${deny_path[@]}"; do
+    for p in ${deny_path[@]+"${deny_path[@]}"}; do
         if [[ $rel == $p ]]; then echo "DENY  $rel   (matches $p)"; fail=1; continue 2; fi
     done
     ext=${rel##*.}
-    for e in "${deny_ext[@]}"; do
+    for e in ${deny_ext[@]+"${deny_ext[@]}"}; do
         if [[ $ext == "$e" ]]; then echo "DENY  $rel   (denied file type .$e)"; fail=1; continue 2; fi
     done
     ok=0
-    for p in "${allow[@]}"; do
+    for p in ${allow[@]+"${allow[@]}"}; do
         if [[ $rel == $p ]]; then ok=1; break; fi
     done
     if (( ! ok )); then echo "UNLISTED  $rel"; fail=1; continue; fi
